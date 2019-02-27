@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dxfrw", "F:/workspace/cpp/LibreCAD-2.2.0-rc1/libraries/libdxfrw\dxfrw.vcxproj", "{52E04652-22E5-3611-B7CA-FDBC2AF67871}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jwwlib", "F:/workspace/cpp/LibreCAD-2.2.0-rc1/libraries/jwwlib\jwwlib.vcxproj", "{C4157FFE-B5D5-3177-9D9E-18C33849DC3D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "muparser", "F:/workspace/cpp/LibreCAD-2.2.0-rc1/libraries/muparser\muparser.vcxproj", "{36D48721-3B2E-3EBD-B7C8-8CE247EE2F03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52E04652-22E5-3611-B7CA-FDBC2AF67871}.Debug|x64.ActiveCfg = Debug|x64
+		{52E04652-22E5-3611-B7CA-FDBC2AF67871}.Debug|x64.Build.0 = Debug|x64
+		{52E04652-22E5-3611-B7CA-FDBC2AF67871}.Release|x64.ActiveCfg = Release|x64
+		{52E04652-22E5-3611-B7CA-FDBC2AF67871}.Release|x64.Build.0 = Release|x64
+		{C4157FFE-B5D5-3177-9D9E-18C33849DC3D}.Debug|x64.ActiveCfg = Debug|x64
+		{C4157FFE-B5D5-3177-9D9E-18C33849DC3D}.Debug|x64.Build.0 = Debug|x64
+		{C4157FFE-B5D5-3177-9D9E-18C33849DC3D}.Release|x64.ActiveCfg = Release|x64
+		{C4157FFE-B5D5-3177-9D9E-18C33849DC3D}.Release|x64.Build.0 = Release|x64
+		{36D48721-3B2E-3EBD-B7C8-8CE247EE2F03}.Debug|x64.ActiveCfg = Debug|x64
+		{36D48721-3B2E-3EBD-B7C8-8CE247EE2F03}.Debug|x64.Build.0 = Debug|x64
+		{36D48721-3B2E-3EBD-B7C8-8CE247EE2F03}.Release|x64.ActiveCfg = Release|x64
+		{36D48721-3B2E-3EBD-B7C8-8CE247EE2F03}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

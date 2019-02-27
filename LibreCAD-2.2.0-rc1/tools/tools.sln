@@ -1,0 +1,20 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ttf2lff", "F:/workspace/cpp/LibreCAD-2.2.0-rc1/tools/ttf2lff\ttf2lff.vcxproj", "{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Debug|x64.ActiveCfg = Debug|x64
+		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Debug|x64.Build.0 = Debug|x64
+		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Release|x64.ActiveCfg = Release|x64
+		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

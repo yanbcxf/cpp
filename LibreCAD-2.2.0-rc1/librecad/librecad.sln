@@ -1,0 +1,20 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibreCAD", "F:/workspace/cpp/LibreCAD-2.2.0-rc1/librecad/src\LibreCAD.vcxproj", "{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}.Debug|x64.ActiveCfg = Debug|x64
+		{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}.Debug|x64.Build.0 = Debug|x64
+		{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}.Release|x64.ActiveCfg = Release|x64
+		{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
