@@ -24,7 +24,8 @@
 #ifdef __APPLE__
     #include <sys/types.h>
 #endif
-#ifdef __WIN32__
+// yangbin #ifdef __WIN32__
+#ifdef _WIN32
     #include <time.h>
 #endif
 
@@ -219,7 +220,8 @@ FT_Error convertGlyph(FT_ULong charcode) {
                           FT_Get_Char_Index(face, charcode),
                           FT_LOAD_NO_BITMAP | FT_LOAD_NO_SCALE);
     if (error) {
-        std::cerr << "FT_Load_Glyph: " << FT_StrError(error) << std::endl;
+		// yangbin 增加 .c_str()
+        std::cerr << "FT_Load_Glyph: " << FT_StrError(error).c_str() << std::endl;
         return error;
     }
 
@@ -239,7 +241,8 @@ FT_Error convertGlyph(FT_ULong charcode) {
     firstpass = true;
     error = FT_Outline_Decompose(&(og->outline), &funcs, fpLff);
 	if (error)
-		std::cerr << "FT_Outline_Decompose: first pass: " << FT_StrError(error) << std::endl;
+		// yangbin 增加 .c_str()
+		std::cerr << "FT_Outline_Decompose: first pass: " << FT_StrError(error).c_str() << std::endl;
 
     firstpass = false;
     startcontour = true;
@@ -249,7 +252,8 @@ FT_Error convertGlyph(FT_ULong charcode) {
     }
 
 	if (error)
-		std::cerr << "FT_Outline_Decompose: second pass: " << FT_StrError(error) << std::endl;
+		// yangbin 增加 .c_str()
+		std::cerr << "FT_Outline_Decompose: second pass: " << FT_StrError(error).c_str() << std::endl;
 
     return error;
 }
@@ -353,7 +357,8 @@ int main(int argc, char* argv[]) {
     // init freetype
     error = FT_Init_FreeType(&library);
     if (error) {
-        std::cerr << "FT_Init_FreeType: " << FT_StrError(error) << std::endl;
+		// yangbin 增加 .c_str()
+        std::cerr << "FT_Init_FreeType: " << FT_StrError(error).c_str() << std::endl;
         ret = 1;
     }
     else {
@@ -363,7 +368,8 @@ int main(int argc, char* argv[]) {
                             0,
                             &face);
         if (error) {
-            std::cerr << "FT_New_Face: " << fTtf << ": " << FT_StrError(error) << std::endl;
+			// yangbin 增加 .c_str()
+            std::cerr << "FT_New_Face: " << fTtf.c_str() << ": " << FT_StrError(error).c_str() << std::endl;
             ret = 1;
         }
         else {
