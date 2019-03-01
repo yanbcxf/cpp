@@ -619,7 +619,7 @@ public:
         angle = 0;
         widthscale = 1;
         oblique = 0;
-		style = "UNICODE";	// "STANDARD";
+		style = "STANDARD";
         textgen = 0;
         alignH = HLeft;
         alignV = VBaseLine;

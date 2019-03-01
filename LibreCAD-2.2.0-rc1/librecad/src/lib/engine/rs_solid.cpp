@@ -284,7 +284,7 @@ RS_Vector RS_Solid::getNearestPointOnEntity(const RS_Vector& coord,
     int totalV = 3;
     if (data.corner[3].valid)
         totalV = 4;
-    for (int i=0; i<=totalV; ++i) {
+    for (int i=0; /* yangbin  i<=totalV */ i<totalV; ++i) {
         int next =i+1;
         //closing edge
         if (next == totalV) next =0;

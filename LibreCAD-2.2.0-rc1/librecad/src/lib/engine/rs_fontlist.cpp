@@ -106,6 +106,11 @@ RS_Font* RS_FontList::requestFont(const QString& name) {
 
     RS_DEBUG->print("name2: %s", name2.toLatin1().data());
 
+	// yangbin
+	/*if (name2.indexOf("hz") >=0 || name2.indexOf("standard") >= 0) {
+		name2 = "fzltcxhjw";
+	}*/
+
 	// Search our list of available fonts:
 	for( auto const& f: fonts){
 

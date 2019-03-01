@@ -183,9 +183,13 @@ QString LC_List::getStrData(Plug_Entity *ent) {
 //container entities
     case DPI::MTEXT:
         strData.prepend( strEntity.arg(tr("MTEXT")));
+		// yangbin
+		strData.append(strSpecific.arg(tr("STYLE")).arg(data.value(DPI::TXTSTYLE).toString()));
         break;
     case DPI::TEXT:
         strData.prepend( strEntity.arg(tr("TEXT")));
+		// yangbin
+		strData.append(strSpecific.arg(tr("STYLE")).arg(data.value(DPI::TXTSTYLE).toString()));
         break;
     case DPI::INSERT:
         strData.prepend( strEntity.arg(tr("INSERT")));
