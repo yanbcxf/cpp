@@ -1,20 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zyshxpatch", "source\zyshxpatch.vcxproj", "{9FA02172-9348-4F22-AA09-CA7A63D8D441}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShxShow", "ShxShow\ShxShow.vcxproj", "{0AAF0985-E595-4076-9EAB-8768960972AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Debug|x64.ActiveCfg = Debug|Win32
 		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Debug|x86.ActiveCfg = Debug|Win32
 		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Debug|x86.Build.0 = Debug|Win32
+		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Release|x64.ActiveCfg = Release|Win32
 		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Release|x86.ActiveCfg = Release|Win32
 		{9FA02172-9348-4F22-AA09-CA7A63D8D441}.Release|x86.Build.0 = Release|Win32
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Debug|x64.ActiveCfg = Debug|x64
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Debug|x64.Build.0 = Debug|x64
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Debug|x86.Build.0 = Debug|Win32
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Release|x64.ActiveCfg = Release|x64
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Release|x64.Build.0 = Release|x64
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Release|x86.ActiveCfg = Release|Win32
+		{0AAF0985-E595-4076-9EAB-8768960972AE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
