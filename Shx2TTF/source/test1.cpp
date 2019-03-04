@@ -7,7 +7,7 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	ShapeFont* m_font = new ShapeFont();
-	if(m_font->Load("HT.SHX")){
+	if(m_font->Load("hzxk.SHX")){
 		printf("已打开");
 		printf("%i",m_font->Count());//字库包含多少字符
 		//开始获得路径 例 '好' 字

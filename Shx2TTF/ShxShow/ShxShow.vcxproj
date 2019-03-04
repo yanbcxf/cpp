@@ -217,6 +217,7 @@
     <ResourceCompile Include="ShxShow.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\ShxShow.ico" />
     <None Include="res\ShxShow.rc2" />
   </ItemGroup>
   <ItemGroup>
