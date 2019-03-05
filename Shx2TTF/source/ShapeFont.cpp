@@ -408,7 +408,9 @@ bool ShapeFont::ReadBigfont(CFile& pFile,char* head)
 		unsigned char ch[8];
 		pFile.Read(ch,8);
 		unsigned short code,descLen;//字体编号，描述信息长度
-		code= ((unsigned short)ch[0]<<8)|ch[1];
+		// code= ((unsigned short)ch[0]<<8)|ch[1];
+		// yangbin 原先代码 GBK 编码有颠倒
+		code = ((unsigned short)ch[1] << 8) | ch[0];
 		//memcpy(&code,ch,2);
 		/*unsigned short s=0;
 		memcpy(&s,ch,sizeof(short));*/
@@ -633,7 +635,8 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 	float dy=0;
 	int i;
 	for ( i=0; i<link->defsz;i++)
-		if(link->def[i]==1||link->def[i]==2)
+		if(link->def[i]==1||link->def[i]==2 
+			|| /* 可能一开始就嵌套子对象 ，如‘楠’字 */ link->def[i] == 7)
 			break;
 
 	for (; i<link->defsz;i++)
@@ -701,7 +704,7 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 					}						
 				}
 
-				string _res = Patch(subCode,orgX+ basex,orgY+basey,scX,scY);
+				string _res = Patch(subCode,orgX+ basex * scX, orgY+basey* scY, scX * wd/80.0 ,scY * ht/80.0);
 				res.append(_res);
 			}
 			break;
@@ -943,7 +946,7 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 }
 
 
-void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY)
+void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx, double vfacty)
 {
 	fontchrlink* link= GetFromCode(charCode);
 	if(link==NULL)
@@ -962,13 +965,13 @@ void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY)
 	short fi1;
 	double bulge=0;
 	short forcependown=1;
-	double vfactx=1;
-	double vfacty=1;
+	/*double vfactx=1;
+	double vfacty=1;*/
 	double rad=0;	
 	int psidx=0;
 	int pssz=100;
 	Point2D pts[102];//数据
-	Point2D curpt(300,300);
+	Point2D curpt(0,0);
 	Point2D ap1;
 	Point2D endpt;
 	int npt=0;
@@ -1081,7 +1084,34 @@ void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY)
 
 				case 7:/* Subshape 嵌套子对象 */
 					{//TODO:
-
+					char basex = 0;
+					char basey = 0;
+					char wd = 0;
+					char ht = 0;
+					unsigned short subCode = 0;
+					if (this->m_type == UNIFONT)
+					{
+						if ((didx += 2) >= link->defsz) break;
+						subCode = (unsigned char)link->def[didx - 1] << 8
+							| (unsigned char)link->def[didx];
+					}
+					else
+					{// SHAPE or BIGFONT 
+						if ((didx += 1) >= link->defsz) break;
+						subCode = (unsigned char)link->def[didx];
+						if (!subCode) {
+							if ((didx += 6) >= link->defsz) break;
+							subCode = (unsigned char)link->def[didx - 5] << 8
+								| (unsigned char)link->def[didx - 4];
+							// 子对象在父对象中显示的基点 和 宽高；该处使用‘睿’字进行测试
+							basex = link->def[didx - 3];
+							basey = link->def[didx - 2];
+							wd = link->def[didx - 1];
+							ht = link->def[didx];
+						}
+					}
+					// subCode = (subCode & 0x000000ff) << 8 | (subCode & 0x0000ff00) >> 8;
+					Display(pDC, subCode, orgX + basex * vfactx, orgY + basey * vfacty,  vfactx* wd/80.0 , vfacty * ht/80.0);
 					}
 					break;
 				case  8:  /* dx,dy in next 2 bytes 坐标偏移*/

@@ -8,7 +8,8 @@ public:
 	ShapeFont(void);
 	~ShapeFont(void);
 	bool Load(const char* fileName);
-	void Display(CDC* pDC,unsigned short charCode,int orgX,int orgY);//测试字体坐标解析
+	// 测试字体坐标解析
+	void Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx = 1.0, double vfacty = 1.0);
 	fontchrlink* GetFromCode(unsigned short code);//查找字体
 	char GetFontType(){return m_type;}
 	fontchrlink* GetFromName(const char* symbolName);//查找字体

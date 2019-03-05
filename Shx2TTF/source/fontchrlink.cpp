@@ -385,7 +385,7 @@ bool fontchrlink::ShapeCreateVec(CharData* pOut)
 	Point2F endpt;
 	Point2F basePt(0,0);
 	int npt=0;
-	vex2Ds* curPart;
+	vex2Ds* curPart = NULL;
 
 	for (int didx=0;!done;didx++)
 	{
