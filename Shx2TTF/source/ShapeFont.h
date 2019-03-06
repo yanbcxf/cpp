@@ -21,6 +21,8 @@ public:
 	string Patch(unsigned short charCode,float orgX,float orgY,float scX,float scY);
 	//string Patch(unsigned short charCode,float orgX,float orgY,float scX,float scY);
 
+	string Shx2lff(unsigned short charCode, float orgX, float orgY, float scX, float scY, BOOL isChild);
+
 protected:
 	bool ReadUnifont(CFile& pFile,char* head);
 	bool ReadShapes(CFile& pFile,char* head);

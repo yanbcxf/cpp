@@ -628,8 +628,8 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 		return "";//找不到字体
 	bool penDown=false;
 	bool vertonly=false;//垂直字体
-	CPoint curPt(0,0);//当前坐标点
-	CPoint stack[102];//堆栈
+	Point2D curPt(0,0);//当前坐标点
+	Point2D stack[102];//堆栈
 	int sIndex=-1;	
 	float dx=0;
 	float dy=0;
@@ -720,10 +720,10 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 				dy= link->def[++i]; 
 				while(link->def[i-1]||link->def[i])
 				{
-					curPt.x+=dx;curPt.y-=dy;
+					curPt.X+=dx;curPt.Y-=dy;
 					if(penDown){
-						float _x = orgX+curPt.x*scX;
-						float _y = orgY+curPt.y*scY;
+						float _x = orgX+curPt.X*scX;
+						float _y = orgY+curPt.Y*scY;
 
 						CString sx;
 						sx.Format("%f",_x);
@@ -769,7 +769,7 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 				//绘制圆(弧)
 				////pDC->AngleArc(orgX+curPt.x - r * cos(sa*PI/4)*scX,orgY+ curPt.y+ r * sin(sa*PI/4)*scX,r*scX,sa*45,deta*45);
 				res.append("anglearc|");
-				curPt.x+=dx;curPt.y-=dy;
+				curPt.X+=dx;curPt.Y-=dy;
 				dx=0;dy=0;
 			}
 			break;
@@ -807,7 +807,7 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 				//绘制圆(弧)
 				////pDC->AngleArc(orgX+curPt.x*scX - r * cos(sa*PI/4),orgY+ curPt.y*scY+ r * sin(sa*PI/4),r*scX,sa*45,deta*45);
 				res.append("anglearc|");
-				curPt.x+=dx;curPt.y-=dy;
+				curPt.X+=dx;curPt.Y-=dy;
 				dx=0;dy=0;
 				//绘制圆弧
 			}
@@ -827,8 +827,8 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 				{
 					double p1[2],p2[2],cc[2];
 					double r,sa,ea;
-					p1[0]=orgX+ curPt.x;
-					p1[1]=orgY+ curPt.y;
+					p1[0]=orgX+ curPt.X;
+					p1[1]=orgY+ curPt.Y;
 					p2[0]=p1[0]+dx*scX;
 					p2[1]=p1[1]-dy*scY;
 					ic_bulge2arc(p1,p2, bug, cc, &r, &sa, &ea);
@@ -909,8 +909,8 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 		if(opt==1){
 			////pDC->MoveTo(orgX+curPt.x,orgY+curPt.y);
 
-			float _x = orgX+curPt.x;
-			float _y = orgY+curPt.y;
+			float _x = orgX+curPt.X;
+			float _y = orgY+curPt.Y;
 
 			CString sx;
 			sx.Format("%f",_x);
@@ -923,12 +923,12 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 		}
 		else
 		{
-			curPt.x+=dx*scY;curPt.y-=dy*scY;
+			curPt.X+=dx*scY;curPt.Y-=dy*scY;
 			if(penDown){
 				////pDC->LineTo(orgX+curPt.x,orgY+curPt.y);
 
-				float _x = orgX+curPt.x;
-				float _y = orgY+curPt.y;
+				float _x = orgX+curPt.X;
+				float _y = orgY+curPt.Y;
 
 				CString sx;
 				sx.Format("%f",_x);
@@ -1242,4 +1242,293 @@ short getfontval(char **lpp) {
 out:
 	if (lpp!=NULL) *lpp=lp;
 	return rc;
+}
+
+
+string ShapeFont::Shx2lff(unsigned short charCode, float orgX, float orgY, float vfactx, float vfacty, BOOL isChild)
+{
+	string res = "";
+	fontchrlink* link = GetFromCode(charCode);
+	if (link == NULL)
+		return ""; //找不到字体
+
+	if (!isChild) {
+		// 转换为 UNICODE 
+		wchar_t buf1[10];
+		unsigned short k1;
+		k1 = (charCode & 0x000000ff) << 8 | (charCode & 0x0000ff00) >> 8;
+		MultiByteToWideChar(CP_ACP, 0, (char *)&k1, 2, (LPWSTR)buf1, 10);
+
+		CString sCode;
+		sCode.Format("[#%4x]", buf1[0]);
+		res.append(sCode);
+	}
+
+	short vertonly, gotdxdy, circ, genpc, arcmode;
+	//开始解析字体
+	Point2F org(orgX, orgY);
+	short pendown = 1;
+	short skip = 0;
+	bool done = false;
+	bool cw = false;
+	short cmdcode = 0;
+	double dx = 0;
+	double dy = 0;
+	short repmode = 0;  /* 0, 9, or 13 (the repeating commands) */
+	short fi1;
+	double bulge = 0;
+	short forcependown = 1;
+	/*double vfactx=1;
+	double vfacty=1;*/
+	double rad = 0;
+	int psidx = 0;
+	int pssz = 100;
+	Point2F pts[102];//数据
+	Point2F curpt(0, 0);
+	Point2F ap1;
+	Point2F endpt;
+	int npt = 0;
+	for (int didx = 0; !done; didx++)
+	{
+		if (didx >= link->defsz) done = true;
+		vertonly = gotdxdy = circ = genpc = 0; arcmode = -1;
+
+		if (!done)
+		{
+			if (repmode) {
+				if (++didx < link->defsz) {
+					if (!link->def[didx - 1] && !link->def[didx]) repmode = 0;
+					if (repmode == 9) {
+						if (!skip) {
+							dx = link->def[didx - 1];
+							dy = link->def[didx];
+							gotdxdy = 1;
+						}
+					}
+					else if (repmode == 13) {
+						if (++didx < link->defsz && !skip) {
+							arcmode = 1;
+							dx = link->def[didx - 2];
+							dy = link->def[didx - 1];
+							fi1 = link->def[didx];
+							if (fi1 > 127)fi1 = 127;
+							else if (fi1 < -127)fi1 = -127;
+							bulge = fi1 / 127.0;
+						}
+					}
+				}
+
+			}
+			else
+			{
+				cmdcode = (forcependown) ? 1 : link->def[didx];
+				switch (cmdcode) {
+				case  0:  /* End 结束*/
+					if (skip) break;
+					didx = link->defsz;  /* Trigger a "done" */
+					break;
+				case  1:  /* Pen down 下笔 */
+					/* If we're doing a forced pendown, decrement */
+					/* ccs->didx so that we don't eat a def byte: */
+					if (forcependown) {
+						didx--;
+						forcependown = 0;
+					}
+					if (skip) break;
+					npt = 1;
+					pendown = 1; dx = dy = 0.0; gotdxdy = 1;
+
+					//	lff 要求换行
+					res.append("\r\n");
+					break;
+
+				case  2:  /* Pen up 起笔*/
+					if (skip || !pendown) break;
+					pendown = 0;
+					genpc = 1;
+					npt = 0;
+					break;
+
+				case  3:  /* Divide vector lengths by next byte 缩小 */
+					if (++didx >= link->defsz) break;
+					if (skip) break;
+					if (!link->def[didx]) break;
+					vfactx /= ((unsigned char)link->def[didx]);
+					vfacty /= ((unsigned char)link->def[didx]);
+					// ]- EBATECH(CNBR)
+					break;
+				case  4:  /* Multiply vector lengths by next byte 放大*/
+					if (++didx >= link->defsz) break;
+					if (skip) break;
+					if (!link->def[didx]) break;
+					// EBATECH(CNBR) ]- for extended subshapes
+					//vfact*=((unsigned char)ccs->thisfontchr->def[ccs->didx]);
+					vfactx *= ((unsigned char)link->def[didx]);
+					vfacty *= ((unsigned char)link->def[didx]);
+					// ]- EBATECH(CNBR)
+					break;
+				case  5:  /* Push position 压入堆栈点*/
+					if (skip || psidx > pssz) break;
+					psidx++;
+					pts[psidx] = curpt;
+					break;
+				case  6:  /* Pop position 出堆栈*/
+					/*
+					**  Okay.  The code's getting a little bizarre
+					**  as I keep patching problems.
+					**
+					**  Pop needs to lift the pen, move, and
+					**  then restore the pen to its original
+					**  status.  We can do all of this by
+					**  popping the position, setting
+					**  ccs->forcependown if the pen is
+					**  currently down, and doing the guts of
+					**  the penup command (case 2),.  (See the
+					**  processing code below the end of this
+					**  "else" and the forcependown code above.)
+					*/
+
+					if (skip || psidx < 0) break;
+					/* Pop curpt: */
+					curpt = pts[psidx];
+					dx = dy = 0.0; psidx--; gotdxdy = 1;
+					/* Set css->forcependown if it's currently down: 如果是下笔状态，给予向前动力*/
+					forcependown = (pendown != 0);
+					/* Do a penup command: 起笔*/
+					pendown = 0; genpc = 1;
+					break;
+
+				case 7:/* Subshape 嵌套子对象 */
+				{//TODO:
+					char basex = 0;
+					char basey = 0;
+					char wd = 0;
+					char ht = 0;
+					unsigned short subCode = 0;
+					if (this->m_type == UNIFONT)
+					{
+						if ((didx += 2) >= link->defsz) break;
+						subCode = (unsigned char)link->def[didx - 1] << 8
+							| (unsigned char)link->def[didx];
+					}
+					else
+					{// SHAPE or BIGFONT 
+						if ((didx += 1) >= link->defsz) break;
+						subCode = (unsigned char)link->def[didx];
+						if (!subCode) {
+							if ((didx += 6) >= link->defsz) break;
+							subCode = (unsigned char)link->def[didx - 5] << 8
+								| (unsigned char)link->def[didx - 4];
+							// 子对象在父对象中显示的基点 和 宽高；该处使用‘睿’字进行测试
+							basex = link->def[didx - 3];
+							basey = link->def[didx - 2];
+							wd = link->def[didx - 1];
+							ht = link->def[didx];
+						}
+					}
+					// subCode = (subCode & 0x000000ff) << 8 | (subCode & 0x0000ff00) >> 8;
+					string _res = Shx2lff(subCode, orgX + basex * vfactx, orgY + basey * vfacty, vfactx* wd / 80.0, vfacty * ht / 80.0, true);
+					res.append(_res);
+				}
+				break;
+				case  8:  /* dx,dy in next 2 bytes 坐标偏移*/
+					if ((didx += 2) >= link->defsz) break;
+					if (skip) break;
+					dx = (double)link->def[didx - 1];
+					dy = (double)link->def[didx];
+					gotdxdy = 1;
+					break;
+				case  9:
+				case 13:  /* Repeat until (0,0) 重复 */
+					repmode = link->def[didx];
+					break;
+
+				case 10:  /* Octant arc (next 2 bytes) 2字节圆弧*/
+				{
+
+				}
+				break;
+				case 11:  /* Fractional arc (next 5 bytes) y 5字节圆弧*/
+
+					/* See documentation in learned.doc for this one; */
+					/* ACAD's documentation is incorrect and */
+					/* insufficient. */
+				{
+
+				}
+				break;
+
+				case 12:  /* Arc by bulge (next 3 bytes) 3字节圆弧*/
+				{
+
+				}
+				break;
+				case 14:  /* Process next command only for vertical text 垂直字体*/
+					vertonly = 1;
+					break;
+				case 15:  /* Not used 保留*/
+					break;
+
+				default:  /* Vector/direction 矢量*/
+					if (skip) break;
+					unsigned char vlen = (unsigned char)link->def[didx];
+					char vdir = vlen & '\x0F';
+					if (!(vlen >>= 4)) break;
+					switch (vdir) {
+					case '\x00': dx = 1.0; dy = 0.0; break;
+					case '\x01': dx = 1.0; dy = 0.5; break;
+					case '\x02': dx = 1.0; dy = 1.0; break;
+					case '\x03': dx = 0.5; dy = 1.0; break;
+					case '\x04': dx = 0.0; dy = 1.0; break;
+					case '\x05': dx = -0.5; dy = 1.0; break;
+					case '\x06': dx = -1.0; dy = 1.0; break;
+					case '\x07': dx = -1.0; dy = 0.5; break;
+					case '\x08': dx = -1.0; dy = 0.0; break;
+					case '\x09': dx = -1.0; dy = -0.5; break;
+					case '\x0A': dx = -1.0; dy = -1.0; break;
+					case '\x0B': dx = -0.5; dy = -1.0; break;
+					case '\x0C': dx = 0.0; dy = -1.0; break;
+					case '\x0D': dx = 0.5; dy = -1.0; break;
+					case '\x0E': dx = 1.0; dy = -1.0; break;
+					case '\x0F': dx = 1.0; dy = -0.5; break;
+					}
+					dx *= vlen; dy *= vlen; gotdxdy = 1;
+					break;
+				}
+
+			}
+
+			if (gotdxdy || arcmode > -1) {  /* Process vector or arc cmd 开始处理 矢量或圆弧*/
+
+				endpt.X = curpt.X + dx * vfactx;
+				endpt.Y = curpt.Y - dy * vfacty;
+				if (pendown)
+				{
+					CString sx;
+					sx.Format("%.5f", endpt.X + org.X);
+					CString sy;
+					sy.Format("%.5f", -(endpt.Y + org.Y));	// shx 的 y 坐标与 lff 的 y 坐标相反
+
+					if (npt == 1) {
+						// pDC->MoveTo(endpt.X + org.X, endpt.Y + org.Y);
+						res.append(sx + ",");
+						res.append(sy);
+					}
+					else if (npt > 1) {
+						// pDC->LineTo(endpt.X + org.X, endpt.Y + org.Y);
+						res.append(";");
+						res.append(sx + ",");
+						res.append(sy);
+					}	
+					npt++;
+				}
+				curpt = endpt;
+			}
+		}
+	}
+
+	if (!isChild) {
+		res.append("\r\n\r\n");
+	}
+	return res;
 }
