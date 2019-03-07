@@ -128,13 +128,15 @@ fontchrlink* ShapeFont::GetFromCode(unsigned int code)
 	//if(code=='?')code=0xB9F0;
 	//if(code>=m_data.Count())
 	//	return NULL;
-	if(code>0&&code<256)return m_data[code];
-	else
+	/*if(code>0&&code<256)return m_data[code];
+	else*/
 	{
-		for(int i=256;i<m_data.Count();i++)
+		for(int i=0;i<m_data.Count();i++)
 		{				
-			if((m_data[i]->code)==(code))
-				return m_data[i];
+			if (m_data[i]) {
+				if ((m_data[i]->code) == (code))
+					return m_data[i];
+			}
 		}
 	}
 
