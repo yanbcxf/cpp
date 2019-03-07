@@ -9,8 +9,8 @@ public:
 	~ShapeFont(void);
 	bool Load(const char* fileName);
 	// 测试字体坐标解析
-	void Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx = 1.0, double vfacty = 1.0);
-	fontchrlink* GetFromCode(unsigned short code);//查找字体
+	bool Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx = 1.0, double vfacty = 1.0);
+	fontchrlink* GetFromCode(unsigned int code);//查找字体
 	char GetFontType(){return m_type;}
 	fontchrlink* GetFromName(const char* symbolName);//查找字体
 	int FindCodeByName(const char* name);

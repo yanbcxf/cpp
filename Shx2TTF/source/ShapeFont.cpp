@@ -123,7 +123,7 @@ fontchrlink* ShapeFont::GetFromName(const char* symbolName)
 	return NULL;
 }
 
-fontchrlink* ShapeFont::GetFromCode(unsigned short code)
+fontchrlink* ShapeFont::GetFromCode(unsigned int code)
 {
 	//if(code=='?')code=0xB9F0;
 	//if(code>=m_data.Count())
@@ -946,11 +946,11 @@ string ShapeFont::Patch(unsigned short charCode,float orgX,float orgY,float scX,
 }
 
 
-void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx, double vfacty)
+bool ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, double vfactx, double vfacty)
 {
 	fontchrlink* link= GetFromCode(charCode);
 	if(link==NULL)
-		return;//找不到字体
+		return false;//找不到字体
 	short vertonly,gotdxdy,circ,genpc,arcmode;
 	//开始解析字体
 	Point2D org(orgX,orgY);
@@ -1196,10 +1196,8 @@ void ShapeFont::Display(CDC* pDC,unsigned short charCode,int orgX,int orgY, doub
 				curpt=endpt;
 			}
 		}
-
-
 	}
-
+	return true;
 }
 
 
