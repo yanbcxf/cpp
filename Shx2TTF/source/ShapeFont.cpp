@@ -1253,15 +1253,23 @@ string ShapeFont::Shx2lff(unsigned short charCode, float orgX, float orgY, float
 		return ""; //找不到字体
 
 	if (!isChild) {
-		// 转换为 UNICODE 
-		wchar_t buf1[10];
-		unsigned short k1;
-		k1 = (charCode & 0x000000ff) << 8 | (charCode & 0x0000ff00) >> 8;
-		MultiByteToWideChar(CP_ACP, 0, (char *)&k1, 2, (LPWSTR)buf1, 10);
+		if (charCode >= 256) {
+			// 转换为 UNICODE 
+			wchar_t buf1[10];
+			unsigned short k1;
+			k1 = (charCode & 0x000000ff) << 8 | (charCode & 0x0000ff00) >> 8;
+			MultiByteToWideChar(CP_ACP, 0, (char *)&k1, 2, (LPWSTR)buf1, 10);
 
-		CString sCode;
-		sCode.Format("[#%4x]", buf1[0]);
-		res.append(sCode);
+			CString sCode;
+			sCode.Format("[#%4x]", buf1[0]);
+			res.append(sCode);
+		}
+		else {
+			CString sCode;
+			sCode.Format("[#%04x]", charCode);
+			res.append(sCode);
+		}
+		 
 	}
 
 	short vertonly, gotdxdy, circ, genpc, arcmode;
