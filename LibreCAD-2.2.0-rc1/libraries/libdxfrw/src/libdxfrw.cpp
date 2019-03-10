@@ -2536,6 +2536,24 @@ bool dxfRW::processVertex(DRW_Polyline *pl) {
     return true;
 }
 
+// yangbin
+//	采用递归算法，将所有的目标字符串进行替换
+std::string ReplaceString(std::string src, std::string target_string, std::string replace_string)
+{
+	std::string target = src;
+	std::string left;
+	std::string right;
+	size_t position = target.find(target_string);
+	if (position != std::string::npos)
+	{
+		left = target.substr(0, position);
+		right = target.substr(position + target_string.length());
+		target = left + replace_string + ReplaceString(right, target_string, replace_string);
+
+	}
+	return target;
+}
+
 bool dxfRW::processText() {
     DRW_DBG("dxfRW::processText");
     int code;
@@ -2546,6 +2564,10 @@ bool dxfRW::processText() {
         case 0: {
             nextentity = reader->getString();
             DRW_DBG(nextentity); DRW_DBG("\n");
+			// yangbin 
+			txt.text = ReplaceString(txt.text, "%%130", "A");
+			txt.text = ReplaceString(txt.text, "%%131", "B");
+			txt.text = ReplaceString(txt.text, "%%132", "C");
             iface->addText(txt);
             return true;  //found new entity or ENDSEC, terminate
         }
@@ -2568,6 +2590,10 @@ bool dxfRW::processMText() {
             nextentity = reader->getString();
             DRW_DBG(nextentity); DRW_DBG("\n");
             txt.updateAngle();
+			// yangbin
+			txt.text = ReplaceString(txt.text, "%%130", "A");
+			txt.text = ReplaceString(txt.text, "%%131", "B");
+			txt.text = ReplaceString(txt.text, "%%132", "C");
             iface->addMText(txt);
             return true;  //found new entity or ENDSEC, terminate
         }
