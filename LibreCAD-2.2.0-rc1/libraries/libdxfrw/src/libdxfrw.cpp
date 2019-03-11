@@ -2568,6 +2568,7 @@ bool dxfRW::processText() {
 			txt.text = ReplaceString(txt.text, "%%130", "A");
 			txt.text = ReplaceString(txt.text, "%%131", "B");
 			txt.text = ReplaceString(txt.text, "%%132", "C");
+			txt.text = ReplaceString(txt.text, "%%133", "E");
             iface->addText(txt);
             return true;  //found new entity or ENDSEC, terminate
         }
@@ -2594,6 +2595,7 @@ bool dxfRW::processMText() {
 			txt.text = ReplaceString(txt.text, "%%130", "A");
 			txt.text = ReplaceString(txt.text, "%%131", "B");
 			txt.text = ReplaceString(txt.text, "%%132", "C");
+			txt.text = ReplaceString(txt.text, "%%133", "E");
             iface->addMText(txt);
             return true;  //found new entity or ENDSEC, terminate
         }
