@@ -98,6 +98,7 @@ private:
     bool processTrace();
     bool processSolid();
     bool processInsert();
+	bool processAttrib(DRW_Insert* is);
     bool processLWPolyline();
     bool processPolyline();
     bool processVertex(DRW_Polyline* pl);

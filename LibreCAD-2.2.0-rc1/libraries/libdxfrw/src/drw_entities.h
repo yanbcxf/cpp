@@ -33,7 +33,7 @@ namespace DRW {
 //        ACAD_PROXY_ENTITY,
         ARC,
 //        ATTDEF,
-//        ATTRIB,
+        ATTRIB,	// yangbin 
         BLOCK,// and ENDBLK
 //        BODY, //encrypted proprietary data
         CIRCLE,
@@ -487,48 +487,6 @@ private:
     bool isEnd; //for dwg parsing
 };
 
-
-//! Class to handle insert entries
-/*!
-*  Class to handle insert entries
-*  @author Rallaz
-*/
-class DRW_Insert : public DRW_Point {
-    SETENTFRIENDS
-public:
-    DRW_Insert() {
-        eType = DRW::INSERT;
-        xscale = 1;
-        yscale = 1;
-        zscale = 1;
-        angle = 0;
-        colcount = 1;
-        rowcount = 1;
-        colspace = 0;
-        rowspace = 0;
-    }
-
-    virtual void applyExtrusion(){DRW_Point::applyExtrusion();}
-
-protected:
-    void parseCode(int code, dxfReader *reader);
-    virtual bool parseDwg(DRW::Version v, dwgBuffer *buf, duint32 bs=0);
-
-public:
-    UTF8STRING name;         /*!< block name, code 2 */
-    double xscale;           /*!< x scale factor, code 41 */
-    double yscale;           /*!< y scale factor, code 42 */
-    double zscale;           /*!< z scale factor, code 43 */
-    double angle;            /*!< rotation angle in radians, code 50 */
-    int colcount;            /*!< column count, code 70 */
-    int rowcount;            /*!< row count, code 71 */
-    double colspace;         /*!< column space, code 44 */
-    double rowspace;         /*!< row space, code 45 */
-public: //only for read dwg
-    dwgHandle blockRecH;
-    dwgHandle seqendH; //RLZ: on implement attrib remove this handle from obj list (see pline/vertex code)
-};
-
 //! Class to handle lwpolyline entity
 /*!
 *  Class to handle lwpolyline entity
@@ -682,6 +640,86 @@ public:
     double interlin;     /*!< width factor, code 44 */
 private:
     bool haveXAxis;
+};
+
+//! yangbin : Class to handle attrib
+/*!
+*  Class to handle attrib  for insert entity
+*  @author yangbin
+*/
+class DRW_Attrib : public DRW_MText {
+	SETENTFRIENDS
+public:
+	DRW_Attrib() {
+		eType = DRW::ATTRIB;
+		alignV = VBaseLine;
+		version = 0;
+	}
+	DRW_Attrib(double sx, double sy, double sz, double b) {
+
+	}
+
+protected:
+	void parseCode(int code, dxfReader *reader);
+	// bool parseDwg(DRW::Version version, dwgBuffer *buf, duint32 bs = 0, double el = 0);
+	virtual bool parseDwg(DRW::Version version, dwgBuffer* buf, duint32 bs = 0) {
+		DRW_UNUSED(version); DRW_UNUSED(buf); DRW_UNUSED(bs); return true;
+	}
+
+public:
+	UTF8STRING tag;			/*!< attribute tag, code 2 */
+	int version;			/*!< version number, code 280, default 0 */
+	int flags;              /*!< attribute flag, code 70 */
+	enum VAlign alignV;     /*!< vertical align, code 74 */
+};
+
+//! Class to handle insert entries
+/*!
+*  Class to handle insert entries
+*  @author Rallaz
+*/
+class DRW_Insert : public DRW_Point {
+	SETENTFRIENDS
+public:
+	DRW_Insert() {
+		eType = DRW::INSERT;
+		xscale = 1;
+		yscale = 1;
+		zscale = 1;
+		angle = 0;
+		colcount = 1;
+		rowcount = 1;
+		colspace = 0;
+		rowspace = 0;
+	}
+
+	virtual void applyExtrusion() { DRW_Point::applyExtrusion(); }
+
+	// yangbin
+	void appendAttrib(std::shared_ptr<DRW_Attrib> const& v) {
+		attriblist.push_back(v);
+	}
+
+protected:
+	void parseCode(int code, dxfReader *reader);
+	virtual bool parseDwg(DRW::Version v, dwgBuffer *buf, duint32 bs = 0);
+
+public:
+	UTF8STRING name;         /*!< block name, code 2 */
+	double xscale;           /*!< x scale factor, code 41 */
+	double yscale;           /*!< y scale factor, code 42 */
+	double zscale;           /*!< z scale factor, code 43 */
+	double angle;            /*!< rotation angle in radians, code 50 */
+	int colcount;            /*!< column count, code 70 */
+	int rowcount;            /*!< row count, code 71 */
+	double colspace;         /*!< column space, code 44 */
+	double rowspace;         /*!< row space, code 45 */
+
+	std::vector<std::shared_ptr<DRW_Attrib>> attriblist;  /* yangbin !< attrib list */
+
+public: //only for read dwg
+	dwgHandle blockRecH;
+	dwgHandle seqendH; //RLZ: on implement attrib remove this handle from obj list (see pline/vertex code)
 };
 
 //! Class to handle vertex

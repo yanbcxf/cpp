@@ -2451,10 +2451,16 @@ bool dxfRW::processInsert() {
         DRW_DBG(code); DRW_DBG("\n");
         switch (code) {
         case 0: {
-            nextentity = reader->getString();
-            DRW_DBG(nextentity); DRW_DBG("\n");
-            iface->addInsert(insert);
-            return true;  //found new entity or ENDSEC, terminate
+            // yangbin ： insert 实体增加 attrib 实体
+			nextentity = reader->getString();
+			DRW_DBG(nextentity); DRW_DBG("\n");
+			if (nextentity != "ATTRIB") {
+				iface->addInsert(insert);
+				return true;  //found new entity or ENDSEC, terminate
+			}
+			else {
+				processAttrib(&insert);
+			}
         }
         default:
             insert.parseCode(code, reader);
@@ -2462,6 +2468,32 @@ bool dxfRW::processInsert() {
         }
     }
     return true;
+}
+
+// yangbin ： insert 实体增加 attrib 实体 
+bool dxfRW::processAttrib(DRW_Insert *is) {
+	DRW_DBG("dxfRW::processAttrib");
+	int code;
+	std::shared_ptr<DRW_Attrib> v = std::make_shared<DRW_Attrib>();
+	while (reader->readRec(&code)) {
+		DRW_DBG(code); DRW_DBG("\n");
+		switch (code) {
+		case 0:
+			iface->addText(*v);
+			is->appendAttrib(v);
+			nextentity = reader->getString();
+			DRW_DBG(nextentity); DRW_DBG("\n");
+			if (nextentity == "SEQEND")
+				return true;  //found SEQEND no more attrib, terminate
+			else if (nextentity == "ATTRIB")
+				v.reset(new DRW_Attrib); //another attrib
+
+		default:
+			v->parseCode(code, reader);
+			break;
+		}
+	}
+	return true;
 }
 
 bool dxfRW::processLWPolyline() {

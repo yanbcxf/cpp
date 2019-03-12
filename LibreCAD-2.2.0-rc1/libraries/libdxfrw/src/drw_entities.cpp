@@ -1000,6 +1000,26 @@ bool DRW_Block::parseDwg(DRW::Version version, dwgBuffer *buf, duint32 bs){
     return buf->isGood();
 }
 
+// yangbin
+void DRW_Attrib::parseCode(int code, dxfReader *reader) {
+	switch (code) {
+	case 2:
+		tag = reader->getUtf8String();
+		break;
+	case 280:
+		version = reader->getInt32();
+		break;
+	case 70:
+		flags = reader->getInt32();
+	case 74:
+		alignV = (VAlign)reader->getInt32();
+		break;
+	default:
+		DRW_MText::parseCode(code, reader);
+		break;
+	}
+}
+
 void DRW_Insert::parseCode(int code, dxfReader *reader){
     switch (code) {
     case 2:
