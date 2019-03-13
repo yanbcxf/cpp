@@ -300,9 +300,18 @@ void RS_Insert::update() {
 
 		RS_Text* entity = new RS_Text(this, td);
 		entity->initId();
+		entity->setUpdateEnabled(false);
+		
+		entity->setParent(this);
+		entity->setVisible(getFlag(RS2::FlagVisible));
+
 		entity->setLayer(this->getLayer());
 		entity->setPen(this->getPen(false));
-		entity->update();
+
+		if (data.updateMode != RS2::PreviewUpdate) {
+			//  RS_DEBUG->print("RS_Insert::update: updating new entity");
+			entity->update();
+		}
 		appendEntity(entity);
 	}
 	calculateBorders();
