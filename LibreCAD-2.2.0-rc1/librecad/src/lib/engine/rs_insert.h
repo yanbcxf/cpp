@@ -32,6 +32,116 @@
 
 class RS_BlockList;
 
+
+/** yangbin 
+ * Holds the data that defines a text entity.
+ */
+struct RS_AttribData {
+	/**
+	 * Vertical alignments.
+	 */
+	enum VAlign {
+		VABaseline, /**< Bottom */
+		VABottom,   /**< Bottom */
+		VAMiddle,   /**< Middle */
+		VATop       /**< Top. */
+	};
+
+	/**
+	 * Horizontal alignments.
+	 */
+	enum HAlign {
+		HALeft,     /**< Left */
+		HACenter,   /**< Centered */
+		HARight,    /**< Right */
+		HAAligned,  /**< Aligned */
+		HAMiddle,   /**< Middle */
+		HAFit       /**< Fit */
+	};
+
+	/**
+	 * Text drawing direction.
+	 */
+	enum TextGeneration {
+		None,      /**< Normal text */
+		Backward,  /**< Mirrored in X */
+		UpsideDown /**< Mirrored in Y */
+	};
+
+	/**
+	 * Default constructor. Leaves the data object uninitialized.
+	 */
+	RS_AttribData() = default;
+
+	/**
+	 * Constructor with initialisation.
+	 *
+	 * @param insertionPoint Insertion point
+	 * @param secondPoint Second point for aligned-fit
+	 * @param height Nominal (initial) text height
+	 * @param widthRel Reference rectangle width
+	 * @param valign Vertical alignment
+	 * @param halign Horizontal alignment
+	 * @param textGeneration Text Generation
+	 * @param text Text string
+	 * @param style Text style name
+	 * @param angle Rotation angle
+	 * @param updateMode RS2::Update will update the text entity instantly
+	 *    RS2::NoUpdate will not update the entity. You can update
+	 *    it later manually using the update() method. This is
+	 *    often the case since you might want to adjust attributes
+	 *    after creating a text entity.
+	 */
+	RS_AttribData(const RS_Vector& insertionPoint,
+		const RS_Vector& secondPoint,
+		double height,
+		double widthRel,
+		VAlign valign,
+		HAlign halign,
+		TextGeneration textGeneration,
+		const QString& text,
+		const QString& style,
+		double angle,
+		RS2::UpdateMode updateMode, // = RS2::Update,
+
+		QString tag,
+		int version,
+		int flags,
+		VAlign alignV,
+		int lockPositionFlag);
+
+	/** Insertion point */
+	RS_Vector insertionPoint;
+	/** Second point for fit or aligned*/
+	RS_Vector secondPoint;
+	/** Nominal (initial) text height */
+	double height;
+	/** Width/Height relation */
+	double widthRel;
+	/** Vertical alignment */
+	VAlign valign;
+	/** Horizontal alignment */
+	HAlign halign;
+	/** Text Generation */
+	TextGeneration textGeneration;
+	/** Text string */
+	QString text;
+	/** Text style name */
+	QString style;
+	/** Rotation angle */
+	double angle;
+	/** Update mode */
+	RS2::UpdateMode updateMode;
+
+	// AcDbAttribute subclass
+	QString tag;			/* attribute tag */
+	int version;			/* version number  */
+	int flags;              /* attribute flag */
+	enum VAlign alignV;     /* vertical align */
+	int lockPositionFlag;   /* proxy flag (app loaded on save) */
+};
+
+
 /**
  * Holds the data that defines an insert.
  */
@@ -123,10 +233,10 @@ public:
         return data.name;
     }
 
-        void setName(const QString& newName) {
-                data.name = newName;
-                update();
-        }
+	void setName(const QString& newName) {
+		data.name = newName;
+		update();
+	}
 
     RS_Vector getInsertionPoint() const {
         return data.insertionPoint;
@@ -160,16 +270,27 @@ public:
     int getRows() const {
         return data.rows;
     }
-        void setRows(int r) {
-                data.rows = r;
-        }
+        
+	void setRows(int r) {
+		data.rows = r;
+	}
 
     RS_Vector getSpacing() const {
         return data.spacing;
     }
-        void setSpacing(const RS_Vector& s) {
-                data.spacing = s;
-        }
+    
+	void setSpacing(const RS_Vector& s) {
+		data.spacing = s;
+	}
+
+	// yangbin 
+	void RS_Insert::addAttrib(const RS_AttribData d) {
+		attribDataList.push_back(d);
+	}
+
+	std::vector<RS_AttribData> RS_Insert::getAttribList() {
+		return attribDataList;
+	}
 
 	virtual bool isVisible() const;
 
@@ -191,6 +312,9 @@ public:
 protected:
     RS_InsertData data;
 	mutable RS_Block* block;
+
+	/* yangbin ： 增加对 insert 后跟随的 attrib 元素支持 */
+	std::vector<RS_AttribData> attribDataList;
 };
 
 

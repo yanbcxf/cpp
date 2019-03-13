@@ -28,6 +28,8 @@
 #define RS_ACTIONBLOCKSINSERT_H
 
 #include "rs_previewactioninterface.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 
 class RS_Block;

@@ -42,6 +42,8 @@
 #include "rs_ellipse.h"
 #include "rs_hatch.h"
 #include "rs_image.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_layer.h"
 #include "rs_leader.h"

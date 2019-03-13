@@ -30,6 +30,8 @@
 #include "rs_dialogfactory.h"
 #include "rs_graphicview.h"
 #include "rs_graphic.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_debug.h"
 

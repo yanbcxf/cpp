@@ -1002,22 +1002,35 @@ bool DRW_Block::parseDwg(DRW::Version version, dwgBuffer *buf, duint32 bs){
 
 // yangbin
 void DRW_Attrib::parseCode(int code, dxfReader *reader) {
-	switch (code) {
-	case 2:
-		tag = reader->getUtf8String();
-		break;
-	case 280:
-		version = reader->getInt32();
-		break;
-	case 70:
-		flags = reader->getInt32();
-	case 74:
-		alignV = (VAlign)reader->getInt32();
-		break;
-	default:
-		DRW_MText::parseCode(code, reader);
-		break;
+	if (code == 100) {
+		subclass = reader->getUtf8String();
 	}
+	else if (subclass == "AcDbText") {
+		DRW_Text::parseCode(code, reader);
+	} 
+	else if (subclass == "AcDbAttribute") {
+		switch (code) {
+		case 2:
+			tag = reader->getUtf8String();
+			break;
+		case 70:
+			flags = reader->getInt32();
+			break;
+		case 74:
+			alignV = (VAlign)reader->getInt32();
+			break;
+		case 280:
+			if (count280)
+				version = reader->getInt32();
+			else if (count280 == 1)
+				lockPositionFlag = reader->getInt32();
+			count280++;
+			break;
+		default:
+			break;
+		}
+	}
+	
 }
 
 void DRW_Insert::parseCode(int code, dxfReader *reader){

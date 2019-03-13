@@ -39,6 +39,8 @@
 #include "rs_arc.h"
 #include "rs_ellipse.h"
 #include "rs_line.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_spline.h"
 #include "rs_solid.h"

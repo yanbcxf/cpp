@@ -1119,26 +1119,58 @@ bool dxfRW::writeDimension(DRW_Dimension *ent) {
     return true;
 }
 
-bool dxfRW::writeInsert(DRW_Insert *ent){
-    writer->writeString(0, "INSERT");
-    writeEntity(ent);
-    if (version > DRW::AC1009) {
-        writer->writeString(100, "AcDbBlockReference");
-        writer->writeUtf8String(2, ent->name);
-    } else
-        writer->writeUtf8Caps(2, ent->name);
-    writer->writeDouble(10, ent->basePoint.x);
-    writer->writeDouble(20, ent->basePoint.y);
-    writer->writeDouble(30, ent->basePoint.z);
-    writer->writeDouble(41, ent->xscale);
-    writer->writeDouble(42, ent->yscale);
-    writer->writeDouble(43, ent->zscale);
-    writer->writeDouble(50, (ent->angle)*ARAD); //in dxf angle is writed in degrees
-    writer->writeInt16(70, ent->colcount);
-    writer->writeInt16(71, ent->rowcount);
-    writer->writeDouble(44, ent->colspace);
-    writer->writeDouble(45, ent->rowspace);
-    return true;
+// yangbin : 
+bool dxfRW::writeInsert(DRW_Insert *ent) {
+	writer->writeString(0, "INSERT");
+	writeEntity(ent);
+	if (version > DRW::AC1009) {
+		writer->writeString(100, "AcDbBlockReference");
+		if (ent->attriblist.size() > 0)
+			writer->writeInt16(66, 1);
+		else
+			writer->writeInt16(66, 0);
+		writer->writeUtf8String(2, ent->name);
+	}
+	else
+		writer->writeUtf8Caps(2, ent->name);
+	writer->writeDouble(10, ent->basePoint.x);
+	writer->writeDouble(20, ent->basePoint.y);
+	writer->writeDouble(30, ent->basePoint.z);
+	writer->writeDouble(41, ent->xscale);
+	writer->writeDouble(42, ent->yscale);
+	writer->writeDouble(43, ent->zscale);
+	writer->writeDouble(50, (ent->angle)*ARAD); //in dxf angle is writed in degrees
+	writer->writeInt16(70, ent->colcount);
+	writer->writeInt16(71, ent->rowcount);
+	writer->writeDouble(44, ent->colspace);
+	writer->writeDouble(45, ent->rowspace);
+
+	int attribnum = ent->attriblist.size();
+	for (int i = 0; i < attribnum; i++) {
+		auto& attrib = ent->attriblist.at(i);
+		writer->writeString(0, "ATTRIB");
+		writeEntity(ent);
+		
+		writer->writeString(100, "AcDbText");
+		if(attrib->thickness != 0)
+			writer->writeDouble(39, attrib->thickness);
+		writer->writeDouble(10, attrib->basePoint.x);
+		writer->writeDouble(20, attrib->basePoint.y);
+		writer->writeDouble(30, attrib->basePoint.z);
+		writer->writeDouble(40, attrib->height);
+		writer->writeUtf8String(1, attrib->text);
+				
+		writer->writeString(100, "AcDbAttribute");
+		writer->writeDouble(280, attrib->version);
+		writer->writeString(2, attrib->tag);
+		writer->writeDouble(70, attrib->flags);
+		writer->writeDouble(280, attrib->lockPositionFlag);
+	}
+	if (attribnum > 0) {
+		writer->writeString(0, "SEQEND");
+		writeEntity(ent);
+	}
+	return true;
 }
 
 bool dxfRW::writeText(DRW_Text *ent){
@@ -2479,7 +2511,6 @@ bool dxfRW::processAttrib(DRW_Insert *is) {
 		DRW_DBG(code); DRW_DBG("\n");
 		switch (code) {
 		case 0:
-			iface->addText(*v);
 			is->appendAttrib(v);
 			nextentity = reader->getString();
 			DRW_DBG(nextentity); DRW_DBG("\n");

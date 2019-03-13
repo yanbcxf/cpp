@@ -39,18 +39,18 @@
 #include "rs_ellipse.h"
 #include "rs_hatch.h"
 #include "rs_image.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_layer.h"
 #include "rs_leader.h"
 #include "rs_line.h"
-#include "rs_mtext.h"
 #include "rs_point.h"
 #include "rs_polyline.h"
 #include "rs_solid.h"
 #include "rs_spline.h"
 #include "lc_splinepoints.h"
 #include "rs_system.h"
-#include "rs_text.h"
 #include "rs_graphicview.h"
 #include "rs_dialogfactory.h"
 #include "rs_math.h"
@@ -624,6 +624,69 @@ void RS_FilterDXFRW::addSpline(const DRW_Spline* data) {
 
 
 /**
+ * yangbin: 支持在 insert 中添加跟随的带 text 的 attrib 元素
+ * texts (TEXT).
+ */
+void RS_FilterDXFRW::addAttribForInsert(RS_Insert* entity, const DRW_Attrib& data) {
+	RS_DEBUG->print("RS_FilterDXFRW::addAttribForInsert");
+	RS_Vector refPoint = RS_Vector(data.basePoint.x, data.basePoint.y);;
+	RS_Vector secPoint = RS_Vector(data.secPoint.x, data.secPoint.y);;
+	double angle = data.angle;
+
+	if (data.alignV != 0 || data.alignH != 0 || data.alignH == DRW_Text::HMiddle) {
+		if (data.alignH != DRW_Text::HAligned && data.alignH != DRW_Text::HFit) {
+			secPoint = RS_Vector(data.basePoint.x, data.basePoint.y);
+			refPoint = RS_Vector(data.secPoint.x, data.secPoint.y);
+		}
+	}
+
+	RS_AttribData::VAlign valign = (RS_AttribData::VAlign)data.alignV;
+	RS_AttribData::HAlign halign = (RS_AttribData::HAlign)data.alignH;
+	RS_AttribData::TextGeneration dir;
+	QString sty = QString::fromUtf8(data.style.c_str());
+	sty = sty.toLower();
+
+	if (data.textgen == 2) {
+		dir = RS_AttribData::Backward;
+	}
+	else if (data.textgen == 4) {
+		dir = RS_AttribData::UpsideDown;
+	}
+	else {
+		dir = RS_AttribData::None;
+	}
+
+	QString mtext = toNativeString(QString::fromUtf8(data.text.c_str()));
+	// use default style for the drawing:
+	if (sty.isEmpty()) {
+		// japanese, cyrillic:
+		if (codePage == "ANSI_932" || codePage == "ANSI_1251") {
+			sty = "Unicode";
+		}
+		else {
+			sty = textStyle;
+		}
+	}
+	else {
+		sty = fontList.value(sty, sty);
+	}
+
+	RS_DEBUG->print("Text as unicode:");
+	RS_DEBUG->printUnicode(mtext);
+
+	QString qtag = toNativeString(QString::fromUtf8(data.tag.c_str()));
+	RS_AttribData::VAlign alignV = (RS_AttribData::VAlign)data.alignV;
+	RS_AttribData d(refPoint, secPoint, data.height, data.widthscale,
+		valign, halign, dir,
+		mtext, sty, angle*M_PI / 180,
+		RS2::NoUpdate,
+		qtag, data.version, data.flags, alignV, data.lockPositionFlag);
+
+	entity->addAttrib(d);
+}
+
+
+/**
  * Implementation of the method which handles inserts.
  */
 void RS_FilterDXFRW::addInsert(const DRW_Insert& data) {
@@ -643,7 +706,13 @@ void RS_FilterDXFRW::addInsert(const DRW_Insert& data) {
     RS_Insert* entity = new RS_Insert(currentContainer, d);
     setEntityAttributes(entity, &data);
     RS_DEBUG->print("  id: %d", entity->getId());
-//    entity->update();
+	//    entity->update();
+
+	// yangbin : 支持在 insert 中添加跟随的带 text 的 attrib 元素
+	for (auto const& v : data.attriblist) {
+		addAttribForInsert(entity, *v);
+	}
+
     currentContainer->addEntity(entity);
 }
 
@@ -2412,6 +2481,22 @@ void RS_FilterDXFRW::writeInsert(RS_Insert* i) {
     in.rowcount = i->getRows();
     in.colspace = i->getSpacing().x;
     in.rowspace =i->getSpacing().y;
+
+	// yangbin: 增加 insert 对跟随的 attrib 元素的支持
+	std::vector<RS_AttribData> td = i->getAttribList();
+	for (auto& t : td) {
+		std::shared_ptr<DRW_Attrib> attr = std::make_shared<DRW_Attrib>();
+		// attr->thickness = 
+		attr->basePoint.x = t.insertionPoint.x;
+		attr->basePoint.y = t.insertionPoint.y;
+		attr->basePoint.z = t.insertionPoint.z;
+		attr->height = t.height;
+				
+		if (!t.text.isEmpty()) {
+			attr->text = toDxfString(t.text).toUtf8().data();
+		}
+		in.appendAttrib(attr);
+	}
     dxfW->writeInsert(&in);
 }
 

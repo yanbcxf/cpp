@@ -30,6 +30,8 @@
 #include "rs_mtext.h"
 
 #include "rs_fontlist.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_math.h"
 #include "rs_debug.h"

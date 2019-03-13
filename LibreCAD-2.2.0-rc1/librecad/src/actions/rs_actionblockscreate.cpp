@@ -28,6 +28,8 @@
 #include <QMouseEvent>
 #include "rs_actionblockscreate.h"
 
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_creation.h"
 #include "rs_dialogfactory.h"
 #include "rs_graphicview.h"

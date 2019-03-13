@@ -642,18 +642,20 @@ private:
     bool haveXAxis;
 };
 
-//! yangbin : Class to handle attrib
 /*!
+*  yangbin : 支持在 insert 中添加跟随的带 text 的 attrib 元素
 *  Class to handle attrib  for insert entity
 *  @author yangbin
 */
-class DRW_Attrib : public DRW_MText {
+class DRW_Attrib : public DRW_Text {
 	SETENTFRIENDS
 public:
 	DRW_Attrib() {
 		eType = DRW::ATTRIB;
 		alignV = VBaseLine;
 		version = 0;
+		count280 = 0;
+		lockPositionFlag = 0;
 	}
 	DRW_Attrib(double sx, double sy, double sz, double b) {
 
@@ -667,10 +669,16 @@ protected:
 	}
 
 public:
+	// AcDbAttribute subclass
 	UTF8STRING tag;			/*!< attribute tag, code 2 */
-	int version;			/*!< version number, code 280, default 0 */
+	int version;			/*!< version number, code 280  */
 	int flags;              /*!< attribute flag, code 70 */
 	enum VAlign alignV;     /*!< vertical align, code 74 */
+	int lockPositionFlag;   /*!< proxy flag (app loaded on save), code 280 */
+
+protected:
+	UTF8STRING subclass;
+	int	count280;
 };
 
 //! Class to handle insert entries

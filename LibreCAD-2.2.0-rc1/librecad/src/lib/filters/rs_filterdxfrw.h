@@ -101,6 +101,7 @@ public:
     virtual void addPolyline(const DRW_Polyline& data);
     virtual void addSpline(const DRW_Spline* data);
     virtual void addKnot(const DRW_Entity&) {}
+	virtual void addAttribForInsert(RS_Insert* entity, const DRW_Attrib& data);
     virtual void addInsert(const DRW_Insert& data);
     virtual void addTrace(const DRW_Trace& data);
     virtual void addSolid(const DRW_Solid& data);

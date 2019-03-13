@@ -28,6 +28,7 @@
 #include<cmath>
 #include "rs_font.h"
 #include "rs_text.h"
+#include "rs_mtext.h"
 
 #include "rs_fontlist.h"
 #include "rs_insert.h"

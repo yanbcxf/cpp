@@ -37,6 +37,8 @@
 #include "rs_line.h"
 #include "rs_circle.h"
 #include "rs_ellipse.h"
+#include "rs_text.h"
+#include "rs_mtext.h"
 #include "rs_insert.h"
 #include "rs_image.h"
 #include "lc_hyperbola.h"
