@@ -38,6 +38,8 @@
 RS_Debug* RS_Debug::uniqueInstance = nullptr;
 void debugHeader(char const* file, char const* func, int line)
 {
+	return;
+
 	std::cout<<file<<" : "<<func<<" : line "<<line<<std::endl;
 }
 
@@ -90,6 +92,8 @@ RS_Debug::RS_Debug() {
  * Sets the debugging level.
  */
 void RS_Debug::setLevel(RS_DebugLevel level) {
+	return;
+
     if(debugLevel==level) return;
     debugLevel = level;
     print( D_NOTHING, "RS_DEBUG::setLevel(%d)", level);
@@ -114,6 +118,8 @@ RS_Debug::RS_DebugLevel RS_Debug::getLevel() {
  * Prints the given message to stdout.
  */
 void RS_Debug::print(const char* format ...) {
+	return;
+
     if(debugLevel==D_DEBUGGING) {
         va_list ap;
         va_start(ap, format);
@@ -132,6 +138,7 @@ void RS_Debug::print(const char* format ...) {
  * @param level Debug level.
  */
 void RS_Debug::print(RS_DebugLevel level, const char* format ...) {
+	return;
 
     if(debugLevel>=level) {
         va_list ap;
@@ -149,6 +156,8 @@ void RS_Debug::print(RS_DebugLevel level, const char* format ...) {
  * Prints a time stamp in the format yyyyMMdd_hhmmss.
  */
 void RS_Debug::timestamp() {
+	return;
+
     QDateTime now = QDateTime::currentDateTime();
     QString nowStr;
 
@@ -163,6 +172,8 @@ void RS_Debug::timestamp() {
  * Prints the unicode for every character in the given string.
  */
 void RS_Debug::printUnicode(const QString& text) {
+	return;
+
 	for(auto const& v: text){
 		print("[%X] %c", v.unicode(), v.toLatin1());
     }
