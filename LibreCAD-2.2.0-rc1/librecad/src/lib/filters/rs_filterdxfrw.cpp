@@ -648,11 +648,12 @@ void RS_FilterDXFRW::addAttribForInsert(RS_Insert* entity, const DRW_Attrib& dat
 
 	if (data.textgen == 2) {
 		dir = RS_AttribData::Backward;
-	}
-	else if (data.textgen == 4) {
+	} else if (data.textgen == 4) {
 		dir = RS_AttribData::UpsideDown;
-	}
-	else {
+	} else if (data.textgen == 6) {
+		// yangbin :  x y 同时 mirror 相当于旋转 180 度
+		angle += 180;
+	} else {
 		dir = RS_AttribData::None;
 	}
 
@@ -844,7 +845,10 @@ void RS_FilterDXFRW::addText(const DRW_Text& data) {
         dir = RS_TextData::Backward;
     } else if (data.textgen==4) {
         dir = RS_TextData::UpsideDown;
-    } else {
+	} else if (data.textgen == 6) {
+		// yangbin :  x y 同时 mirror 相当于旋转 180 度
+		angle += 180;
+	} else {
         dir = RS_TextData::None;
     }
 
@@ -2495,6 +2499,13 @@ void RS_FilterDXFRW::writeInsert(RS_Insert* i) {
 		if (!t.text.isEmpty()) {
 			attr->text = toDxfString(t.text).toUtf8().data();
 		}
+
+		attr->tag = toDxfString(t.tag).toUtf8().data();
+		attr->version = t.version;
+		attr->flags = t.flags;
+		attr->alignV = (DRW_Attrib::VAlign)t.alignV;
+		attr->lockPositionFlag = t.lockPositionFlag;
+
 		in.appendAttrib(attr);
 	}
     dxfW->writeInsert(&in);
