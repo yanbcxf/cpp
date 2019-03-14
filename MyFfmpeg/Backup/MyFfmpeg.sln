@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffplaymfc28", "ffplaymfc28\ffplaymfc28.vcproj", "{B534CE7B-23A2-41B2-A774-AFC557EA2288}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffplaymfc12", "ffplaymfc12\ffplaymfc12.vcproj", "{4787D09E-13CE-46C6-A452-36148336AF4B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Alien Attack", "Alien Attack\Alien Attack.vcproj", "{ABE33FD5-59CF-4339-B6F0-BC0FD50B6F78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B534CE7B-23A2-41B2-A774-AFC557EA2288}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B534CE7B-23A2-41B2-A774-AFC557EA2288}.Debug|Win32.Build.0 = Debug|Win32
+		{B534CE7B-23A2-41B2-A774-AFC557EA2288}.Release|Win32.ActiveCfg = Release|Win32
+		{B534CE7B-23A2-41B2-A774-AFC557EA2288}.Release|Win32.Build.0 = Release|Win32
+		{4787D09E-13CE-46C6-A452-36148336AF4B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4787D09E-13CE-46C6-A452-36148336AF4B}.Debug|Win32.Build.0 = Debug|Win32
+		{4787D09E-13CE-46C6-A452-36148336AF4B}.Release|Win32.ActiveCfg = Release|Win32
+		{4787D09E-13CE-46C6-A452-36148336AF4B}.Release|Win32.Build.0 = Release|Win32
+		{ABE33FD5-59CF-4339-B6F0-BC0FD50B6F78}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ABE33FD5-59CF-4339-B6F0-BC0FD50B6F78}.Debug|Win32.Build.0 = Debug|Win32
+		{ABE33FD5-59CF-4339-B6F0-BC0FD50B6F78}.Release|Win32.ActiveCfg = Release|Win32
+		{ABE33FD5-59CF-4339-B6F0-BC0FD50B6F78}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
