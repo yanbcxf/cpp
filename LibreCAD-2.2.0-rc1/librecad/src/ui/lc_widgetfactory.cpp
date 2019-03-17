@@ -125,7 +125,8 @@ LC_WidgetFactory::LC_WidgetFactory(QC_ApplicationWindow* main_win,
             << a_map["SelectIntersected"]
             << a_map["DeselectIntersected"]
             << a_map["SelectLayer"]
-            << a_map["SelectInvert"];
+            << a_map["SelectInvert"]
+			<< a_map["SelectText"];		// yangbin
 
     dimension_actions
             << a_map["DimAligned"]

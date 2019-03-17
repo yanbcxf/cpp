@@ -114,6 +114,7 @@ public slots:
 	void slotSelectIntersected();
 	void slotDeselectIntersected();
 	void slotSelectLayer();
+	void slotSelectText();		// yangbin
 
 	void slotDrawPoint();
 	void slotDrawLine();

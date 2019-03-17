@@ -1110,6 +1110,9 @@
     <ClCompile Include="lib\engine\rs_vector.cpp">
       <Filter>lib\engine</Filter>
     </ClCompile>
+    <ClCompile Include="actions\rs_actionselecttext.cpp">
+      <Filter>actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\boost_1_69_0">
@@ -4296,6 +4299,9 @@
       <Filter>actions</Filter>
     </QtMoc>
     <QtMoc Include="actions\rs_actionzoomwindow.h">
+      <Filter>actions</Filter>
+    </QtMoc>
+    <QtMoc Include="actions\rs_actionselecttext.h">
       <Filter>actions</Filter>
     </QtMoc>
   </ItemGroup>

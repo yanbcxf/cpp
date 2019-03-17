@@ -237,6 +237,7 @@ public:
         ActionSelectLayer,
         ActionSelectDouble,
         ActionGetSelect,
+		ActionSelectText,
 
         ActionDrawArc,
         ActionDrawArc3P,

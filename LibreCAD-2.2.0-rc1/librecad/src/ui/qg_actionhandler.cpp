@@ -140,6 +140,8 @@
 #include "rs_actionselectlayer.h"
 #include "rs_actionselectsingle.h"
 #include "rs_actionselectwindow.h"
+#include "rs_actionselecttext.h"
+
 #include "rs_actionsetrelativezero.h"
 #include "rs_actionsetsnapmode.h"
 #include "rs_actionsetsnaprestriction.h"
@@ -355,6 +357,9 @@ RS_ActionInterface* QG_ActionHandler::setCurrentAction(RS2::ActionType id) {
         view->killSelectActions();
         a = new RS_ActionSelectLayer(*document, *view);
         break;
+	case RS2::ActionSelectText:		// yangbin
+		a = new RS_ActionSelectText(*document, *view, true);
+		break;
 
         // Tool actions:
         //
@@ -1284,6 +1289,11 @@ void QG_ActionHandler::slotDeselectIntersected() {
 
 void QG_ActionHandler::slotSelectLayer() {
     setCurrentAction(RS2::ActionSelectLayer);
+}
+
+// yangbin 
+void QG_ActionHandler::slotSelectText() {
+	setCurrentAction(RS2::ActionSelectText);
 }
 
 void QG_ActionHandler::slotDrawPoint() {

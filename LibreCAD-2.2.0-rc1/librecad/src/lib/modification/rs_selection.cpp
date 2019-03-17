@@ -33,7 +33,8 @@
 #include "rs_graphic.h"
 #include "rs_layer.h"
 
-
+#include "rs_text.h"
+#include "rs_mtext.h"
 
 /**
  * Default constructor.
@@ -336,5 +337,40 @@ void RS_Selection::selectLayer(const QString& layerName, bool select) {
         }
     }
 }
+
+/**
+* yangbin
+* Selects all texts by regx.
+*/
+void RS_Selection::selectText(bool select) {
+	if (graphicView) {
+		//graphicView->deleteEntity(container);
+	}
+
+	//container->setSelected(select);
+	for (auto e : *container) {
+		//for (unsigned i=0; i<container->count(); ++i) {
+		//RS_Entity* e = container->entityAt(i);
+
+		if (e && e->isVisible()) {
+			if (e->rtti() == RS2::EntityText) {
+				RS_TextData d = static_cast<RS_Text*>(e)->getData();
+				if (d.text.indexOf(QRegExp("7-")) >= 0)
+					e->setSelected(select);
+			}
+			else if (e->rtti() == RS2::EntityMText) {
+				RS_MTextData d = static_cast<RS_MText*>(e)->getData();
+				if (d.text.indexOf(QRegExp("7-")) >= 0)
+					e->setSelected(select);
+			}
+		}
+	}
+
+	if (graphicView) {
+		//graphicView->drawEntity(container);
+		graphicView->redraw();
+	}
+}
+
 
 // EOF

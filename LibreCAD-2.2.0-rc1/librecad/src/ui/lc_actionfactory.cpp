@@ -105,6 +105,13 @@ void LC_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, LC_Ac
     action->setObjectName("SelectLayer");
     a_map["SelectLayer"] = action;
 
+	action = new QAction(tr("Select (M)Text By Regx"), agm->select);	// yangbin
+	action->setIcon(QIcon(":/icons/deselect_layer.svg"));
+	connect(action, SIGNAL(triggered()),
+		action_handler, SLOT(slotSelectText()));
+	action->setObjectName("SelectText");
+	a_map["SelectText"] = action;
+
     // <[~ Draw ~]>
 
     action = new QAction(tr("&Points"), agm->other);

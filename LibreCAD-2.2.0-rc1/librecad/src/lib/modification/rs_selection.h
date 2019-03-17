@@ -69,6 +69,8 @@ public:
 		selectLayer(layerName, false);
 	}
 
+	void selectText(bool select);
+
 protected:
     RS_EntityContainer* container;
     RS_Graphic* graphic;

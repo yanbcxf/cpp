@@ -211,6 +211,7 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="actions\rs_actionselecttext.cpp" />
     <ClCompile Include="ui\generic\actionlist.cpp" />
     <ClCompile Include="ui\generic\colorcombobox.cpp" />
     <ClCompile Include="ui\generic\colorwizard.cpp" />
@@ -554,6 +555,12 @@
     <QtMoc Include="ui\generic\colorwizard.h">
     </QtMoc>
     <QtMoc Include="ui\generic\comboboxoption.h">
+    </QtMoc>
+    <QtMoc Include="actions\rs_actionselecttext.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="main\doc_plugin_interface.h" />
     <ClInclude Include="plugins\document_interface.h" />
