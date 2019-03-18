@@ -30,6 +30,8 @@
 #include "rs_dialogfactory.h"
 #include "rs_selection.h"
 
+#include "inputbox.h"
+
 RS_ActionSelectText::RS_ActionSelectText(RS_EntityContainer& container,
                                        RS_GraphicView& graphicView,
                                        bool select)
@@ -47,10 +49,17 @@ void RS_ActionSelectText::init(int status) {
 }
 
 void RS_ActionSelectText::trigger() {
-    RS_Selection s(*container, graphicView);
-    s.selectText(select);
+	InputBox dialog(NULL);
 
-    RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected(),container->totalSelectedLength());
+	if (dialog.exec()) {
+		QString regx = dialog.textEdit->text();
+		if (!regx.isEmpty()) {
+			RS_Selection s(*container, graphicView);
+			s.selectText(regx);
+
+			RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected(), container->totalSelectedLength());
+		}
+	}
 }
 
 // EOF

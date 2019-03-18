@@ -14,7 +14,7 @@
     <ProjectGuid>{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}</ProjectGuid>
     <RootNamespace>LibreCAD</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -220,6 +220,7 @@
     <ClCompile Include="actions\lc_actiondrawcircle2pr.cpp" />
     <ClCompile Include="actions\lc_actiondrawlinepolygon3.cpp" />
     <ClCompile Include="actions\lc_actiondrawsplinepoints.cpp" />
+    <ClCompile Include="ui\generic\inputbox.cpp" />
     <ClCompile Include="ui\lc_actionfactory.cpp" />
     <ClCompile Include="actions\lc_actionfileexportmakercam.cpp" />
     <ClCompile Include="ui\lc_actiongroupmanager.cpp" />
@@ -648,6 +649,12 @@
     <QtMoc Include="ui\forms\qg_commandwidget.h">
     </QtMoc>
     <QtMoc Include="ui\forms\qg_coordinatewidget.h">
+    </QtMoc>
+    <QtMoc Include="ui\generic\inputbox.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="ui\qg_dialogfactory.h" />
     <QtMoc Include="ui\forms\qg_dimensionlabeleditor.h">
@@ -1303,6 +1310,7 @@
     </QtUic>
     <QtUic Include="ui\generic\comboboxoption.ui">
     </QtUic>
+    <QtUic Include="ui\generic\inputbox.ui" />
     <QtUic Include="ui\lc_deviceoptions.ui">
     </QtUic>
     <QtUic Include="ui\forms\lc_dlgsplinepoints.ui">

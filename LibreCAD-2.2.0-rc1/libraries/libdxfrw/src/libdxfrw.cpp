@@ -1183,12 +1183,23 @@ bool dxfRW::writeInsert(DRW_Insert *ent) {
 		writer->writeDouble(30, attrib->basePoint.z);
 		writer->writeDouble(40, attrib->height);
 		writer->writeUtf8String(1, attrib->text);
+		if (attrib->widthscale != 1.0)
+			writer->writeDouble(41, attrib->widthscale);
 
 		writer->writeString(100, "AcDbAttribute");
 		writer->writeDouble(280, attrib->version);
 		writer->writeString(2, attrib->tag);
 		writer->writeDouble(70, attrib->flags);
 		writer->writeDouble(280, attrib->lockPositionFlag);
+
+		if (attrib->widthscale != 1.0)
+			writer->writeDouble(41, attrib->widthscale);
+		if (attrib->textgen != 0 )
+			writer->writeInt16(71, attrib->textgen);
+		if (attrib->alignH != 0)
+			writer->writeInt16(72, attrib->alignH);
+		if (attrib->alignV != 0)
+			writer->writeInt16(74, attrib->alignV);
 	}
 	if (attribnum > 0) {
 		writer->writeString(0, "SEQEND");

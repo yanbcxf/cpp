@@ -6,11 +6,6 @@
       <Extensions>ui</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
-      <ParseFiles>false</ParseFiles>
-    </Filter>
     <Filter Include="Generated Files">
       <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
@@ -1113,6 +1108,9 @@
     <ClCompile Include="actions\rs_actionselecttext.cpp">
       <Filter>actions</Filter>
     </ClCompile>
+    <ClCompile Include="ui\generic\inputbox.cpp">
+      <Filter>ui\generic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\boost_1_69_0">
@@ -1826,227 +1824,230 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="ui\generic\colorwizard.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\generic\comboboxoption.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\lc_deviceoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="ui\forms\lc_dlgsplinepoints.ui">
-      <Filter>Form Files</Filter>
+      <Filter>ui\forms</Filter>
     </QtUic>
     <QtUic Include="ui\forms\lc_widgetoptionsdialog.ui">
-      <Filter>Form Files</Filter>
+      <Filter>ui\forms</Filter>
     </QtUic>
-    <QtUic Include="ui\forms\qg_activelayername.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\lc_deviceoptions.ui">
+      <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="ui\forms\qg_arcoptions.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\generic\colorwizard.ui">
+      <Filter>ui\generic</Filter>
     </QtUic>
-    <QtUic Include="ui\forms\qg_arctangentialoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_beveloptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_blockdialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_circleoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_circletan2options.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_commandwidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_coordinatewidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dimensionlabeleditor.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dimlinearoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dimoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgarc.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgattributes.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgcircle.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgdimension.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgdimlinear.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgellipse.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlghatch.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgimage.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgimageoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlginitial.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlginsert.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgline.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgmirror.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgmove.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgmoverotate.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgmtext.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgoptionsdrawing.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgoptionsgeneral.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgoptionsmakercam.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgpoint.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgpolyline.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgrotate.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgrotate2.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgscale.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgspline.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_dlgtext.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_exitdialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_imageoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_insertoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_layerdialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_libraryinsertoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_lineangleoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_linebisectoroptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_lineoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_lineparalleloptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_lineparallelthroughoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_linepolygon2options.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_linepolygonoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_linerelangleoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_modifyoffsetoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_mousewidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_moverotateoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_mtextoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_polylineequidistantoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_polylineoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_printpreviewoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_roundoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_selectionwidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_snapdistoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_snapmiddleoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_snaptoolbar.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_splineoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_textoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_trimamountoptions.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\forms\qg_widgetpen.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\generic\textfileviewer.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\generic\comboboxoption.ui">
+      <Filter>ui\generic</Filter>
     </QtUic>
     <QtUic Include="ui\generic\widgetcreator.ui">
-      <Filter>Form Files</Filter>
+      <Filter>ui\generic</Filter>
+    </QtUic>
+    <QtUic Include="ui\generic\textfileviewer.ui">
+      <Filter>ui\generic</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_activelayername.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_arcoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_arctangentialoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_beveloptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_blockdialog.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_circleoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_circletan2options.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_commandwidget.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_coordinatewidget.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dimensionlabeleditor.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dimlinearoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dimoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgarc.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgattributes.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgcircle.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgdimension.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgdimlinear.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgellipse.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlghatch.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgimage.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgimageoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlginsert.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlginitial.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgline.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgmirror.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgmove.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgmoverotate.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgmtext.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgoptionsdrawing.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgoptionsgeneral.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgoptionsmakercam.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgpoint.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgpolyline.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgrotate.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgrotate2.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgscale.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgspline.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_dlgtext.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_exitdialog.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_widgetpen.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_trimamountoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_textoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_splineoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_snaptoolbar.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_snapmiddleoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_snapdistoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_selectionwidget.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_lineangleoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_linebisectoroptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_lineoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_lineparalleloptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_lineparallelthroughoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_linepolygon2options.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_linepolygonoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_linerelangleoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_modifyoffsetoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_mousewidget.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_moverotateoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_mtextoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_polylineequidistantoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_polylineoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_printpreviewoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_roundoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_libraryinsertoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_layerdialog.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_insertoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\forms\qg_imageoptions.ui">
+      <Filter>ui\forms</Filter>
+    </QtUic>
+    <QtUic Include="ui\generic\inputbox.ui">
+      <Filter>ui\generic</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -4303,6 +4304,9 @@
     </QtMoc>
     <QtMoc Include="actions\rs_actionselecttext.h">
       <Filter>actions</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\generic\inputbox.h">
+      <Filter>ui\generic</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

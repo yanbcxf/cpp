@@ -1026,6 +1026,25 @@ void DRW_Attrib::parseCode(int code, dxfReader *reader) {
 				lockPositionFlag = reader->getInt32();
 			count280++;
 			break;
+		
+		case 41:
+			widthscale = reader->getDouble();
+			break;
+		case 50:
+			angle = reader->getDouble();
+			break;
+		case 51:
+			oblique = reader->getDouble();
+			break;
+		case 71:
+			textgen = reader->getInt32();
+			break;
+		case 72:
+			alignH = (HAlign)reader->getInt32();
+			break;
+		case 7:
+			style = reader->getUtf8String();
+			break;
 		default:
 			break;
 		}
