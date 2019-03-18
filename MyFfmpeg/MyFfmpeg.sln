@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffplaymfc28", "ffplaymfc28\ffplaymfc28.vcxproj", "{B534CE7B-23A2-41B2-A774-AFC557EA2288}"
 EndProject
@@ -26,6 +26,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FfplaySdl2Test", "FfplaySdl
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FfplaySdl2Pure", "FfplaySdl2Pure\FfplaySdl2Pure.vcxproj", "{04FA07EB-F841-4EE0-BC0B-5342E5C1455C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E7E922C7-71B3-4D35-9103-BECFCC29F8C0} = {E7E922C7-71B3-4D35-9103-BECFCC29F8C0}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProtocolUtils", "ProtocolUtils\ProtocolUtils.vcxproj", "{E7E922C7-71B3-4D35-9103-BECFCC29F8C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +74,10 @@ Global
 		{04FA07EB-F841-4EE0-BC0B-5342E5C1455C}.Debug|Win32.Build.0 = Debug|Win32
 		{04FA07EB-F841-4EE0-BC0B-5342E5C1455C}.Release|Win32.ActiveCfg = Release|Win32
 		{04FA07EB-F841-4EE0-BC0B-5342E5C1455C}.Release|Win32.Build.0 = Release|Win32
+		{E7E922C7-71B3-4D35-9103-BECFCC29F8C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7E922C7-71B3-4D35-9103-BECFCC29F8C0}.Debug|Win32.Build.0 = Debug|Win32
+		{E7E922C7-71B3-4D35-9103-BECFCC29F8C0}.Release|Win32.ActiveCfg = Release|Win32
+		{E7E922C7-71B3-4D35-9103-BECFCC29F8C0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +85,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6E702ADA-5DC6-4762-B28A-1D4A939FA468} = {EA3B44B6-F08B-4077-9F68-CB0AF7DF5D3D}
 		{22A5BDA5-F886-440B-831E-841890D0E55F} = {EA3B44B6-F08B-4077-9F68-CB0AF7DF5D3D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A3B1D91-0E16-40D9-B0B2-E378BFD2C98D}
 	EndGlobalSection
 EndGlobal
