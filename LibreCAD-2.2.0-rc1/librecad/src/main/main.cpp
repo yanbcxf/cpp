@@ -49,7 +49,14 @@ int main(int argc, char** argv)
 {
     QT_REQUIRE_VERSION(argc, argv, "5.2.1");
 
-    RS_DEBUG->setLevel(RS_Debug::D_WARNING);
+#ifdef NDEBUG
+	RS_DEBUG->setLevel(RS_Debug::D_WARNING);
+#else
+	RS_DEBUG->setLevel(RS_Debug::D_DEBUGGING);
+	FILE *fp;
+	fp = fopen("debug.log", "w");
+	if (fp) RS_DEBUG->setStream(fp);
+#endif // NDEBUG
 
     QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("LibreCAD");

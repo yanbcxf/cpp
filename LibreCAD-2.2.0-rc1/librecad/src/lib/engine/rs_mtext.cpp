@@ -228,7 +228,7 @@ int RS_MText::getNumberOfLines() {
  */
 void RS_MText::update() {
 
-    RS_DEBUG->print("RS_Text::update");
+    RS_DEBUG->print("RS_MText::update");
 
     clear();
 
@@ -260,7 +260,7 @@ void RS_MText::update() {
     //   height: 9.0
     // Rotation, scaling and centering is done later
 
-    // For every letter:
+	// For every letter:
     for (int i=0; i<(int)data.text.length(); ++i) {
         bool handled = false;
         switch (data.text.at(i).unicode()) {
@@ -448,6 +448,12 @@ void RS_MText::update() {
         RS_Vector ot = RS_Vector(0.0,-tt).rotate(data.angle);
         RS_EntityContainer::move(ot);
     }
+
+	int position = data.text.indexOf("3333");
+	if (position >= 0) {
+		double www = getHeight();
+		int ttt = 1;
+	}
 
     usedTextHeight -= data.height*data.lineSpacingFactor*5.0/3.0
                       - data.height;
@@ -659,11 +665,20 @@ void RS_MText::draw(RS_Painter* painter, RS_GraphicView* view, double& /*pattern
         return;
     }
 
-    if (!view->isPrintPreview() && !view->isPrinting())
+	if (!view->isPrintPreview() && !view->isPrinting())
     {
         if (view->isPanning() || view->toGuiDY(getHeight()) < 4)
         {
-            painter->drawRect(view->toGui(getMin()), view->toGui(getMax()));
+			int position = data.text.indexOf("3333");
+			if (position >= 0 ) {
+				if (view->toGuiDY(getHeight()) < 4) {
+					double www = getHeight();
+					double ggg = view->toGuiDY(www);
+					int ttt = 1;
+				}
+			}
+
+			painter->drawRect(view->toGui(getMin()), view->toGui(getMax()));
             return;
         }
     }

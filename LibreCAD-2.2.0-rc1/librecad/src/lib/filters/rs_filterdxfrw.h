@@ -83,6 +83,7 @@ public:
     virtual void addLType(const DRW_LType& /*data*/){}
     virtual void addLayer(const DRW_Layer& data);
     virtual void addDimStyle(const DRW_Dimstyle& data);
+	virtual void addDimStyle_old(const DRW_Dimstyle& data);
     virtual void addVport(const DRW_Vport& data);
     virtual void addTextStyle(const DRW_Textstyle& /*data*/){}
     virtual void addAppId(const DRW_AppId& /*data*/){}
