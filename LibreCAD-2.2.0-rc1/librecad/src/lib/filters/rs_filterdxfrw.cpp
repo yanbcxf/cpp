@@ -60,6 +60,12 @@
 #include "rs_debug.h"
 #endif
 
+#include <log4cplus/logger.h>
+#include <log4cplus/loggingmacros.h>
+using namespace log4cplus;
+
+extern Logger rootLogger;
+
 
 /**
  * Default constructor.
@@ -238,21 +244,31 @@ void RS_FilterDXFRW::addLayer(const DRW_Layer &data) {
 void RS_FilterDXFRW::addDimStyle(const DRW_Dimstyle& data){
     RS_DEBUG->print("RS_FilterDXFRW::addDimStyle");
 	QString dimstyle = graphic->getVariableString("$DIMSTYLE", "standard");
-
-	QString dimStyleName(data.name.c_str());
-		
+				
 	DRW_Dimstyle dimStyleDefault;
 	if (data.dimtxt != dimStyleDefault.dimtxt) {
 		// 尺寸标注 高度
 		graphic->addVariable("$DIMTXT", data.dimtxt, 70);
+		std::stringstream ss;
+		ss << data.name << ",";
+		ss << "$DIMTXT 尺寸标注 高度 " << data.dimtxt;
+		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
 	if (data.dimdec != dimStyleDefault.dimdec) {
 		// 尺寸标注 小数点后位数
 		graphic->addVariable("$DIMDEC", data.dimdec, 70);
+		std::stringstream ss;
+		ss << data.name << ",";
+		ss << "$DIMDEC 尺寸标注 小数点后位数 " << data.dimdec;
+		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
 	if (data.dimtih != dimStyleDefault.dimtih) {
 		// 尺寸标注 文本的显示对齐方向 ， 0 = 与标注线对齐， 1 = 水平
 		graphic->addVariable("$DIMTIH", data.dimtih, 70);
+		std::stringstream ss;
+		ss << data.name << ",";
+		ss << "$DIMTIH 尺寸标注 文本的显示对齐方向 " << data.dimtih;
+		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
 }
 

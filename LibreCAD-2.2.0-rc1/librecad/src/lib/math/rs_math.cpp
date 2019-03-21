@@ -321,9 +321,9 @@ double RS_Math::eval(const QString& expr, bool* ok) {
     try{
         mu::Parser p;
 		// yangbin ¿í×Ö·ûÎÊÌâ
-        p.DefineConst(_T("pi"),M_PI);
-		p.SetExpr(expr.toStdWString());
-        //p.SetExpr(expr_copy.toStdString());
+        /*p.DefineConst(_T("pi"),M_PI);
+		p.SetExpr(expr.toStdWString());*/
+        p.SetExpr(expr_copy.toStdString());
         ret=p.Eval();
         *ok=true;
     }
@@ -331,9 +331,9 @@ double RS_Math::eval(const QString& expr, bool* ok) {
     {
 		// yangbin
 		QString s;
-		s.fromStdWString(e.GetMsg());
-		std::cout << s.toStdString() << std::endl;
-        // std::cout << e.GetMsg() << std::endl;
+		/*s.fromStdWString(e.GetMsg());
+		std::cout << s.toStdString() << std::endl;*/
+        std::cout << e.GetMsg() << std::endl;
         *ok=false;
     }
     return ret;

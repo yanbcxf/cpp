@@ -14,7 +14,7 @@
     <ProjectGuid>{93C42B3D-1899-302E-BC1C-BE48E7B13CE6}</ProjectGuid>
     <RootNamespace>LibreCAD</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,7 +78,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -117,7 +117,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
-      <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB</Define>
+      <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
       <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/librecad/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -150,7 +150,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -161,8 +161,8 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\generated\lib\muparser.lib;..\..\generated\lib\dxfrw.lib;jwwlib.lib;log4cplus.lib;$(QTDIR)\lib\Qt5Svgd.lib;$(QTDIR)\lib\Qt5PrintSupportd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\..\generated\lib;..\..\..\log4cplus-1.2.0\msvc10\x64\bin.Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\..\generated\lib\muparser.lib;..\..\generated\lib\dxfrw.lib;jwwlib.lib;log4cplusD.lib;$(QTDIR)\lib\Qt5Svgd.lib;$(QTDIR)\lib\Qt5PrintSupportd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\..\generated\lib;..\..\..\log4cplus-1.2.0\msvc10\x64\bin.Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -195,7 +195,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
-      <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB</Define>
+      <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
       <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/librecad/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>

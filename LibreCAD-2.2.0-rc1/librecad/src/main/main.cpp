@@ -44,27 +44,26 @@
 
 #include <log4cplus/logger.h>
 #include <log4cplus/fileappender.h>
+#include <log4cplus/helpers/loglog.h>
+#include <log4cplus/helpers/property.h>
 #include <log4cplus/layout.h>
 #include <log4cplus/loggingmacros.h>
+#include <log4cplus/configurator.h>
 
 using namespace log4cplus;
+using namespace log4cplus::helpers;
+
+Logger rootLogger;
 
 /**
  * Main. Creates Application window.
  */
 int main(int argc, char** argv)
 {
-	log4cplus::initialize();
-	SharedFileAppenderPtr append_1(
-		new RollingFileAppender(LOG4CPLUS_TEXT("LibreCAD.log"), 10 * 1024 * 1024, 5,
-			false, true));
-	append_1->setName(LOG4CPLUS_TEXT("First"));
-	append_1->setLayout(std::auto_ptr<Layout>(new TTCCLayout()));
-	append_1->getloc();
-	Logger::getRoot().addAppender(SharedAppenderPtr(append_1.get()));
+	PropertyConfigurator::doConfigure("log4cplus.properties");
 
-	Logger log = Logger::getInstance(LOG4CPLUS_TEXT(__FILE__));
-	LOG4CPLUS_DEBUG(log, "LibreCAD Æô¶¯......");
+	rootLogger = Logger::getInstance(LOG4CPLUS_TEXT("root"));
+	LOG4CPLUS_INFO(rootLogger, "LibreCAD Æô¶¯......");
 
 #ifdef NDEBUG
 	
