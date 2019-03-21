@@ -430,7 +430,7 @@ double RS_Dimension::getTextHeight() {
  * @return Dimension labels alignment text true= horizontal, false= aligned.
  */
 bool RS_Dimension::getAlignText() {
-    int v = getGraphicVariableInt("$DIMTIH", 1);
+	int v = getGraphicVariableInt("$DIMTIH", 1);
     if (v>0) {
         addGraphicVariable("$DIMTIH", 1, 70);
         getGraphicVariableInt("$DIMTIH", 1);

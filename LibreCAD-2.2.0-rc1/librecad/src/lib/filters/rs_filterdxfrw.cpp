@@ -233,35 +233,27 @@ void RS_FilterDXFRW::addLayer(const DRW_Layer &data) {
 
 /**
  * Implementation of the method which handles dimension styles.
- * yangbin: 新实现，能支持多个的 dimstyle 
+ * yangbin: 新实现，原先不支持多个 dimstyle， 现在将多个 dimstyle 合并为一个 
  */
 void RS_FilterDXFRW::addDimStyle(const DRW_Dimstyle& data){
     RS_DEBUG->print("RS_FilterDXFRW::addDimStyle");
 	QString dimstyle = graphic->getVariableString("$DIMSTYLE", "standard");
 
-	if (QString::compare(data.name.c_str(), dimstyle, Qt::CaseInsensitive) == 0) {
-		if (isLibDxfRw && libDxfRwVersion < LIBDXFRW_VERSION(0, 6, 2)) {
-			graphic->addVariable("$DIMDEC", graphic->getVariableInt("$DIMDEC",
-				graphic->getVariableInt("$LUPREC", 4)), 70);
-			graphic->addVariable("$DIMADEC", graphic->getVariableInt("$DIMADEC",
-				graphic->getVariableInt("$AUPREC", 2)), 70);
-			//do nothing;
-		}
-		else {
-			graphic->addVariable("$DIMDEC", data.dimdec, 70);
-			graphic->addVariable("$DIMADEC", data.dimadec, 70);
-
-			graphic->addVariable("$DIMTXT", data.dimtxt, 70);
-		}
-	} 
-	else {
-		QString dimStyleName(data.name.c_str());
-		dimStyleName += ":";
-		graphic->addVariable(dimStyleName + "$DIMDEC", data.dimdec, 70);
-		graphic->addVariable(dimStyleName + "$DIMADEC", data.dimadec, 70);
-
+	QString dimStyleName(data.name.c_str());
+		
+	DRW_Dimstyle dimStyleDefault;
+	if (data.dimtxt != dimStyleDefault.dimtxt) {
+		// 尺寸标注 高度
 		graphic->addVariable("$DIMTXT", data.dimtxt, 70);
-	}	
+	}
+	if (data.dimdec != dimStyleDefault.dimdec) {
+		// 尺寸标注 小数点后位数
+		graphic->addVariable("$DIMDEC", data.dimdec, 70);
+	}
+	if (data.dimtih != dimStyleDefault.dimtih) {
+		// 尺寸标注 文本的显示对齐方向 ， 0 = 与标注线对齐， 1 = 水平
+		graphic->addVariable("$DIMTIH", data.dimtih, 70);
+	}
 }
 
 /**
@@ -985,8 +977,6 @@ RS_DimensionData RS_FilterDXFRW::convDimensionData(const  DRW_Dimension* data) {
  * aligned dimensions (DIMENSION).
  */
 void RS_FilterDXFRW::addDimAlign(const DRW_DimAligned *data) {
-	return; 
-
 	RS_DEBUG->print("RS_FilterDXFRW::addDimAligned");
 
     RS_DimensionData dimensionData = convDimensionData((DRW_Dimension*)data);

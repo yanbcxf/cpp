@@ -449,12 +449,6 @@ void RS_MText::update() {
         RS_EntityContainer::move(ot);
     }
 
-	int position = data.text.indexOf("3333");
-	if (position >= 0) {
-		double www = getHeight();
-		int ttt = 1;
-	}
-
     usedTextHeight -= data.height*data.lineSpacingFactor*5.0/3.0
                       - data.height;
     forcedCalculateBorders();
@@ -669,15 +663,6 @@ void RS_MText::draw(RS_Painter* painter, RS_GraphicView* view, double& /*pattern
     {
         if (view->isPanning() || view->toGuiDY(getHeight()) < 4)
         {
-			int position = data.text.indexOf("3333");
-			if (position >= 0 ) {
-				if (view->toGuiDY(getHeight()) < 4) {
-					double www = getHeight();
-					double ggg = view->toGuiDY(www);
-					int ttt = 1;
-				}
-			}
-
 			painter->drawRect(view->toGui(getMin()), view->toGui(getMax()));
             return;
         }
