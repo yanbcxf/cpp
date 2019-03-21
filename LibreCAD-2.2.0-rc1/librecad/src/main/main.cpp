@@ -42,21 +42,38 @@
 #include "qc_applicationwindow.h"
 #include "rs_debug.h"
 
+#include <log4cplus/logger.h>
+#include <log4cplus/fileappender.h>
+#include <log4cplus/layout.h>
+#include <log4cplus/loggingmacros.h>
+
+using namespace log4cplus;
+
 /**
  * Main. Creates Application window.
  */
 int main(int argc, char** argv)
 {
-    QT_REQUIRE_VERSION(argc, argv, "5.2.1");
+	log4cplus::initialize();
+	SharedFileAppenderPtr append_1(
+		new RollingFileAppender(LOG4CPLUS_TEXT("LibreCAD.log"), 10 * 1024 * 1024, 5,
+			false, true));
+	append_1->setName(LOG4CPLUS_TEXT("First"));
+	append_1->setLayout(std::auto_ptr<Layout>(new TTCCLayout()));
+	append_1->getloc();
+	Logger::getRoot().addAppender(SharedAppenderPtr(append_1.get()));
+
+	Logger log = Logger::getInstance(LOG4CPLUS_TEXT(__FILE__));
+	LOG4CPLUS_DEBUG(log, "LibreCAD Æô¶¯......");
 
 #ifdef NDEBUG
-	RS_DEBUG->setLevel(RS_Debug::D_WARNING);
+	
 #else
-	RS_DEBUG->setLevel(RS_Debug::D_DEBUGGING);
-	FILE *fp;
-	fp = fopen("debug.log", "w");
-	if (fp) RS_DEBUG->setStream(fp);
+	
 #endif // NDEBUG
+
+    QT_REQUIRE_VERSION(argc, argv, "5.2.1");
+	RS_DEBUG->setLevel(RS_Debug::D_WARNING);
 
     QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("LibreCAD");
@@ -335,6 +352,7 @@ int main(int argc, char** argv)
 
     RS_DEBUG->print("main: exited Qt event loop");
 
+	log4cplus::Logger::shutdown();
     return return_code;
 }
 
