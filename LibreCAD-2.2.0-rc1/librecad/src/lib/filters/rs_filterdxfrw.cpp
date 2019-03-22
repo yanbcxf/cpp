@@ -150,11 +150,20 @@ bool RS_FilterDXFRW::fileImport(RS_Graphic& g, const QString& file, RS2::FormatT
         }
     } else {
 #endif
+		std::stringstream ss;
+		ss << "file (" << (const char*)QFile::encodeName(file) << ") reading ...... ......";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+
         dxfRW dxfR(QFile::encodeName(file));
 
         RS_DEBUG->print("RS_FilterDXFRW::fileImport: reading file");
         bool success = dxfR.read(this, true);
         RS_DEBUG->print("RS_FilterDXFRW::fileImport: reading file: OK");
+
+		ss.clear();
+		ss.str("");
+		ss << "file (" << (const char*)QFile::encodeName(file) << ") reading OK";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
         //graphic->setAutoUpdateBorders(true);
 
         if (success==false) {
@@ -246,27 +255,30 @@ void RS_FilterDXFRW::addDimStyle(const DRW_Dimstyle& data){
 	QString dimstyle = graphic->getVariableString("$DIMSTYLE", "standard");
 				
 	DRW_Dimstyle dimStyleDefault;
-	if (data.dimtxt != dimStyleDefault.dimtxt) {
+	if (data.dimtxt != dimStyleDefault.dimtxt || 
+		QString::compare(data.name.c_str(), dimstyle, Qt::CaseInsensitive) == 0) {
 		// 尺寸标注 高度
 		graphic->addVariable("$DIMTXT", data.dimtxt, 70);
 		std::stringstream ss;
-		ss << data.name << ",";
+		ss << "DimStyle (" << data.name << "),";
 		ss << "$DIMTXT 尺寸标注 高度 " << data.dimtxt;
 		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
-	if (data.dimdec != dimStyleDefault.dimdec) {
+	if (data.dimdec != dimStyleDefault.dimdec || 
+		QString::compare(data.name.c_str(), dimstyle, Qt::CaseInsensitive) == 0) {
 		// 尺寸标注 小数点后位数
 		graphic->addVariable("$DIMDEC", data.dimdec, 70);
 		std::stringstream ss;
-		ss << data.name << ",";
+		ss <<  "DimStyle (" << data.name << "),";
 		ss << "$DIMDEC 尺寸标注 小数点后位数 " << data.dimdec;
 		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
-	if (data.dimtih != dimStyleDefault.dimtih) {
+	if (data.dimtih != dimStyleDefault.dimtih || 
+		QString::compare(data.name.c_str(), dimstyle, Qt::CaseInsensitive) == 0) {
 		// 尺寸标注 文本的显示对齐方向 ， 0 = 与标注线对齐， 1 = 水平
 		graphic->addVariable("$DIMTIH", data.dimtih, 70);
 		std::stringstream ss;
-		ss << data.name << ",";
+		ss <<  "DimStyle (" <<  data.name << "),";
 		ss << "$DIMTIH 尺寸标注 文本的显示对齐方向 " << data.dimtih;
 		LOG4CPLUS_INFO(rootLogger, ss.str());
 	}
@@ -341,6 +353,11 @@ void RS_FilterDXFRW::addBlock(const DRW_Block& data) {
             //block->setFlags(flags);
 
             if (graphic->addBlock(block)) {
+
+				std::stringstream ss;
+				ss << "block (" << data.name << ") addBlock ......";
+				LOG4CPLUS_INFO(rootLogger, ss.str());
+
                 currentContainer = block;
                 blockHash.insert(data.parentHandle, currentContainer);
             } else
@@ -368,11 +385,19 @@ void RS_FilterDXFRW::setBlock(const int handle){
 void RS_FilterDXFRW::endBlock() {
     if (currentContainer->rtti() == RS2::EntityBlock) {
         RS_Block *bk = (RS_Block *)currentContainer;
+
+		std::stringstream ss;
+		ss << "block (" << bk->getName().toStdString() << ") endBlock";
+		
         //remove unnamed blocks *D only if version != R12
         if (version!=1009) {
-            if (bk->getName().startsWith("*D") )
-                graphic->removeBlock(bk);
+			if (bk->getName().startsWith("*D")) {
+				ss << ",anonymous removed";
+
+				graphic->removeBlock(bk);
+			}
         }
+		LOG4CPLUS_INFO(rootLogger, ss.str());
     }
     currentContainer = graphic;
 }
@@ -388,7 +413,6 @@ void RS_FilterDXFRW::addPoint(const DRW_Point& data) {
     RS_Point* entity = new RS_Point(currentContainer,
                                     RS_PointData(v));
     setEntityAttributes(entity, &data);
-
     currentContainer->addEntity(entity);
 }
 
@@ -415,8 +439,15 @@ void RS_FilterDXFRW::addLine(const DRW_Line& data) {
 
     RS_DEBUG->print("RS_FilterDXF::addLine: add entity");
 
-	if (currentContainer) currentContainer->addEntity(entity);
+	if (currentContainer) {
+		currentContainer->addEntity(entity);
 
+		if (currentContainer->rtti() == RS2::EntityBlock) {
+			std::stringstream ss;
+			ss << "line (" << v1 << " - " << v2 << ") addLine";
+			LOG4CPLUS_INFO(rootLogger, ss.str());
+		}
+	}
     RS_DEBUG->print("RS_FilterDXF::addLine: OK");
 }
 
@@ -488,6 +519,12 @@ void RS_FilterDXFRW::addCircle(const DRW_Circle& data) {
     setEntityAttributes(entity, &data);
 
     currentContainer->addEntity(entity);
+
+	if (currentContainer->rtti() == RS2::EntityBlock) {
+		std::stringstream ss;
+		ss << "circle (" << v << " - " << data.radious << ") addCircle";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
@@ -856,9 +893,14 @@ void RS_FilterDXFRW::addMText(const DRW_MText& data) {
     setEntityAttributes(entity, &data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (currentContainer->rtti() == RS2::EntityBlock ) {
+		std::stringstream ss;
+		QByteArray cdata = mtext.toLocal8Bit();
+		ss << "mtext (" << std::string(cdata) << ") addMText";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
-
-
 
 /**
  * Implementation of the method which handles
@@ -919,6 +961,13 @@ void RS_FilterDXFRW::addText(const DRW_Text& data) {
     setEntityAttributes(entity, &data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (currentContainer->rtti() == RS2::EntityBlock) {
+		std::stringstream ss;
+		QByteArray cdata = mtext.toLocal8Bit();
+		ss << "text (" << std::string(cdata) << ") addText";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
