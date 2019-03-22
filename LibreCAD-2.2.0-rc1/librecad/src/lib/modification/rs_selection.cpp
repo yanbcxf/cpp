@@ -343,7 +343,7 @@ void RS_Selection::selectLayer(const QString& layerName, bool select) {
 * yangbin
 * Selects all texts by regx.
 */
-void RS_Selection::selectText(QString regx) {
+void RS_Selection::selectText(QString regx, bool bInsert, bool bMText, bool bText) {
 	if (graphicView) {
 		//graphicView->deleteEntity(container);
 	}
@@ -353,18 +353,19 @@ void RS_Selection::selectText(QString regx) {
 		//for (unsigned i=0; i<container->count(); ++i) {
 		//RS_Entity* e = container->entityAt(i);
 
+		// 仅在可见的 entities 中查找
 		if (e && e->isVisible()) {
-			if (e->rtti() == RS2::EntityText) {
+			if (e->rtti() == RS2::EntityText && bText) {
 				RS_TextData d = static_cast<RS_Text*>(e)->getData();
 				if (d.text.indexOf(QRegExp(regx)) >= 0)
 					e->setSelected(true);
 			}
-			else if (e->rtti() == RS2::EntityMText) {
+			else if (e->rtti() == RS2::EntityMText && bMText) {
 				RS_MTextData d = static_cast<RS_MText*>(e)->getData();
 				if (d.text.indexOf(QRegExp(regx)) >= 0)
 					e->setSelected(true);
 			}
-			else if (e->rtti() == RS2::EntityInsert) {
+			else if (e->rtti() == RS2::EntityInsert && bInsert) {
 				std::vector<RS_AttribData> lst = static_cast<RS_Insert*>(e)->getAttribList();
 				bool bFound = false;
 				for (auto d : lst) {

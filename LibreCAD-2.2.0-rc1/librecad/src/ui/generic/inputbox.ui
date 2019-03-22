@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>127</height>
+    <width>402</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
+     <x>21</x>
+     <y>21</y>
      <width>361</width>
-     <height>81</height>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -28,12 +28,37 @@
       <item>
        <widget class="QLabel" name="textLabel">
         <property name="text">
-         <string>Text:</string>
+         <string>Find:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="textEdit"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="insertCheckBox">
+        <property name="text">
+         <string>Insert</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mTextCheckBox">
+        <property name="text">
+         <string>MText</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="textCheckBox">
+        <property name="text">
+         <string>Text</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

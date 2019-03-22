@@ -55,7 +55,7 @@ void RS_ActionSelectText::trigger() {
 		QString regx = dialog.textEdit->text();
 		if (!regx.isEmpty()) {
 			RS_Selection s(*container, graphicView);
-			s.selectText(regx);
+			s.selectText(regx, dialog.insertCheckBox->isChecked(), dialog.mTextCheckBox->isChecked(), dialog.textCheckBox->isChecked());
 
 			RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected(), container->totalSelectedLength());
 		}

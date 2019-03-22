@@ -1057,6 +1057,13 @@ void RS_FilterDXFRW::addDimAlign(const DRW_DimAligned *data) {
     entity->updateDimPoint();
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (((DRW_Dimension*)data)->getName().find("*D") == 0) {
+		// 尺寸标注引用了匿名块，则打印日志
+		std::stringstream ss;
+		ss << "dimension blockname(" << ((DRW_Dimension*)data)->getName() << ") addDimAlign";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
@@ -1081,6 +1088,13 @@ void RS_FilterDXFRW::addDimLinear(const DRW_DimLinear *data) {
     setEntityAttributes(entity, data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (((DRW_Dimension*)data)->getName().find("*D") == 0) {
+		// 尺寸标注引用了匿名块，则打印日志
+		std::stringstream ss;
+		ss << "dimension blockname(" << ((DRW_Dimension*)data)->getName() << ") addDimLinear";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
@@ -1103,6 +1117,13 @@ void RS_FilterDXFRW::addDimRadial(const DRW_DimRadial* data) {
     setEntityAttributes(entity, data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (((DRW_Dimension*)data)->getName().find("*D") == 0) {
+		// 尺寸标注引用了匿名块，则打印日志
+		std::stringstream ss;
+		ss << "dimension blockname(" << ((DRW_Dimension*)data)->getName() << ") addDimRadial";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
@@ -1125,6 +1146,13 @@ void RS_FilterDXFRW::addDimDiametric(const DRW_DimDiametric* data) {
     setEntityAttributes(entity, data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (((DRW_Dimension*)data)->getName().find("*D") == 0) {
+		// 尺寸标注引用了匿名块，则打印日志
+		std::stringstream ss;
+		ss << "dimension blockname(" << ((DRW_Dimension*)data)->getName() << ") addDimDiametric";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 
@@ -1150,6 +1178,13 @@ void RS_FilterDXFRW::addDimAngular(const DRW_DimAngular* data) {
     setEntityAttributes(entity, data);
     entity->update();
     currentContainer->addEntity(entity);
+
+	if (((DRW_Dimension*)data)->getName().find("*D") == 0) {
+		// 尺寸标注引用了匿名块，则打印日志
+		std::stringstream ss;
+		ss << "dimension blockname(" << ((DRW_Dimension*)data)->getName() << ") addDimAngular";
+		LOG4CPLUS_INFO(rootLogger, ss.str());
+	}
 }
 
 

@@ -69,7 +69,7 @@ public:
 		selectLayer(layerName, false);
 	}
 
-	void selectText(QString regx);
+	void selectText(QString regx, bool bInsert, bool bMText, bool bText);
 
 protected:
     RS_EntityContainer* container;
