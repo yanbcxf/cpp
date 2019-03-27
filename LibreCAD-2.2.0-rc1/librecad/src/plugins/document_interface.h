@@ -181,6 +181,15 @@ namespace DPI {
 
 }
 
+class Plug_AttribData
+{
+public:
+	Plug_AttribData(QString txt) {
+		text = txt;
+	}
+	QString text;
+};
+
 class Plug_VertexData
 {
 public:
@@ -238,6 +247,12 @@ public:
     *  \param data pointer to a QList<Plug_VertexData> with the coordinates vertex's.
     */
     virtual void updatePolylineData(QList<Plug_VertexData> *data) = 0;
+
+	/*!
+	* yangbin: 获取 insert 块后面跟随的 Attrib 元素属性
+	*  \param data pointer to a QList<Plug_AttribData> to store the attrib list.
+	*/
+	virtual void getAttribData(QList<Plug_AttribData> *data) = 0;
 
     //! Move the entity.
     /*!

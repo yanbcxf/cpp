@@ -697,8 +697,20 @@ void Plugin_Entity::updatePolylineData(QList<Plug_VertexData> *data){
         vec.y = data->at(i).point.y();
         pl->addVertex(vec, data->at(i).bulge );
     }
+}
 
+void Plugin_Entity::getAttribData(QList<Plug_AttribData> *data) {
+	if (!entity) return;
+	RS2::EntityType et = entity->rtti();
+	if (et != RS2::EntityInsert) return;
+	RS_Insert *l = static_cast<RS_Insert*>(entity);
 
+	std::vector<RS_AttribData> attribList = l->getAttribList();
+
+	for (int i = 0; i < attribList.size(); i++) {
+		data->append(Plug_AttribData(attribList[i].text));
+	}
+	
 }
 
 void Plugin_Entity::move(QPointF offset){

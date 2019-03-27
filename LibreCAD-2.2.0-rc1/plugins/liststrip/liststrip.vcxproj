@@ -14,7 +14,7 @@
     <ProjectGuid>{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}</ProjectGuid>
     <RootNamespace>liststrip</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -31,7 +31,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <OutputDirectory>..\..\windows\resources\plugins\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <IntermediateDirectory>..\..\generated\plugin\liststrip\obj\</IntermediateDirectory>
     <PrimaryOutput>liststripd1</PrimaryOutput>

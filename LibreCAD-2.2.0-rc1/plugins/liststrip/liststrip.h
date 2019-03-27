@@ -18,6 +18,11 @@
 #include "document_interface.h"
 #include <QTextEdit>
 
+#define M_PI       3.14159265358979323846   // pi
+
+namespace {
+	constexpr double m_piX2 = M_PI * 2; //2*PI
+}
 
 typedef struct _StripData {
 	/**
@@ -28,9 +33,12 @@ typedef struct _StripData {
 	bool closed;
 	/** Control points of the spline. */
 	// 板带控制点
-	QList<QPointF> vertexs;	
-	// 钢筋线标注点
-	QList<QPointF> vertexsSteel;
+	std::vector<QPointF> vertexs;
+	std::vector<QPointF> vertexsBig;
+	std::vector<QPointF> vertexsSmall;
+	/* 钢筋线标注点 */
+	std::vector<QPointF> vertexsSteelBig;
+	std::vector<QPointF> vertexsSteelSmall;
 
 	double sizeBig, sizeSmall;
 	QString steelBig, steelSmall;
@@ -55,9 +63,13 @@ class LC_List : public QObject, QC_PluginInterface
 
 private:
 	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
-	void filterData1(Plug_Entity *ent, QList<StripData>& strips);
-	void filterData2(Plug_Entity *ent, QList<StripData>& strips);
-    QString getStrData(Plug_Entity *ent);
+	// 第一遍，过滤 柱下板带
+	void filterData1(Plug_Entity *ent, std::vector<StripData>& strips);
+	// 第二遍，过滤 板带钢筋线
+	void filterData2(Plug_Entity *ent, std::vector<StripData>& strips);
+	// 第三遍，过滤 钢筋标注
+	void filterData3(Plug_Entity *ent, std::vector<StripData>& strips);
+    QString getStrData(StripData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };

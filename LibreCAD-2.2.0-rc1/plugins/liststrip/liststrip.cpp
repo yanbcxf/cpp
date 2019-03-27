@@ -51,15 +51,21 @@ void LC_List::execComm(Document_Interface *doc,
     if (!yes || obj.isEmpty()) return;
 
 	//	柱下板带
-	QList<StripData> strip;
+	std::vector<StripData>  strips;
 	for (int i = 0; i < obj.size(); ++i) {
-		
+		filterData1(obj.at(i), strips);
+	}
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData2(obj.at(i), strips);
+	}
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData3(obj.at(i), strips);
 	}
 
     QString text;
-    for (int i = 0; i < obj.size(); ++i) {
+    for (int i = 0; i < strips.size(); ++i) {
         text.append( QString("%1 %2: ").arg(tr("n")).arg(i+1));
-        text.append( getStrData(obj.at(i)));
+        text.append( getStrData(strips[i]));
         text.append( "\n");
     }
     lc_Listdlg dlg(parent);
@@ -75,7 +81,14 @@ bool LC_List::sign(const QPointF& v1, const QPointF& v2, const QPointF& v3) {
 	return (res >= 0.0);
 }
 
-void LC_List::filterData1(Plug_Entity *ent, QList<StripData>& strips) {
+/**
+* 计算向量的夹角 (in rad).
+*/
+double angle(double x, double y) {
+	return fmod(M_PI + remainder(atan2(y, x) - M_PI, m_piX2), m_piX2);
+}
+
+void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 	if (NULL == ent)
 		return ;
 
@@ -97,7 +110,7 @@ void LC_List::filterData1(Plug_Entity *ent, QList<StripData>& strips) {
 			ent->getPolylineData(&vl);
 			int iVertices = vl.size();
 			for (int i = 0; i < iVertices; ++i) {
-				strip.vertexs.append(vl.at(i).point);
+				strip.vertexs.push_back(vl.at(i).point);
 			}
 
 			if (iVertices == 4) {
@@ -106,13 +119,25 @@ void LC_List::filterData1(Plug_Entity *ent, QList<StripData>& strips) {
 				if (sizex > sizey) {
 					strip.sizeBig = sizex;
 					strip.sizeSmall = sizey;
+
+					strip.vertexsBig.push_back(vl.at(0).point);
+					strip.vertexsBig.push_back(vl.at(1).point);
+
+					strip.vertexsSmall.push_back(vl.at(1).point);
+					strip.vertexsSmall.push_back(vl.at(2).point);
 				}
 				else {
 					strip.sizeBig = sizey;
 					strip.sizeSmall = sizex;
+
+					strip.vertexsSmall.push_back(vl.at(0).point);
+					strip.vertexsSmall.push_back(vl.at(1).point);
+
+					strip.vertexsBig.push_back(vl.at(1).point);
+					strip.vertexsBig.push_back(vl.at(2).point);
 				}
 
-				strips.append(strip);
+				strips.push_back(strip);
 			}
 		}
 		break; }
@@ -124,10 +149,11 @@ void LC_List::filterData1(Plug_Entity *ent, QList<StripData>& strips) {
 
 
 
-void LC_List::filterData2(Plug_Entity *ent, QList<StripData>& strips) {
+void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips) {
 	if (NULL == ent)
 		return;
 
+	QPointF ptA;
 	QHash<int, QVariant> data;
 	//common entity data
 	ent->getData(&data);
@@ -135,6 +161,7 @@ void LC_List::filterData2(Plug_Entity *ent, QList<StripData>& strips) {
 	//specific entity data
 	int et = data.value(DPI::ETYPE).toInt();
 	switch (et) {
+	
 	case DPI::POLYLINE: {
 		QString strLayer = data.value(DPI::LAYER).toString();
 		if (strLayer.indexOf("板底钢筋") >= 0) {
@@ -147,24 +174,28 @@ void LC_List::filterData2(Plug_Entity *ent, QList<StripData>& strips) {
 				double sizex = hypot(vl.at(0).point.x() - vl.at(1).point.x(), vl.at(0).point.y() - vl.at(1).point.y());
 				double sizey = hypot(vl.at(1).point.x() - vl.at(2).point.x(), vl.at(1).point.y() - vl.at(2).point.y());
 				
-				// 计算中间点
-				QPointF middle;
+				// 计算中间点, 并确定钢筋线方向
+				QPointF middle, pa, pb;
 				if (sizex > sizey) {
 					middle.setX((vl.at(0).point.x() + vl.at(1).point.x()) / 2);
-					middle.setY((vl.at(0).point.y() - vl.at(1).point.y()) / 2);
+					middle.setY((vl.at(0).point.y() + vl.at(1).point.y()) / 2);
+					pa = vl.at(0).point;
+					pb = vl.at(1).point;
 				}
 				else {
 					middle.setX((vl.at(1).point.x() + vl.at(2).point.x()) / 2);
-					middle.setY((vl.at(1).point.y() - vl.at(2).point.y()) / 2);
+					middle.setY((vl.at(1).point.y() + vl.at(2).point.y()) / 2);
+					pa = vl.at(1).point;
+					pb = vl.at(2).point;
 				}
 
 				// 匹配 柱中板带
 				int iStrips = strips.size();
 				for (int i = 0; i < iStrips; ++i) {
-					QPointF p1 = strips.at(i).vertexs.at(0);
-					QPointF p2 = strips.at(i).vertexs.at(1);
-					QPointF p3 = strips.at(i).vertexs.at(2);
-					QPointF p4 = strips.at(i).vertexs.at(3);
+					QPointF p1 = strips[i].vertexs[0];
+					QPointF p2 = strips[i].vertexs[1];
+					QPointF p3 = strips[i].vertexs[2];
+					QPointF p4 = strips[i].vertexs[3];
 
 					bool bInside = false;
 
@@ -181,7 +212,22 @@ void LC_List::filterData2(Plug_Entity *ent, QList<StripData>& strips) {
 					}
 
 					if (bInside) {
+						QPointF dirBig = strips[i].vertexsBig[0] - strips[i].vertexsBig[1];
+						QPointF dirSmall = strips[i].vertexsSmall[0] - strips[i].vertexsSmall[1];
+						QPointF dirSteel = pa - pb;
+						QPointF dirAngel = dirBig - dirSteel;
+						double an = abs(angle(dirAngel.x(), dirAngel.y()));
 
+						if (an < (M_PI / 6) || an >(M_PI * 5 / 6)) {
+							// 钢筋线与板带的大边平行
+							strips[i].vertexsSteelBig.push_back(pa);
+							strips[i].vertexsSteelBig.push_back(pb);
+						} 
+						else {
+							strips[i].vertexsSteelSmall.push_back(pa);
+							strips[i].vertexsSteelSmall.push_back(pb);
+						}
+						break;
 					}
 				}
 			}
@@ -195,124 +241,97 @@ void LC_List::filterData2(Plug_Entity *ent, QList<StripData>& strips) {
 }
 
 
-QString LC_List::getStrData(Plug_Entity *ent) {
-    if( NULL == ent)
-        return QString("%1\n").arg(tr("Empty Entity"));
+void LC_List::filterData3(Plug_Entity *ent, std::vector<StripData>& strips) {
+	if (NULL == ent)
+		return;
 
-    QHash<int, QVariant> data;
-    QString strData(""),
-            strEntity("%1\n"),
-            strCommon("  %1: %2\n"),
-            strSpecific("    %1: %2\n"),
-            strSpecificXY( QString("    %1: %2=%3 %4=%5\n").arg("%1",tr("X"),"%2",tr("Y"),"%3"));
-    double numA {0.0};
-    double numB {0.0};
-    double numC {0.0};
-    QPointF ptA, ptB, ptC;
-    int intA {0};
-    int intB {0};
+	QPointF ptA;
+	QHash<int, QVariant> data;
+	//common entity data
+	ent->getData(&data);
 
-    //common entity data
-    ent->getData(&data);
-    strData  = strCommon.arg(tr("Layer")).arg(data.value(DPI::LAYER).toString());
-    int col = data.value(DPI::COLOR).toInt();
-    strData.append( strCommon.arg(tr("Color")).arg( ent->intColor2str(col) ));
-    strData.append( strCommon.arg(tr("Line type")).arg(data.value(DPI::LTYPE).toString()));
-    strData.append( strCommon.arg(tr("Line thickness")).arg(data.value(DPI::LWIDTH).toString()));
-    strData.append( strCommon.arg(tr("ID")).arg(data.value(DPI::EID).toLongLong()));
-
-    //specific entity data
-    int et = data.value(DPI::ETYPE).toInt();
-    switch (et) {
-    
-    case DPI::INSERT:
-        strData.prepend( strEntity.arg(tr("INSERT")));
-        ptA.setX( data.value(DPI::STARTX).toDouble());
-        ptA.setY( data.value(DPI::STARTY).toDouble());
-        strData.append( strSpecific.arg( tr("Name")).
-                        arg( data.value(DPI::BLKNAME).toString()));
-        strData.append( strSpecificXY.arg( tr("Insertion point")).
-                        arg(d->realToStr( ptA.x())).
-                        arg(d->realToStr( ptA.y())));
-        strData.append( strSpecificXY.arg( tr("Scale")).
-                        arg( d->realToStr( data.value(DPI::XSCALE).toDouble())).
-                        arg( d->realToStr( data.value(DPI::YSCALE).toDouble())));
-        strData.append( strSpecific.arg( tr("Rotation")).
-                        arg( QString("%1°").
-                             arg( d->realToStr( data.value(DPI::STARTANGLE).toDouble() * 180 / M_PI))));
-        intA = data.value(DPI::COLCOUNT).toInt();
-        intB = data.value(DPI::ROWCOUNT).toInt();
-        if( 1 < intA || 1 < intB) {
-            strData.append( strSpecific.arg( tr("Columns/Rows")).
-                            arg( QString( "%1 / %2").
-                                 arg( intA).
-                                 arg( intB)));
-            strData.append( strSpecific.arg( tr("Column/Row Spacing")).
-                            arg( QString("%1 / %2").
-                                 arg( d->realToStr( data.value(DPI::COLSPACE).toDouble())).
-                                 arg( d->realToStr( data.value(DPI::ROWSPACE).toDouble()))));
-        }
-        break;
-	case DPI::POLYLINE: {
-		strData.prepend(strEntity.arg(tr("POLYLINE")));
-		strData.append(strSpecific.arg(tr("Closed")).
-			arg((0 == data.value(DPI::CLOSEPOLY).toInt()) ? tr("No") : tr("Yes")));
-		strData.append(strSpecific.arg(tr("Vertices")).arg(""));
-
-		QList<Plug_VertexData> vl;
-		ent->getPolylineData(&vl);
-		int iVertices = vl.size();
-		for (int i = 0; i < iVertices; ++i) {
-			strData.append(strSpecificXY.arg(tr("in point")).
-				arg(d->realToStr(vl.at(i).point.x())).
-				arg(d->realToStr(vl.at(i).point.y())));
-			if (0 != vl.at(i).bulge) {
-				strData.append(strSpecific.arg(tr("radius")).arg(d->realToStr(polylineRadius(vl.at(i), vl.at((i + 1) % iVertices)))));
-			}
-		}
+	//specific entity data
+	int et = data.value(DPI::ETYPE).toInt();
+	switch (et) {
+	
+	case DPI::INSERT: {
+		ptA.setX(data.value(DPI::STARTX).toDouble());
+		ptA.setY(data.value(DPI::STARTY).toDouble());
 
 		QString strLayer = data.value(DPI::LAYER).toString();
-		if (strLayer.indexOf("z柱下板带") >= 0 && iVertices == 4) {
-			double sizex = hypot(vl.at(0).point.x() - vl.at(1).point.x(), vl.at(0).point.y() - vl.at(1).point.y());
-			double sizey = hypot(vl.at(1).point.x() - vl.at(2).point.x(), vl.at(1).point.y() - vl.at(2).point.y());
+		if ( true /*strLayer.indexOf("板底钢筋") >= 0*/) {
 
-			strData.append(strSpecificXY.arg(tr("柱下板带 size")).
-				arg(d->realToStr(sizex)).
-				arg(d->realToStr(sizey)));
+			QList<Plug_AttribData> vl;
+			ent->getAttribData(&vl);
+			int iVertices = vl.size();
+
+			// 匹配 柱中板带
+			int iStrips = strips.size();
+			for (int i = 0; i < iStrips; ++i) {
+				QPointF p1 = strips[i].vertexs[0];
+				QPointF p2 = strips[i].vertexs[1];
+				QPointF p3 = strips[i].vertexs[2];
+				QPointF p4 = strips[i].vertexs[3];
+
+				bool bInside = false;
+
+				bool s1 = sign(p1, p2, ptA);
+				bool s2 = sign(p2, p3, ptA);
+				bool s3 = sign(p3, p1, ptA);
+				if ((s1 == s2) && (s2 == s3))  bInside = true;
+
+				if (!bInside) {
+					s1 = sign(p2, p3, ptA);
+					s2 = sign(p3, p4, ptA);
+					s3 = sign(p4, p2, ptA);
+					if ((s1 == s2) && (s2 == s3))  bInside = true;
+				}
+
+				if (bInside) {
+					// 查找最近的钢筋线，以确定 钢筋标注
+
+					if (strips[i].vertexsSteelBig.size() > 0 && strips[i].vertexsSteelSmall.size() > 0) {
+						QPointF middleSteelBig, middleSteelSmall;
+						middleSteelBig = (strips[i].vertexsSteelBig[0] + strips[i].vertexsSteelBig[1]) / 2;
+						middleSteelSmall = (strips[i].vertexsSteelSmall[0] + strips[i].vertexsSteelSmall[1]) / 2;
+
+						double distanceToBig = hypot(middleSteelBig.x() - ptA.x(), middleSteelBig.y() - ptA.y());
+						double distanceToSmall = hypot(middleSteelSmall.x() - ptA.x(), middleSteelSmall.y() - ptA.y());
+						if (distanceToBig < distanceToSmall) {
+							strips[i].steelBig = vl.at(0).text;
+						}
+						else {
+							strips[i].steelSmall = vl.at(0).text;
+						}
+					}
+					else {
+
+					}
+					
+					break;
+				}
+			}
 		}
+	}
+		break;
+	default:
+		break;
+	}
 
-		if (strLayer.indexOf("板底钢筋") >= 0 && iVertices == 4) {
-			double sizex = hypot(vl.at(0).point.x() - vl.at(1).point.x(), vl.at(0).point.y() - vl.at(1).point.y());
-			double sizey = hypot(vl.at(1).point.x() - vl.at(2).point.x(), vl.at(1).point.y() - vl.at(2).point.y());
+}
 
-			strData.append(strSpecificXY.arg(tr("板底钢筋 size")).
-				arg(d->realToStr(sizex)).
-				arg(d->realToStr(sizey)));
-		}
 
-		break; }
-    case DPI::DIMLEADER:
-        strData.prepend( strEntity.arg(tr("DIMLEADER")));
-        break;
-    case DPI::DIMALIGNED:
-        strData.prepend( strEntity.arg(tr("DIMALIGNED")));
-        break;
-    case DPI::DIMLINEAR:
-        strData.prepend( strEntity.arg(tr("DIMLINEAR")));
-        break;
-    case DPI::DIMRADIAL:
-        strData.prepend( strEntity.arg(tr("DIMRADIAL")));
-        break;
-    case DPI::DIMDIAMETRIC:
-        strData.prepend( strEntity.arg(tr("DIMDIAMETRIC")));
-        break;
-    case DPI::DIMANGULAR:
-        strData.prepend( strEntity.arg(tr("DIMANGULAR")));
-        break;
-    default:
-        strData.prepend( strEntity.arg(tr("UNKNOWN")));
-        break;
-    }
+QString LC_List::getStrData(StripData strip) {
+    
+
+	QString strData(""),
+		strEntity("%1\n"),
+		strCommon("  %1: %2\n");
+	
+    
+    strData  = strCommon.arg(tr("sizeBig")).arg(strip.sizeBig);
+	strData.append(strCommon.arg(tr("sizeSmall")).arg(strip.sizeSmall));
+	strData.append(strCommon.arg(tr("steelBig")).arg(strip.steelBig));
 
     return strData;
 }
