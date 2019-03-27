@@ -38,6 +38,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gear", "plugins\gear\gear.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ttf2lff", "tools\ttf2lff\ttf2lff.vcxproj", "{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liststrip", "plugins\liststrip\liststrip.vcxproj", "{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -100,12 +102,16 @@ Global
 		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Debug|x64.Build.0 = Debug|x64
 		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Release|x64.ActiveCfg = Release|x64
 		{9F00614C-7E0B-3C12-ABB5-3B33BDF25905}.Release|x64.Build.0 = Release|x64
+		{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}.Debug|x64.ActiveCfg = Debug|x64
+		{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}.Debug|x64.Build.0 = Debug|x64
+		{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}.Release|x64.ActiveCfg = Release|x64
+		{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = msvc2017_64
 		SolutionGuid = {12A5BEF4-1FC6-4F40-8F30-F1D24ECA2620}
+		Qt5Version = msvc2017_64
 	EndGlobalSection
 EndGlobal
