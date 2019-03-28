@@ -41,9 +41,11 @@ typedef struct _StripData {
 	std::vector<QPointF> vertexsSteelSmall;
 
 	double sizeBig, sizeSmall;
-	QString steelBig, steelSmall;
+	QString steelBig, steelSmall, steelFace;
 
 	QString strLayer, strColor;
+
+	std::vector<Plug_Entity *> entites;   // 对板带 是指针 ，该项目是 polyline
 } StripData;
 
 //class QTextEdit;
