@@ -1144,6 +1144,15 @@ void Doc_plugin_interface::removeEntity(Plug_Entity *ent){
     }
 }
 
+void Doc_plugin_interface::setSelectedEntity(Plug_Entity *ent, bool bSelected) {
+	RS_Entity *e = (reinterpret_cast<Plugin_Entity*>(ent))->getEnt();
+	if (doc && e) {
+		e->setSelected(bSelected);
+		
+		gView->redraw(RS2::RedrawDrawing);
+	}
+}
+
 void Doc_plugin_interface::updateEntity(RS_Entity *org, RS_Entity *newe){
     if (doc) {
             if (!haveUndo) {

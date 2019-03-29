@@ -340,7 +340,9 @@ void RS_ActionDrawLine::close() {
 
 void RS_ActionDrawLine::addHistory(const RS_Vector& v){
 	if(pPoints->historyIndex<-1) pPoints->historyIndex=-1;
-	pPoints->history.erase(pPoints->history.begin()+pPoints->historyIndex+1,pPoints->history.end());
+	// yangbin : Ô­ÓÐbug 2019-03-29 
+	if(pPoints->history.size() > 0)
+		pPoints->history.erase(pPoints->history.begin()+pPoints->historyIndex+1,pPoints->history.end());
 	pPoints->history.push_back(v);
 	pPoints->historyIndex=pPoints->history.size() - 1;
 }

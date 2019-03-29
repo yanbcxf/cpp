@@ -416,6 +416,11 @@ public:
     */
     virtual void removeEntity(Plug_Entity *ent) = 0;
 
+	/*! yangbin: 新增设置 图元是否被选中 .
+	*  \param ent handle to pointer of Plug_Entity.
+	*/
+	virtual void setSelectedEntity(Plug_Entity *ent, bool bSelected) = 0;
+
     //! Set the current layer in current document.
     /*! Set the current layer in current document, if not exist create it.
     *  \param name a QString with the name of the layer.

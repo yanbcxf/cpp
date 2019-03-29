@@ -100,6 +100,7 @@ public:
     Plug_Entity *newEntity( enum DPI::ETYPE type);
     void removeEntity(Plug_Entity *ent);
     void updateEntity(RS_Entity *org, RS_Entity *newe);
+	void setSelectedEntity(Plug_Entity *ent, bool bSelected);
 
     void setLayer(QString name);
     QString getCurrentLayer();
