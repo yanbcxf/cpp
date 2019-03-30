@@ -34,6 +34,7 @@
 #endif
 
 #include <iosfwd>
+#include <QDateTime>
 
 #include "rs_pen.h"
 
@@ -73,6 +74,9 @@ struct RS_LayerData {
 
     //! visible in layer list
     bool visibleInLayerList;
+
+	// yangbin: 最近属性改变的时间
+	QDateTime recentTimeModified;
 };
 
 
@@ -117,6 +121,11 @@ public:
      * Sets the converted flag
      */
 	void setConverted(bool c);
+
+	/**
+	 *	yangbin 获取该层属性被修改的时间
+	 */
+	QDateTime getRecentTimeModified() const;
 
     /**
      * Toggles the visibility of this layer.

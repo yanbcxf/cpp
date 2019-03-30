@@ -97,12 +97,21 @@ void RS_Layer::setConverted(bool c) {
 }
 
 /**
+ *	yangbin 获取该层属性被修改的时间
+ */
+QDateTime RS_Layer::getRecentTimeModified() const {
+	return data.recentTimeModified;
+}
+
+/**
  * Toggles the visibility of this layer.
  * Freezes the layer if it's not frozen, thaws the layer otherwise
  */
 void RS_Layer::toggle() {
 	//toggleFlag(RS2::FlagFrozen);
 	data.frozen = !data.frozen;
+	// yanagbin 属性被更改的时间
+	data.recentTimeModified = QDateTime::currentDateTime();
 }
 
 /**

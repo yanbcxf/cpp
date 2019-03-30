@@ -131,8 +131,8 @@ void RS_LayerList::activate(RS_Layer* layer, bool notify) {
 void RS_LayerList::sort()
 {
     std::stable_sort(layers.begin(), layers.end(), [](const RS_Layer* l0, const RS_Layer* l1 )->bool{
-                         return l0->getName() < l1->getName();
-                     });
+		return l0->getName() < l1->getName();
+     });
 }
 
 /**

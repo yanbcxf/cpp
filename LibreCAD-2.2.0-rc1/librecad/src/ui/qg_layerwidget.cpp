@@ -86,9 +86,26 @@ void QG_LayerModel::setLayerList(RS_LayerList* ll) {
     for (unsigned i=0; i < ll->count(); ++i) {
         listLayer.append(ll->at(i));
     }
-    std::sort( listLayer.begin(), listLayer.end(), [](const RS_Layer *s1, const RS_Layer *s2)-> bool{
+    /*std::sort( listLayer.begin(), listLayer.end(), [](const RS_Layer *s1, const RS_Layer *s2)-> bool{
         return s1->getName() < s2->getName();
-    } );
+    } );*/
+
+	/* yangbin : 根据更新时间对 layer 列表进行重新排序,以便将最晚更新的层放在最上面 */
+	std::stable_sort(listLayer.begin(), listLayer.end(), [](const RS_Layer* l0, const RS_Layer* l1)->bool {
+		if (l0->getRecentTimeModified().isValid() && l1->getRecentTimeModified().isValid()) {
+			return l0->getRecentTimeModified() > l1->getRecentTimeModified();
+		}
+		else if (l0->getRecentTimeModified().isValid()) {
+			return true;
+		}
+		else if (l1->getRecentTimeModified().isValid()) {
+			return false;
+		}
+		else {
+			return l0->getName() < l1->getName();
+		}
+
+	});
 //called to force redraw
     endResetModel();
 }
