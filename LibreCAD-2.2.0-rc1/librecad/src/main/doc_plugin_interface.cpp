@@ -770,6 +770,22 @@ QString Plugin_Entity::intColor2str(int color){
     return Converter.intColor2str(color);
 }
 
+QPointF Plugin_Entity::getMaxOfBorder() {
+	RS_Vector vMax = entity->getMax();
+	QPointF pt;
+	pt.setX(vMax.x);
+	pt.setY(vMax.y);
+	return pt;
+}
+
+QPointF Plugin_Entity::getMinOfBorder() {
+	RS_Vector vMin = entity->getMin();
+	QPointF pt;
+	pt.setX(vMin.x);
+	pt.setY(vMin.y);
+	return pt;
+}
+
 Doc_plugin_interface::Doc_plugin_interface(RS_Document *d, RS_GraphicView* gv, QWidget* parent):
 doc(d)
 ,docGr(doc->getGraphic())

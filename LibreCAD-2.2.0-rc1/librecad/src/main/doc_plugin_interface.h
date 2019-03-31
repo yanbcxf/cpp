@@ -67,6 +67,12 @@ public:
 	virtual void rotate(QPointF center, double angle);
     virtual void scale(QPointF center, QPointF factor);
     virtual QString intColor2str(int color);
+	/*
+	* yangbin: 获取边界矩形的最大点和最小点
+	*/
+	virtual QPointF getMaxOfBorder();
+	virtual QPointF getMinOfBorder();
+
 private:
     RS_Entity* entity;
     bool hasContainer;

@@ -281,6 +281,12 @@ public:
     *  \param color color as integer to convert as string.
     */
     virtual QString intColor2str(int color) = 0;
+
+	/*
+	 * yangbin: 获取边界矩形的最大点和最小点
+	 */
+	virtual QPointF getMaxOfBorder() = 0;
+	virtual QPointF getMinOfBorder() = 0;
 };
 
 //! Interface for comunicate plugins.

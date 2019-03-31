@@ -286,6 +286,18 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips) {
 			}
 		}
 		break;
+	//container entities
+	case DPI::MTEXT:
+	case DPI::TEXT:
+		ptA = ent->getMaxOfBorder();
+		ptB = ent->getMinOfBorder();
+		for (int i = 0; i < strips.size(); i++) {
+			if (isInsidePolyline(ptA, strips[i].vertexs) && isInsidePolyline(ptB, strips[i].vertexs)) {
+				strips[i].entites.push_back(ent);
+				break;
+			}
+		}
+		break;
 	default:
 		break;
 	}
