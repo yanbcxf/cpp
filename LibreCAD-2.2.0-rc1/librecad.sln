@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dxfrw", "libraries\libdxfrw\dxfrw.vcxproj", "{52E04652-22E5-3611-B7CA-FDBC2AF67871}"
 EndProject
@@ -41,6 +41,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liststrip", "plugins\liststrip\liststrip.vcxproj", "{724B9EDE-FC7B-4D7F-8203-E901A3CFB5B2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SelectByPolyline", "plugins\SelectByPolyline\SelectByPolyline.vcxproj", "{D6022BE9-3408-49ED-A5D7-F2B61902D32D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ListLayer", "plugins\ListLayer\ListLayer.vcxproj", "{20B77F17-71D7-4740-96C2-BC509B444045}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,12 +114,16 @@ Global
 		{D6022BE9-3408-49ED-A5D7-F2B61902D32D}.Debug|x64.Build.0 = Debug|x64
 		{D6022BE9-3408-49ED-A5D7-F2B61902D32D}.Release|x64.ActiveCfg = Release|x64
 		{D6022BE9-3408-49ED-A5D7-F2B61902D32D}.Release|x64.Build.0 = Release|x64
+		{20B77F17-71D7-4740-96C2-BC509B444045}.Debug|x64.ActiveCfg = Debug|x64
+		{20B77F17-71D7-4740-96C2-BC509B444045}.Debug|x64.Build.0 = Debug|x64
+		{20B77F17-71D7-4740-96C2-BC509B444045}.Release|x64.ActiveCfg = Release|x64
+		{20B77F17-71D7-4740-96C2-BC509B444045}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = msvc2017_64
 		SolutionGuid = {12A5BEF4-1FC6-4F40-8F30-F1D24ECA2620}
+		Qt5Version = msvc2017_64
 	EndGlobalSection
 EndGlobal
