@@ -56,9 +56,12 @@ void LC_List::execComm(Document_Interface *doc,
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), strips);
 	}
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), strips, entites);
+	if (strips.size() > 0) {
+		for (int i = 0; i < obj.size(); ++i) {
+			filterData2(obj.at(i), strips, entites);
+		}
 	}
+	
 	
     QString text;
     for (int i = 0; i < strips.size(); ++i) {
@@ -184,18 +187,44 @@ bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	return c;
 }
 
-/* 计算点到 Polyline 的最近距离 */
+QPointF leftDownCorner(std::vector<QPointF>& polyline) {
+	QPointF ld(1.0e+200, 1.0e+20);
+	for (int i = 0; i < polyline.size(); i++) {
+		if (ld.x() > polyline[i].x()) ld.setX(polyline[i].x());
+		if (ld.y() > polyline[i].y()) ld.setY(polyline[i].y());
+	}
+	return ld;
+}
+
+/* 计算点到 Polyline 的最近距离, 仅判断线段端点，有可能垂足在线段中间 */
 double pointToPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	double dist = 1.0e+20;
+	for (int i = 0; i < polyline.size(); i++) {
+		QPointF p1;
+		p1 = polyline[i];
+		p1 = pt - p1;
+		double dist0 = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
+
+		if (dist0 < dist) dist = dist0;
+	}
+	return dist;
+}
+
+/* 计算点垂直向上到 Polyline 是否有交点  */
+int pointCrossPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
+	int nCross = 0;
 	for (int i = 0, j = polyline.size() - 1; i < polyline.size(); j = i++) {
 		QPointF p1, p2;
 		p1 = polyline[i];
 		p2 = polyline[j];
-		double dist1 = pointToLine(pt, p1, p2);
-		if (dist1 < dist) dist = dist1;
+		// 以 pt 为起点向上垂直射出
+		if (((p1.x() > pt.x()) != (p2.x() > pt.x())) &&
+			(pt.y() < (p2.y() - p1.y()) * (pt.x() - p1.x()) / (p2.x() - p1.x()) + p1.y()))
+			nCross++;
 	}
-	return dist;
+	return nCross;
 }
+
 
 /* 第一遍，过滤 柱大样边线 */
 void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
@@ -211,7 +240,8 @@ void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 	switch (et) {
 	case DPI::POLYLINE: {
 		QString strLayer = data.value(DPI::LAYER).toString();
-		QString strPattern = QString::fromUtf8("柱大样外框");
+		// QString strPattern = QString::fromUtf8("柱大样外框");
+		QString strPattern = QString::fromLocal8Bit("柱大样外框");
 		if (strLayer.indexOf(strPattern) >=0 ) {
 			StripData strip;
 			strip.strLayer = data.value(DPI::LAYER).toString();
@@ -224,7 +254,7 @@ void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 				strip.vertexs.push_back(vl.at(i).point);
 			}
 
-			if (iVertices > 4) {
+			if (iVertices >= 3) {
 				strips.push_back(strip);
 			}
 		}
@@ -254,7 +284,8 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 	
 	case DPI::POLYLINE: {
 		QString strLayer = data.value(DPI::LAYER).toString();
-		if (strLayer.indexOf(QString::fromUtf8("柱大样外框")) < 0) {
+		QString strPattern = QString::fromLocal8Bit("柱大样外框");
+		if (strLayer.indexOf(strPattern) < 0) {
 			
 			QList<Plug_VertexData> vl;
 			ent->getPolylineData(&vl);
@@ -312,9 +343,15 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 			int closestColumn = -1;
 			double dist = 1.0e+20;
 			for (int i = 0; i < strips.size(); i++) {
-				if (strips[i].vertexs[0].y() > mid.y()) {
+				if (pointCrossPolyline(ptA, strips[i].vertexs) 
+					|| pointCrossPolyline(ptB, strips[i].vertexs)
+					|| pointCrossPolyline(mid, strips[i].vertexs)) {
 					double dist1 = pointToPolyline(mid, strips[i].vertexs);
 					if (closestColumn < 0) {
+						closestColumn = i;
+						dist = dist1;
+					}
+					else if (dist1 < dist){
 						closestColumn = i;
 						dist = dist1;
 					}
@@ -322,18 +359,28 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 			}
 
 			if (closestColumn >= 0) {
-				if (textContent.indexOf(QRegExp("")) >= 0) {
-					strips[closestColumn].steelLongitudinal = textContent;
-					// 删除该文本，随后生成截面标注
-					entites.push_back(ent);
+				if (textContent.indexOf(QRegExp("^[0-9]+C")) >= 0) {
+					if (strips[closestColumn].steelLongitudinal.isEmpty()) {
+						strips[closestColumn].steelLongitudinal = textContent;
+						// 删除该文本，随后生成截面标注
+						entites.push_back(ent);
+					}
+					
 				}
-				else if (textContent.indexOf(QRegExp("")) >= 0) {
-					strips[closestColumn].steelHooping = textContent;
-					// 删除该文本，随后生成截面标注
-					entites.push_back(ent);
+				else if (textContent.indexOf(QRegExp("^[ABCDE][0-9]+")) >= 0) {
+					if (strips[closestColumn].steelHooping.isEmpty()) {
+						strips[closestColumn].steelHooping = textContent;
+						// 删除该文本，随后生成截面标注
+						entites.push_back(ent);
+					}
+				}
+				else if (textContent.indexOf(QRegExp("^[A-Z0-9a-z]+")) >= 0){
+					if (strips[closestColumn].name.isEmpty()) {
+						strips[closestColumn].name = textContent;
+					}
 				}
 				else {
-					strips[closestColumn].name = textContent;
+					entites.push_back(ent);
 				}
 			}
 		}
