@@ -10,8 +10,8 @@
 /*  along with this program.  If not, see <http://www.gnu.org/licenses/>.    */
 /*****************************************************************************/
 
-#ifndef LISTLAYER_H
-#define LISTLAYER_H
+#ifndef COLUMNTABLE_H
+#define COLUMNTABLE_H
 
 #include <QDialog>
 #include "qc_plugininterface.h"
@@ -19,6 +19,11 @@
 #include <QTextEdit>
 
 #define M_PI       3.14159265358979323846   // pi
+
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+
+const double eps = 1.0e-8;
 
 namespace {
 	constexpr double m_piX2 = M_PI * 2; //2*PI
@@ -32,20 +37,14 @@ typedef struct _StripData {
 	   
 	bool closed;
 	/** Control points of the spline. */
-	// 板带控制点
+	// 柱大样外边线控制点
 	std::vector<QPointF> vertexs;
-	std::vector<QPointF> vertexsBig;
-	std::vector<QPointF> vertexsSmall;
-	/* 钢筋线标注点 */
-	std::vector<QPointF> vertexsSteelBig;
-	std::vector<QPointF> vertexsSteelSmall;
 
-	double sizeBig, sizeSmall;
-	QString steelBig, steelSmall, steelFace;
+	QString steelLongitudinal;		// 纵筋
+	QString steelHooping;			// 箍筋
+	QString name;					// 柱名称
 
 	QString strLayer, strColor;
-
-	std::vector<Plug_Entity *> entites;   // 对板带 是指针 ，该项目是 polyline
 } StripData;
 
 //class QTextEdit;
@@ -55,7 +54,7 @@ class LC_List : public QObject, QC_PluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(QC_PluginInterface)
-    Q_PLUGIN_METADATA(IID LC_DocumentInterface_iid FILE  "ListLayer.json")
+    Q_PLUGIN_METADATA(IID LC_DocumentInterface_iid FILE  "ColumnTable.json")
 
  public:
     virtual PluginCapabilities getCapabilities() const Q_DECL_OVERRIDE;
@@ -65,9 +64,12 @@ class LC_List : public QObject, QC_PluginInterface
 
 private:
 	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
-	// 第一遍，统计各个图层的 图元数量
-	void filterData1(Plug_Entity *ent, std::map<QString, int>& layerMap);
+	// 第一遍，过滤 柱大样边线
+	void filterData1(Plug_Entity *ent, std::vector<StripData>& strips);
+	// 第二遍，过滤 其它钢筋线，以及箍筋和纵筋的标识
+	void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<Plug_Entity *>& entites);
 	
+    QString getStrData(StripData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };

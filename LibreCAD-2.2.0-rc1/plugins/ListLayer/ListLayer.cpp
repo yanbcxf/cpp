@@ -16,6 +16,7 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <cmath>
+#include <map>
 #include "ListLayer.h"
 
 // yangbin
@@ -50,32 +51,34 @@ void LC_List::execComm(Document_Interface *doc,
     bool yes  = doc->getAllEntities(&obj, false);
     if (!yes || obj.isEmpty()) return;
 
-	//	柱下板带
-	std::vector<StripData>  strips;
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), strips);
-	}
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), strips);
-	}
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData3(obj.at(i), strips);
+	QStringList layerList = doc->getAllLayer();
+	std::map<QString, int> layerMap;
+	for (auto l : layerList) {
+		layerMap[l] = 0;
 	}
 
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData1(obj.at(i), layerMap);
+	}
+	
     QString text;
-    for (int i = 0; i < strips.size(); ++i) {
-        text.append( QString("%1 %2: ").arg(tr("n")).arg(i+1));
-        text.append( getStrData(strips[i]));
-        text.append( "\n");
-    }
+	std::map<QString, int>::iterator it;
+	int k = 0;
+	for (it = layerMap.begin(); it != layerMap.end(); ++it) {
+		k++;
+		text.append(QString("%1 %2: ").arg(tr("n")).arg(k));
+		text.append(QString("%1, %2 ").arg(it->first).arg(it->second));
+		text.append("\n");
+	}
+    
     lc_Listdlg dlg(parent);
     dlg.setText(text);
     //dlg.exec();
 	if (dlg.exec()) {
-		// 如果是 close 按钮，则删除已正确识别的板带 
-		for (int i = 0; i < strips.size(); ++i) {
-			for (int k = 0; k < strips[i].entites.size(); k++) {
-				doc->removeEntity(strips[i].entites[k]);
+		// 如果是 close 按钮，则删除没有图元的 layer 
+		for (it = layerMap.begin(); it != layerMap.end(); ++it) {
+			if (layerMap[it->first] == 0) {
+				doc->deleteLayer(it->first);
 			}
 		}
 	}
@@ -139,7 +142,7 @@ bool isInsideTriangle(const QPointF& pt, const QPointF& v1, const QPointF& v2, c
 	return false;
 }
 
-void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
+void LC_List::filterData1(Plug_Entity *ent, std::map<QString, int>& layerMap) {
 	if (NULL == ent)
 		return ;
 
@@ -149,277 +152,16 @@ void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 
 	//specific entity data
 	int et = data.value(DPI::ETYPE).toInt();
-	switch (et) {
-	case DPI::POLYLINE: {
-		QString strLayer = data.value(DPI::LAYER).toString();
-		if (strLayer.indexOf("z柱下板带") >= 0) {
-			StripData strip;
-			strip.strLayer = data.value(DPI::LAYER).toString();
-			strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
-			strip.steelBig = "2";
-			strip.steelSmall = "5";
-			strip.steelFace = "0";		// 缺省情况下 没有面筋
-			strip.entites.push_back(ent);
-
-			QList<Plug_VertexData> vl;
-			ent->getPolylineData(&vl);
-			int iVertices = vl.size();
-			for (int i = 0; i < iVertices; ++i) {
-				strip.vertexs.push_back(vl.at(i).point);
-			}
-
-			if (iVertices == 4) {
-				double sizex = hypot(vl.at(0).point.x() - vl.at(1).point.x(), vl.at(0).point.y() - vl.at(1).point.y());
-				double sizey = hypot(vl.at(1).point.x() - vl.at(2).point.x(), vl.at(1).point.y() - vl.at(2).point.y());
-				if (sizex > sizey) {
-					strip.sizeBig = sizex;
-					strip.sizeSmall = sizey;
-
-					strip.vertexsBig.push_back(vl.at(0).point);
-					strip.vertexsBig.push_back(vl.at(1).point);
-
-					strip.vertexsSmall.push_back(vl.at(1).point);
-					strip.vertexsSmall.push_back(vl.at(2).point);
-				}
-				else {
-					strip.sizeBig = sizey;
-					strip.sizeSmall = sizex;
-
-					strip.vertexsSmall.push_back(vl.at(0).point);
-					strip.vertexsSmall.push_back(vl.at(1).point);
-
-					strip.vertexsBig.push_back(vl.at(1).point);
-					strip.vertexsBig.push_back(vl.at(2).point);
-				}
-
-				strips.push_back(strip);
-			}
-		}
-		break; }
-	default:
-		break;
+	QString strLayer = data.value(DPI::LAYER).toString();
+	if (layerMap.count(strLayer) == 0) {
+		layerMap[strLayer] = 1;
+	}
+	else {
+		layerMap[strLayer]++;
 	}
 
 }
 
-
-
-void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips) {
-	if (NULL == ent)
-		return;
-
-	QPointF ptA;
-	QHash<int, QVariant> data;
-	//common entity data
-	ent->getData(&data);
-
-	//specific entity data
-	int et = data.value(DPI::ETYPE).toInt();
-	switch (et) {
-	
-	case DPI::POLYLINE: {
-		QString strLayer = data.value(DPI::LAYER).toString();
-		if (strLayer.indexOf("板底钢筋") >= 0) {
-			
-			QList<Plug_VertexData> vl;
-			ent->getPolylineData(&vl);
-			int iVertices = vl.size();
-			
-			if (iVertices == 4) {
-				double sizex = hypot(vl.at(0).point.x() - vl.at(1).point.x(), vl.at(0).point.y() - vl.at(1).point.y());
-				double sizey = hypot(vl.at(1).point.x() - vl.at(2).point.x(), vl.at(1).point.y() - vl.at(2).point.y());
-				
-				// 计算中间点, 并确定钢筋线方向
-				QPointF middle, pa, pb;
-				if (sizex > sizey) {
-					middle.setX((vl.at(0).point.x() + vl.at(1).point.x()) / 2);
-					middle.setY((vl.at(0).point.y() + vl.at(1).point.y()) / 2);
-					pa = vl.at(0).point;
-					pb = vl.at(1).point;
-				}
-				else {
-					middle.setX((vl.at(1).point.x() + vl.at(2).point.x()) / 2);
-					middle.setY((vl.at(1).point.y() + vl.at(2).point.y()) / 2);
-					pa = vl.at(1).point;
-					pb = vl.at(2).point;
-				}
-
-				// 匹配 柱中板带
-				int iStrips = strips.size();
-				for (int i = 0; i < iStrips; ++i) {
-					QPointF p1 = strips[i].vertexs[0];
-					QPointF p2 = strips[i].vertexs[1];
-					QPointF p3 = strips[i].vertexs[2];
-					QPointF p4 = strips[i].vertexs[3];
-
-					bool bInside = isInsideTriangle(middle, p1, p2, p3);
-
-					if (!bInside) {
-						bInside = isInsideTriangle(middle, p2, p3, p4);
-					}
-					if (!bInside) {
-						bInside = isInsideTriangle(middle, p1, p3, p4);
-					}
-
-					if (bInside) {
-						QPointF dirBig = strips[i].vertexsBig[0] - strips[i].vertexsBig[1];
-						QPointF dirSmall = strips[i].vertexsSmall[0] - strips[i].vertexsSmall[1];
-						QPointF dirSteel = pa - pb;
-						
-						double an = abs(angle(dirBig, dirSteel));
-
-						if (an < (M_PI / 6) || an >(M_PI * 5 / 6)) {
-							// 钢筋线与板带的大边平行
-							strips[i].vertexsSteelBig.push_back(pa);
-							strips[i].vertexsSteelBig.push_back(pb);
-						} 
-						else {
-							strips[i].vertexsSteelSmall.push_back(pa);
-							strips[i].vertexsSteelSmall.push_back(pb);
-						}
-
-						strips[i].entites.push_back(ent);
-						break;
-					}
-				}
-			}
-		}
-	}
-		break; 
-	default:
-		break;
-	}
-
-}
-
-
-void LC_List::filterData3(Plug_Entity *ent, std::vector<StripData>& strips) {
-	if (NULL == ent)
-		return;
-
-	QPointF ptA;
-	QHash<int, QVariant> data;
-	//common entity data
-	ent->getData(&data);
-
-	//specific entity data
-	int et = data.value(DPI::ETYPE).toInt();
-	switch (et) {
-	
-	case DPI::INSERT: {
-		ptA.setX(data.value(DPI::STARTX).toDouble());
-		ptA.setY(data.value(DPI::STARTY).toDouble());
-
-		QString strLayer = data.value(DPI::LAYER).toString();
-		if ( true /*strLayer.indexOf("板底钢筋") >= 0*/) {
-
-			QList<Plug_AttribData> vl;
-			ent->getAttribData(&vl);
-			int iVertices = vl.size();
-
-			// 匹配 柱中板带
-			int iStrips = strips.size();
-			for (int i = 0; i < iStrips; ++i) {
-				QPointF p1 = strips[i].vertexs[0];
-				QPointF p2 = strips[i].vertexs[1];
-				QPointF p3 = strips[i].vertexs[2];
-				QPointF p4 = strips[i].vertexs[3];
-
-				bool bInside = isInsideTriangle(ptA, p1, p2, p3);
-
-				if (!bInside) {
-					bInside = isInsideTriangle(ptA, p2, p3, p4);
-				}
-				if (!bInside) {
-					bInside = isInsideTriangle(ptA, p1, p3, p4);
-				}
-
-				if (bInside) {
-					// 查找最近的钢筋线，以确定 钢筋标注
-					double distanceToBig, distanceToSmall;
-					bool bBig, bSmall;
-					bBig = false; bSmall = false;
-					if (strips[i].vertexsSteelBig.size() > 0) {
-						distanceToBig = pointToLine(ptA, strips[i].vertexsSteelBig[0], strips[i].vertexsSteelBig[1]);
-						if (distanceToBig < 1000) bBig = true;
-					}
-					if (strips[i].vertexsSteelSmall.size() > 0) {
-						distanceToSmall = pointToLine(ptA, strips[i].vertexsSteelSmall[0], strips[i].vertexsSteelSmall[1]);
-						if (distanceToSmall < 1000) bSmall = true;
-					}
-
-
-					if (bBig && bSmall) {
-								
-						if (distanceToBig < distanceToSmall) {
-							strips[i].steelBig = vl.at(0).text;
-						}
-						else {
-							strips[i].steelSmall = vl.at(0).text;
-						}
-					}
-					else if (bBig) {
-						strips[i].steelBig = vl.at(0).text;
-					}
-					else if (bSmall) {
-						strips[i].steelSmall = vl.at(0).text;
-					}
-					else {
-						// 找不到钢筋线，该标注可能是 面筋
-						strips[i].steelFace = vl.at(0).text;
-					}
-					strips[i].entites.push_back(ent);
-					break;
-				}
-			}
-		}
-	}
-		break;
-	default:
-		break;
-	}
-
-}
-
-
-QString LC_List::getStrData(StripData strip) {
-    
-	QString strData(""), strCommon("  %1: %2\n");
-    
-	strData = strCommon.arg(strip.vertexs[0].x()).arg(strip.vertexs[0].y());
-    strData.append(strCommon.arg(tr("sizeBig")).arg(strip.sizeBig));
-	strData.append(strCommon.arg(tr("sizeSmall")).arg(strip.sizeSmall));
-	strData.append(strCommon.arg(tr("steelBig")).arg(strip.steelBig));
-	strData.append(strCommon.arg(tr("steelSmall")).arg(strip.steelSmall));
-
-	QString strBig, strSmall;
-	if (strip.steelBig == "1") strBig = "C20-200";
-	else if (strip.steelBig == "2") strBig = "C18-200";
-	else if (strip.steelBig == "3") strBig = "C16-200";
-	else if (strip.steelBig == "4") strBig = "C14-200";
-	else if (strip.steelBig == "5") strBig = "C12-200";
-	else if (strip.steelBig == "6") strBig = "C10-200";
-	else if (strip.steelBig == "7") strBig = "C22-200";
-	else if (strip.steelBig == "8") strBig = "C25-200";
-	else strBig = "Unknown";
-
-	if (strip.steelSmall == "1") strSmall = "C20-200";
-	else if (strip.steelSmall == "2") strSmall = "C18-200";
-	else if (strip.steelSmall == "3") strSmall = "C16-200";
-	else if (strip.steelSmall == "4") strSmall = "C14-200";
-	else if (strip.steelSmall == "5") strSmall = "C12-200";
-	else if (strip.steelSmall == "6") strSmall = "C10-200";
-	else if (strip.steelSmall == "7") strSmall = "C22-200";
-	else if (strip.steelSmall == "8") strSmall = "C25-200";
-	else strSmall = "Unknown";
-
-	strData.append(strCommon.arg(tr("Long Steel")).arg(strBig));
-	strData.append(strCommon.arg(tr("Short Steel")).arg(strSmall));
-	if (strip.steelFace != "0") 
-		strData.append(strCommon.arg(tr("Face Steel")).arg(strip.steelFace));
-
-    return strData;
-}
 
 double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB)
 {
