@@ -40,49 +40,6 @@ PluginCapabilities LC_List::getCapabilities() const
     return pluginCapabilities;
 }
 
-void LC_List::execComm(Document_Interface *doc,
-                             QWidget *parent, QString cmd)
-{
-    Q_UNUSED(parent);
-    Q_UNUSED(cmd);
-    d = doc;
-    QList<Plug_Entity *> obj;
-	std::vector<Plug_Entity *> entites;
-    bool yes  = doc->getSelect(&obj);
-    if (!yes || obj.isEmpty()) return;
-
-	//	柱大样外边框线
-	std::vector<StripData>  strips;
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), strips);
-	}
-	if (strips.size() > 0) {
-		for (int i = 0; i < obj.size(); ++i) {
-			filterData2(obj.at(i), strips, entites);
-		}
-	}
-	
-	
-    QString text;
-    for (int i = 0; i < strips.size(); ++i) {
-        text.append( QString("%1 %2: ").arg(tr("n")).arg(i+1));
-        text.append( getStrData(strips[i]));
-        text.append( "\n");
-    }
-    lc_Listdlg dlg(parent);
-    dlg.setText(text);
-    //dlg.exec();
-	if (dlg.exec()) {
-		// 如果是 close 按钮，则删除已正确识别的板带 
-		for (int k = 0; k < entites.size(); k++) {
-			doc->removeEntity(entites[k]);
-		}
-		// 生成 柱的截面标注
-	}
-
-    while (!obj.isEmpty())
-        delete obj.takeFirst();
-}
 
 bool LC_List::sign(const QPointF& v1, const QPointF& v2, const QPointF& v3) {
 	double res = (v1.x() - v3.x())*(v2.y() - v3.y()) - (v2.x() - v3.x())*(v1.y() - v3.y());
@@ -187,11 +144,19 @@ bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	return c;
 }
 
-QPointF leftDownCorner(std::vector<QPointF>& polyline) {
-	QPointF ld(1.0e+200, 1.0e+20);
+QPointF leftUpCorner(std::vector<QPointF>& polyline) {
+	QPointF ld;
 	for (int i = 0; i < polyline.size(); i++) {
-		if (ld.x() > polyline[i].x()) ld.setX(polyline[i].x());
-		if (ld.y() > polyline[i].y()) ld.setY(polyline[i].y());
+		if (i == 0) ld = polyline[i];
+		else {
+			if (ld.y() + eps < polyline[i].y()) {
+				ld = polyline[i];
+			}
+			else if (ld.y() - eps < polyline[i].y()) {
+				if (ld.x() > polyline[i].x())
+					ld = polyline[i];
+			}
+		}
 	}
 	return ld;
 }
@@ -403,6 +368,56 @@ QString LC_List::getStrData(StripData strip) {
 	strData.append(strCommon.arg(tr("steelHooping")).arg(strip.steelHooping));
 
     return strData;
+}
+
+
+void LC_List::execComm(Document_Interface *doc,
+	QWidget *parent, QString cmd)
+{
+	Q_UNUSED(parent);
+	Q_UNUSED(cmd);
+	d = doc;
+	QList<Plug_Entity *> obj;
+	std::vector<Plug_Entity *> entites;
+	bool yes = doc->getSelect(&obj);
+	if (!yes || obj.isEmpty()) return;
+
+	//	柱大样外边框线
+	std::vector<StripData>  strips;
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData1(obj.at(i), strips);
+	}
+	if (strips.size() > 0) {
+		for (int i = 0; i < obj.size(); ++i) {
+			filterData2(obj.at(i), strips, entites);
+		}
+	}
+
+
+	QString text;
+	for (int i = 0; i < strips.size(); ++i) {
+		text.append(QString("%1 %2: ").arg(tr("n")).arg(i + 1));
+		text.append(getStrData(strips[i]));
+		text.append("\n");
+	}
+	lc_Listdlg dlg(parent);
+	dlg.setText(text);
+	//dlg.exec();
+	if (dlg.exec()) {
+		// 如果是 close 按钮，则删除已正确识别的板带 
+		for (int k = 0; k < entites.size(); k++) {
+			doc->removeEntity(entites[k]);
+		}
+		// 生成 柱的截面标注
+		for (int i = 0; i < strips.size(); ++i) {
+			QPointF start = leftUpCorner(strips[i].vertexs);
+			QPointF end = start + QPointF(0, 1500);
+			doc->addLine(&start, &end);
+		}
+	}
+
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
 }
 
 double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB)
