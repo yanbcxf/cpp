@@ -35,7 +35,7 @@ typedef struct _StripData {
 	 */
 	_StripData() = default;
 	   
-	bool closed;
+	int closed;
 	/** Control points of the spline. */
 	// 柱大样外边线控制点
 	std::vector<QPointF> vertexs;
@@ -45,6 +45,7 @@ typedef struct _StripData {
 	QString name;					// 柱名称
 
 	QString strLayer, strColor;
+	Plug_Entity * ent;
 } StripData;
 
 //class QTextEdit;

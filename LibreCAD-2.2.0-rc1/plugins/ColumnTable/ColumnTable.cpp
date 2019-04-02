@@ -96,7 +96,8 @@ bool isInsideTriangle(const QPointF& pt, const QPointF& v1, const QPointF& v2, c
 	return false;
 }
 
-bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
+/* 0 在polyline 外部， 1 在polyline 边线或者顶点上， 2 在polyline 内部 */
+int isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	// 1，判断是否在 Polyline 外围的矩形外
 	QPointF minPt, maxPt;
 	for (int i = 0; i < polyline.size(); i++) {
@@ -107,12 +108,12 @@ bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 		if (polyline[i].y() > maxPt.y()) maxPt.setY(polyline[i].y());
 	}
 	if (pt.x() > maxPt.x() || pt.x() < minPt.x() || pt.y() > maxPt.y() || pt.y() < minPt.y())
-		return false;
+		return 0;
 
 	// 2，判断是否在 Polyline 的顶点上
 	for (int i = 0; i < polyline.size(); i++) {
 		if (polyline[i].x() == pt.x() && polyline[i].y() == pt.y())
-			return true;
+			return 1;
 	}
 
 	// 3，判断是否在 Polyline 的边线上
@@ -127,7 +128,7 @@ bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 			&& max(p1.x(), p2.x()) + eps >= pt.x()
 			&& min(p1.y(), p2.y()) - eps <= pt.y()
 			&& max(p1.y(), p2.y()) + eps >= pt.y())
-			return true;
+			return 1;
 	}
 
 	// 4，判断是否在 Polyline 外部 或 内部 （射线法）
@@ -141,7 +142,8 @@ bool isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 			(pt.x() < (p2.x() - p1.x()) * (pt.y() - p1.y()) / (p2.y() - p1.y()) + p1.x()))
 			c = !c;
 	}
-	return c;
+	if (c) return 2;
+	return 0;
 }
 
 QPointF leftUpCorner(std::vector<QPointF>& polyline) {
@@ -149,10 +151,10 @@ QPointF leftUpCorner(std::vector<QPointF>& polyline) {
 	for (int i = 0; i < polyline.size(); i++) {
 		if (i == 0) ld = polyline[i];
 		else {
-			if (ld.y() + eps < polyline[i].y()) {
+			if (ld.y() + 1.0 < polyline[i].y()) {
 				ld = polyline[i];
 			}
-			else if (ld.y() - eps < polyline[i].y()) {
+			else if (ld.y() - 1.0 <= polyline[i].y()) {
 				if (ld.x() > polyline[i].x())
 					ld = polyline[i];
 			}
@@ -211,6 +213,8 @@ void LC_List::filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 			StripData strip;
 			strip.strLayer = data.value(DPI::LAYER).toString();
 			strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
+			strip.closed = data.value(DPI::CLOSEPOLY).toInt();
+			strip.ent = ent;
 			
 			QList<Plug_VertexData> vl;
 			ent->getPolylineData(&vl);
@@ -280,7 +284,7 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 		ptB.setX(data.value(DPI::ENDX).toDouble());
 		ptB.setY(data.value(DPI::ENDY).toDouble());
 		for (int i = 0; i < strips.size(); i++) {
-			if (isInsidePolyline(ptA, strips[i].vertexs) || isInsidePolyline(ptB, strips[i].vertexs)) {
+			if (isInsidePolyline(ptA, strips[i].vertexs) ==2 || isInsidePolyline(ptB, strips[i].vertexs) ==2) {
 				bOutside = false;
 				break;
 			}
@@ -342,11 +346,17 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 				else if (textContent.indexOf(QRegExp("^[A-Z0-9a-z]+")) >= 0){
 					if (strips[closestColumn].name.isEmpty()) {
 						strips[closestColumn].name = textContent;
+						// 删除该文本，随后生成截面标注
+						entites.push_back(ent);
 					}
 				}
 				else {
 					entites.push_back(ent);
 				}
+			}
+			else {
+				// 无关的文本删除
+				entites.push_back(ent);
 			}
 		}
 		break;
@@ -356,13 +366,14 @@ void LC_List::filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std:
 
 }
 
-
-
 QString LC_List::getStrData(StripData strip) {
     
 	QString strData(""), strCommon("  %1: %2\n");
     
 	strData = strCommon.arg(strip.vertexs[0].x()).arg(strip.vertexs[0].y());
+	if (!strip.closed) {
+		strData.append(strCommon.arg(tr("closed")).arg("no"));
+	}
     strData.append(strCommon.arg(tr("columnName")).arg(strip.name));
 	strData.append(strCommon.arg(tr("steelLongitudinal")).arg(strip.steelLongitudinal));
 	strData.append(strCommon.arg(tr("steelHooping")).arg(strip.steelHooping));
@@ -393,7 +404,6 @@ void LC_List::execComm(Document_Interface *doc,
 		}
 	}
 
-
 	QString text;
 	for (int i = 0; i < strips.size(); ++i) {
 		text.append(QString("%1 %2: ").arg(tr("n")).arg(i + 1));
@@ -408,11 +418,25 @@ void LC_List::execComm(Document_Interface *doc,
 		for (int k = 0; k < entites.size(); k++) {
 			doc->removeEntity(entites[k]);
 		}
-		// 生成 柱的截面标注
+		
 		for (int i = 0; i < strips.size(); ++i) {
-			QPointF start = leftUpCorner(strips[i].vertexs);
-			QPointF end = start + QPointF(0, 1500);
+			// 对于未封闭的柱大样边线，要封闭
+			if (!strips[i].closed) {
+				QHash<int, QVariant> hash;
+				hash.insert(DPI::CLOSEPOLY, true);
+				strips[i].ent->updateData(&hash);
+			}
+
+			// 生成 柱的截面标注
+			QPointF start = leftUpCorner(strips[i].vertexs) + QPointF(200,-5);
+			QPointF end = start + QPointF(0, 2300);
 			doc->addLine(&start, &end);
+			end = end + QPointF(50, -300);
+			doc->addText(strips[i].name, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			end = end + QPointF(0, -300);
+			doc->addText(strips[i].steelLongitudinal, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			end = end + QPointF(0, -300);
+			doc->addText(strips[i].steelHooping, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}
 	}
 
