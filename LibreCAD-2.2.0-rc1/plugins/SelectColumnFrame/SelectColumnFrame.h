@@ -29,6 +29,18 @@ namespace {
 	constexpr double m_piX2 = M_PI * 2; //2*PI
 }
 
+typedef struct _TextData {
+	/**
+	* Default constructor. Leaves the data object uninitialized.
+	*/
+	_TextData() = default;
+	QString name;
+	QPointF ptA, ptB;
+
+	// 以下两个数组由小到大保存最近的 柱边线 及 距离
+	std::vector<std::pair<int, double>> distanceToStrip;
+	Plug_Entity * ent;
+} TextData;
 
 typedef struct _LineData {
 	/**
@@ -54,7 +66,7 @@ typedef struct _StripData {
 	// 标注引出线 (一般是两条)
 	std::vector<LineData> lines;
 
-	QString name;					// 柱名称
+	TextData text;					// 柱名称
 
 	QString strLayer, strColor;
 	Plug_Entity * ent;
@@ -78,10 +90,7 @@ class LC_List : public QObject, QC_PluginInterface
 
 private:
 	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
-	// 第一遍，过滤 柱大样边线
-	void filterData1(Plug_Entity *ent, std::vector<StripData>& strips);
-	// 第二遍，过滤 其它钢筋线，以及箍筋和纵筋的标识
-	void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<Plug_Entity *>& entites);
+	
 	
     QString getStrData(StripData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);

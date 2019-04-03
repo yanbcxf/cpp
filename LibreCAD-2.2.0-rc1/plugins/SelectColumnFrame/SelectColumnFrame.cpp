@@ -16,6 +16,7 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <cmath>
+#include <algorithm>
 #include "SelectColumnFrame.h"
 
 // yangbin
@@ -206,9 +207,9 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 	int et = data.value(DPI::ETYPE).toInt();
 	switch (et) {
 	case DPI::POLYLINE: {
-		/*QString strLayer = data.value(DPI::LAYER).toString();
-		QString strPattern = QString::fromLocal8Bit("柱大样外框");*/
-		if (/*strLayer.indexOf(strPattern) >=0*/ true) {
+		QString strLayer = data.value(DPI::LAYER).toString();
+		QString strPattern = QString::fromLocal8Bit("wall-主楼");
+		if (strLayer.indexOf(strPattern) < 0) {
 			StripData strip;
 			strip.strLayer = data.value(DPI::LAYER).toString();
 			strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
@@ -240,9 +241,9 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 		return;
 
 	QPointF ptA, ptB;
-	bool bOutside;
 	QString textContent;
 	QHash<int, QVariant> data;
+	LineData line;
 	//common entity data
 	ent->getData(&data);
 
@@ -252,8 +253,6 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 	switch (et) {
 	
 	case DPI::LINE:
-		bOutside = true;
-		LineData line;
 		line.from.setX(data.value(DPI::STARTX).toDouble());
 		line.from.setY(data.value(DPI::STARTY).toDouble());
 		line.to.setX(data.value(DPI::ENDX).toDouble());
@@ -320,14 +319,14 @@ void dispatchLines(std::vector<StripData>& strips, std::vector<LineData>& lines)
 
 
 // 第三遍，匹配 柱文本标注 到 柱放置边框
-void filterData3(Plug_Entity *ent, std::vector<StripData>& strips) {
+void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<TextData>& texts) {
 	if (NULL == ent)
 		return;
 
 	QPointF ptA, ptB;
-	bool bOutside;
 	QString textContent;
 	QHash<int, QVariant> data;
+	std::vector<QPointF> vertexs;
 	//common entity data
 	ent->getData(&data);
 
@@ -338,73 +337,65 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips) {
 	case DPI::MTEXT:
 	case DPI::TEXT:
 		textContent = data.value(DPI::TEXTCONTENT).toString();
-		bOutside = true;
-		ptA = ent->getMaxOfBorder();
-		ptB = ent->getMinOfBorder();
-		for (int i = 0; i < strips.size(); i++) {
-			if (isInsidePolyline(ptA, strips[i].vertexs) || isInsidePolyline(ptB, strips[i].vertexs)) {
-				bOutside = false;
-				break;
-			}
-		}
-		if (bOutside) {
-			// 寻找 mid 点正上方最近的 柱大样
-			QPointF mid = (ptA + ptB) / 2;
-			int closestColumn = -1;
-			double dist = 1.0e+20;
+		if (textContent.indexOf(QRegExp("KZ[0-9]")) >= 0 ||
+			textContent.indexOf(QRegExp("YBZ[0-9]")) >= 0 ||
+			textContent.indexOf(QRegExp("GBZ[0-9]")) >= 0) 
+		{
+			TextData txt;
+			txt.name = textContent;
+			txt.ptA = ent->getMaxOfBorder();
+			txt.ptB = ent->getMinOfBorder();
+			txt.ent = ent;
+
 			for (int i = 0; i < strips.size(); i++) {
-				if (pointCrossPolyline(ptA, strips[i].vertexs)
-					|| pointCrossPolyline(ptB, strips[i].vertexs)
-					|| pointCrossPolyline(mid, strips[i].vertexs)) {
-					double dist1 = pointToPolyline(mid, strips[i].vertexs);
-					if (closestColumn < 0) {
-						closestColumn = i;
-						dist = dist1;
-					}
-					else if (dist1 < dist) {
-						closestColumn = i;
-						dist = dist1;
-					}
+				vertexs = strips[i].vertexs;
+				for (auto l : strips[i].lines) {
+					vertexs.push_back(l.from);
+					vertexs.push_back(l.to);
 				}
-			}
 
-			if (closestColumn >= 0) {
-				if (textContent.indexOf(QRegExp("^[0-9]+C")) >= 0) {
-					if (strips[closestColumn].steelLongitudinal.isEmpty()) {
-						strips[closestColumn].steelLongitudinal = textContent;
-						// 删除该文本，随后生成截面标注
-						entites.push_back(ent);
-					}
-
-				}
-				else if (textContent.indexOf(QRegExp("^[ABCDE][0-9]+")) >= 0) {
-					if (strips[closestColumn].steelHooping.isEmpty()) {
-						strips[closestColumn].steelHooping = textContent;
-						// 删除该文本，随后生成截面标注
-						entites.push_back(ent);
-					}
-				}
-				else if (textContent.indexOf(QRegExp("^[A-Z0-9a-z]+")) >= 0) {
-					if (strips[closestColumn].name.isEmpty()) {
-						strips[closestColumn].name = textContent;
-						// 删除该文本，随后生成截面标注
-						entites.push_back(ent);
-					}
-				}
-				else {
-					entites.push_back(ent);
+				double distA = pointToPolyline(txt.ptA, vertexs);
+				double distB = pointToPolyline(txt.ptB, vertexs);
+				if (distA > distB) distA = distB;
+				if (distA < 5000) {
+					txt.distanceToStrip.push_back(std::make_pair(i, distA));
 				}
 			}
-			else {
-				// 无关的文本删除
-				entites.push_back(ent);
-			}
+			struct {
+				bool operator()(std::pair<int, double> a, std::pair<int, double> b) const
+				{
+					return a.second < b.second;
+				}
+			} customLess;
+			std::sort(txt.distanceToStrip.begin(), txt.distanceToStrip.end(), customLess);
+			texts.push_back(txt);
 		}
 		break;
 	default:
 		break;
 	}
 
+}
+
+void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
+	for (int i = 0; i < strips.size(); i++) {
+		int closestText = -1;
+		double closestDist = 1.0e+20;
+		for (int t = 0; t < texts.size(); t++) {
+			if (texts[t].distanceToStrip.size() > 0 && texts[t].distanceToStrip[0].first == i) {
+				if (texts[t].distanceToStrip[0].second < closestDist) {
+					closestText = t;
+					closestDist = texts[t].distanceToStrip[0].second;
+					strips[i].text = texts[closestText];
+					// 清除第一个，代表该 text 竞争下一个较近的 柱边框
+					texts[t].distanceToStrip.erase(texts[t].distanceToStrip.begin());
+				}
+			}
+		}
+		if (closestText >= 0) {
+			texts[closestText].distanceToStrip.clear();
+		}
+	}
 }
 
 QString LC_List::getStrData(StripData strip) {
@@ -415,10 +406,8 @@ QString LC_List::getStrData(StripData strip) {
 	if (!strip.closed) {
 		strData.append(strCommon.arg(tr("closed")).arg("no"));
 	}
-    strData.append(strCommon.arg(tr("columnName")).arg(strip.name));
-	strData.append(strCommon.arg(tr("steelLongitudinal")).arg(strip.steelLongitudinal));
-	strData.append(strCommon.arg(tr("steelHooping")).arg(strip.steelHooping));
-
+    strData.append(strCommon.arg(tr("columnName")).arg(strip.text.name));
+	
     return strData;
 }
 
@@ -434,16 +423,26 @@ void LC_List::execComm(Document_Interface *doc,
 	bool yes = doc->getSelect(&obj);
 	if (!yes || obj.isEmpty()) return;
 
-	//	柱大样外边框线
+	//	柱外边框线
 	std::vector<StripData>  strips;
+	std::vector<TextData>   texts;
+	std::vector<LineData>   lines;
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), strips);
 	}
-	if (strips.size() > 0) {
-		for (int i = 0; i < obj.size(); ++i) {
-			filterData2(obj.at(i), strips, entites);
-		}
+	// 第二遍，匹配 柱附近的标注引出线
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData2(obj.at(i), strips, lines);
 	}
+
+	dispatchLines(strips, lines);
+
+	// 第三遍，匹配 柱文本标注 到 柱放置边框
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData3(obj.at(i), strips, texts);
+	}
+
+	matchColumn(strips, texts);
 
 	QString text;
 	for (int i = 0; i < strips.size(); ++i) {
@@ -451,33 +450,43 @@ void LC_List::execComm(Document_Interface *doc,
 		text.append(getStrData(strips[i]));
 		text.append("\n");
 	}
+
+	int nRemain = 0;
+	for (int i = 0; i < texts.size(); i++) {
+		if (texts[0].distanceToStrip.size() > 0)
+			nRemain++;
+	}
+
+	text.append(QString("%1 %2: ").arg(tr("text remain")).arg(nRemain));
+	text.append("\n");
+
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
-		// 如果是 close 按钮，则删除已正确识别的板带 
-		for (int k = 0; k < entites.size(); k++) {
-			doc->removeEntity(entites[k]);
-		}
-		
-		for (int i = 0; i < strips.size(); ++i) {
-			// 对于未封闭的柱大样边线，要封闭
-			if (!strips[i].closed) {
-				QHash<int, QVariant> hash;
-				hash.insert(DPI::CLOSEPOLY, true);
-				strips[i].ent->updateData(&hash);
-			}
+				
+		// 如果是 close 按钮，则未包含的图元不被选中 
+		for (int n = 0; n < obj.size(); ++n) {
+			bool bInclude = false;
+			for (int i = 0; i < strips.size(); ++i) {
+				if (strips[i].text.name.length() > 0) {
+					for (int k = 0; k < strips[i].lines.size(); k++) {
+						if (obj.at(n) == strips[i].lines[k].ent) {
+							bInclude = true;
+							break;
+						}
+					}
+					if (strips[i].ent == obj.at(n)) 
+						bInclude = true;
+					if (strips[i].text.ent == obj.at(n))
+						bInclude = true;
 
-			// 生成 柱的截面标注
-			QPointF start = leftUpCorner(strips[i].vertexs) + QPointF(200,-5);
-			QPointF end = start + QPointF(0, 2300);
-			doc->addLine(&start, &end);
-			end = end + QPointF(50, -300);
-			doc->addText(strips[i].name, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-			end = end + QPointF(0, -300);
-			doc->addText(strips[i].steelLongitudinal, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-			end = end + QPointF(0, -300);
-			doc->addText(strips[i].steelHooping, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+					if (bInclude) break;
+				}
+			}
+			if (!bInclude) {
+				doc->setSelectedEntity(obj.at(n), false);
+			}
 		}
 	}
 
