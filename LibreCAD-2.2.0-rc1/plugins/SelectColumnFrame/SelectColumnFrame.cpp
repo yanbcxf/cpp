@@ -223,8 +223,20 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 				strip.vertexs.push_back(vl.at(i).point);
 			}
 
-			if (iVertices >= 3) {
-				strips.push_back(strip);
+			// 柱一般是多边形
+			if (iVertices >= 4 )  {
+				if (strip.closed) {
+					strips.push_back(strip);
+				}
+				else {
+					QPointF p1 = strip.vertexs[0] - strip.vertexs[iVertices - 1];
+					double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
+					if( dist < 1) 
+						strips.push_back(strip);
+					else {
+						int ttttt = 1;
+					}
+				}
 			}
 		}
 		break; }
@@ -244,6 +256,7 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 	QString textContent;
 	QHash<int, QVariant> data;
 	LineData line;
+	std::vector<QPointF> vertexs;
 	//common entity data
 	ent->getData(&data);
 
@@ -274,6 +287,45 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 		if (i >= strips.size()) {
 			lines.push_back(line);
 		}
+		break;
+	case DPI::POLYLINE: {
+		int closed = data.value(DPI::CLOSEPOLY).toInt();
+		QList<Plug_VertexData> vl;
+		ent->getPolylineData(&vl);
+		int iVertices = vl.size();
+		for (int i = 0; i < iVertices; ++i) {
+			vertexs.push_back(vl.at(i).point);
+		}
+
+		// 非封闭的 polyline 才可能是引出线
+		if (iVertices >= 3 && !closed) {
+			QPointF p1 = vertexs[0] - vertexs[iVertices - 1];
+			double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
+			if (dist > 10) {
+				line.ent = ent;
+				for (i = 0; i < strips.size(); i++) {
+					if (isInsidePolyline(vertexs[0], strips[i].vertexs) && !isInsidePolyline(vertexs[iVertices - 1], strips[i].vertexs)) {
+						line.from = vertexs[0];
+						line.to = vertexs[iVertices - 1];
+						strips[i].lines.push_back(line);
+						break;
+					}
+					else if (!isInsidePolyline(vertexs[0], strips[i].vertexs) && isInsidePolyline(vertexs[iVertices - 1], strips[i].vertexs)) {
+						line.to = vertexs[0];
+						line.from = vertexs[iVertices - 1];
+						strips[i].lines.push_back(line);
+						break;
+					}
+				}
+				if (i >= strips.size()) {
+					line.from = vertexs[0];
+					line.to = vertexs[iVertices - 1];
+					lines.push_back(line);
+				}
+			}
+		}
+		
+	}
 		break;
 	default:
 		break;
@@ -346,29 +398,58 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 			txt.ptA = ent->getMaxOfBorder();
 			txt.ptB = ent->getMinOfBorder();
 			txt.ent = ent;
+			txt.bMatch = false;
+			// 判断是否为重复的 柱标注
+			QPointF mid = (txt.ptA + txt.ptB) / 2;
+			bool bRepeat = false;
+			for (int i = 0; i < texts.size(); i++) {
+				// 对 边框进行缩小，以便提高重合校验的准确度
+				vertexs.clear();
+				QPointF p1 = texts[i].ptB;
+				QPointF p3 = texts[i].ptA;
+				QPointF p4, p2 = p1 - p3;
+				double  len = sqrt(p2.x()*p2.x() + p2.y() * p2.y())/5;
+				p1.setX(p1.x() + len);	p1.setY(p1.y() + len);
+				p3.setX(p3.x() - len);	p3.setY(p3.y() - len);
+				p2.setX(p1.x());		p2.setY(p3.y());
+				p4.setX(p3.x());		p4.setY(p1.y());
+				vertexs.push_back(p1);
+				vertexs.push_back(p2);
+				vertexs.push_back(p3);
+				vertexs.push_back(p4);
 
-			for (int i = 0; i < strips.size(); i++) {
-				vertexs = strips[i].vertexs;
-				for (auto l : strips[i].lines) {
-					vertexs.push_back(l.from);
-					vertexs.push_back(l.to);
-				}
-
-				double distA = pointToPolyline(txt.ptA, vertexs);
-				double distB = pointToPolyline(txt.ptB, vertexs);
-				if (distA > distB) distA = distB;
-				if (distA < 5000) {
-					txt.distanceToStrip.push_back(std::make_pair(i, distA));
+				if (isInsidePolyline(mid, vertexs) && texts[i].name == txt.name) {
+					bRepeat = true;
+					break;
 				}
 			}
-			struct {
-				bool operator()(std::pair<int, double> a, std::pair<int, double> b) const
-				{
-					return a.second < b.second;
+
+			if (!bRepeat) {
+				// 计算该文本到各个 柱边框的距离
+				for (int i = 0; i < strips.size(); i++) {
+					vertexs = strips[i].vertexs;
+					for (auto l : strips[i].lines) {
+						vertexs.push_back(l.from);
+						vertexs.push_back(l.to);
+					}
+					QPointF mid = (txt.ptA + txt.ptB) / 2;
+					double dist = pointToPolyline(mid, vertexs);
+					if (dist < 5000) {
+						txt.distanceToStrip.push_back(std::make_pair(i, dist));
+					}
 				}
-			} customLess;
-			std::sort(txt.distanceToStrip.begin(), txt.distanceToStrip.end(), customLess);
-			texts.push_back(txt);
+				struct {
+					bool operator()(std::pair<int, double> a, std::pair<int, double> b) const
+					{
+						return a.second < b.second;
+					}
+				} customLess;
+				std::sort(txt.distanceToStrip.begin(), txt.distanceToStrip.end(), customLess);
+				texts.push_back(txt);
+			}
+			else {
+				// 打印日志
+			}
 		}
 		break;
 	default:
@@ -394,6 +475,7 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 		}
 		if (closestText >= 0) {
 			texts[closestText].distanceToStrip.clear();
+			texts[closestText].bMatch = true;
 		}
 	}
 }
@@ -453,8 +535,10 @@ void LC_List::execComm(Document_Interface *doc,
 
 	int nRemain = 0;
 	for (int i = 0; i < texts.size(); i++) {
-		if (texts[0].distanceToStrip.size() > 0)
+		if (texts[i].bMatch == false) {
+			text.append(QString("N%1 : %2 \n").arg(tr("i")).arg(texts[i].name));
 			nRemain++;
+		}
 	}
 
 	text.append(QString("%1 %2: ").arg(tr("text remain")).arg(nRemain));
