@@ -28,6 +28,10 @@
 #endif
 #define M_PIx2      6.283185307179586 // 2*PI
 
+#define MAX_POSITIVE_DOUBLE  1.0e+20
+#define MAX_NEGATIVE_DOUBLE -1.0e+20
+#define TOLERANCE			 0.5
+
 QString LC_List::name() const
  {
      return (tr("handle column table"));
@@ -97,10 +101,17 @@ bool isInsideTriangle(const QPointF& pt, const QPointF& v1, const QPointF& v2, c
 	return false;
 }
 
+bool isEqual(const QPointF & p1, const QPointF & p2) {
+	if (p2.x() - TOLERANCE < p1.x() && p1.x() < p2.x() + TOLERANCE
+		&& p2.y() - TOLERANCE < p1.y() && p1.y() < p2.y() + TOLERANCE)
+		return true;
+	return false;
+}
+
 /* 0 在polyline 外部， 1 在polyline 边线或者顶点上， 2 在polyline 内部 */
 int isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	// 1，判断是否在 Polyline 外围的矩形外
-	QPointF minPt, maxPt;
+	QPointF minPt(MAX_POSITIVE_DOUBLE, MAX_POSITIVE_DOUBLE), maxPt(MAX_NEGATIVE_DOUBLE,MAX_NEGATIVE_DOUBLE);
 	for (int i = 0; i < polyline.size(); i++) {
 		if (polyline[i].x() < minPt.x()) minPt.setX(polyline[i].x());
 		if (polyline[i].y() < minPt.y()) minPt.setY(polyline[i].y());
@@ -108,12 +119,12 @@ int isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 		if (polyline[i].x() > maxPt.x()) maxPt.setX(polyline[i].x());
 		if (polyline[i].y() > maxPt.y()) maxPt.setY(polyline[i].y());
 	}
-	if (pt.x() > maxPt.x() || pt.x() < minPt.x() || pt.y() > maxPt.y() || pt.y() < minPt.y())
+	if (pt.x() > maxPt.x() + TOLERANCE || pt.x() < minPt.x() - TOLERANCE || pt.y() > maxPt.y() + TOLERANCE || pt.y() < minPt.y() - TOLERANCE)
 		return 0;
 
 	// 2，判断是否在 Polyline 的顶点上
 	for (int i = 0; i < polyline.size(); i++) {
-		if (polyline[i].x() == pt.x() && polyline[i].y() == pt.y())
+		if (isEqual(polyline[i], pt))
 			return 1;
 	}
 
@@ -123,13 +134,18 @@ int isInsidePolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 		p1 = polyline[i];
 		p2 = polyline[j];
 		e1 = pt - p1;
-		e2 = pt - p2;
-		if (fabs(e1.x() * e2.y() - e2.x() * e1.y()) < eps
-			&& min(p1.x(), p2.x()) - eps <= pt.x()
-			&& max(p1.x(), p2.x()) + eps >= pt.x()
-			&& min(p1.y(), p2.y()) - eps <= pt.y()
-			&& max(p1.y(), p2.y()) + eps >= pt.y())
-			return 1;
+		e2 = p2 - p1;
+		if (min(p1.x(), p2.x()) - TOLERANCE <= pt.x() && max(p1.x(), p2.x()) + TOLERANCE >= pt.x()
+			&& min(p1.y(), p2.y()) - TOLERANCE <= pt.y() && max(p1.y(), p2.y()) + TOLERANCE >= pt.y()) {
+			// 首先利用叉乘 
+			double d = fabs(e1.x() * e2.y() - e2.x() * e1.y());
+			if (d < TOLERANCE)
+				return 1;
+			// 随后利用 垂直距离
+			d = pointToLine(pt, p1, p2);
+			if (d < 10 * TOLERANCE)
+				return 1;
+		}
 	}
 
 	// 4，判断是否在 Polyline 外部 或 内部 （射线法）
@@ -164,9 +180,10 @@ QPointF leftUpCorner(std::vector<QPointF>& polyline) {
 	return ld;
 }
 
-/* 计算点到 Polyline 的最近距离, 仅判断线段端点，有可能垂足在线段中间 */
+/* 计算点到 Polyline 的最近距离 */
 double pointToPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	double dist = 1.0e+20;
+	// 先计算到线段各端点的最短距离
 	for (int i = 0; i < polyline.size(); i++) {
 		QPointF p1;
 		p1 = polyline[i];
@@ -174,6 +191,21 @@ double pointToPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 		double dist0 = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
 
 		if (dist0 < dist) dist = dist0;
+	}
+	// 再计算如果 垂足在线段上时的最短距离
+	for (int i = 0, j = polyline.size() - 1; i < polyline.size(); j = i++) {
+		QPointF p1, p2, e1, e2;
+		p1 = polyline[i];
+		p2 = polyline[j];
+		e1 = pt - p1;
+		e2 = pt - p2;
+		double a1 = angle(e1, p2 - p1);
+		double a2 = angle(e2, p2 - p1);
+		if ((a1 < M_PI / 2 && a2 > M_PI / 2) || (a1 > M_PI / 2 && a2 < M_PI / 2)) {
+			// 一个为钝角 ，一个为锐角 说明有垂足
+			double dist0 = pointToLine(pt, p1, p2);
+			if (dist0 < dist) dist = dist0;
+		}
 	}
 	return dist;
 }
@@ -192,6 +224,39 @@ int pointCrossPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	}
 	return nCross;
 }
+
+/* 计算任意多边形重心 
+ * https://blog.csdn.net/youth_shouting/article/details/79247170
+ */
+QPointF centreOfGravity(std::vector<QPointF>& polyline) {
+	int n;
+	int m = polyline.size();;
+	double ss = 0;  //元面积
+	double S = 0;   //元面积之和，即多边形面积
+	double gx = 0;  //重心和的 x部分
+	double gy = 0;  //重心和的 y部分
+	QPointF g(0, 0);
+
+	for (int i = 0, j = polyline.size() - 1; i < polyline.size(); j = i++) {
+		QPointF p1, p2;
+		p1 = polyline[i];
+		p2 = polyline[j];
+
+		ss = (p1.x() * p2.y() - p2.x() * p1.y()) / 2;
+		S += ss;
+
+		gx += (double)ss * (p1.x() + p2.x());
+		gy += (double)ss * (p1.y() + p2.y());
+	}
+	
+	if (S != 0)
+	{
+		g.setX(gx / S / 3);
+		g.setY(gy / S / 3);
+	}
+	return g;
+}
+
 
 
 /* 第一遍，过滤 柱放置边框 */
@@ -223,15 +288,41 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 				strip.vertexs.push_back(vl.at(i).point);
 			}
 
-			// 柱一般是多边形
-			if (iVertices >= 4 )  {
+			// 计算任意边长度
+			bool bTooBig = false;
+			for (int i = 0, j = iVertices - 1; i < iVertices; j = i++) {
+				QPointF e1, p1, p2;
+				p1 = strip.vertexs[i];
+				p2 = strip.vertexs[j];
+				e1 = p2 - p1;
+				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+				if (dist > 3000) {
+					bTooBig = true;
+				}
+			}
+
+			// 柱一般是多边形, 且任意边长度 不应太大
+			if (iVertices >= 4 && !bTooBig )  {
+				
 				if (strip.closed) {
 					strips.push_back(strip);
 				}
 				else {
-					QPointF p1 = strip.vertexs[0] - strip.vertexs[iVertices - 1];
-					double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
-					if( dist < 1) 
+					// 从第 5 个点开始 尝试后续点 与前面的 点是否构成封闭
+					bool bClosed = false;
+					for (int i = 4; i < iVertices; i++) {
+						for (int j = 0; j <= i - 4; j++) {
+							QPointF p1 = strip.vertexs[i] - strip.vertexs[j];
+							double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
+							if (dist < 1) {
+								bClosed = true;
+								break;
+							}
+						}
+						if (bClosed) break;
+					}
+					
+					if(bClosed)
 						strips.push_back(strip);
 					else {
 						int ttttt = 1;
@@ -265,28 +356,33 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 	int i;
 	switch (et) {
 	
-	case DPI::LINE:
+	case DPI::LINE: {
 		line.from.setX(data.value(DPI::STARTX).toDouble());
 		line.from.setY(data.value(DPI::STARTY).toDouble());
 		line.to.setX(data.value(DPI::ENDX).toDouble());
 		line.to.setY(data.value(DPI::ENDY).toDouble());
 		line.ent = ent;
-		for (i = 0; i < strips.size(); i++) {
-			if (isInsidePolyline(line.from, strips[i].vertexs) && !isInsidePolyline(line.to, strips[i].vertexs)) {
-				strips[i].lines.push_back(line);
-				break;
+		QPointF p1 = line.from - line.to;
+		double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
+		if (dist > 10 && dist < 3000 /* 距离太长有可能是轴线 */) {
+			for (i = 0; i < strips.size(); i++) {
+				if (isInsidePolyline(line.from, strips[i].vertexs) && !isInsidePolyline(line.to, strips[i].vertexs)) {
+					strips[i].lines.push_back(line);
+					break;
+				}
+				else if (!isInsidePolyline(line.from, strips[i].vertexs) && isInsidePolyline(line.to, strips[i].vertexs)) {
+					QPointF tmp = line.from;
+					line.from = line.to;
+					line.to = tmp;
+					strips[i].lines.push_back(line);
+					break;
+				}
 			}
-			else if (!isInsidePolyline(line.from, strips[i].vertexs) && isInsidePolyline(line.to, strips[i].vertexs)) {
-				QPointF tmp = line.from;
-				line.from = line.to;
-				line.to = tmp;
-				strips[i].lines.push_back(line);
-				break;
+			if (i >= strips.size()) {
+				lines.push_back(line);
 			}
 		}
-		if (i >= strips.size()) {
-			lines.push_back(line);
-		}
+	}
 		break;
 	case DPI::POLYLINE: {
 		int closed = data.value(DPI::CLOSEPOLY).toInt();
@@ -301,7 +397,7 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 		if (iVertices >= 3 && !closed) {
 			QPointF p1 = vertexs[0] - vertexs[iVertices - 1];
 			double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
-			if (dist > 10) {
+			if (dist > 10 && dist < 3000 /* 距离太长有可能是轴线 */) {
 				line.ent = ent;
 				for (i = 0; i < strips.size(); i++) {
 					if (isInsidePolyline(vertexs[0], strips[i].vertexs) && !isInsidePolyline(vertexs[iVertices - 1], strips[i].vertexs)) {
@@ -346,11 +442,11 @@ void dispatchLines(std::vector<StripData>& strips, std::vector<LineData>& lines)
 				if (strips[i].lines.size() > 0) {
 					// 取出该柱子的最后一条标注引出线
 					LineData line = strips[i].lines[strips[i].lines.size() - 1];
-					if (line.to == it->from) {
+					if (isEqual(line.to, it->from)) {
 						strips[i].lines.push_back(*it);
 						break;
 					}
-					else if (line.to == it->to) {
+					else if (isEqual(line.to, it->to)) {
 						QPointF tmp = it->from;
 						it->from = it->to;
 						it->to = tmp;
@@ -398,7 +494,7 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 			txt.ptA = ent->getMaxOfBorder();
 			txt.ptB = ent->getMinOfBorder();
 			txt.ent = ent;
-			txt.bMatch = false;
+			txt.bMatch = 0;
 			// 判断是否为重复的 柱标注
 			QPointF mid = (txt.ptA + txt.ptB) / 2;
 			bool bRepeat = false;
@@ -428,12 +524,16 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 				// 计算该文本到各个 柱边框的距离
 				for (int i = 0; i < strips.size(); i++) {
 					vertexs = strips[i].vertexs;
-					for (auto l : strips[i].lines) {
-						vertexs.push_back(l.from);
-						vertexs.push_back(l.to);
-					}
+					
 					QPointF mid = (txt.ptA + txt.ptB) / 2;
 					double dist = pointToPolyline(mid, vertexs);
+					for (auto l : strips[i].lines) {
+						vertexs.clear();
+						vertexs.push_back(l.from);
+						vertexs.push_back(l.to);
+						double dist0 = pointToPolyline(mid, vertexs);
+						if (dist0 < dist) dist = dist0;
+					}
 					if (dist < 5000) {
 						txt.distanceToStrip.push_back(std::make_pair(i, dist));
 					}
@@ -459,7 +559,7 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 }
 
 void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
-	for (int i = 0; i < strips.size(); i++) {
+	/*for (int i = 0; i < strips.size(); i++) {
 		int closestText = -1;
 		double closestDist = 1.0e+20;
 		for (int t = 0; t < texts.size(); t++) {
@@ -468,7 +568,7 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 					closestText = t;
 					closestDist = texts[t].distanceToStrip[0].second;
 					strips[i].text = texts[closestText];
-					// 清除第一个，代表该 text 竞争下一个较近的 柱边框
+					清除第一个，代表该 text 竞争下一个较近的 柱边框
 					texts[t].distanceToStrip.erase(texts[t].distanceToStrip.begin());
 				}
 			}
@@ -477,7 +577,46 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 			texts[closestText].distanceToStrip.clear();
 			texts[closestText].bMatch = true;
 		}
-	}
+	}*/
+
+	int nSerial = 1;
+	do {
+		// 寻找首先被 匹配的 文本 和 柱边框
+		double closestDist = 1.0e+20;
+		int closestStrip = -1;
+		int closestText = -1;
+		for (int t = 0; t < texts.size(); t++) {
+			if (texts[t].distanceToStrip.size() > 0 && texts[t].distanceToStrip[0].second < closestDist) {
+				closestDist = texts[t].distanceToStrip[0].second;
+				closestStrip = texts[t].distanceToStrip[0].first;
+				closestText = t;
+			}
+		}
+
+		//
+		if (closestText >= 0) {
+			strips[closestStrip].text = texts[closestText];
+			texts[closestText].distanceToStrip.clear();
+			texts[closestText].bMatch = nSerial;
+			texts[closestText].gravityOfColumn = centreOfGravity(strips[closestStrip].vertexs);
+
+			// 编号为 closestStrip 的柱边框已经被匹配，清除 distanceToStrip 中对 柱边框的 竞争
+			for (int t = 0; t < texts.size(); t++) {
+				std::vector<std::pair<int, double>>::iterator it = texts[t].distanceToStrip.begin();
+				for (; it != texts[t].distanceToStrip.end(); it++) {
+					if (it->first == closestStrip)
+						break;
+				}
+				if (it != texts[t].distanceToStrip.end())
+					texts[t].distanceToStrip.erase(it);
+			}
+		}
+		else
+			break;
+		nSerial++;
+	} while (true);
+	
+
 }
 
 QString LC_List::getStrData(StripData strip) {
@@ -527,21 +666,32 @@ void LC_List::execComm(Document_Interface *doc,
 	matchColumn(strips, texts);
 
 	QString text;
-	for (int i = 0; i < strips.size(); ++i) {
+	/*for (int i = 0; i < strips.size(); ++i) {
 		text.append(QString("%1 %2: ").arg(tr("n")).arg(i + 1));
 		text.append(getStrData(strips[i]));
 		text.append("\n");
-	}
+	}*/
+
+	// 按照匹配的先后顺序排序
+	struct {
+		bool operator()(TextData a, TextData b) const
+		{
+			return a.bMatch < b.bMatch;
+		}
+	} customLess;
+	std::sort(texts.begin(), texts.end(), customLess);
 
 	int nRemain = 0;
 	for (int i = 0; i < texts.size(); i++) {
-		if (texts[i].bMatch == false) {
-			text.append(QString("N%1 : %2 \n").arg(tr("i")).arg(texts[i].name));
+		text.append(QString("N %1 : %2 ( %3 , %4 ) --> ( %5 , %6 )  \n").arg(texts[i].bMatch).arg(texts[i].name)
+			.arg(texts[i].ptA.x()).arg(texts[i].ptA.y()).arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));
+		if (texts[i].bMatch == 0) {
 			nRemain++;
 		}
 	}
 
 	text.append(QString("%1 %2: ").arg(tr("text remain")).arg(nRemain));
+	text.append(QString("%1 %2: ").arg(tr("text total")).arg(texts.size()));
 	text.append("\n");
 
 	lc_Listdlg dlg(parent);

@@ -40,7 +40,8 @@ typedef struct _TextData {
 	// 以下两个数组由小到大保存最近的 柱边线 及 距离
 	std::vector<std::pair<int, double>> distanceToStrip;
 	Plug_Entity * ent;
-	bool bMatch;
+	int bMatch;
+	QPointF gravityOfColumn;
 } TextData;
 
 typedef struct _LineData {
