@@ -142,6 +142,7 @@
 #include "rs_actionselectwindow.h"
 #include "rs_actionselecttext.h"
 
+
 #include "rs_actionsetrelativezero.h"
 #include "rs_actionsetsnapmode.h"
 #include "rs_actionsetsnaprestriction.h"
@@ -153,6 +154,7 @@
 #include "rs_actionzoomprevious.h"
 #include "rs_actionzoomredraw.h"
 #include "rs_actionzoomwindow.h"
+#include "rs_actionzoomcoordinate.h"
 
 #include "rs_actiondrawpolyline.h"
 #include "rs_actionpolylineadd.h"
@@ -390,6 +392,9 @@ RS_ActionInterface* QG_ActionHandler::setCurrentAction(RS2::ActionType id) {
     case RS2::ActionZoomRedraw:
         a = new RS_ActionZoomRedraw(*document, *view);
         break;
+	case RS2::ActionZoomCoordinate:		// yangbin
+		a = new RS_ActionZoomCoordinate(*document, *view);
+		break;
 
         // Drawing actions:
         //
@@ -1203,6 +1208,11 @@ void QG_ActionHandler::slotZoomPrevious() {
 
 void QG_ActionHandler::slotZoomRedraw() {
     setCurrentAction(RS2::ActionZoomRedraw);
+}
+
+// yangbin 
+void QG_ActionHandler::slotZoomCoordinate() {
+	setCurrentAction(RS2::ActionZoomCoordinate);
 }
 
 void QG_ActionHandler::slotToolRegenerateDimensions() {

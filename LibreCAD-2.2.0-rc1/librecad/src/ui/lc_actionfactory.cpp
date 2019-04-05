@@ -1320,6 +1320,15 @@ void LC_ActionFactory::commonActions(QMap<QString, QAction*>& a_map, LC_ActionGr
     action->setObjectName("ZoomWindow");
     a_map["ZoomWindow"] = action;
 
+	action = new QAction(tr("&Co-ordinate Zoom"), agm->view);
+	if (using_theme)
+		action->setIcon(QIcon::fromTheme("zoom-fit-best", QIcon(":/icons/zoom_auto.svg")));
+	else
+		action->setIcon(QIcon(":/icons/zoom_auto.svg"));
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomCoordinate()));
+	action->setObjectName("ZoomCoordinate");
+	a_map["ZoomCoordinate"] = action;
+
     // <[~ File ~]>
 
     action = new QAction(tr("&New"), agm->file);

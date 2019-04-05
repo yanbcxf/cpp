@@ -90,6 +90,7 @@ public slots:
 	void slotZoomPan();
 	void slotZoomPrevious();
 	void slotZoomRedraw();
+	void slotZoomCoordinate();
 
 	void slotToolRegenerateDimensions();
 

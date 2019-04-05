@@ -626,6 +626,7 @@ void LC_WidgetFactory::createMenus(QMenuBar* menu_bar)
     view_menu->addAction(a_map["ZoomPrevious"]);
     view_menu->addAction(a_map["ZoomWindow"]);
     view_menu->addAction(a_map["ZoomPan"]);
+	view_menu->addAction(a_map["ZoomCoordinate"]);		// yangbin
 
     // <[~ Tools ~]>
 

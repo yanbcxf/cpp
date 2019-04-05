@@ -1111,6 +1111,9 @@
     <ClCompile Include="ui\generic\inputbox.cpp">
       <Filter>ui\generic</Filter>
     </ClCompile>
+    <ClCompile Include="actions\rs_actionzoomcoordinate.cpp">
+      <Filter>actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\boost_1_69_0">
@@ -4307,6 +4310,9 @@
     </QtMoc>
     <QtMoc Include="ui\generic\inputbox.h">
       <Filter>ui\generic</Filter>
+    </QtMoc>
+    <QtMoc Include="actions\rs_actionzoomcoordinate.h">
+      <Filter>actions</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
