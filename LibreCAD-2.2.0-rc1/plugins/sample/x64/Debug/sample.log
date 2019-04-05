@@ -1,1 +1,16 @@
-﻿
+﻿  Generate moc_predefs.h
+  Moc'ing sample.h...
+  Warning: Failed to resolve include "F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/sample/moc/moc_predefs.h" for moc file D:\github\cpp\LibreCAD-2.2.0-rc1\plugins\sample\sample.h
+cl : 命令行 warning D9002: 忽略未知选项“-Zc:__cplusplus”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+cl : 命令行 warning D9002: 忽略未知选项“-Zc:__cplusplus”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+  sample.cpp
+cl : 命令行 warning D9002: 忽略未知选项“-Zc:__cplusplus”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+cl : 命令行 warning D9002: 忽略未知选项“-g”
+  moc_sample.cpp
+    正在创建库 ..\..\windows\resources\plugins\\sampled1.lib 和对象 ..\..\windows\resources\plugins\\sampled1.exp
+  sample.vcxproj -> D:\github\cpp\LibreCAD-2.2.0-rc1\plugins\sample\..\..\windows\resources\plugins\sampled1.dll
