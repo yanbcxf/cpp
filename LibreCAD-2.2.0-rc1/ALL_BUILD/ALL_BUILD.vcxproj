@@ -83,12 +83,13 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy   "$(SolutionDir)windows\resources\plugins\list1.dll"    "d:\"   /Y
-xcopy   "$(SolutionDir)windows\resources\plugins\ListLayer1.dll"   "$(ProgramW6432)\LibreCAD\resources\plugins\"  /Y 
-xcopy    "$(SolutionDir)windows\resources\plugins\liststrip1.dll"  "$(ProgramW6432)\LibreCAD\resources\plugins\"  /Y
-xcopy     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.dll"   "$(ProgramW6432)\LibreCAD\resources\plugins\"  /Y
-xcopy     "$(SolutionDir)windows\resources\plugins\SelectColumnFrame1.dll"   "$(ProgramW6432)\LibreCAD\resources\plugins\"  /Y
-xcopy     "$(SolutionDir)windows\LibreCAD.exe"  "$(ProgramW6432)\LibreCAD\"  /Y</Command>
+      <Command>xcopy   "$(SolutionDir)windows\resources\plugins\list1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y 
+xcopy   "$(SolutionDir)windows\resources\plugins\ListLayer1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y 
+xcopy    "$(SolutionDir)windows\resources\plugins\liststrip1.dll"  "$(LibreCADInstall)resources\plugins\"  /Y
+xcopy     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y
+xcopy     "$(SolutionDir)windows\resources\plugins\SelectColumnFrame1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y
+xcopy     "$(SolutionDir)windows\LibreCAD.exe"  "$(LibreCADInstall)"  /Y
+xcopy   "$(SolutionDir)windows\resources\plugins\ColumnTable1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
