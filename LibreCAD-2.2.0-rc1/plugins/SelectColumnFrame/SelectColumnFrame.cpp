@@ -15,6 +15,8 @@
 //#include <QColor>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QCheckBox>
 #include <cmath>
 #include <algorithm>
 #include "SelectColumnFrame.h"
@@ -274,7 +276,7 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 	case DPI::POLYLINE: {
 		QString strLayer = data.value(DPI::LAYER).toString();
 		QString strPattern = QString::fromLocal8Bit("wall-主楼");
-		if (strLayer.indexOf(strPattern) < 0) {
+		if (/* strLayer.indexOf(strPattern) < 0 */ true) {
 			StripData strip;
 			strip.strLayer = data.value(DPI::LAYER).toString();
 			strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
@@ -414,6 +416,7 @@ void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<L
 					}
 				}
 				if (i >= strips.size()) {
+					// 临时保存，可能是标注线的引出线
 					line.from = vertexs[0];
 					line.to = vertexs[iVertices - 1];
 					lines.push_back(line);
@@ -499,7 +502,7 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 			QPointF mid = (txt.ptA + txt.ptB) / 2;
 			bool bRepeat = false;
 			for (int i = 0; i < texts.size(); i++) {
-				// 对 边框进行缩小，以便提高重合校验的准确度
+				// 对 标注文本边框进行缩小，以便提高重合校验的准确度
 				vertexs.clear();
 				QPointF p1 = texts[i].ptB;
 				QPointF p3 = texts[i].ptA;
@@ -595,6 +598,42 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 
 		//
 		if (closestText >= 0) {
+			// 根据匹配的标注文本寻找多余的 标注引出线，并删除
+			std::vector<QPointF> vertexs;
+			QPointF mid = (texts[closestText].ptA + texts[closestText].ptB) / 2;
+			double dist = 1.0e+20;
+			int lastLine = -1;
+			for (int l = 0; l < strips[closestStrip].lines.size(); l++) {
+				vertexs.clear();
+				vertexs.push_back(strips[closestStrip].lines[l].from);
+				vertexs.push_back(strips[closestStrip].lines[l].to);
+				double dist0 = pointToPolyline(mid, vertexs);
+				if (dist0 < dist) {
+					dist = dist0;
+					lastLine = l;
+				}
+			}
+			double dist0 = pointToPolyline(mid, strips[closestStrip].vertexs);
+			if (dist0 < dist) {
+				// 标注与 柱本身最近，则清除所有错误引出线
+				strips[closestStrip].lines.clear();
+				lastLine = -1;
+			}
+
+			if (lastLine >= 0) {
+				// 确实标注 与引出线最近，则由后向前保留有用的引出线
+				std::vector<LineData>  lines;
+				lines.push_back(strips[closestStrip].lines[lastLine]);
+				for (int l = lastLine - 1; l >= 0; l--) {
+					if (isEqual(strips[closestStrip].lines[l].to, lines[0].from)) {
+						lines.insert(lines.begin(), strips[closestStrip].lines[l]);
+					}
+				}
+				strips[closestStrip].lines.clear();
+				strips[closestStrip].lines = lines;
+			}
+
+			// bMatch 保存匹配的顺序号
 			strips[closestStrip].text = texts[closestText];
 			texts[closestText].distanceToStrip.clear();
 			texts[closestText].bMatch = nSerial;
@@ -704,15 +743,15 @@ void LC_List::execComm(Document_Interface *doc,
 			bool bInclude = false;
 			for (int i = 0; i < strips.size(); ++i) {
 				if (strips[i].text.name.length() > 0) {
-					for (int k = 0; k < strips[i].lines.size(); k++) {
+					for (int k = 0; k < strips[i].lines.size() && dlg.lineCheck.isChecked(); k++) {
 						if (obj.at(n) == strips[i].lines[k].ent) {
 							bInclude = true;
 							break;
 						}
 					}
-					if (strips[i].ent == obj.at(n)) 
+					if (strips[i].ent == obj.at(n) && dlg.columnCheck.isChecked()) 
 						bInclude = true;
-					if (strips[i].text.ent == obj.at(n))
+					if (strips[i].text.ent == obj.at(n) && dlg.textCheck.isChecked())
 						bInclude = true;
 
 					if (bInclude) break;
@@ -742,9 +781,33 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 //    QTextEdit *edit= new QTextEdit(this);
     edit.setReadOnly (true);
     edit.setAcceptRichText ( false );
-    QDialogButtonBox* bb = new QDialogButtonBox( QDialogButtonBox::Close, Qt::Horizontal, this );
+   
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(&edit);
+	mainLayout->addStretch();
+
+	QHBoxLayout *loCheck = new QHBoxLayout;
+	
+	columnCheck.setText(tr("Column"));
+	columnCheck.setChecked(true);
+	loCheck->addStretch();
+	loCheck->addWidget(&columnCheck);
+
+	lineCheck.setText(tr("Line"));
+	lineCheck.setChecked(true);
+	loCheck->addStretch();
+	loCheck->addWidget(&lineCheck);
+
+	textCheck.setText(tr("Text"));
+	textCheck.setChecked(true);
+	loCheck->addStretch();
+	loCheck->addWidget(&textCheck);
+	loCheck->addStretch();
+
+	mainLayout->addLayout(loCheck);
+
+	mainLayout->addStretch();
+	QDialogButtonBox* bb = new QDialogButtonBox(QDialogButtonBox::Close, Qt::Horizontal, this);
     mainLayout->addWidget(bb);
     this->setLayout(mainLayout);
     this->resize ( 650, 350 );

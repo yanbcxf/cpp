@@ -17,6 +17,7 @@
 #include "qc_plugininterface.h"
 #include "document_interface.h"
 #include <QTextEdit>
+#include <QCheckBox>
 
 #define M_PI       3.14159265358979323846   // pi
 
@@ -126,7 +127,11 @@ private:
 //    QLineEdit *startxedit;
 //    QLineEdit *startyedit;
 //    QLineEdit *endxedit;
+public:
     QTextEdit edit;
+	QCheckBox columnCheck;
+	QCheckBox lineCheck;
+	QCheckBox textCheck;
 };
 
 #endif // LIST_H
