@@ -36,7 +36,7 @@
 
 QString LC_List::name() const
  {
-     return (tr("handle column table"));
+     return (tr("Select Column Frame"));
  }
 
 PluginCapabilities LC_List::getCapabilities() const
@@ -301,31 +301,48 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 				if (dist > 3000) {
 					bTooBig = true;
 				}
+				if ( dist >= 1)
+					strip.edgeLength.push_back(dist + 0.5);
 			}
 
 			// 柱一般是多边形, 且任意边长度 不应太大
 			if (iVertices >= 4 && !bTooBig )  {
 				
 				if (strip.closed) {
+					std::sort(strip.edgeLength.begin(), strip.edgeLength.end());
 					strips.push_back(strip);
 				}
 				else {
 					// 从第 5 个点开始 尝试后续点 与前面的 点是否构成封闭
 					bool bClosed = false;
+					
 					for (int i = 4; i < iVertices; i++) {
 						for (int j = 0; j <= i - 4; j++) {
 							QPointF p1 = strip.vertexs[i] - strip.vertexs[j];
 							double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
 							if (dist < 1) {
 								bClosed = true;
+								strip.nStart = j;
+								strip.nEnd = i - 1;
 								break;
 							}
 						}
 						if (bClosed) break;
 					}
 					
-					if(bClosed)
+					if (bClosed) {
+						strip.edgeLength.clear();
+						for (int i = strip.nStart, j = strip.nEnd; i <= strip.nEnd; j = i++) {
+							QPointF e1, p1, p2;
+							p1 = strip.vertexs[i];
+							p2 = strip.vertexs[j];
+							e1 = p2 - p1;
+							double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+							strip.edgeLength.push_back(dist + 0.5);
+						}
+						std::sort(strip.edgeLength.begin(), strip.edgeLength.end());
 						strips.push_back(strip);
+					}
 					else {
 						int ttttt = 1;
 					}
@@ -638,6 +655,13 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 			texts[closestText].distanceToStrip.clear();
 			texts[closestText].bMatch = nSerial;
 			texts[closestText].gravityOfColumn = centreOfGravity(strips[closestStrip].vertexs);
+			// 将边长度等信息 字符串化，以便汇总
+			for (int i = 0; i < strips[closestStrip].edgeLength.size(); i++) {
+				if (i == 0) texts[closestText].edgeOfStrip = "(";
+				texts[closestText].edgeOfStrip += QString::number(strips[closestStrip].edgeLength[i]);
+				if (i == strips[closestStrip].edgeLength.size()-1) texts[closestText].edgeOfStrip += ")";
+				else  texts[closestText].edgeOfStrip += ",";
+			}
 
 			// 编号为 closestStrip 的柱边框已经被匹配，清除 distanceToStrip 中对 柱边框的 竞争
 			for (int t = 0; t < texts.size(); t++) {
@@ -654,8 +678,6 @@ void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
 			break;
 		nSerial++;
 	} while (true);
-	
-
 }
 
 QString LC_List::getStrData(StripData strip) {
@@ -667,6 +689,7 @@ QString LC_List::getStrData(StripData strip) {
 		strData.append(strCommon.arg(tr("closed")).arg("no"));
 	}
     strData.append(strCommon.arg(tr("columnName")).arg(strip.text.name));
+	strData.append(strCommon.arg(tr("")).arg(strip.text.edgeOfStrip));
 	
     return strData;
 }
@@ -722,37 +745,100 @@ void LC_List::execComm(Document_Interface *doc,
 
 	int nRemain = 0;
 	for (int i = 0; i < texts.size(); i++) {
-		text.append(QString("N %1 : %2 ( %3 , %4 ) --> ( %5 , %6 )  \n").arg(texts[i].bMatch).arg(texts[i].name)
-			.arg(texts[i].ptA.x()).arg(texts[i].ptA.y()).arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));
+		text.append(QString("N %1 : %2 %3( %4 , %5 ) --> ( %6 , %7 )  \n").arg(texts[i].bMatch)
+			.arg(texts[i].name).arg(texts[i].edgeOfStrip)
+			.arg(texts[i].ptA.x()).arg(texts[i].ptA.y())
+			.arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));
 		if (texts[i].bMatch == 0) {
 			nRemain++;
 		}
 	}
 
+	text.append("\n");
 	text.append(QString("%1 %2: ").arg(tr("text remain")).arg(nRemain));
 	text.append(QString("%1 %2: ").arg(tr("text total")).arg(texts.size()));
 	text.append("\n");
+	
+	// 汇总柱信息
+	std::map<QString, std::vector<int>> mapColumn;
+	std::map<QString, QString> prints;
+	for (int i = 0; i < texts.size(); i++) {
+		QString key = texts[i].name + texts[i].edgeOfStrip;
+		mapColumn[key].push_back(texts[i].bMatch);
+		prints[key] = texts[i].name;
+	}
+	std::map<QString, std::vector<int>>::iterator it = mapColumn.begin();
+	for (; it != mapColumn.end(); it++) {
+		// 仅显示 柱尺寸不一致的
+		QString name = prints[it->first];
+		int nCount = 0;
+		for (auto &e : prints) {
+			if (e.second == name)
+				nCount++;
+		}
+		if (nCount > 1) {
+			text.append(QString("%1 => ").arg(it->first));
+			std::vector<int> vec = it->second;
+			for (auto e : vec) {
+				text.append(QString::number(e));
+				text.append("  ");
+			}
+			text.append("\n");
+		}
+		
+	}
+
 
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
+		// 根据 Checkbox ，新生成对应的层
+		if (dlg.columnCheck.isChecked()) {
+			doc->setLayer(name() + " Position");
+		}
+		if (dlg.lineCheck.isChecked()) {
+			doc->setLayer(name() + " Line");
+		}
+		if (dlg.textCheck.isChecked()) {
+			doc->setLayer(name() + "Text");
+		}
 				
 		// 如果是 close 按钮，则未包含的图元不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
 			bool bInclude = false;
 			for (int i = 0; i < strips.size(); ++i) {
 				if (strips[i].text.name.length() > 0) {
-					for (int k = 0; k < strips[i].lines.size() && dlg.lineCheck.isChecked(); k++) {
+					for (int k = 0; k < strips[i].lines.size(); k++) {
 						if (obj.at(n) == strips[i].lines[k].ent) {
 							bInclude = true;
+							if (dlg.lineCheck.isChecked()) {
+								QHash<int, QVariant> hash;
+								hash.insert(DPI::LAYER, name() + " Line");
+								obj.at(n)->updateData(&hash);
+							}
 							break;
 						}
 					}
-					if (strips[i].ent == obj.at(n) && dlg.columnCheck.isChecked()) 
+					if (strips[i].ent == obj.at(n) && dlg.columnCheck.isChecked())
+					{
 						bInclude = true;
-					if (strips[i].text.ent == obj.at(n) && dlg.textCheck.isChecked())
+						if (dlg.columnCheck.isChecked()) {
+							QHash<int, QVariant> hash;
+							hash.insert(DPI::LAYER, name() + " Position");
+							obj.at(n)->updateData(&hash);
+						}
+					}
+						
+					if (strips[i].text.ent == obj.at(n))
+					{
 						bInclude = true;
+						if (dlg.textCheck.isChecked()) {
+							QHash<int, QVariant> hash;
+							hash.insert(DPI::LAYER, name() + " Text");
+							obj.at(n)->updateData(&hash);
+						}
+					}
 
 					if (bInclude) break;
 				}
@@ -784,8 +870,7 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
    
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(&edit);
-	mainLayout->addStretch();
-
+	
 	QHBoxLayout *loCheck = new QHBoxLayout;
 	
 	columnCheck.setText(tr("Column"));
@@ -806,11 +891,10 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 
 	mainLayout->addLayout(loCheck);
 
-	mainLayout->addStretch();
 	QDialogButtonBox* bb = new QDialogButtonBox(QDialogButtonBox::Close, Qt::Horizontal, this);
     mainLayout->addWidget(bb);
     this->setLayout(mainLayout);
-    this->resize ( 650, 350 );
+    this->resize ( 850, 400 );
 
     connect(bb, SIGNAL(rejected()), this, SLOT(accept()));
 }

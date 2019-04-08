@@ -42,7 +42,10 @@ typedef struct _TextData {
 	std::vector<std::pair<int, double>> distanceToStrip;
 	Plug_Entity * ent;
 	int bMatch;
+	// 柱位置边框的重心
 	QPointF gravityOfColumn;
+	// 柱位置边框的边长度特征字符串
+	QString  edgeOfStrip;
 } TextData;
 
 typedef struct _LineData {
@@ -65,6 +68,12 @@ typedef struct _StripData {
 	/** Control points of the spline. */
 	// 柱边线控制点
 	std::vector<QPointF> vertexs;
+
+	// 起始控制点 和 结束控制点
+	int nStart, nEnd;
+
+	// 各条边从小到大 依次排序的长度(取整处理)
+	std::vector<int>  edgeLength;
 
 	// 标注引出线 (一般是两条)
 	std::vector<LineData> lines;
