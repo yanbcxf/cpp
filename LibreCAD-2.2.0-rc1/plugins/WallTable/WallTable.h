@@ -37,15 +37,9 @@ typedef struct _TextData {
 	_TextData() = default;
 	QString name;
 	QPointF ptA, ptB;
-
-	// 以下两个数组由小到大保存最近的 柱边线 及 距离
-	std::vector<std::pair<int, double>> distanceToStrip;
+	int col, row;
+	
 	Plug_Entity * ent;
-	int bMatch;
-	// 柱位置边框的重心
-	QPointF gravityOfColumn;
-	// 柱位置边框的边长度特征字符串
-	QString  edgeOfStrip;
 } TextData;
 
 typedef struct _LineData {
@@ -58,31 +52,25 @@ typedef struct _LineData {
 	Plug_Entity * ent;
 } LineData;
 
-typedef struct _StripData {
+typedef struct _WallData {
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-	_StripData() = default;
-	   
-	int closed;
-	/** Control points of the spline. */
-	// 柱边线控制点
-	std::vector<QPointF> vertexs;
+	_WallData() = default;
+	
+	QString name;				// 墙名称
+	QString thickness;
+	QString highness;
+	QString steelVertical;
+	QString steelHorizontal;
+	QString steelTie;			//	拉筋
+	QString steelReinforce;		//	加强筋
 
-	// 起始控制点 和 结束控制点
-	int nStart, nEnd;
+	int col, row;
+	int width, height;
 
-	// 各条边从小到大 依次排序的长度(取整处理)
-	std::vector<int>  edgeLength;
-
-	// 标注引出线 (一般是两条)
-	std::vector<LineData> lines;
-
-	TextData text;					// 柱名称
-
-	QString strLayer, strColor;
 	Plug_Entity * ent;
-} StripData;
+} WallData;
 
 
 //class QTextEdit;
@@ -104,7 +92,7 @@ private:
 	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
 	
 	
-    QString getStrData(StripData strip);
+    QString getStrData(WallData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };

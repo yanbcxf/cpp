@@ -213,7 +213,7 @@ double pointToPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 }
 
 /* 计算点垂直向上穿越 Table 交点数  */
-int pointCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
+int pointVerticalCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
 	int nCross = 0;
 	for (int i = 0; i < lines.size(); i++) {
 		QPointF p1, p2;
@@ -228,7 +228,7 @@ int pointCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
 }
 
 /* 计算点水平向左穿越 Table 交点数  */
-int pointCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
+int pointHorizontalCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
 	int nCross = 0;
 	for (int i = 0; i < lines.size(); i++) {
 		QPointF p1, p2;
@@ -276,94 +276,32 @@ QPointF centreOfGravity(std::vector<QPointF>& polyline) {
 
 
 
-/* 第一遍，过滤 柱放置边框 */
-void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
+/* 第一遍，过滤 表格边线 */
+void filterData1(Plug_Entity *ent, std::vector<LineData>& lines) {
 	if (NULL == ent)
 		return ;
 
+	QPointF ptA, ptB;
 	QHash<int, QVariant> data;
+	LineData line;
 	//common entity data
 	ent->getData(&data);
 
 	//specific entity data
 	int et = data.value(DPI::ETYPE).toInt();
 	switch (et) {
-	case DPI::POLYLINE: {
-		QString strLayer = data.value(DPI::LAYER).toString();
-		QString strPattern = QString::fromLocal8Bit("wall-主楼");
-		if (/* strLayer.indexOf(strPattern) < 0 */ true) {
-			StripData strip;
-			strip.strLayer = data.value(DPI::LAYER).toString();
-			strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
-			strip.closed = data.value(DPI::CLOSEPOLY).toInt();
-			strip.ent = ent;
-			
-			QList<Plug_VertexData> vl;
-			ent->getPolylineData(&vl);
-			int iVertices = vl.size();
-			for (int i = 0; i < iVertices; ++i) {
-				strip.vertexs.push_back(vl.at(i).point);
-			}
-
-			// 计算任意边长度
-			bool bTooBig = false;
-			for (int i = 0, j = iVertices - 1; i < iVertices; j = i++) {
-				QPointF e1, p1, p2;
-				p1 = strip.vertexs[i];
-				p2 = strip.vertexs[j];
-				e1 = p2 - p1;
-				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
-				if (dist > 3000) {
-					bTooBig = true;
-				}
-				if ( dist >= 1)
-					strip.edgeLength.push_back(dist + 0.5);
-			}
-
-			// 柱一般是多边形, 且任意边长度 不应太大
-			if (iVertices >= 4 && !bTooBig )  {
-				
-				if (strip.closed) {
-					std::sort(strip.edgeLength.begin(), strip.edgeLength.end());
-					strips.push_back(strip);
-				}
-				else {
-					// 从第 5 个点开始 尝试后续点 与前面的 点是否构成封闭
-					bool bClosed = false;
-					
-					for (int i = 4; i < iVertices; i++) {
-						for (int j = 0; j <= i - 4; j++) {
-							QPointF p1 = strip.vertexs[i] - strip.vertexs[j];
-							double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
-							if (dist < 1) {
-								bClosed = true;
-								strip.nStart = j;
-								strip.nEnd = i - 1;
-								break;
-							}
-						}
-						if (bClosed) break;
-					}
-					
-					if (bClosed) {
-						strip.edgeLength.clear();
-						for (int i = strip.nStart, j = strip.nEnd; i <= strip.nEnd; j = i++) {
-							QPointF e1, p1, p2;
-							p1 = strip.vertexs[i];
-							p2 = strip.vertexs[j];
-							e1 = p2 - p1;
-							double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
-							strip.edgeLength.push_back(dist + 0.5);
-						}
-						std::sort(strip.edgeLength.begin(), strip.edgeLength.end());
-						strips.push_back(strip);
-					}
-					else {
-						int ttttt = 1;
-					}
-				}
-			}
+	case DPI::LINE: {
+		line.from.setX(data.value(DPI::STARTX).toDouble());
+		line.from.setY(data.value(DPI::STARTY).toDouble());
+		line.to.setX(data.value(DPI::ENDX).toDouble());
+		line.to.setY(data.value(DPI::ENDY).toDouble());
+		line.ent = ent;
+		QPointF axis(1, 0);
+		double a1 = angle(axis, line.from - line.to);
+		if (a1< 0.0001 || (a1 > (M_PI - 0.0001) / 2 && a1 < (M_PI + 0.0001) / 2) || a1> M_PI - 0.0001) {
+			lines.push_back(line);
 		}
+
 		break; }
 	default:
 		break;
@@ -372,137 +310,9 @@ void filterData1(Plug_Entity *ent, std::vector<StripData>& strips) {
 }
 
 
-// 第二遍，匹配 柱附近的标注引出线
-void filterData2(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<LineData>& lines) {
-	if (NULL == ent)
-		return;
 
-	QPointF ptA, ptB;
-	QString textContent;
-	QHash<int, QVariant> data;
-	LineData line;
-	std::vector<QPointF> vertexs;
-	//common entity data
-	ent->getData(&data);
-
-	//specific entity data
-	int et = data.value(DPI::ETYPE).toInt();
-	int i;
-	switch (et) {
-	
-	case DPI::LINE: {
-		line.from.setX(data.value(DPI::STARTX).toDouble());
-		line.from.setY(data.value(DPI::STARTY).toDouble());
-		line.to.setX(data.value(DPI::ENDX).toDouble());
-		line.to.setY(data.value(DPI::ENDY).toDouble());
-		line.ent = ent;
-		QPointF p1 = line.from - line.to;
-		double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
-		if (dist > 10 && dist < 3000 /* 距离太长有可能是轴线 */) {
-			for (i = 0; i < strips.size(); i++) {
-				if (isInsidePolyline(line.from, strips[i].vertexs) && !isInsidePolyline(line.to, strips[i].vertexs)) {
-					strips[i].lines.push_back(line);
-					break;
-				}
-				else if (!isInsidePolyline(line.from, strips[i].vertexs) && isInsidePolyline(line.to, strips[i].vertexs)) {
-					QPointF tmp = line.from;
-					line.from = line.to;
-					line.to = tmp;
-					strips[i].lines.push_back(line);
-					break;
-				}
-			}
-			if (i >= strips.size()) {
-				lines.push_back(line);
-			}
-		}
-	}
-		break;
-	case DPI::POLYLINE: {
-		int closed = data.value(DPI::CLOSEPOLY).toInt();
-		QList<Plug_VertexData> vl;
-		ent->getPolylineData(&vl);
-		int iVertices = vl.size();
-		for (int i = 0; i < iVertices; ++i) {
-			vertexs.push_back(vl.at(i).point);
-		}
-
-		// 非封闭的 polyline 才可能是引出线
-		if (iVertices >= 3 && !closed) {
-			QPointF p1 = vertexs[0] - vertexs[iVertices - 1];
-			double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
-			if (dist > 10 && dist < 3000 /* 距离太长有可能是轴线 */) {
-				line.ent = ent;
-				for (i = 0; i < strips.size(); i++) {
-					if (isInsidePolyline(vertexs[0], strips[i].vertexs) && !isInsidePolyline(vertexs[iVertices - 1], strips[i].vertexs)) {
-						line.from = vertexs[0];
-						line.to = vertexs[iVertices - 1];
-						strips[i].lines.push_back(line);
-						break;
-					}
-					else if (!isInsidePolyline(vertexs[0], strips[i].vertexs) && isInsidePolyline(vertexs[iVertices - 1], strips[i].vertexs)) {
-						line.to = vertexs[0];
-						line.from = vertexs[iVertices - 1];
-						strips[i].lines.push_back(line);
-						break;
-					}
-				}
-				if (i >= strips.size()) {
-					// 临时保存，可能是标注线的引出线
-					line.from = vertexs[0];
-					line.to = vertexs[iVertices - 1];
-					lines.push_back(line);
-				}
-			}
-		}
-		
-	}
-		break;
-	default:
-		break;
-	}
-
-}
-
-// 分发标注引用线
-void dispatchLines(std::vector<StripData>& strips, std::vector<LineData>& lines) {
-	bool bRunning = true;
-	while (bRunning) {
-		bRunning = false;
-		std::vector<LineData>::iterator it;
-		for (it =lines.begin(); it != lines.end(); it++) {
-			// it 表示待分发的 line 
-			int i;
-			for (i = 0; i < strips.size(); i++) {
-				if (strips[i].lines.size() > 0) {
-					// 取出该柱子的最后一条标注引出线
-					LineData line = strips[i].lines[strips[i].lines.size() - 1];
-					if (isEqual(line.to, it->from)) {
-						strips[i].lines.push_back(*it);
-						break;
-					}
-					else if (isEqual(line.to, it->to)) {
-						QPointF tmp = it->from;
-						it->from = it->to;
-						it->to = tmp;
-						strips[i].lines.push_back(*it);
-						break;
-					}
-				}
-			}
-			if (i < strips.size()) {
-				// 对于已经分发成功的 line ，从待分发队列中删除
-				lines.erase(it);
-				bRunning = true;
-				break;
-			}
-		}
-	}
-}
-
-
-// 第三遍，匹配 柱文本标注 到 柱放置边框
-void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<TextData>& texts) {
+// 第二遍，寻找墙文本信息 并标注 ( 行, 列 )
+void filterData2(Plug_Entity *ent, std::vector<LineData>& lines, std::vector<TextData>& texts) {
 	if (NULL == ent)
 		return;
 
@@ -518,74 +328,19 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 	switch (et) {
 
 	case DPI::MTEXT:
-	case DPI::TEXT:
+	case DPI::TEXT: {
 		textContent = data.value(DPI::TEXTCONTENT).toString();
-		if (textContent.indexOf(QRegExp("KZ[0-9]")) >= 0 ||
-			textContent.indexOf(QRegExp("YBZ[0-9]")) >= 0 ||
-			textContent.indexOf(QRegExp("GBZ[0-9]")) >= 0) 
-		{
-			TextData txt;
-			txt.name = textContent;
-			txt.ptA = ent->getMaxOfBorder();
-			txt.ptB = ent->getMinOfBorder();
-			txt.ent = ent;
-			txt.bMatch = 0;
-			// 判断是否为重复的 柱标注
-			QPointF mid = (txt.ptA + txt.ptB) / 2;
-			bool bRepeat = false;
-			for (int i = 0; i < texts.size(); i++) {
-				// 对 标注文本边框进行缩小，以便提高重合校验的准确度
-				vertexs.clear();
-				QPointF p1 = texts[i].ptB;
-				QPointF p3 = texts[i].ptA;
-				QPointF p4, p2 = p1 - p3;
-				double  len = sqrt(p2.x()*p2.x() + p2.y() * p2.y())/5;
-				p1.setX(p1.x() + len);	p1.setY(p1.y() + len);
-				p3.setX(p3.x() - len);	p3.setY(p3.y() - len);
-				p2.setX(p1.x());		p2.setY(p3.y());
-				p4.setX(p3.x());		p4.setY(p1.y());
-				vertexs.push_back(p1);
-				vertexs.push_back(p2);
-				vertexs.push_back(p3);
-				vertexs.push_back(p4);
-
-				if (isInsidePolyline(mid, vertexs) && texts[i].name == txt.name) {
-					bRepeat = true;
-					break;
-				}
-			}
-
-			if (!bRepeat) {
-				// 计算该文本到各个 柱边框的距离
-				for (int i = 0; i < strips.size(); i++) {
-					vertexs = strips[i].vertexs;
-					
-					QPointF mid = (txt.ptA + txt.ptB) / 2;
-					double dist = pointToPolyline(mid, vertexs);
-					for (auto l : strips[i].lines) {
-						vertexs.clear();
-						vertexs.push_back(l.from);
-						vertexs.push_back(l.to);
-						double dist0 = pointToPolyline(mid, vertexs);
-						if (dist0 < dist) dist = dist0;
-					}
-					if (dist < 5000) {
-						txt.distanceToStrip.push_back(std::make_pair(i, dist));
-					}
-				}
-				struct {
-					bool operator()(std::pair<int, double> a, std::pair<int, double> b) const
-					{
-						return a.second < b.second;
-					}
-				} customLess;
-				std::sort(txt.distanceToStrip.begin(), txt.distanceToStrip.end(), customLess);
-				texts.push_back(txt);
-			}
-			else {
-				// 打印日志
-			}
-		}
+		TextData txt;
+		txt.name = textContent;
+		txt.ptA = ent->getMaxOfBorder();
+		txt.ptB = ent->getMinOfBorder();
+		txt.ent = ent;
+		
+		QPointF mid = (txt.ptA + txt.ptB) / 2;
+		txt.col = pointHorizontalCrossTable(mid, lines);
+		txt.row = pointVerticalCrossTable(mid, lines);
+		texts.push_back(txt);
+	}
 		break;
 	default:
 		break;
@@ -593,118 +348,125 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 
 }
 
-void matchColumn(std::vector<StripData>& strips, std::vector<TextData>& texts) {
-	/*for (int i = 0; i < strips.size(); i++) {
-		int closestText = -1;
-		double closestDist = 1.0e+20;
-		for (int t = 0; t < texts.size(); t++) {
-			if (texts[t].distanceToStrip.size() > 0 && texts[t].distanceToStrip[0].first == i) {
-				if (texts[t].distanceToStrip[0].second < closestDist) {
-					closestText = t;
-					closestDist = texts[t].distanceToStrip[0].second;
-					strips[i].text = texts[closestText];
-					清除第一个，代表该 text 竞争下一个较近的 柱边框
-					texts[t].distanceToStrip.erase(texts[t].distanceToStrip.begin());
-				}
-			}
-		}
-		if (closestText >= 0) {
-			texts[closestText].distanceToStrip.clear();
-			texts[closestText].bMatch = true;
-		}
-	}*/
-
-	int nSerial = 1;
-	do {
-		// 寻找首先被 匹配的 文本 和 柱边框
-		double closestDist = 1.0e+20;
-		int closestStrip = -1;
-		int closestText = -1;
-		for (int t = 0; t < texts.size(); t++) {
-			if (texts[t].distanceToStrip.size() > 0 && texts[t].distanceToStrip[0].second < closestDist) {
-				closestDist = texts[t].distanceToStrip[0].second;
-				closestStrip = texts[t].distanceToStrip[0].first;
-				closestText = t;
-			}
-		}
-
-		//
-		if (closestText >= 0) {
-			// 根据匹配的标注文本寻找多余的 标注引出线，并删除
-			std::vector<QPointF> vertexs;
-			QPointF mid = (texts[closestText].ptA + texts[closestText].ptB) / 2;
-			double dist = 1.0e+20;
-			int lastLine = -1;
-			for (int l = 0; l < strips[closestStrip].lines.size(); l++) {
-				vertexs.clear();
-				vertexs.push_back(strips[closestStrip].lines[l].from);
-				vertexs.push_back(strips[closestStrip].lines[l].to);
-				double dist0 = pointToPolyline(mid, vertexs);
-				if (dist0 < dist) {
-					dist = dist0;
-					lastLine = l;
-				}
-			}
-			double dist0 = pointToPolyline(mid, strips[closestStrip].vertexs);
-			if (dist0 < dist) {
-				// 标注与 柱本身最近，则清除所有错误引出线
-				strips[closestStrip].lines.clear();
-				lastLine = -1;
-			}
-
-			if (lastLine >= 0) {
-				// 确实标注 与引出线最近，则由后向前保留有用的引出线
-				std::vector<LineData>  lines;
-				lines.push_back(strips[closestStrip].lines[lastLine]);
-				for (int l = lastLine - 1; l >= 0; l--) {
-					if (isEqual(strips[closestStrip].lines[l].to, lines[0].from)) {
-						lines.insert(lines.begin(), strips[closestStrip].lines[l]);
-					}
-				}
-				strips[closestStrip].lines.clear();
-				strips[closestStrip].lines = lines;
-			}
-
-			// bMatch 保存匹配的顺序号
-			strips[closestStrip].text = texts[closestText];
-			texts[closestText].distanceToStrip.clear();
-			texts[closestText].bMatch = nSerial;
-			texts[closestText].gravityOfColumn = centreOfGravity(strips[closestStrip].vertexs);
-			// 将边长度等信息 字符串化，以便汇总
-			for (int i = 0; i < strips[closestStrip].edgeLength.size(); i++) {
-				if (i == 0) texts[closestText].edgeOfStrip = "(";
-				texts[closestText].edgeOfStrip += QString::number(strips[closestStrip].edgeLength[i]);
-				if (i == strips[closestStrip].edgeLength.size()-1) texts[closestText].edgeOfStrip += ")";
-				else  texts[closestText].edgeOfStrip += ",";
-			}
-
-			// 编号为 closestStrip 的柱边框已经被匹配，清除 distanceToStrip 中对 柱边框的 竞争
-			for (int t = 0; t < texts.size(); t++) {
-				std::vector<std::pair<int, double>>::iterator it = texts[t].distanceToStrip.begin();
-				for (; it != texts[t].distanceToStrip.end(); it++) {
-					if (it->first == closestStrip)
-						break;
-				}
-				if (it != texts[t].distanceToStrip.end())
-					texts[t].distanceToStrip.erase(it);
-			}
-		}
-		else
+bool getText(int col, int row, std::vector<TextData>& texts, TextData& txt) {
+	int i;
+	for (i = 0; i < texts.size(); i++) {
+		if (texts[i].col == col && texts[i].row == row) {
+			txt = texts[i];
 			break;
-		nSerial++;
-	} while (true);
+		}
+	}
+	if (i >= texts.size())
+		return false;
+	return true;
 }
 
-QString LC_List::getStrData(StripData strip) {
+QString getWallInfo(QString wallName, int nCol, int nRow, std::vector<TextData>& texts) {
+	TextData txt;
+	if (!getText(nCol, nRow, texts, txt))
+		return "";
+
+	QRegExp rx;
+	if(wallName.startsWith("("))
+		rx.setPattern("\\([A-Za-z0-9@]+\\)");
+	else if (wallName.startsWith("["))
+		rx.setPattern("\\[[A-Za-z0-9@]+\\]");
+	else if (wallName.startsWith("{"))
+		rx.setPattern("\\{[A-Za-z0-9@]+\\}");
+	else {
+		rx.setPattern("^[A-Za-z0-9@]+");
+	}
+	int idx = rx.indexIn(txt.name);
+	QStringList ql = rx.capturedTexts();
+	if (idx >= 0) {
+		return ql.at(0);
+	}
+	else
+		return txt.name;
+}
+
+void NewWallTable(std::vector<TextData>& texts, std::vector<WallData>& walls) {
+	for (int i = 1; i < 1000; i++) {
+		TextData txt;
+		if (getText(1, i, texts, txt)) {
+			WallData wall;
+			wall.col = 1;
+			wall.row = i;
+			// 准备单元格的宽高
+			QPointF p = txt.ptA - txt.ptB;
+			wall.height = p.y();
+			wall.width = p.x();
+			
+			for (int t = 0; t < 4; t++) {
+				QRegExp rx;
+				if (t == 0)
+					rx.setPattern("\\([A-Za-z0-9]+\\)");
+				else if(t==1)
+					rx.setPattern("\\[[A-Za-z0-9]+\\]");
+				else if(t==2)
+					rx.setPattern("\\{[A-Za-z0-9]+\\}");
+				else {
+					wall.name = txt.name;
+					if(wall.name.indexOf("Q") >=0)
+						walls.push_back(wall);
+					break;
+				}
+					
+				int idx = rx.indexIn(txt.name);
+				rx.setMinimal(true);	//	最小匹配模式
+
+				QStringList ql = rx.capturedTexts();
+				if (idx >= 0) {
+					wall.name = ql.at(0);
+					if (wall.name.indexOf("Q") >= 0)
+						walls.push_back(wall);
+
+					// 删除已匹配的字符串
+					idx = txt.name.indexOf(wall.name);
+					txt.name.remove(idx, wall.name.length());
+				}
+			}
+
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// 针对每个墙 获取钢筋信息
+	for (int i = 0; i < walls.size(); i++) {
+		walls[i].thickness = getWallInfo(walls[i].name, 2, walls[i].row, texts);
+		walls[i].highness = getWallInfo(walls[i].name, 3, walls[i].row, texts);
+		walls[i].steelHorizontal = "(2)" + getWallInfo(walls[i].name, 4, walls[i].row + 1, texts);
+
+		walls[i].steelVertical = "(1)" + getWallInfo(walls[i].name, 5, walls[i].row + 1, texts) +
+			"/(1)" + getWallInfo(walls[i].name, 6, walls[i].row + 1, texts);
+
+		walls[i].steelReinforce = getWallInfo(walls[i].name, 7, walls[i].row + 1, texts);
+		walls[i].steelTie = "A6@300x300";
+	}
+	// 增加标题栏
+	if (walls.size() > 0) {
+		WallData wall;
+		wall.width = walls[0].width;
+		wall.height = walls[0].height;
+		wall.name = QString::fromLocal8Bit("名称");
+		wall.thickness = QString::fromLocal8Bit("墙厚");
+		wall.steelHorizontal = QString::fromLocal8Bit("水平分布筋");
+		wall.steelVertical = QString::fromLocal8Bit("垂直分布筋");
+		wall.steelTie = QString::fromLocal8Bit("拉筋");
+		walls.insert(walls.begin(), wall);
+	}
+	
+}
+
+QString LC_List::getStrData(WallData strip) {
     
 	QString strData(""), strCommon("  %1: %2\n");
     
-	strData = strCommon.arg(strip.vertexs[0].x()).arg(strip.vertexs[0].y());
-	if (!strip.closed) {
-		strData.append(strCommon.arg(tr("closed")).arg("no"));
-	}
-    strData.append(strCommon.arg(tr("columnName")).arg(strip.text.name));
-	strData.append(strCommon.arg(tr("")).arg(strip.text.edgeOfStrip));
+	
+    strData.append(strCommon.arg(tr("columnName")).arg(strip.name));
 	
     return strData;
 }
@@ -721,147 +483,85 @@ void LC_List::execComm(Document_Interface *doc,
 	bool yes = doc->getSelect(&obj);
 	if (!yes || obj.isEmpty()) return;
 
-	//	柱外边框线
-	std::vector<StripData>  strips;
+	// 表格线 及 表格文本
 	std::vector<TextData>   texts;
 	std::vector<LineData>   lines;
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), strips);
+		filterData1(obj.at(i), lines);
 	}
 	// 第二遍，匹配 柱附近的标注引出线
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), strips, lines);
+		filterData2(obj.at(i), lines, texts);
 	}
 
-	dispatchLines(strips, lines);
-
-	// 第三遍，匹配 柱文本标注 到 柱放置边框
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData3(obj.at(i), strips, texts);
-	}
-
-	matchColumn(strips, texts);
+	std::vector<WallData> walls;
+	NewWallTable(texts, walls);
 
 	QString text;
-	/*for (int i = 0; i < strips.size(); ++i) {
-		text.append(QString("%1 %2: ").arg(tr("n")).arg(i + 1));
-		text.append(getStrData(strips[i]));
-		text.append("\n");
-	}*/
-
-	// 按照匹配的先后顺序排序
-	struct {
-		bool operator()(TextData a, TextData b) const
-		{
-			return a.bMatch < b.bMatch;
-		}
-	} customLess;
-	std::sort(texts.begin(), texts.end(), customLess);
-
-	int nRemain = 0;
-	for (int i = 0; i < texts.size(); i++) {
-		text.append(QString("N %1 : %2 %3( %4 , %5 ) --> ( %6 , %7 )  \n").arg(texts[i].bMatch)
-			.arg(texts[i].name).arg(texts[i].edgeOfStrip)
-			.arg(texts[i].ptA.x()).arg(texts[i].ptA.y())
-			.arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));
-		if (texts[i].bMatch == 0) {
-			nRemain++;
-		}
-	}
-
-	text.append("\n");
-	text.append(QString("%1 %2: ").arg(tr("text remain")).arg(nRemain));
-	text.append(QString("%1 %2: ").arg(tr("text total")).arg(texts.size()));
-	text.append("\n");
 	
-	// 汇总柱信息
-	std::map<QString, std::vector<int>> mapColumn;
-	std::map<QString, QString> prints;
-	for (int i = 0; i < texts.size(); i++) {
-		QString key = texts[i].name + texts[i].edgeOfStrip;
-		mapColumn[key].push_back(texts[i].bMatch);
-		prints[key] = texts[i].name;
+	// 按照匹配的先后顺序排序
+	for (int i = 0; i < walls.size(); i++) {
+		text.append(QString("N %1 %2, t %3, h %4, sh %5, sv %6, sr %7 \n").arg(i)
+			.arg(walls[i].name).arg(walls[i].thickness).arg(walls[i].highness)
+			.arg(walls[i].steelHorizontal).arg(walls[i].steelVertical).arg(walls[i].steelReinforce));
 	}
-	std::map<QString, std::vector<int>>::iterator it = mapColumn.begin();
-	for (; it != mapColumn.end(); it++) {
-		// 仅显示 柱尺寸不一致的
-		QString name = prints[it->first];
-		int nCount = 0;
-		for (auto &e : prints) {
-			if (e.second == name)
-				nCount++;
-		}
-		if (nCount > 1) {
-			text.append(QString("%1 => ").arg(it->first));
-			std::vector<int> vec = it->second;
-			for (auto e : vec) {
-				text.append(QString::number(e));
-				text.append("  ");
-			}
-			text.append("\n");
-		}
-		
-	}
-
 
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
-		// 根据 Checkbox ，新生成对应的层
-		if (dlg.columnCheck.isChecked()) {
-			doc->setLayer(name() + " Position");
-		}
-		if (dlg.lineCheck.isChecked()) {
-			doc->setLayer(name() + " Line");
-		}
-		if (dlg.textCheck.isChecked()) {
-			doc->setLayer(name() + "Text");
-		}
 				
-		// 如果是 close 按钮，则未包含的图元不被选中 
+		// 如果是 close 按钮，图元不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
-			bool bInclude = false;
-			for (int i = 0; i < strips.size(); ++i) {
-				if (strips[i].text.name.length() > 0) {
-					for (int k = 0; k < strips[i].lines.size(); k++) {
-						if (obj.at(n) == strips[i].lines[k].ent) {
-							bInclude = true;
-							if (dlg.lineCheck.isChecked()) {
-								QHash<int, QVariant> hash;
-								hash.insert(DPI::LAYER, name() + " Line");
-								obj.at(n)->updateData(&hash);
-							}
-							break;
-						}
-					}
-					if (strips[i].ent == obj.at(n) && dlg.columnCheck.isChecked())
-					{
-						bInclude = true;
-						if (dlg.columnCheck.isChecked()) {
-							QHash<int, QVariant> hash;
-							hash.insert(DPI::LAYER, name() + " Position");
-							obj.at(n)->updateData(&hash);
-						}
-					}
-						
-					if (strips[i].text.ent == obj.at(n))
-					{
-						bInclude = true;
-						if (dlg.textCheck.isChecked()) {
-							QHash<int, QVariant> hash;
-							hash.insert(DPI::LAYER, name() + " Text");
-							obj.at(n)->updateData(&hash);
-						}
-					}
-
-					if (bInclude) break;
-				}
-			}
-			if (!bInclude) {
-				doc->setSelectedEntity(obj.at(n), false);
-			}
+			doc->setSelectedEntity(obj.at(n), false);
 		}
+		/* 绘制新的剪力墙表 */
+		int cellWidth = 0;
+		int cellHeight = 0;
+		if (walls.size() > 0) {
+			cellWidth = walls[0].width;
+			cellHeight = walls[0].height;
+		}
+		QPointF columnPos[6];
+		columnPos[0] = QPointF(80000, 700000);			//	墙名称列 起始点
+		columnPos[1] = columnPos[0] + QPointF(cellWidth * 2, 0);			//	墙厚
+		columnPos[2] = columnPos[1] + QPointF(cellWidth, 0);			//	水平分布筋
+		columnPos[3] = columnPos[2] + QPointF(cellWidth * 3, 0);			//	垂直分布筋
+		columnPos[4] = columnPos[3] + QPointF(cellWidth * 6, 0);			//	拉结筋
+		columnPos[5] = columnPos[4] + QPointF(cellWidth * 3, 0);			//	终止线
+		// 先画表格横线 
+		for (int i = 0; i < walls.size() + 1; i++) {
+			QPointF start, end;
+			start = columnPos[0] + QPointF(0, i * cellHeight);
+			end = columnPos[5] + QPointF(0, i * cellHeight);
+			doc->addLine(&start, &end);
+		}
+		// 再画表格竖线
+		for (int i = 0; i < 6; i++) {
+			QPointF start, end;
+			start = columnPos[i];
+			end = columnPos[i] + QPointF(0, walls.size() * cellHeight);
+			doc->addLine(&start, &end);
+		}
+		// 填写单元格文本, 队尾的放在最下面
+		int t = walls.size() - 1;
+		for (int i = 0; i < walls.size(); i++, t--) {
+			QPointF pos = (columnPos[0] + columnPos[1])/2 + QPointF(0, i * cellHeight);
+			doc->addText(walls[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[1] + columnPos[2]) / 2 + QPointF(0, i * cellHeight);
+			doc->addText(walls[t].thickness, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[2] + columnPos[3]) / 2 + QPointF(0, i * cellHeight);
+			doc->addText(walls[t].steelHorizontal, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[3] + columnPos[4]) / 2 + QPointF(0, i * cellHeight);
+			doc->addText(walls[t].steelVertical, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, i * cellHeight);
+			doc->addText(walls[t].steelTie, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+		}
+
 	}
 
 	while (!obj.isEmpty())
