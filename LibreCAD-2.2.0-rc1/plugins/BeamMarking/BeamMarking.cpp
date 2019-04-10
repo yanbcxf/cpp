@@ -299,6 +299,7 @@ void filterData1(Plug_Entity *ent, std::vector<LineData>& lines) {
 		line.from.setY(data.value(DPI::STARTY).toDouble());
 		line.to.setX(data.value(DPI::ENDX).toDouble());
 		line.to.setY(data.value(DPI::ENDY).toDouble());
+		data.value(DPI::LTYPE);
 		line.ent = ent;
 		QPointF axis(1, 0);
 		double a1 = angle(axis, line.from - line.to);
@@ -343,12 +344,14 @@ void filterLines(std::vector<LineData>& lines) {
 		}
 	}
 	lines.clear();
-	lines.assign(newLines);
+	for(auto e : newLines) {
+		lines.push_back(e);
+	}
 }
 
 
-// 第二遍，寻找墙文本信息 并标注 ( 行, 列 )
-void filterData2(Plug_Entity *ent, std::vector<LineData>& lines, std::vector<TextData>& texts) {
+// 第二遍，寻找梁标注文本信息 并标注 ( 行, 列 )
+void filterData2(Plug_Entity *ent, std::vector<MarkingData>& markings, std::vector<TextData>& texts) {
 	if (NULL == ent)
 		return;
 
@@ -365,21 +368,71 @@ void filterData2(Plug_Entity *ent, std::vector<LineData>& lines, std::vector<Tex
 
 	case DPI::MTEXT:
 	case DPI::TEXT: {
-		textContent = data.value(DPI::TEXTCONTENT).toString();
 		TextData txt;
-		txt.name = textContent;
-		txt.ptA = ent->getMaxOfBorder();
-		txt.ptB = ent->getMinOfBorder();
+		txt.name = data.value(DPI::TEXTCONTENT).toString();
+		txt.startAngle = data.value(DPI::STARTANGLE).toDouble();
+		txt.startPt.setX(data.value(DPI::STARTX).toDouble());
+		txt.startPt.setY(data.value(DPI::STARTY).toDouble());
+		txt.height = data.value(DPI::HEIGHT).toDouble();
 		txt.ent = ent;
 		
-		QPointF mid = (txt.ptA + txt.ptB) / 2;
-		txt.col = pointHorizontalCrossTable(mid, lines);
-		txt.row = pointVerticalCrossTable(mid, lines);
-		texts.push_back(txt);
+		QRegExp rx;
+		rx.setPattern("^[A-Za-z0-9\\(\\)\\+\s]+$");
+		int idx = rx.indexIn(txt.name);
+		if (idx >= 0) {
+			if (txt.name.indexOf("L") >= 0) {
+				MarkingData marking;
+				marking.text = txt;
+				markings.push_back(marking);
+			}
+			else {
+				texts.push_back(txt);
+			}
+		}
 	}
 		break;
 	default:
 		break;
+	}
+}
+
+/* 将其他集中标注匹配到梁 */
+void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts) {
+	bool bRunning = true;
+	while (bRunning) {
+		bRunning = false;
+		std::vector<TextData>  remains;
+		while (texts.size() > 0) {
+			int i;
+			TextData beam;
+			TextData txt = texts.erase(0);
+			for (i = 0; i < markings.size(); i++) {
+				if (markings[i].others.size() > 0)
+					beam = markings[i].others[markings[i].others.size() - 1];
+				else
+					beam = markings[i].beam;
+
+				if (fabs(beam.startAngle - txt.startAngle) < 0.01745) {
+					/* 小于 1 度，平行 */
+					QPointF e = beam.start - txt.start;
+					double dist = sqrt(e.x() * e.x() + e.y() * e.y());
+					if (dist < beam.height + 200) {
+						markings[i].others.push_back(txt);
+						bRunning = true;
+						break;
+					}
+				}
+			}
+			if (i == markings.size()) {
+				remains.push_back(txt);
+			}
+		}
+		if (bRunning) {
+			for (auto e : remains) {
+				texts.push_back(e);
+			}
+			remain.clear();
+		}
 	}
 
 }

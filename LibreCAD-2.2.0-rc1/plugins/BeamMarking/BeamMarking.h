@@ -37,8 +37,9 @@ typedef struct _TextData {
 	*/
 	_TextData() = default;
 	QString name;
-	QPointF ptA, ptB;
-	int col, row;
+	QPointF startPt;
+	double startAngle;
+	double height;
 	
 	Plug_Entity * ent;
 } TextData;
@@ -53,11 +54,11 @@ typedef struct _LineData {
 	Plug_Entity * ent;
 } LineData;
 
-typedef struct _WallData {
+typedef struct _MarkingData {
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-	_WallData() = default;
+	_MarkingData() = default;
 	
 	QString name;				// 墙名称
 	QString thickness;
@@ -67,11 +68,10 @@ typedef struct _WallData {
 	QString steelTie;			//	拉筋
 	QString steelReinforce;		//	加强筋
 
-	int col, row;
-	int width, height;
+	TextData beam;
+	std::vector<TextData>	others;	//	梁的其他标注
 
-	Plug_Entity * ent;
-} WallData;
+} MarkingData;
 
 
 //class QTextEdit;
