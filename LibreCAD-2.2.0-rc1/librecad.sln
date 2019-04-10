@@ -61,6 +61,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALL_BUILD", "ALL_BUILD\ALL_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WallTable", "plugins\WallTable\WallTable.vcxproj", "{07E1D83C-DB73-4017-9CE6-90EAB0F0E44F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeamMarking", "plugins\BeamMarking\BeamMarking.vcxproj", "{05757303-0EF0-4133-9566-ED387B275077}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -197,12 +199,18 @@ Global
 		{07E1D83C-DB73-4017-9CE6-90EAB0F0E44F}.Release|x64.ActiveCfg = Release|x64
 		{07E1D83C-DB73-4017-9CE6-90EAB0F0E44F}.Release|x64.Build.0 = Release|x64
 		{07E1D83C-DB73-4017-9CE6-90EAB0F0E44F}.Release|x86.ActiveCfg = Release|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Debug|x64.ActiveCfg = Debug|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Debug|x64.Build.0 = Debug|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Debug|x86.ActiveCfg = Debug|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Release|x64.ActiveCfg = Release|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Release|x64.Build.0 = Release|x64
+		{05757303-0EF0-4133-9566-ED387B275077}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = msvc2017_64
 		SolutionGuid = {12A5BEF4-1FC6-4F40-8F30-F1D24ECA2620}
+		Qt5Version = msvc2017_64
 	EndGlobalSection
 EndGlobal
