@@ -377,12 +377,12 @@ void filterData2(Plug_Entity *ent, std::vector<MarkingData>& markings, std::vect
 		txt.ent = ent;
 		
 		QRegExp rx;
-		rx.setPattern("^[A-Za-z0-9\\(\\)\\+\s]+$");
+		rx.setPattern("^[A-Za-z0-9\\(\\)\\+\\s\\-/;]+$");
 		int idx = rx.indexIn(txt.name);
 		if (idx >= 0) {
 			if (txt.name.indexOf("L") >= 0) {
 				MarkingData marking;
-				marking.text = txt;
+				marking.beam = txt;
 				markings.push_back(marking);
 			}
 			else {
@@ -405,7 +405,8 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 		while (texts.size() > 0) {
 			int i;
 			TextData beam;
-			TextData txt = texts.erase(0);
+			TextData txt = texts[0];
+			texts.erase(texts.begin());
 			for (i = 0; i < markings.size(); i++) {
 				if (markings[i].others.size() > 0)
 					beam = markings[i].others[markings[i].others.size() - 1];
@@ -414,7 +415,7 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 
 				if (fabs(beam.startAngle - txt.startAngle) < 0.01745) {
 					/* 小于 1 度，平行 */
-					QPointF e = beam.start - txt.start;
+					QPointF e = beam.startPt - txt.startPt;
 					double dist = sqrt(e.x() * e.x() + e.y() * e.y());
 					if (dist < beam.height + 200) {
 						markings[i].others.push_back(txt);
@@ -431,132 +432,14 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 			for (auto e : remains) {
 				texts.push_back(e);
 			}
-			remain.clear();
+			remains.clear();
 		}
 	}
 
 }
 
-bool getText(int col, int row, std::vector<TextData>& texts, TextData& txt) {
-	int i;
-	for (i = 0; i < texts.size(); i++) {
-		if (texts[i].col == col && texts[i].row == row) {
-			txt = texts[i];
-			break;
-		}
-	}
-	if (i >= texts.size())
-		return false;
-	return true;
-}
 
-QString getWallInfo(QString wallName, int nCol, int nRow, std::vector<TextData>& texts) {
-	TextData txt;
-	if (!getText(nCol, nRow, texts, txt))
-		return "";
-
-	QRegExp rx;
-	if(wallName.startsWith("("))
-		rx.setPattern("\\([A-Za-z0-9@]+\\)");
-	else if (wallName.startsWith("["))
-		rx.setPattern("\\[[A-Za-z0-9@]+\\]");
-	else if (wallName.startsWith("{"))
-		rx.setPattern("\\{[A-Za-z0-9@]+\\}");
-	else {
-		rx.setPattern("^[A-Za-z0-9@]+");
-	}
-	int idx = rx.indexIn(txt.name);
-	QStringList ql = rx.capturedTexts();
-	if (idx >= 0) {
-		QString res = ql.at(0);
-		if (res.startsWith("(") || res.startsWith("[") || res.startsWith("{"))
-			res = res.mid(1, res.length() - 2);
-		return res;
-	}
-	else
-		return txt.name;
-}
-
-void NewBeamMarking(std::vector<TextData>& texts, std::vector<WallData>& walls) {
-	for (int i = 1; i < 1000; i++) {
-		TextData txt;
-		if (getText(1, i, texts, txt)) {
-			WallData wall;
-			wall.col = 1;
-			wall.row = i;
-			// 准备单元格的宽高
-			QPointF p = txt.ptA - txt.ptB;
-			wall.height = p.y();
-			wall.width = p.x();
-			
-			for (int t = 0; t < 4; t++) {
-				QRegExp rx;
-				if (t == 0)
-					rx.setPattern("\\([A-Za-z0-9]+\\)");
-				else if(t==1)
-					rx.setPattern("\\[[A-Za-z0-9]+\\]");
-				else if(t==2)
-					rx.setPattern("\\{[A-Za-z0-9]+\\}");
-				else {
-					wall.name = txt.name;
-					if(wall.name.indexOf("Q") >=0)
-						walls.push_back(wall);
-					break;
-				}
-					
-				int idx = rx.indexIn(txt.name);
-				rx.setMinimal(true);	//	最小匹配模式
-
-				QStringList ql = rx.capturedTexts();
-				if (idx >= 0) {
-					wall.name = ql.at(0);
-					if (wall.name.indexOf("Q") >= 0)
-						walls.push_back(wall);
-
-					// 删除已匹配的字符串
-					idx = txt.name.indexOf(wall.name);
-					txt.name.remove(idx, wall.name.length());
-				}
-			}
-
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	// 针对每个墙 获取钢筋信息
-	for (int i = 0; i < walls.size(); i++) {
-		walls[i].thickness = getWallInfo(walls[i].name, 2, walls[i].row, texts);
-		walls[i].highness = getWallInfo(walls[i].name, 3, walls[i].row, texts);
-		walls[i].steelHorizontal = "(2)" + getWallInfo(walls[i].name, 4, walls[i].row + 1, texts);
-
-		walls[i].steelVertical = "1" + getWallInfo(walls[i].name, 5, walls[i].row + 1, texts) +
-			"+1" + getWallInfo(walls[i].name, 6, walls[i].row + 1, texts);
-
-		walls[i].steelReinforce = getWallInfo(walls[i].name, 7, walls[i].row + 1, texts);
-		walls[i].steelTie = "A6@300x300";
-
-		if (walls[i].name.startsWith("(") || walls[i].name.startsWith("[") || walls[i].name.startsWith("{"))
-			walls[i].name = walls[i].name.mid(1, walls[i].name.length() - 2);
-	}
-	// 增加标题栏
-	if (walls.size() > 0) {
-		WallData wall;
-		wall.width = walls[0].width;
-		wall.height = walls[0].height;
-		wall.name = QString::fromLocal8Bit("名称");
-		wall.thickness = QString::fromLocal8Bit("墙厚");
-		wall.steelHorizontal = QString::fromLocal8Bit("水平分布筋");
-		wall.steelVertical = QString::fromLocal8Bit("垂直分布筋");
-		wall.steelTie = QString::fromLocal8Bit("拉筋");
-		walls.insert(walls.begin(), wall);
-	}
-	
-}
-
-QString LC_List::getStrData(WallData strip) {
+QString LC_List::getStrData(MarkingData strip) {
     
 	QString strData(""), strCommon("  %1: %2\n");
     
@@ -581,24 +464,30 @@ void LC_List::execComm(Document_Interface *doc,
 	// 表格线 及 表格文本
 	std::vector<TextData>   texts;
 	std::vector<LineData>   lines;
-	for (int i = 0; i < obj.size(); ++i) {
+	std::vector<MarkingData>   markings;
+	/*for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), lines);
-	}
+	}*/
 	// 第二遍，匹配 柱附近的标注引出线
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), lines, texts);
+		filterData2(obj.at(i), markings, texts);
 	}
 
-	std::vector<WallData> walls;
-	NewBeamMarking(texts, walls);
+	filterText(markings, texts);
 
 	QString text;
 	
 	// 按照匹配的先后顺序排序
-	for (int i = 0; i < walls.size(); i++) {
-		text.append(QString("N %1 %2, t %3, h %4, sh %5, sv %6, sr %7 \n").arg(i)
-			.arg(walls[i].name).arg(walls[i].thickness).arg(walls[i].highness)
-			.arg(walls[i].steelHorizontal).arg(walls[i].steelVertical).arg(walls[i].steelReinforce));
+	for (int i = 0; i < markings.size(); i++) {
+		text.append(QString("N %1 %2 ( %3, %4 )\n").arg(i).arg(markings[i].beam.name)
+			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y()));
+		
+		if (markings[i].others.size() > 0) {
+			for (auto e : markings[i].others) {
+				text.append(QString("%1 %2 \n").arg("      ").arg(e.name));
+			}
+		}
+		text.append("\n");
 	}
 
 	lc_Listdlg dlg(parent);
@@ -613,10 +502,7 @@ void LC_List::execComm(Document_Interface *doc,
 		/* 绘制新的剪力墙表 */
 		int cellWidth = 0;
 		int cellHeight = 0;
-		if (walls.size() > 0) {
-			cellWidth = walls[0].width;
-			cellHeight = walls[0].height +30;
-		}
+		
 		QPointF columnPos[6];
 		columnPos[0] = QPointF(80000, 700000);			//	墙名称列 起始点
 		if (!dlg.startxedit->text().isEmpty() && !dlg.startyedit->text().isEmpty()) {
@@ -629,7 +515,7 @@ void LC_List::execComm(Document_Interface *doc,
 		columnPos[4] = columnPos[3] + QPointF(cellWidth * 6, 0);			//	拉结筋
 		columnPos[5] = columnPos[4] + QPointF(cellWidth * 3, 0);			//	终止线
 		// 先画表格横线 
-		for (int i = 0; i < walls.size() + 1; i++) {
+		for (int i = 0; i < markings.size() + 1; i++) {
 			QPointF start, end;
 			start = columnPos[0] + QPointF(0, i * cellHeight);
 			end = columnPos[5] + QPointF(0, i * cellHeight);
@@ -639,14 +525,14 @@ void LC_List::execComm(Document_Interface *doc,
 		for (int i = 0; i < 6; i++) {
 			QPointF start, end;
 			start = columnPos[i];
-			end = columnPos[i] + QPointF(0, walls.size() * cellHeight);
+			end = columnPos[i] + QPointF(0, markings.size() * cellHeight);
 			doc->addLine(&start, &end);
 		}
 		// 填写单元格文本, 队尾的放在最下面
-		int t = walls.size() - 1;
-		for (int i = 0; i < walls.size(); i++, t--) {
-			QPointF pos = (columnPos[0] + columnPos[1])/2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+		int t = markings.size() - 1;
+		for (int i = 0; i < markings.size(); i++, t--) {
+			/* QPointF pos = (columnPos[0] + columnPos[1])/2 + QPointF(0, i * cellHeight);
+			doc->addText(markings[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 
 			pos = (columnPos[1] + columnPos[2]) / 2 + QPointF(0, i * cellHeight);
 			doc->addText(walls[t].thickness, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
@@ -658,7 +544,7 @@ void LC_List::execComm(Document_Interface *doc,
 			doc->addText(walls[t].steelVertical, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 
 			pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].steelTie, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			doc->addText(walls[t].steelTie, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle); */
 		}
 
 	}

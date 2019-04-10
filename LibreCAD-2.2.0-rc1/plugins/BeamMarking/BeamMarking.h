@@ -93,7 +93,7 @@ private:
 	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
 	
 	
-    QString getStrData(WallData strip);
+    QString getStrData(MarkingData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };
