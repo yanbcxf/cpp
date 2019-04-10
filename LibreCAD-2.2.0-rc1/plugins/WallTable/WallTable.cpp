@@ -17,6 +17,10 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QDoubleValidator>
 #include <cmath>
 #include <algorithm>
 #include "WallTable.h"
@@ -379,7 +383,10 @@ QString getWallInfo(QString wallName, int nCol, int nRow, std::vector<TextData>&
 	int idx = rx.indexIn(txt.name);
 	QStringList ql = rx.capturedTexts();
 	if (idx >= 0) {
-		return ql.at(0);
+		QString res = ql.at(0);
+		if (res.startsWith("(") || res.startsWith("[") || res.startsWith("{"))
+			res = res.mid(1, res.length() - 2);
+		return res;
 	}
 	else
 		return txt.name;
@@ -440,11 +447,14 @@ void NewWallTable(std::vector<TextData>& texts, std::vector<WallData>& walls) {
 		walls[i].highness = getWallInfo(walls[i].name, 3, walls[i].row, texts);
 		walls[i].steelHorizontal = "(2)" + getWallInfo(walls[i].name, 4, walls[i].row + 1, texts);
 
-		walls[i].steelVertical = "(1)" + getWallInfo(walls[i].name, 5, walls[i].row + 1, texts) +
-			"/(1)" + getWallInfo(walls[i].name, 6, walls[i].row + 1, texts);
+		walls[i].steelVertical = "1" + getWallInfo(walls[i].name, 5, walls[i].row + 1, texts) +
+			"+1" + getWallInfo(walls[i].name, 6, walls[i].row + 1, texts);
 
 		walls[i].steelReinforce = getWallInfo(walls[i].name, 7, walls[i].row + 1, texts);
 		walls[i].steelTie = "A6@300x300";
+
+		if (walls[i].name.startsWith("(") || walls[i].name.startsWith("[") || walls[i].name.startsWith("{"))
+			walls[i].name = walls[i].name.mid(1, walls[i].name.length() - 2);
 	}
 	// 增加标题栏
 	if (walls.size() > 0) {
@@ -520,10 +530,14 @@ void LC_List::execComm(Document_Interface *doc,
 		int cellHeight = 0;
 		if (walls.size() > 0) {
 			cellWidth = walls[0].width;
-			cellHeight = walls[0].height;
+			cellHeight = walls[0].height +30;
 		}
 		QPointF columnPos[6];
 		columnPos[0] = QPointF(80000, 700000);			//	墙名称列 起始点
+		if (!dlg.startxedit->text().isEmpty() && !dlg.startyedit->text().isEmpty()) {
+			columnPos[0].setX(dlg.startxedit->text().toDouble());
+			columnPos[0].setY(dlg.startyedit->text().toDouble());
+		}
 		columnPos[1] = columnPos[0] + QPointF(cellWidth * 2, 0);			//	墙厚
 		columnPos[2] = columnPos[1] + QPointF(cellWidth, 0);			//	水平分布筋
 		columnPos[3] = columnPos[2] + QPointF(cellWidth * 3, 0);			//	垂直分布筋
@@ -578,7 +592,7 @@ double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexDat
 /*****************************/
 lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 {
-    setWindowTitle(tr("List strip entities"));
+    setWindowTitle(tr("Wall Table"));
 //    QTextEdit *edit= new QTextEdit(this);
     edit.setReadOnly (true);
     edit.setAcceptRichText ( false );
@@ -587,21 +601,22 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
     mainLayout->addWidget(&edit);
 	
 	QHBoxLayout *loCheck = new QHBoxLayout;
-	
-	columnCheck.setText(tr("Column"));
-	columnCheck.setChecked(true);
-	loCheck->addStretch();
-	loCheck->addWidget(&columnCheck);
 
-	lineCheck.setText(tr("Line"));
-	lineCheck.setChecked(true);
-	loCheck->addStretch();
-	loCheck->addWidget(&lineCheck);
+	QLabel *label;
+	QDoubleValidator *val = new QDoubleValidator(0);
 
-	textCheck.setText(tr("Text"));
-	textCheck.setChecked(true);
+	label = new QLabel(tr("Start X:"));
+	loCheck->addWidget(label);
+	startxedit = new QLineEdit();
+	startxedit->setValidator(val);
+	loCheck->addWidget(startxedit);
 	loCheck->addStretch();
-	loCheck->addWidget(&textCheck);
+
+	label = new QLabel(tr("Start Y:"));
+	loCheck->addWidget(label);
+	startyedit = new QLineEdit();
+	startyedit->setValidator(val);
+	loCheck->addWidget(startyedit);
 	loCheck->addStretch();
 
 	mainLayout->addLayout(loCheck);
