@@ -38,6 +38,8 @@
 #define MAX_NEGATIVE_DOUBLE -1.0e+20
 #define TOLERANCE			 0.5
 
+#define ONE_DEGREE   0.01745
+
 QString LC_List::name() const
  {
      return (tr("Beam Marking"));
@@ -278,7 +280,93 @@ QPointF centreOfGravity(std::vector<QPointF>& polyline) {
 	return g;
 }
 
+/* 向量的叉乘 */
+double crossProduct(QPointF e1, QPointF e2) {
+	return e1.x() * e2.y() - e2.x() * e1.y();
+}
 
+// 求从 startPt 沿某个角度射出，与边框的交点
+QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt) {
+	QPointF pt;
+		
+	if (angle >= ONE_DEGREE && angle < M_PI / 2 - ONE_DEGREE) {
+		// 点斜式方程 y-y0 = k(x-x0) 
+		double y = (maxPt.x() - startPt.x()) * tan(angle) + startPt.y();
+		double x = (maxPt.y() - startPt.y()) / tan(angle) + startPt.x();
+
+		if (x > maxPt.x()) {
+			pt.setX(maxPt.x());
+			pt.setY(y);
+		}
+		else {
+			pt.setX(x);
+			pt.setY(maxPt.y());
+		}
+	}
+	else if (angle >= M_PI / 2 - ONE_DEGREE && angle < M_PI / 2 + ONE_DEGREE) {
+		// 90 度
+		pt.setX(startPt.x());
+		pt.setY(maxPt.y());
+	}
+	else if (angle >= M_PI / 2 + ONE_DEGREE && angle < M_PI - ONE_DEGREE) {
+		// 点斜式方程 y-y0 = k(x-x0) 
+		double y = (minPt.x() - startPt.x()) * tan(angle) + startPt.y();
+		double x = (maxPt.y() - startPt.y()) / tan(angle) + startPt.x();
+
+		if (x < minPt.x()) {
+			pt.setX(minPt.x());
+			pt.setY(y);
+		}
+		else {
+			pt.setX(x);
+			pt.setY(maxPt.y());
+		}
+	}
+	else if (angle >= M_PI  - ONE_DEGREE && angle < M_PI + ONE_DEGREE) {
+		// 180 度
+		pt.setX(minPt.x());
+		pt.setY(startPt.y());
+	}
+	else if (angle >= M_PI  + ONE_DEGREE && angle < M_PI *3 / 2 - ONE_DEGREE) {
+		// 点斜式方程 y-y0 = k(x-x0) 
+		double y = (minPt.x() - startPt.x()) * tan(angle) + startPt.y();
+		double x = (minPt.y() - startPt.y()) / tan(angle) + startPt.x();
+
+		if (x < minPt.x()) {
+			pt.setX(minPt.x());
+			pt.setY(y);
+		}
+		else {
+			pt.setX(x);
+			pt.setY(minPt.y());
+		}
+	}
+	else if (angle >= M_PI *3/ 2 - ONE_DEGREE && angle < M_PI*3 / 2 + ONE_DEGREE) {
+		// 270 度
+		pt.setX(startPt.x());
+		pt.setY(minPt.y());
+	}
+	else if (angle >= M_PI *3/ 2 + ONE_DEGREE && angle < M_PI * 2 - ONE_DEGREE ) {
+		// 点斜式方程 y-y0 = k(x-x0) 
+		double y = (maxPt.x() - startPt.x()) * tan(angle) + startPt.y();
+		double x = (minPt.y() - startPt.y()) / tan(angle) + startPt.x();
+
+		if (x > maxPt.x()) {
+			pt.setX(maxPt.x());
+			pt.setY(y);
+		}
+		else {
+			pt.setX(x);
+			pt.setY(minPt.y());
+		}
+	}
+	else {
+		// 0 度
+		pt.setX(maxPt.x());
+		pt.setY(startPt.y());
+	}
+	return pt;
+}
 
 /* 第一遍，过滤 表格边线 */
 void filterData1(Plug_Entity *ent, std::vector<LineData>& lines) {
@@ -375,13 +463,19 @@ void filterData2(Plug_Entity *ent, std::vector<MarkingData>& markings, std::vect
 		txt.startPt.setY(data.value(DPI::STARTY).toDouble());
 		txt.height = data.value(DPI::HEIGHT).toDouble();
 		txt.ent = ent;
-		
+
+		QPointF ptA = ent->getMaxOfBorder();
+		QPointF ptB = ent->getMinOfBorder();
+		txt.endPt = crossover(txt.startPt, txt.startAngle, ptB, ptA);
+				
 		QRegExp rx;
-		rx.setPattern("^[A-Za-z0-9\\(\\)\\+\\s\\-/;]+$");
+		rx.setPattern("^[A-Za-z0-9\\(\\)\\+\\s\\-/;]+");
 		int idx = rx.indexIn(txt.name);
 		if (idx >= 0) {
 			if (txt.name.indexOf("L") >= 0) {
 				MarkingData marking;
+				marking.bAlert = false;
+				marking.bError = false;
 				marking.beam = txt;
 				markings.push_back(marking);
 			}
@@ -413,14 +507,33 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 				else
 					beam = markings[i].beam;
 
+				/* 小于 1 度，平行 */
 				if (fabs(beam.startAngle - txt.startAngle) < 0.01745) {
-					/* 小于 1 度，平行 */
-					QPointF e = beam.startPt - txt.startPt;
-					double dist = sqrt(e.x() * e.x() + e.y() * e.y());
-					if (dist < beam.height + 200) {
-						markings[i].others.push_back(txt);
-						bRunning = true;
-						break;
+					/* 确保要匹配的标注 在 已匹配的标注的右下方 */
+					QPointF e1 = beam.endPt - beam.startPt;
+					QPointF e2 = txt.startPt - beam.startPt;
+					double cp = crossProduct(e1, e2);
+					double an = angle(e1, e2);
+					if (cp < 0 && an < M_PI * 3 /4) {
+						std::vector<QPointF> vertexes;
+						vertexes.push_back(txt.startPt);
+						vertexes.push_back(txt.endPt);
+						double dist = pointToPolyline(beam.startPt, vertexes);
+						double dist0 = pointToPolyline(beam.endPt, vertexes);
+						if (dist0 < dist) dist = dist0;
+						vertexes.clear();
+						vertexes.push_back(beam.startPt);
+						vertexes.push_back(beam.endPt);
+						dist0 = pointToPolyline(txt.startPt, vertexes);
+						if (dist0 < dist) dist = dist0;
+						dist0 = pointToPolyline(txt.endPt, vertexes);
+						if (dist0 < dist) dist = dist0;
+
+						if (dist < beam.height * 3 / 2) {
+							markings[i].others.push_back(txt);
+							bRunning = true;
+							break;
+						}
 					}
 				}
 			}
@@ -438,6 +551,82 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 
 }
 
+/*  */
+void parseBeam(std::vector<MarkingData>& markings) {
+	for (int i = 0; i < markings.size(); i++) {
+		// 梁名称
+		QRegExp rx;
+		rx.setPattern("^[A-Za-z0-9]*L[A-Za-z0-9]*\\([0-9]+\\)");
+		int idx = rx.indexIn(markings[i].beam.name);
+		if (idx >= 0) {
+			QStringList ql = rx.capturedTexts();
+			markings[i].name = ql.at(0);
+		}
+
+		// 截面尺寸
+		rx.setPattern("[0-9]+x[0-9]+");
+		idx = rx.indexIn(markings[i].beam.name);
+		if (idx >= 0) {
+			QStringList ql = rx.capturedTexts();
+			markings[i].sectionSize = ql.at(0);
+		}
+
+		markings[i].steelBottom = "";
+		markings[i].steelTop = "";
+		markings[i].steelMiddle = "";
+		markings[i].steelHooping = "";
+		for (auto e : markings[i].others) {
+			// 梁尺寸
+			rx.setPattern("^[0-9]+x[0-9]+");
+			idx = rx.indexIn(e.name);
+			if (idx >= 0) {
+				markings[i].sectionSize = e.name;
+			}
+			// 箍筋
+			rx.setPattern("^[ABCDEFabcdef]+[0-9]+\\-[0-9]+");
+			idx = rx.indexIn(e.name);
+			if (idx >= 0) {
+				markings[i].steelHooping = e.name;
+			}
+			// 腰筋
+			rx.setPattern("^[NGng]+");
+			idx = rx.indexIn(e.name);
+			if (idx >= 0) {
+				markings[i].steelMiddle = e.name;
+			}
+			
+			int nPos = e.name.indexOf(";");
+			if (nPos > 0) {
+				QString top = e.name.mid(0, nPos);
+				QString bottom = e.name.mid(nPos + 1);
+				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
+				idx = rx.indexIn(top);
+				if (idx >= 0) {
+					// 上部纵筋
+					markings[i].steelTop = top;
+				}
+				idx = rx.indexIn(bottom);
+				if (idx >= 0) {
+					// 下部纵筋
+					markings[i].steelBottom = bottom;
+				}
+			} 
+			else {
+				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
+				idx = rx.indexIn(e.name);
+				if (idx >= 0) {
+					if (markings[i].steelTop.isEmpty()) {
+						// 上部纵筋
+						markings[i].steelTop = e.name;
+					} else if (markings[i].steelBottom.isEmpty()) {
+						// 下部纵筋
+						markings[i].steelBottom = e.name;
+					}
+				}
+			}
+		}
+	}
+}
 
 QString LC_List::getStrData(MarkingData strip) {
     
@@ -474,21 +663,75 @@ void LC_List::execComm(Document_Interface *doc,
 	}
 
 	filterText(markings, texts);
+	parseBeam(markings);
 
 	QString text;
+
+	// 分组统计, 找出有问题的梁标注
+	std::vector<MarkingData> abbrevBeam;
+	std::vector<MarkingData> detailBeam;
+	std::vector<MarkingData> questionBeam;
+	for (auto e : markings) {
+		if (e.others.size() > 0) {
+			detailBeam.push_back(e);
+		}
+		else {
+			abbrevBeam.push_back(e);
+		}
+	}
+
+	for (auto a : abbrevBeam) {
+		bool bInclude = false;
+		for (auto d : detailBeam) {
+			if (a.name == d.name) {
+				bInclude = true;
+				break;
+			}
+		}
+		if (!bInclude)
+			questionBeam.push_back(a);
+	}
+
+	struct {
+		bool operator()(MarkingData a, MarkingData b) const
+		{
+			return a.name < b.name;
+		}
+	} customLess;
+	std::sort(questionBeam.begin(), questionBeam.end(), customLess);
+
+	text.append(QString("abbrevBeam %1, detailBeam %2, questionBeam %3 \n").arg(abbrevBeam.size())
+		.arg(detailBeam.size()).arg(questionBeam.size()));
+	text.append("========================================================\n");
+
+	for (int i = 0; i < questionBeam.size(); i++) {
+		text.append(QString("N %1 %2 ( %3, %4 ) \n").arg(i).arg(questionBeam[i].name)
+			.arg(questionBeam[i].beam.startPt.x()).arg(questionBeam[i].beam.startPt.y()));
+	}
+
+	text.append("========================================================\n");
 	
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < markings.size(); i++) {
-		text.append(QString("N %1 %2 ( %3, %4 )\n").arg(i).arg(markings[i].beam.name)
-			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y()));
+		text.append(QString("N %1 %2 ( %3, %4 ) %5 \n").arg(i).arg(markings[i].beam.name)
+			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y())
+			.arg(markings[i].others.size() > 0? "*":"  "));
 		
 		if (markings[i].others.size() > 0) {
 			for (auto e : markings[i].others) {
 				text.append(QString("%1 %2 \n").arg("      ").arg(e.name));
 			}
+
+			text.append(QString("%1 %2 : H %3, T %4, B %5, M %6 \n").arg("      ").arg("parsed")
+				.arg(markings[i].steelHooping).arg(markings[i].steelTop)
+				.arg(markings[i].steelBottom).arg(markings[i].steelMiddle));
 		}
+
 		text.append("\n");
 	}
+
+	
+
 
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);

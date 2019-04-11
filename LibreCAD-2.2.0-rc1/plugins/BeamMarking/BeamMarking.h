@@ -37,7 +37,7 @@ typedef struct _TextData {
 	*/
 	_TextData() = default;
 	QString name;
-	QPointF startPt;
+	QPointF startPt, endPt;
 	double startAngle;
 	double height;
 	
@@ -60,16 +60,18 @@ typedef struct _MarkingData {
 	 */
 	_MarkingData() = default;
 	
-	QString name;				// 墙名称
-	QString thickness;
-	QString highness;
-	QString steelVertical;
-	QString steelHorizontal;
-	QString steelTie;			//	拉筋
-	QString steelReinforce;		//	加强筋
+	QString name;				// 梁名称
+	QString sectionSize;		// 截面尺寸
+	QString steelTop;				
+	QString steelBottom;
+	QString steelMiddle;			//	腰筋
+	QString steelHooping;			//  箍筋
 
 	TextData beam;
 	std::vector<TextData>	others;	//	梁的其他标注
+
+	bool	bAlert;
+	bool	bError;	
 
 } MarkingData;
 
