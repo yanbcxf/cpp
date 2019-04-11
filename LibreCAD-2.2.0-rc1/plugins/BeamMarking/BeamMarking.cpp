@@ -743,53 +743,83 @@ void LC_List::execComm(Document_Interface *doc,
 			doc->setSelectedEntity(obj.at(n), false);
 		}
 		/* 绘制新的剪力墙表 */
-		int cellWidth = 0;
-		int cellHeight = 0;
+		int columnWidth = 500;
+		int columnHeight = 500;
+		int beamLength = 9000;
+		int beamOffset = 3000;
+
+		doc->setLayer(name() + " Column");
+		doc->setLayer(name() + " Beam");
+		doc->setLayer(name() + " BeamText");
 		
-		QPointF columnPos[6];
-		columnPos[0] = QPointF(80000, 700000);			//	墙名称列 起始点
-		if (!dlg.startxedit->text().isEmpty() && !dlg.startyedit->text().isEmpty()) {
-			columnPos[0].setX(dlg.startxedit->text().toDouble());
-			columnPos[0].setY(dlg.startyedit->text().toDouble());
-		}
-		columnPos[1] = columnPos[0] + QPointF(cellWidth * 2, 0);			//	墙厚
-		columnPos[2] = columnPos[1] + QPointF(cellWidth, 0);			//	水平分布筋
-		columnPos[3] = columnPos[2] + QPointF(cellWidth * 3, 0);			//	垂直分布筋
-		columnPos[4] = columnPos[3] + QPointF(cellWidth * 6, 0);			//	拉结筋
-		columnPos[5] = columnPos[4] + QPointF(cellWidth * 3, 0);			//	终止线
-		// 先画表格横线 
-		for (int i = 0; i < markings.size() + 1; i++) {
-			QPointF start, end;
-			start = columnPos[0] + QPointF(0, i * cellHeight);
-			end = columnPos[5] + QPointF(0, i * cellHeight);
+		for (int i = 0; i < detailBeam.size(); i++) {
+			// 生成 梁的集中标注
+			int col = i % 30;
+			int row = i / 30;
+			QPointF orgin = QPointF(0, 0) + QPointF(col * beamLength * 1.5, row * 5000);
+
+			doc->setLayer(name() + " BeamText");
+			QPointF start =  orgin + QPointF(beamOffset + 1000, 0 );
+			QPointF end = start + QPointF(0, 2300);
+			MarkingData md = detailBeam[i];
 			doc->addLine(&start, &end);
-		}
-		// 再画表格竖线
-		for (int i = 0; i < 6; i++) {
-			QPointF start, end;
-			start = columnPos[i];
-			end = columnPos[i] + QPointF(0, markings.size() * cellHeight);
+			end = end + QPointF(50, -300);
+			doc->addText(md.name + " " + md.sectionSize, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			end = end + QPointF(0, -300);
+			doc->addText(md.steelHooping, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			end = end + QPointF(0, -300);
+			if (md.steelBottom.isEmpty())
+				doc->addText(md.steelTop, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			else 
+				doc->addText(md.steelTop + ";" + md.steelBottom, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
+			// 生成 梁
+			doc->setLayer(name() + " Beam");
+			int pos = md.sectionSize.indexOf("x");
+			int width = md.sectionSize.mid(0, pos).toInt();
+			int height = md.sectionSize.mid(pos + 1).toInt();
+
+			start = orgin + QPointF(beamOffset, 0);
+			end = start + QPointF(beamLength, 0);
 			doc->addLine(&start, &end);
+			start = start + QPointF(0, -width);
+			end = end + QPointF(0, -width);
+			doc->addLine(&start, &end);
+
+			// 生成 左柱
+			doc->setLayer(name() + " Column");
+			std::vector<Plug_VertexData> vertexes;
+			start = orgin + QPointF(beamOffset - columnWidth, 0);
+			end = start + QPointF(columnWidth, 0);
+			//doc->addLine(&start, &end);
+			QPointF start1 = start + QPointF(0, -columnHeight);
+			QPointF end1 = end + QPointF(0, -columnHeight);
+			vertexes.push_back(Plug_VertexData(start, 0));
+			vertexes.push_back(Plug_VertexData(end, 0));
+			vertexes.push_back(Plug_VertexData(end1, 0));
+			vertexes.push_back(Plug_VertexData(start1, 0));
+			doc->addPolyline(vertexes, true);
+			//doc->addLine(&start1, &end1);
+			//doc->addLine(&start, &start1);
+			//doc->addLine(&end, &end1);
+
+			end = start + QPointF(0, 50);
+			doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
+			// 生成 右柱
+			start = orgin + QPointF(beamOffset + beamLength + columnWidth, 0);
+			end = start + QPointF(-columnWidth, 0);
+			doc->addLine(&start, &end);
+			start1 = start + QPointF(0, -columnHeight);
+			end1 = end + QPointF(0, -columnHeight);
+			doc->addLine(&start1, &end1);
+			doc->addLine(&start, &start1);
+			doc->addLine(&end, &end1);
+
+			end = start + QPointF(0, 50);
+			doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
 		}
-		// 填写单元格文本, 队尾的放在最下面
-		int t = markings.size() - 1;
-		for (int i = 0; i < markings.size(); i++, t--) {
-			/* QPointF pos = (columnPos[0] + columnPos[1])/2 + QPointF(0, i * cellHeight);
-			doc->addText(markings[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-			pos = (columnPos[1] + columnPos[2]) / 2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].thickness, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-			pos = (columnPos[2] + columnPos[3]) / 2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].steelHorizontal, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-			pos = (columnPos[3] + columnPos[4]) / 2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].steelVertical, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-			pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, i * cellHeight);
-			doc->addText(walls[t].steelTie, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle); */
-		}
-
 	}
 
 	while (!obj.isEmpty())
