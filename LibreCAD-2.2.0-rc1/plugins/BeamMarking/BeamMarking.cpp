@@ -23,6 +23,7 @@
 #include <QDoubleValidator>
 #include <cmath>
 #include <algorithm>
+#include <set>
 #include "BeamMarking.h"
 
 // yangbin
@@ -402,40 +403,7 @@ void filterData1(Plug_Entity *ent, std::vector<LineData>& lines) {
 
 }
 
-/* 从所有的线段中过滤出，一端与一条线段相交，另一端悬空的线段 */
-void filterLines(std::vector<LineData>& lines) {
-	std::vector<LineData> newLines;
-	for (int i = 0; i < lines.size(); i++) {
-		double distFrom = 1.0e+20;
-		double distTo = 1.0e+20;
-		for (auto e : lines) {
-			if (e.ent != lines[i].ent) {
-				std::vector<QPointF> vertexes;
-				vertexes.push_back(e.from);
-				vertexes.push_back(e.to);
-				double dist = pointToPolyline(lines[i].from, vertexes);
-				if (dist < distFrom)
-					distFrom = dist;
-				dist = pointToPolyline(lines[i].to, vertexes);
-				if (dist < distTo)
-					distTo = dist;
-			}
-		}
-		if (distFrom < 10 && distTo > 10) {
-			newLines.push_back(lines[i]);
-		}
-		else if (distTo < 10 && distFrom > 10) {
-			QPointF pt = lines[i].from;
-			lines[i].from = lines[i].to;
-			lines[i].to = pt;
-			newLines.push_back(lines[i]);
-		}
-	}
-	lines.clear();
-	for(auto e : newLines) {
-		lines.push_back(e);
-	}
-}
+
 
 
 // 第二遍，寻找梁标注文本信息 并标注 ( 行, 列 )
@@ -476,6 +444,7 @@ void filterData2(Plug_Entity *ent, std::vector<MarkingData>& markings, std::vect
 				MarkingData marking;
 				marking.bAlert = false;
 				marking.bError = false;
+				marking.bClick = false;
 				marking.beam = txt;
 				markings.push_back(marking);
 			}
@@ -514,7 +483,7 @@ void filterText(std::vector<MarkingData>& markings, std::vector<TextData>& texts
 					QPointF e2 = txt.startPt - beam.startPt;
 					double cp = crossProduct(e1, e2);
 					double an = angle(e1, e2);
-					if (cp < 0 && an < M_PI * 3 /4) {
+					if (cp < 0 && an < M_PI * 3 /4 && an > 10 * ONE_DEGREE) {
 						std::vector<QPointF> vertexes;
 						vertexes.push_back(txt.startPt);
 						vertexes.push_back(txt.endPt);
@@ -561,6 +530,9 @@ void parseBeam(std::vector<MarkingData>& markings) {
 		if (idx >= 0) {
 			QStringList ql = rx.capturedTexts();
 			markings[i].name = ql.at(0);
+			int pos = markings[i].name.indexOf("(");
+			if (pos > 0)
+				markings[i].prefix = markings[i].name.mid(0, pos);
 		}
 
 		// 截面尺寸
@@ -575,6 +547,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 		markings[i].steelTop = "";
 		markings[i].steelMiddle = "";
 		markings[i].steelHooping = "";
+		int nSteelLine = 0;  /* 统计纵向钢筋标注的行数，一般只能有一行 */
 		for (auto e : markings[i].others) {
 			// 梁尺寸
 			rx.setPattern("^[0-9]+x[0-9]+");
@@ -597,6 +570,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 			
 			int nPos = e.name.indexOf(";");
 			if (nPos > 0) {
+				nSteelLine++;
 				QString top = e.name.mid(0, nPos);
 				QString bottom = e.name.mid(nPos + 1);
 				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
@@ -604,27 +578,139 @@ void parseBeam(std::vector<MarkingData>& markings) {
 				if (idx >= 0) {
 					// 上部纵筋
 					markings[i].steelTop = top;
+					rx.setPattern("\\s[0-9]+/[0-9]+");		// 是否钢筋分成两排
+					if (rx.indexIn(top) >= 0)
+						markings[i].bClick = true;
 				}
+				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
 				idx = rx.indexIn(bottom);
 				if (idx >= 0) {
 					// 下部纵筋
 					markings[i].steelBottom = bottom;
+					rx.setPattern("\\s[0-9]+/[0-9]+");		// 是否钢筋分成两排
+					if (rx.indexIn(bottom) >= 0)
+						markings[i].bClick = true;
 				}
 			} 
 			else {
 				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
 				idx = rx.indexIn(e.name);
 				if (idx >= 0) {
+					nSteelLine++;
 					if (markings[i].steelTop.isEmpty()) {
 						// 上部纵筋
 						markings[i].steelTop = e.name;
+						rx.setPattern("\\s[0-9]+/[0-9]+");	// 是否钢筋分成两排
+						if (rx.indexIn(e.name) >= 0)
+							markings[i].bClick = true;
 					} else if (markings[i].steelBottom.isEmpty()) {
 						// 下部纵筋
 						markings[i].steelBottom = e.name;
+						rx.setPattern("\\s[0-9]+/[0-9]+");	// 是否钢筋分成两排
+						if (rx.indexIn(e.name) >= 0)
+							markings[i].bClick = true;
 					}
 				}
 			}
 		}
+
+		if (markings[i].others.size() > 0) {
+			if (nSteelLine > 1) markings[i].bAlert = true;
+			if (markings[i].sectionSize.isEmpty()) markings[i].bError = true;
+			if (markings[i].steelHooping.isEmpty()) markings[i].bError = true;
+			if (markings[i].steelTop.isEmpty()) markings[i].bError = true;
+		}
+	}
+}
+
+void newBeamGraph(std::vector<MarkingData>& beams, QPointF origin, Document_Interface *doc, QString layerPrefix) {
+	int columnWidth = 500;
+	int columnHeight = 500;
+	int beamLength = 9000;
+	int beamOffset = 3000;
+
+	doc->setLayer(layerPrefix + " Column");
+	doc->setLayer(layerPrefix + " ColumnText");
+	doc->setLayer(layerPrefix + " Beam");
+	doc->setLayer(layerPrefix + " BeamText");
+
+	for (int i = 0; i < beams.size(); i++) {
+		// 生成 梁的集中标注
+		int col = i % 30;
+		int row = i / 30;
+		QPointF orgin = origin + QPointF(col * (beamLength + 2 * columnWidth) * 1.5, row * 5000);
+
+		doc->setLayer(layerPrefix + " BeamText");
+		QPointF start = orgin + QPointF(beamOffset + 1000, 0);
+		QPointF end = start + QPointF(0, 2300);
+		MarkingData md = beams[i];
+		doc->addLine(&start, &end);
+		end = end + QPointF(50, -300);
+		doc->addText(md.name + " " + md.sectionSize, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+		end = end + QPointF(0, -300);
+		doc->addText(md.steelHooping, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+		end = end + QPointF(0, -300);
+		if (md.steelBottom.isEmpty())
+			doc->addText(md.steelTop, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+		else {
+			doc->addText(md.steelTop + ";" + md.steelBottom, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+		}
+
+
+		// 生成 梁
+		doc->setLayer(layerPrefix + " Beam");
+		int pos = md.sectionSize.indexOf("x");
+		int width = md.sectionSize.mid(0, pos).toInt();
+		int height = md.sectionSize.mid(pos + 1).toInt();
+
+		start = orgin + QPointF(beamOffset, 0);
+		end = start + QPointF(beamLength, 0);
+		doc->addLine(&start, &end);
+		start = start + QPointF(0, -width);
+		end = end + QPointF(0, -width);
+		doc->addLine(&start, &end);
+
+		// 生成 左柱
+		doc->setLayer(layerPrefix + " Column");
+		std::vector<Plug_VertexData> vertexes;
+		start = orgin + QPointF(beamOffset - columnWidth, 0);
+		end = start + QPointF(columnWidth, 0);
+		//doc->addLine(&start, &end);
+		QPointF start1 = start + QPointF(0, -columnHeight);
+		QPointF end1 = end + QPointF(0, -columnHeight);
+		vertexes.push_back(Plug_VertexData(start, 0));
+		vertexes.push_back(Plug_VertexData(end, 0));
+		vertexes.push_back(Plug_VertexData(end1, 0));
+		vertexes.push_back(Plug_VertexData(start1, 0));
+		doc->addPolyline(vertexes, true);
+		//doc->addLine(&start1, &end1);
+		//doc->addLine(&start, &start1);
+		//doc->addLine(&end, &end1);
+
+		end = start + QPointF(0, 50);
+		doc->setLayer(layerPrefix + " ColumnText");
+		doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
+		// 生成 右柱
+		vertexes.clear();
+		start = orgin + QPointF(beamOffset + beamLength + columnWidth, 0);
+		end = start + QPointF(-columnWidth, 0);
+		//doc->addLine(&start, &end);
+		start1 = start + QPointF(0, -columnHeight);
+		end1 = end + QPointF(0, -columnHeight);
+		vertexes.push_back(Plug_VertexData(end, 0));
+		vertexes.push_back(Plug_VertexData(start, 0));
+		vertexes.push_back(Plug_VertexData(start1, 0));
+		vertexes.push_back(Plug_VertexData(end1, 0));
+		doc->addPolyline(vertexes, true);
+		//doc->addLine(&start1, &end1);
+		//doc->addLine(&start, &start1);
+		//doc->addLine(&end, &end1);
+
+		end = start + QPointF(0, 50);
+		doc->setLayer(layerPrefix + " ColumnText");
+		doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
 	}
 }
 
@@ -713,9 +799,11 @@ void LC_List::execComm(Document_Interface *doc,
 	
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < markings.size(); i++) {
-		text.append(QString("N %1 %2 ( %3, %4 ) %5 \n").arg(i).arg(markings[i].beam.name)
+		text.append(QString("N %1 %2 ( %3, %4 ) %5 %6 %7 \n").arg(i).arg(markings[i].beam.name)
 			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y())
-			.arg(markings[i].others.size() > 0? "*":"  "));
+			.arg(markings[i].others.size() > 0 ? "Detail":"  ")
+			.arg(markings[i].bError ? "Error" : "  ")
+			.arg(markings[i].bAlert ? "Alert" : "  "));
 		
 		if (markings[i].others.size() > 0) {
 			for (auto e : markings[i].others) {
@@ -730,9 +818,6 @@ void LC_List::execComm(Document_Interface *doc,
 		text.append("\n");
 	}
 
-	
-
-
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
@@ -742,84 +827,49 @@ void LC_List::execComm(Document_Interface *doc,
 		for (int n = 0; n < obj.size(); ++n) {
 			doc->setSelectedEntity(obj.at(n), false);
 		}
-		/* 绘制新的剪力墙表 */
-		int columnWidth = 500;
-		int columnHeight = 500;
-		int beamLength = 9000;
-		int beamOffset = 3000;
-
-		doc->setLayer(name() + " Column");
-		doc->setLayer(name() + " Beam");
-		doc->setLayer(name() + " BeamText");
-		
-		for (int i = 0; i < detailBeam.size(); i++) {
-			// 生成 梁的集中标注
-			int col = i % 30;
-			int row = i / 30;
-			QPointF orgin = QPointF(0, 0) + QPointF(col * beamLength * 1.5, row * 5000);
-
-			doc->setLayer(name() + " BeamText");
-			QPointF start =  orgin + QPointF(beamOffset + 1000, 0 );
-			QPointF end = start + QPointF(0, 2300);
-			MarkingData md = detailBeam[i];
-			doc->addLine(&start, &end);
-			end = end + QPointF(50, -300);
-			doc->addText(md.name + " " + md.sectionSize, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-			end = end + QPointF(0, -300);
-			doc->addText(md.steelHooping, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-			end = end + QPointF(0, -300);
-			if (md.steelBottom.isEmpty())
-				doc->addText(md.steelTop, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-			else 
-				doc->addText(md.steelTop + ";" + md.steelBottom, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-
-			// 生成 梁
-			doc->setLayer(name() + " Beam");
-			int pos = md.sectionSize.indexOf("x");
-			int width = md.sectionSize.mid(0, pos).toInt();
-			int height = md.sectionSize.mid(pos + 1).toInt();
-
-			start = orgin + QPointF(beamOffset, 0);
-			end = start + QPointF(beamLength, 0);
-			doc->addLine(&start, &end);
-			start = start + QPointF(0, -width);
-			end = end + QPointF(0, -width);
-			doc->addLine(&start, &end);
-
-			// 生成 左柱
-			doc->setLayer(name() + " Column");
-			std::vector<Plug_VertexData> vertexes;
-			start = orgin + QPointF(beamOffset - columnWidth, 0);
-			end = start + QPointF(columnWidth, 0);
-			//doc->addLine(&start, &end);
-			QPointF start1 = start + QPointF(0, -columnHeight);
-			QPointF end1 = end + QPointF(0, -columnHeight);
-			vertexes.push_back(Plug_VertexData(start, 0));
-			vertexes.push_back(Plug_VertexData(end, 0));
-			vertexes.push_back(Plug_VertexData(end1, 0));
-			vertexes.push_back(Plug_VertexData(start1, 0));
-			doc->addPolyline(vertexes, true);
-			//doc->addLine(&start1, &end1);
-			//doc->addLine(&start, &start1);
-			//doc->addLine(&end, &end1);
-
-			end = start + QPointF(0, 50);
-			doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-
-			// 生成 右柱
-			start = orgin + QPointF(beamOffset + beamLength + columnWidth, 0);
-			end = start + QPointF(-columnWidth, 0);
-			doc->addLine(&start, &end);
-			start1 = start + QPointF(0, -columnHeight);
-			end1 = end + QPointF(0, -columnHeight);
-			doc->addLine(&start1, &end1);
-			doc->addLine(&start, &start1);
-			doc->addLine(&end, &end1);
-
-			end = start + QPointF(0, 50);
-			doc->addText("KZ1", "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-
+		/* 绘制梁图表, 分成 自动识别 和 点选识别 两张图表 */
+		std::vector<MarkingData> detailBeam1;
+		std::vector<MarkingData> detailBeam2;
+		for (auto e : detailBeam) {
+			if (!e.bClick)
+				detailBeam1.push_back(e);
+			else
+				detailBeam2.push_back(e);
 		}
+		
+		std::sort(detailBeam1.begin(), detailBeam1.end(), customLess);
+		std::sort(detailBeam2.begin(), detailBeam2.end(), customLess);
+		newBeamGraph(detailBeam1, QPointF(0, 0), doc, name());
+		newBeamGraph(detailBeam2, QPointF(0, 20 * 5000), doc, name());
+
+		/* 绘制 残缺的梁图表 */
+		std::set<MarkingData>  questionSet;
+		for (auto e : questionBeam) {
+			questionSet.insert(e);
+		}
+
+		questionBeam.clear();
+		std::set<MarkingData>::iterator it = questionSet.begin();
+		for (; it != questionSet.end(); it++) {
+			QString prefix = it->prefix;
+			for (auto e : detailBeam) {
+				if (e.prefix == prefix) {
+					MarkingData md;
+					md.name = it->name;
+					md.prefix = e.prefix;
+					md.sectionSize = e.sectionSize;
+					md.steelBottom = e.steelBottom;
+					md.steelHooping = e.steelHooping;
+					md.steelMiddle = e.steelMiddle;
+					md.steelTop = e.steelTop;
+					questionBeam.push_back(md);
+					break;
+				}
+			}
+		}
+
+		std::sort(questionBeam.begin(), questionBeam.end(), customLess);
+		newBeamGraph(questionBeam, QPointF(0, 23 * 5000), doc, name());
 	}
 
 	while (!obj.isEmpty())
