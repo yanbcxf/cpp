@@ -870,6 +870,22 @@ void LC_List::execComm(Document_Interface *doc,
 
 		std::sort(questionBeam.begin(), questionBeam.end(), customLess);
 		newBeamGraph(questionBeam, QPointF(0, 23 * 5000), doc, name());
+
+		/* 移除集中标注中 标注信息 */
+		for (auto e : detailBeam) {
+			QRegExp rx;
+			rx.setPattern("[0-9]+x[0-9]+");
+			int idx = rx.indexIn(e.beam.name);
+			if (idx > 0) {
+				QString name = e.beam.name.mid(0, idx);
+				QHash<int, QVariant> hash;
+				hash.insert(DPI::TEXTCONTENT, name);
+				e.beam.ent->updateData(&hash);
+			}
+			for (auto t : e.others) {
+				doc->removeEntity(t.ent);
+			}
+		}
 	}
 
 	while (!obj.isEmpty())
