@@ -46,11 +46,13 @@
 #include "rs_polyline.h"
 #include "rs_ellipse.h"
 #include "rs_polyline.h"
+#include "rs_hatch.h"
 #include "lc_splinepoints.h"
 #include "intern/qc_actiongetpoint.h"
 #include "intern/qc_actiongetselect.h"
 #include "intern/qc_actiongetent.h"
 #include "rs_math.h"
+#include "rs_information.h"
 #include "rs_debug.h"
 // #include <QDebug>
 
@@ -334,9 +336,11 @@ void Plugin_Entity::getData(QHash<int, QVariant> *data){
         data->insert(DPI::HEIGHT, d.height );
         data->insert(DPI::TEXTCONTENT, d.text );
         break;}
-    case RS2::EntityHatch:
-        data->insert(DPI::ETYPE, DPI::HATCH);
-        break;
+	case RS2::EntityHatch: {
+		data->insert(DPI::ETYPE, DPI::HATCH);
+		RS_HatchData d = static_cast<RS_Hatch*>(entity)->getData();
+		data->insert(DPI::HATCHSOLID, d.solid);
+		break; }
     case RS2::EntitySpline:
         data->insert(DPI::ETYPE, DPI::SPLINE);
         break;
@@ -784,6 +788,20 @@ QPointF Plugin_Entity::getMinOfBorder() {
 	pt.setX(vMin.x);
 	pt.setY(vMin.y);
 	return pt;
+}
+
+bool Plugin_Entity::isPointInsideContour(QPointF pt) {
+	bool onContour = false;
+	bool bInside = false;
+	RS_Entity *ec = entity;
+	RS2::EntityType et = ec->rtti();
+	if (et==RS2::EntityHatch) {
+		RS_Vector coord(pt.x(), pt.y());
+		bInside = RS_Information::isPointInsideContour(
+			coord,
+			static_cast<RS_Hatch*>(ec), &onContour);
+	}
+	return bInside;
 }
 
 Doc_plugin_interface::Doc_plugin_interface(RS_Document *d, RS_GraphicView* gv, QWidget* parent):

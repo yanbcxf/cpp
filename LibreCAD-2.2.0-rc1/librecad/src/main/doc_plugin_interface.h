@@ -73,6 +73,11 @@ public:
 	virtual QPointF getMaxOfBorder();
 	virtual QPointF getMinOfBorder();
 
+	/* 
+	* yangbin : 判定点是否处于 轮廓内 （如 hatch）
+	*/
+	virtual bool isPointInsideContour(QPointF pt);
+
 private:
     RS_Entity* entity;
     bool hasContainer;

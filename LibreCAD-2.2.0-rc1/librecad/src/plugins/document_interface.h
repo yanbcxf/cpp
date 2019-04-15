@@ -114,6 +114,7 @@ namespace DPI {
         ROWCOUNT = 71,  ///< int: insert number of rows
         TXTALIGNH=72,   /*!< enum: horizontal alignment for text */
         TXTALIGNV=73,   /*!< enum: vertical alignment for text */
+		HATCHSOLID=74,		/* yangbin: hatch 填充体 */
         REVERSED=291 /*!< bool: true if arc is reversed (clockwise) */
     };
 //Note about 24 bit RGB color:
@@ -287,6 +288,11 @@ public:
 	 */
 	virtual QPointF getMaxOfBorder() = 0;
 	virtual QPointF getMinOfBorder() = 0;
+
+	/*
+	* yangbin : 判定点是否处于 轮廓内 （如 hatch）
+	*/
+	virtual bool isPointInsideContour(QPointF pt) = 0;
 };
 
 //! Interface for comunicate plugins.
