@@ -120,6 +120,13 @@ public:
      */
     QStringList getPatternList() {
         QStringList ret = getFileList("patterns", "dxf");
+		/* 新增一个 pattern 目录，以便保存 施工图 个性化的 pattern 文件 */
+		QStringList ret1 = getFileList("patterns1", "dxf");
+		if (ret1.size() > 0) {
+			for (auto f : ret1) {
+				ret.push_back(f);
+			}
+		}
 		return ret;
     }
 

@@ -65,19 +65,10 @@ void RS_PatternList::init() {
 		patterns[name] = std::unique_ptr<RS_Pattern>{};
 
 		RS_DEBUG->print("base: %s", name.toLatin1().data());
-    }
 
-	libPattern.push_back("gost_ceramics");
-	libPattern.push_back("gost_concrete");
-	libPattern.push_back("gost_ferroconcrete");
-	libPattern.push_back("gost_ferroconcrete1");
-	libPattern.push_back("gost_glass");
-	libPattern.push_back("gost_glass1");
-	libPattern.push_back("gost_liquid");
-	libPattern.push_back("gost_metal");
-	libPattern.push_back("gost_wood");
-	libPattern.push_back("gost_wood1");
-	libPattern.push_back("gost_non-metal");
+		/* 所有 pattern 初始化为 未使用 */
+		mapUsage[name] = "";
+    }
 	
 }
 
@@ -94,14 +85,38 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 
 	RS_DEBUG->print("name2: %s", name2.toLatin1().data());
 
-	std::stringstream ss;
-	if (!patterns.count(name2)) {
-		ss << "RS_PatternList::requestPattern " << name2 << " lack ";
+	/* 寻找该请求名称 已在使用的 pattern */
+	/*std::stringstream ss;
+	QString namePattern = "";
+	std::map <QString, QString>::iterator it = mapUsage.begin();
+	for (; it != mapUsage.end(); it++) {
+		if (it->second == name2) {
+			namePattern = it->first;
+			name2 = namePattern;
+			break;
+		}
+	}*/
+	/* 分配一个 pattern ，优先分配同请求名称的 pattern */
+	/*if (namePattern.isEmpty()) {
+		
+		if (mapUsage.count(name2) > 0 && mapUsage[name2].isEmpty()) {
+			mapUsage[name2] = name2;
+			ss << "RS_PatternList::requestPattern Pattern( " << name2 << " ) ===> 请求名( " << name2 << " )";
+		} 
+		else {
+			it = mapUsage.begin();
+			for (; it != mapUsage.end(); it++) {
+				if (it->second.isEmpty()) {
+					it->second = name2;
+					name2 = it->first;
+
+					ss << "RS_PatternList::requestPattern Pattern( " << name2 << " ) ===> 请求名( " << it->second << " )";
+					break;
+				}
+			}
+		}
 	}
-	else {
-		ss << "RS_PatternList::requestPattern " << name2;
-	}
-	LOG4CPLUS_INFO(rootLogger, ss.str());
+	LOG4CPLUS_INFO(rootLogger, ss.str());*/
 
 	if (patterns.count(name2)) {
 		if (!patterns[name2]) {
@@ -114,6 +129,9 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 		return patterns[name2].get();
 	}
 
+	std::stringstream ss;
+	ss << "RS_PatternList::requestPattern, 缺乏 pattern  " << name2.toStdString();
+	LOG4CPLUS_INFO(rootLogger, ss.str());
 	return nullptr;
 
 }

@@ -91,9 +91,8 @@ private:
     //! patterns in the graphic
 	PTN_MAP patterns;
 
-	// 缺少的 Pattern 的映射关系， libPattern 可用的 Pattern （一般中文施工图不用的） 
-	std::map <QString, QString> mapLack;
-	std::vector<QString>	libPattern;
+	// Pattern 的映射关系, key = 现有的 pattern ， value = 使用它的请求名称 （未被使用为 空串） 
+	std::map <QString, QString> mapUsage;
 };
 
 #endif
