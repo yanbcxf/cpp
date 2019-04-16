@@ -130,7 +130,7 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 	}
 
 	std::stringstream ss;
-	ss << "RS_PatternList::requestPattern, È±·¦ pattern  " << name2.toStdString();
+	ss << "RS_PatternList::requestPattern, È±·¦ pattern  " << std::string(name2.toLocal8Bit());
 	LOG4CPLUS_INFO(rootLogger, ss.str());
 	return nullptr;
 
