@@ -793,13 +793,28 @@ QPointF Plugin_Entity::getMinOfBorder() {
 bool Plugin_Entity::isPointInsideContour(QPointF pt) {
 	bool onContour = false;
 	bool bInside = false;
-	RS_Entity *ec = entity;
-	RS2::EntityType et = ec->rtti();
+	RS2::EntityType et = entity->rtti();
 	if (et==RS2::EntityHatch) {
 		RS_Vector coord(pt.x(), pt.y());
-		bInside = RS_Information::isPointInsideContour(
-			coord,
-			static_cast<RS_Hatch*>(ec), &onContour);
+		RS_Hatch *h = (RS_Hatch *)entity;
+		
+		int nLoops = h->countLoops();
+		if (nLoops > 0) {
+			// check if all of the loops contain entities:
+			for (RS_Entity* l = h->firstEntity(RS2::ResolveNone);
+				l; 
+				l = h->nextEntity(RS2::ResolveNone)) {
+
+				if (l->isContainer() && !l->getFlag(RS2::FlagTemp)) {
+					RS_EntityContainer* loop = (RS_EntityContainer*)l;
+
+					/* 包含在任一个环内，即可认为处于 hatch 包围中 */
+					bInside = RS_Information::isPointInsideContour(
+						coord, loop, &onContour);
+					if (bInside) break;
+				}
+			}
+		}
 	}
 	return bInside;
 }

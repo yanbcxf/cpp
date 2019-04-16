@@ -32,6 +32,12 @@
 #include "rs_pattern.h"
 #include "rs_debug.h"
 
+#include <log4cplus/logger.h>
+#include <log4cplus/loggingmacros.h>
+using namespace log4cplus;
+
+extern Logger rootLogger;
+
 RS_PatternList* RS_PatternList::instance() {
 	static RS_PatternList instance;
 	return &instance;
@@ -60,6 +66,19 @@ void RS_PatternList::init() {
 
 		RS_DEBUG->print("base: %s", name.toLatin1().data());
     }
+
+	libPattern.push_back("gost_ceramics");
+	libPattern.push_back("gost_concrete");
+	libPattern.push_back("gost_ferroconcrete");
+	libPattern.push_back("gost_ferroconcrete1");
+	libPattern.push_back("gost_glass");
+	libPattern.push_back("gost_glass1");
+	libPattern.push_back("gost_liquid");
+	libPattern.push_back("gost_metal");
+	libPattern.push_back("gost_wood");
+	libPattern.push_back("gost_wood1");
+	libPattern.push_back("gost_non-metal");
+	
 }
 
 
@@ -74,6 +93,16 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
     QString name2 = name.toLower();
 
 	RS_DEBUG->print("name2: %s", name2.toLatin1().data());
+
+	std::stringstream ss;
+	if (!patterns.count(name2)) {
+		ss << "RS_PatternList::requestPattern " << name2 << " lack ";
+	}
+	else {
+		ss << "RS_PatternList::requestPattern " << name2;
+	}
+	LOG4CPLUS_INFO(rootLogger, ss.str());
+
 	if (patterns.count(name2)) {
 		if (!patterns[name2]) {
 			RS_Pattern* p = new RS_Pattern(name2);

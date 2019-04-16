@@ -38,6 +38,7 @@ typedef struct _TextData {
 	_TextData() = default;
 	QString name;
 	QPointF startPt, endPt;
+	QPointF maxPt, minPt;
 	double startAngle;
 	double height;
 	
@@ -61,6 +62,7 @@ typedef struct _HatchData {
 	_HatchData() = default;
 
 	QString  floorText;
+	QPointF  pointText;
 	Plug_Entity * ent;
 } HatchData;
 

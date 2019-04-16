@@ -421,6 +421,8 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 
 		QPointF ptA = ent->getMaxOfBorder();
 		QPointF ptB = ent->getMinOfBorder();
+		txt.maxPt = ptA;
+		txt.minPt = ptB;
 		txt.endPt = crossover(txt.startPt, txt.startAngle, ptB, ptA);
 				
 		QRegExp rx;
@@ -440,10 +442,36 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 void Text2Hatch(std::vector<HatchData>& hatchs, std::vector<TextData>& texts) {
 	for (auto t : texts) {
 		for (int i = 0; i < hatchs.size(); i++) {
-			if (hatchs[i].ent->isPointInsideContour(t.startPt)) {
-				hatchs[i].floorText = t.name;
-				break;
+			std::vector<QPointF>  vertex;
+			bool bInside = false;
+			QPointF pt = (t.maxPt + t.minPt) / 2;
+			/*QPointF pt1 = pt + QPointF(0, t.height * 3/ 2);
+			QPointF pt2 = pt + QPointF(0, -t.height * 3 / 2);
+			QPointF pt3 = pt + QPointF(t.height * 3 / 2, 0);
+			QPointF pt4 = pt + QPointF(-t.height * 3 / 2,0);*/
+			vertex.push_back(pt);
+			/*vertex.push_back(pt2);
+			vertex.push_back(pt3);
+			vertex.push_back(pt4);
+			pt1 = pt + QPointF( t.height * 3 /2, t.height * 3 /2);
+			pt2 = pt + QPointF(-t.height * 3 /2,-t.height * 3 /2);
+			pt3 = pt + QPointF(-t.height * 3 /2, t.height * 3 /2);
+			pt4 = pt + QPointF( t.height * 3 /2,-t.height * 3 /2);
+			vertex.push_back(pt1);
+			vertex.push_back(pt2);
+			vertex.push_back(pt3);
+			vertex.push_back(pt4);*/
+
+			for (auto v : vertex) {
+				if (hatchs[i].ent->isPointInsideContour(v)) {
+					hatchs[i].floorText = t.name;
+					hatchs[i].pointText = t.startPt;
+					bInside = true;
+					break;
+				}
 			}
+			if (bInside)
+				break;
 		}
 	}
 
@@ -492,14 +520,11 @@ void LC_List::execComm(Document_Interface *doc,
 	text.append("========================================================\n");
 	
 	// 按照匹配的先后顺序排序
-	for (int i = 0; i < markings.size(); i++) {
-		/* text.append(QString("N %1 %2 ( %3, %4 ) %5 %6 %7 \n").arg(i).arg(markings[i].beam.name)
-			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y())
-			.arg(markings[i].others.size() > 0 ? "Detail":"  ")
-			.arg(markings[i].bError ? "Error" : "  ")
-			.arg(markings[i].bAlert ? "Alert" : "  "));
+	for (int i = 0; i < hatchs.size(); i++) {
+		text.append(QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg(hatchs[i].floorText)
+			.arg(hatchs[i].pointText.x()).arg(hatchs[i].pointText.y()));
 
-		text.append("\n"); */
+		text.append("\n");
 	}
 
 	lc_Listdlg dlg(parent);
@@ -507,9 +532,16 @@ void LC_List::execComm(Document_Interface *doc,
 	//dlg.exec();
 	if (dlg.exec()) {
 				
-		// 如果是 close 按钮，图元不被选中 
+		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
-			doc->setSelectedEntity(obj.at(n), false);
+			bool bSelected = false;
+			for (auto h : hatchs) {
+				if (h.floorText.length() > 0 && h.ent == obj.at(n)) {
+					bSelected = true;
+					break;
+				}
+			}
+			doc->setSelectedEntity(obj.at(n), bSelected);
 		}
 		
 	}

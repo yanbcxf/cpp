@@ -29,6 +29,7 @@
 #define RS_PATTERNLIST_H
 
 #include<map>
+#include<vector>
 #include<memory>
 
 class RS_Pattern;
@@ -89,6 +90,10 @@ public:
 private:
     //! patterns in the graphic
 	PTN_MAP patterns;
+
+	// 缺少的 Pattern 的映射关系， libPattern 可用的 Pattern （一般中文施工图不用的） 
+	std::map <QString, QString> mapLack;
+	std::vector<QString>	libPattern;
 };
 
 #endif
