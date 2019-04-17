@@ -1358,9 +1358,17 @@ void RS_FilterDXFRW::addHatch(const DRW_Hatch *data) {
     if (hatch->validate()) {
         hatch->update();
     } else {
-        graphic->removeEntity(hatch);
-        RS_DEBUG->print(RS_Debug::D_ERROR,
-                    "RS_FilterDXFRW::endEntity(): updating hatch failed: invalid hatch area");
+		hatch->clearLoops();
+		int nLoops = hatch->countLoops();
+		if (nLoops > 0) {
+			hatch->update();
+		}
+		else {
+			graphic->removeEntity(hatch);
+			RS_DEBUG->print(RS_Debug::D_ERROR,
+				"RS_FilterDXFRW::endEntity(): updating hatch failed: invalid hatch area");
+		}
+        
     }
 }
 

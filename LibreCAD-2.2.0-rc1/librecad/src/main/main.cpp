@@ -42,6 +42,8 @@
 #include "qc_applicationwindow.h"
 #include "rs_debug.h"
 
+#include "rs_ellipse.h"
+
 #include <log4cplus/logger.h>
 #include <log4cplus/fileappender.h>
 #include <log4cplus/helpers/loglog.h>
@@ -64,6 +66,16 @@ int main(int argc, char** argv)
 
 	rootLogger = Logger::getInstance(LOG4CPLUS_TEXT("root"));
 	LOG4CPLUS_INFO(rootLogger, "LibreCAD Æô¶¯......");
+
+	RS_EllipseData d;
+	d.angle1 = (M_PI/4 + 0.92231932779840986);
+	d.angle2 = -0.64847699899649580;
+	d.ratio = 0.99999999999994282;
+	d.majorP = RS_Vector(-424.26406871198100, 424.26406871198100);
+	d.center = RS_Vector(338948.47411395068, 611400.32884623215);
+	RS_Ellipse ell(NULL, d);
+	RS_Vector start_1=  ell.getStartpoint();
+	RS_Vector end_1 = ell.getEllipsePoint(d.angle2);
 
 #ifdef NDEBUG
 	

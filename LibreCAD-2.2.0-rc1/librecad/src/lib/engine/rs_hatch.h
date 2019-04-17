@@ -101,6 +101,8 @@ public:
 
         bool validate();
 
+		void clearLoops();
+
 		int countLoops() const;
 
         /** @return true if this is a solid fill. false if it is a pattern hatch. */

@@ -99,7 +99,30 @@ bool RS_Hatch::validate() {
         return ret;
 }
 
+void RS_Hatch::clearLoops() {
+	bool bFinished = false;
+	while (!bFinished) {
+		bFinished = true;
+		QList<RS_Entity *>::iterator it = entities.begin();
+		for (; it != entities.end(); it++) {
+			RS_EntityContainer* loop = (RS_EntityContainer*)*it;
+			if (loop->rtti() == RS2::EntityContainer && !loop->optimizeContours()) {
+				
+				RS_Entity* e2 = loop->entityAt(0);
+				RS_Vector vpStart = e2->getStartpoint();
+				if (vpStart.y > 670722)
+				{
+					int ttt = 1;
+				}
 
+				bFinished = false;
+				entities.erase(it);
+				delete loop;
+			}
+
+		}
+	}
+}
 
 RS_Entity* RS_Hatch::clone() const{
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::clone()");
