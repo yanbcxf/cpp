@@ -527,6 +527,11 @@ public:
     * \return a string with the converted number.
     */
     virtual QString realToStr(const qreal num, const int units = 0, const int prec = 0) = 0;
+
+	/*
+	* yangbin : 在图上画出 hatch 最外层边界
+	*/
+	virtual void drawHatchContour(Plug_Entity *ent, QString layerName) = 0;
 };
 
 

@@ -141,6 +141,11 @@ public:
 
     //method to handle undo in Plugin_Entity 
     bool addToUndo(RS_Entity* current, RS_Entity* modified);
+
+	/*
+	* yangbin : 在图上画出 hatch 最外层边界
+	*/
+	void drawHatchContour(Plug_Entity *ent, QString layerName);
 private:
     RS_Document *doc;
     RS_Graphic *docGr;

@@ -543,7 +543,13 @@ void LC_List::execComm(Document_Interface *doc,
 			}
 			doc->setSelectedEntity(obj.at(n), bSelected);
 		}
-		
+	}
+
+	for (auto h : hatchs) {
+		if (h.floorText.isEmpty()) {
+			doc->setLayer(name());
+			doc->drawHatchContour(h.ent, "");
+		}
 	}
 
 	while (!obj.isEmpty())

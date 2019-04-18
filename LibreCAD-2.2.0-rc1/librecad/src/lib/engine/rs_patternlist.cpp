@@ -125,7 +125,10 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 			/* pattern 规格统一为 100x100， 后期在 rs_hatch 中统一放大 10 倍 ，
 			 * 基本 1 平米一个, 以下图案本身太密集，改为 10 平米 一个
 			 */
-			if (name2 == "concrete" || name2 == "ansi31" || name2 == "ar-conc" 
+			if (name2 == "ansi31") {
+				p->scale(RS_Vector(0.0, 0.0), RS_Vector(15, 15));
+			}
+			else if (name2 == "concrete" 
 				|| name2 == "gost_ceramics" || name2 == "gost_concrete" || name2 == "gost_ferroconcrete" 
 				|| name2 == "gost_ferroconcrete1" || name2 == "gost_glass1" || name2 == "gost_liquid" 
 				|| name2 == "gost_non-metal" || name2 == "gost_sand" || name2 == "gost_stone" 

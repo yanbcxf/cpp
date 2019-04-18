@@ -819,6 +819,123 @@ bool Plugin_Entity::isPointInsideContour(QPointF pt) {
 	return bInside;
 }
 
+void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString layerName) {
+	RS2::EntityType et = reinterpret_cast<Plugin_Entity*>(ent)->getEnt()->rtti();
+	if (!doc)	return;
+	if (et == RS2::EntityHatch) {
+		RS_Hatch *h = (RS_Hatch *)reinterpret_cast<Plugin_Entity*>(ent)->getEnt();
+
+		int nLoops = h->countLoops();
+		if (nLoops > 0) {
+			// check if all of the loops contain entities:
+			std::map<RS_EntityContainer*, std::vector<RS_Vector>>  mapLoop;
+			for (RS_Entity* l = h->firstEntity(RS2::ResolveNone);
+				l;
+				l = h->nextEntity(RS2::ResolveNone)) {
+
+				if (l->isContainer() && !l->getFlag(RS2::FlagTemp)) {
+					RS_EntityContainer* loop = (RS_EntityContainer*)l;
+					std::vector<RS_Vector> vec;
+					RS_Vector coord = loop->firstEntity()->getStartpoint();
+					vec.push_back(coord);
+					coord = loop->lastEntity()->getStartpoint();
+					vec.push_back(coord);
+
+					mapLoop[loop] = vec;
+				}
+			}
+
+			/* 寻找最外环 */
+			std::map<RS_EntityContainer*, std::vector<RS_Vector>>::iterator it = mapLoop.begin();
+			for (; it != mapLoop.end(); it++) {
+				bool bInside = false;
+				bool onContour;
+				for (auto coord : it->second) {
+					for (RS_Entity* l = h->firstEntity(RS2::ResolveNone);
+						l;
+						l = h->nextEntity(RS2::ResolveNone)) {
+
+						if (l->isContainer() && !l->getFlag(RS2::FlagTemp) && it->first != l) {
+							RS_EntityContainer* loop = (RS_EntityContainer*)l;
+
+							/* 包含在任一个环内，即可认为处于 hatch 包围中 */
+							bInside = RS_Information::isPointInsideContour(
+								coord, loop, &onContour);
+							if (bInside) break;
+						}
+					}
+					if (bInside) break;
+				}
+				if (!bInside) {
+					for (auto e : *(it->first)) {
+
+						switch (e->rtti()) {
+						case RS2::EntityLine: {
+							RS_Line* entity = new RS_Line{ doc, e->getStartpoint(), e->getEndpoint() };
+							doc->addEntity(entity);
+							if (!haveUndo) {
+								doc->startUndoCycle();
+								haveUndo = true;
+							}
+							doc->addUndoable(entity);
+						}
+											  break;
+
+						case RS2::EntityArc: {
+							RS_Arc* arc = static_cast<RS_Arc*>(e);
+							RS_ArcData d(arc->getCenter(), arc->getRadius(),
+								arc->getAngle1(),
+								arc->getAngle2(),
+								arc->isReversed());
+							RS_Arc* entity = new RS_Arc(doc, d);
+							doc->addEntity(entity);
+							if (!haveUndo) {
+								doc->startUndoCycle();
+								haveUndo = true;
+							}
+							doc->addUndoable(entity);
+						}
+											 break;
+
+						case RS2::EntityCircle: {
+							RS_Circle* circle = static_cast<RS_Circle*>(e);
+							RS_CircleData d(circle->getCenter(), circle->getRadius());
+							RS_Circle* entity = new RS_Circle(doc, d);
+
+							doc->addEntity(entity);
+							if (!haveUndo) {
+								doc->startUndoCycle();
+								haveUndo = true;
+							}
+							doc->addUndoable(entity);
+						}
+												break;
+						case RS2::EntityEllipse:
+						{
+							auto ellipse = static_cast<RS_Ellipse*>(e);
+
+							RS_EllipseData ed{ ellipse->getCenter(), ellipse->getMajorP(), ellipse->getRatio(),
+								ellipse->getAngle1(), ellipse->getAngle2(), ellipse->isReversed() };
+							RS_Ellipse* entity = new RS_Ellipse(doc, ed);
+
+							doc->addEntity(entity);
+							if (!haveUndo) {
+								doc->startUndoCycle();
+								haveUndo = true;
+							}
+							doc->addUndoable(entity);
+						}
+						break;
+						default:
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 Doc_plugin_interface::Doc_plugin_interface(RS_Document *d, RS_GraphicView* gv, QWidget* parent):
 doc(d)
 ,docGr(doc->getGraphic())
