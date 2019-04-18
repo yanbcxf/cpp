@@ -246,7 +246,9 @@ void RS_Hatch::update() {
 
     // scale pattern
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::update: scaling pattern");
-    pat->scale(RS_Vector(0.0,0.0), RS_Vector(data.scale, data.scale));
+    // pat->scale(RS_Vector(0.0,0.0), RS_Vector(data.scale, data.scale));
+	// 忽略施工图中的 填充图案 放大比例
+	pat->scale(RS_Vector(0.0, 0.0), RS_Vector(10, 10));
     pat->calculateBorders();
     forcedCalculateBorders();
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::update: scaling pattern: OK");

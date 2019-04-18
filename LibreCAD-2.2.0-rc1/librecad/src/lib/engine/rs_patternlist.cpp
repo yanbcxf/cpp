@@ -85,8 +85,8 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 
 	RS_DEBUG->print("name2: %s", name2.toLatin1().data());
 
-	/* 寻找该请求名称 已在使用的 pattern */
-	/*std::stringstream ss;
+	/* 寻找该请求名称 已在映射使用的 pattern */
+	std::stringstream ss;
 	QString namePattern = "";
 	std::map <QString, QString>::iterator it = mapUsage.begin();
 	for (; it != mapUsage.end(); it++) {
@@ -95,9 +95,9 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 			name2 = namePattern;
 			break;
 		}
-	}*/
+	}
 	/* 分配一个 pattern ，优先分配同请求名称的 pattern */
-	/*if (namePattern.isEmpty()) {
+	if (namePattern.isEmpty()) {
 		
 		if (mapUsage.count(name2) > 0 && mapUsage[name2].isEmpty()) {
 			mapUsage[name2] = name2;
@@ -116,12 +116,33 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 			}
 		}
 	}
-	LOG4CPLUS_INFO(rootLogger, ss.str());*/
+	LOG4CPLUS_INFO(rootLogger, ss.str());
 
 	if (patterns.count(name2)) {
 		if (!patterns[name2]) {
 			RS_Pattern* p = new RS_Pattern(name2);
 			p->loadPattern();
+			/* pattern 规格统一为 100x100， 后期在 rs_hatch 中统一放大 10 倍 ，
+			 * 基本 1 平米一个, 以下图案本身太密集，改为 10 平米 一个
+			 */
+			if (name2 == "concrete" || name2 == "ansi31" || name2 == "ar-conc" 
+				|| name2 == "gost_ceramics" || name2 == "gost_concrete" || name2 == "gost_ferroconcrete" 
+				|| name2 == "gost_ferroconcrete1" || name2 == "gost_glass1" || name2 == "gost_liquid" 
+				|| name2 == "gost_non-metal" || name2 == "gost_sand" || name2 == "gost_stone" 
+				|| name2 == "gost_wood" || name2 == "gost_wood1" || name2 == "honeycomb" || name2 == "misc03"
+				|| name2 == "plastic" 
+				) {
+				p->scale(RS_Vector(0.0, 0.0), RS_Vector(10, 10));
+			}
+			else if (name2 == "ar-parq1" || name2 == "clay" || name2 == "ar-conc" || name2 == "gost_metal"
+				|| name2 == "hex" || name2 == "hound" || name2 == "kerpele" || name2 == "paisley"  
+				|| name2 == "sand" ) {
+				p->scale(RS_Vector(0.0, 0.0), RS_Vector(5, 5));
+			}
+			else if (name2 == "a-rshke"  || name2 == "ar-brelm" ) {
+				p->scale(RS_Vector(0.0, 0.0), RS_Vector(3, 3));
+			}
+			
 			patterns[name2].reset(p);
 		}
 		RS_DEBUG->print("name2: %s, size= %d", name2.toLatin1().data(),
@@ -129,7 +150,7 @@ RS_Pattern* RS_PatternList::requestPattern(const QString& name) {
 		return patterns[name2].get();
 	}
 
-	std::stringstream ss;
+	ss.str("");
 	ss << "RS_PatternList::requestPattern, 缺乏 pattern  " << std::string(name2.toLocal8Bit());
 	LOG4CPLUS_INFO(rootLogger, ss.str());
 	return nullptr;
