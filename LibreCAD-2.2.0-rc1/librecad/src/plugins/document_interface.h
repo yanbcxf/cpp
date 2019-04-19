@@ -114,7 +114,10 @@ namespace DPI {
         ROWCOUNT = 71,  ///< int: insert number of rows
         TXTALIGNH=72,   /*!< enum: horizontal alignment for text */
         TXTALIGNV=73,   /*!< enum: vertical alignment for text */
-		HATCHSOLID=74,		/* yangbin: hatch Ìî³äÌå */
+		HATCHSOLID=74,			/* yangbin: hatch Ìî³äÌå */
+		HATCHANGLE = 75,		/* yangbin: hatch Ìî³äÌå */
+		HATCHSCALE = 76,		/* yangbin: hatch Ìî³äÌå */
+		HATCHPATTERN = 77,		/* yangbin: hatch Ìî³äÌå */
         REVERSED=291 /*!< bool: true if arc is reversed (clockwise) */
     };
 //Note about 24 bit RGB color:

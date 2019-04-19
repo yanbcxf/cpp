@@ -21,6 +21,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QDoubleValidator>
+#include <QRadioButton>
 #include <cmath>
 #include <algorithm>
 #include <set>
@@ -383,6 +384,9 @@ void filterData1(Plug_Entity *ent, std::vector<HatchData>& hatchs) {
 		if (!bSolid) {
 			hatch.floorText = "";
 			hatch.ent = ent;
+			hatch.angle = data.value(DPI::HATCHANGLE).toDouble();
+			hatch.scale = data.value(DPI::HATCHSCALE).toDouble();
+			hatch.pattern = data.value(DPI::HATCHPATTERN).toString();
 			hatchs.push_back(hatch);
 		}
 		break; }
@@ -445,23 +449,9 @@ void Text2Hatch(std::vector<HatchData>& hatchs, std::vector<TextData>& texts) {
 			std::vector<QPointF>  vertex;
 			bool bInside = false;
 			QPointF pt = (t.maxPt + t.minPt) / 2;
-			/*QPointF pt1 = pt + QPointF(0, t.height * 3/ 2);
-			QPointF pt2 = pt + QPointF(0, -t.height * 3 / 2);
-			QPointF pt3 = pt + QPointF(t.height * 3 / 2, 0);
-			QPointF pt4 = pt + QPointF(-t.height * 3 / 2,0);*/
+			
 			vertex.push_back(pt);
-			/*vertex.push_back(pt2);
-			vertex.push_back(pt3);
-			vertex.push_back(pt4);
-			pt1 = pt + QPointF( t.height * 3 /2, t.height * 3 /2);
-			pt2 = pt + QPointF(-t.height * 3 /2,-t.height * 3 /2);
-			pt3 = pt + QPointF(-t.height * 3 /2, t.height * 3 /2);
-			pt4 = pt + QPointF( t.height * 3 /2,-t.height * 3 /2);
-			vertex.push_back(pt1);
-			vertex.push_back(pt2);
-			vertex.push_back(pt3);
-			vertex.push_back(pt4);*/
-
+			
 			for (auto v : vertex) {
 				if (hatchs[i].ent->isPointInsideContour(v)) {
 					hatchs[i].floorText = t.name;
@@ -477,27 +467,15 @@ void Text2Hatch(std::vector<HatchData>& hatchs, std::vector<TextData>& texts) {
 
 }
 
-
-QString LC_List::getStrData(HatchData strip) {
-    
-	QString strData(""), strCommon("  %1: %2\n");
-    
-	
-    strData.append(strCommon.arg(tr("columnName")).arg(strip.floorText));
-	
-    return strData;
-}
-
-
-void LC_List::execComm(Document_Interface *doc,
-	QWidget *parent, QString cmd)
-{
+void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
-	d = doc;
+	
 	QList<Plug_Entity *> obj;
 	std::vector<Plug_Entity *> entites;
-	bool yes = doc->getSelect(&obj);
+	/*bool yes = doc->getSelect(&obj);
+	if (!yes || obj.isEmpty()) return;*/
+	bool yes = doc->getAllEntities(&obj, true);
 	if (!yes || obj.isEmpty()) return;
 
 	// 表格线 及 表格文本
@@ -513,12 +491,12 @@ void LC_List::execComm(Document_Interface *doc,
 	}
 
 	Text2Hatch(hatchs, markings);
-	
+
 
 	QString text;
 
 	text.append("========================================================\n");
-	
+
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < hatchs.size(); i++) {
 		text.append(QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg(hatchs[i].floorText)
@@ -531,7 +509,7 @@ void LC_List::execComm(Document_Interface *doc,
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
-				
+
 		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
 			bool bSelected = false;
@@ -545,15 +523,109 @@ void LC_List::execComm(Document_Interface *doc,
 		}
 	}
 
-	for (auto h : hatchs) {
-		if (h.floorText.isEmpty()) {
-			doc->setLayer(name());
-			doc->drawHatchContour(h.ent, "");
-		}
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
+}
+
+
+QString LC_List::getStrData(HatchData strip) {
+    
+	QString strData(""), strCommon("  %1: %2\n");
+    
+	
+    strData.append(strCommon.arg(tr("columnName")).arg(strip.floorText));
+	
+    return strData;
+}
+
+void  execComm2(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
+	QList<Plug_Entity *> obj;
+	std::vector<Plug_Entity *> entites;
+
+	/* 获取选中的样本 hatch */
+	bool yes = doc->getSelect(&obj);
+	if (!yes || obj.isEmpty()) return;
+
+	std::vector<HatchData>   hatchs;
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData1(obj.at(i), hatchs);
 	}
 
 	while (!obj.isEmpty())
 		delete obj.takeFirst();
+
+	/* 根据样本选择所有相同的 hatch */
+	yes = doc->getAllEntities(&obj, true);
+	if (!yes || obj.isEmpty()) return;
+
+	std::vector<HatchData>   allhatchs;
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData1(obj.at(i), allhatchs);
+	}
+	for (auto ah : allhatchs) {
+		bool bSelected = false;
+		for (auto h : hatchs) {
+			if (h.angle == ah.angle && h.pattern == ah.pattern) {
+				bSelected = true;
+				break;
+			}
+		}
+		doc->setSelectedEntity(ah.ent, bSelected);
+	}
+
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
+}
+
+void  execComm3(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
+	QList<Plug_Entity *> obj;
+	std::vector<Plug_Entity *> entites;
+
+	/* 获取选中的 hatch */
+	bool yes = doc->getSelect(&obj);
+	if (!yes || obj.isEmpty()) return;
+
+	std::vector<HatchData>   hatchs;
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData1(obj.at(i), hatchs);
+	}
+
+	inputdlg dlg(parent);
+	dlg.setWindowTitle("input floor thickness (example: h=300); if null , print floor area and contour");
+	if (dlg.exec()) {
+		if (hatchs.size() > 0) {
+			doc->setLayer(plugin->name());
+			doc->setCurrentLayerProperties(16711680 /* red */, DPI::Width23, DPI::SolidLine);
+		}
+		for (auto h : hatchs) {
+			doc->drawHatchContour(h.ent, dlg.edit.toPlainText());
+		}
+	}
+	
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
+}
+
+void LC_List::execComm(Document_Interface *doc,
+	QWidget *parent, QString cmd)
+{
+	Q_UNUSED(parent);
+	Q_UNUSED(cmd);
+	
+	menudlg dlg(parent);
+	if (dlg.exec()) {
+		if (dlg.handleFloorWithDimension.isChecked())
+		{
+			execComm1(doc, parent, cmd, this);
+		}
+		else if (dlg.selectSimilarHatch.isChecked()) {
+			execComm2(doc, parent, cmd, this);
+		}
+		else if (dlg.drawHatchContour.isChecked()) {
+			execComm3(doc, parent, cmd, this);
+		}
+	}
+
 }
 
 double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB)
@@ -564,9 +636,60 @@ double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexDat
 }
 
 /*****************************/
+inputdlg::inputdlg(QWidget *parent) : QDialog(parent)
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	
+	mainLayout->addWidget(&edit);
+
+	QDialogButtonBox* bb = new QDialogButtonBox(QDialogButtonBox::Close, Qt::Horizontal, this);
+	mainLayout->addWidget(bb);
+	this->setLayout(mainLayout);
+	this->resize(550, 300);
+
+	connect(bb, SIGNAL(rejected()), this, SLOT(accept()));
+}
+
+inputdlg::~inputdlg()
+{
+}
+
+/*****************************/
+menudlg::menudlg(QWidget *parent) : QDialog(parent)
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+
+	QGroupBox *menubox = new QGroupBox(tr("Menu"));
+	selectSimilarHatch.setText("Select Similar Hatch");
+	handleFloorWithDimension.setText("Handle Floor With Dimension");
+	drawHatchContour.setText("Draw Hatch Contour");
+	selectSimilarHatch.setChecked(true);
+	
+	QVBoxLayout *menulayout = new QVBoxLayout;
+	menulayout->addWidget(&selectSimilarHatch);
+	menulayout->addWidget(&handleFloorWithDimension);
+	menulayout->addWidget(&drawHatchContour);
+	menulayout->addStretch(1);
+	menubox->setLayout(menulayout);
+
+	mainLayout->addWidget(menubox);
+	
+	QDialogButtonBox* bb = new QDialogButtonBox(QDialogButtonBox::Close, Qt::Horizontal, this);
+	mainLayout->addWidget(bb);
+	this->setLayout(mainLayout);
+	this->resize(550, 300);
+
+	connect(bb, SIGNAL(rejected()), this, SLOT(accept()));
+}
+
+menudlg::~menudlg()
+{
+}
+
+/*****************************/
 lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 {
-    setWindowTitle(tr("Wall Table"));
+    setWindowTitle(tr("Floor Marking"));
 //    QTextEdit *edit= new QTextEdit(this);
     edit.setReadOnly (true);
     edit.setAcceptRichText ( false );

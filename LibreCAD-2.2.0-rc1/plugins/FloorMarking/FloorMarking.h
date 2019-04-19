@@ -19,6 +19,8 @@
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QGroupBox>
+#include <QRadioButton>
 
 #define M_PI       3.14159265358979323846   // pi
 
@@ -63,6 +65,9 @@ typedef struct _HatchData {
 
 	QString  floorText;
 	QPointF  pointText;
+	double	 angle;
+	double	 scale;
+	QString	 pattern;
 	Plug_Entity * ent;
 } HatchData;
 
@@ -87,6 +92,34 @@ private:
     QString getStrData(HatchData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
+};
+
+class inputdlg : public QDialog {
+	Q_OBJECT
+
+public:
+	explicit inputdlg(QWidget *parent = 0);
+	~inputdlg();
+
+public slots:
+
+public:
+	QTextEdit edit;
+};
+
+class menudlg : public QDialog {
+	Q_OBJECT
+
+public:
+	explicit menudlg(QWidget *parent = 0);
+	~menudlg();
+
+public slots:
+
+public:
+	QRadioButton selectSimilarHatch;
+	QRadioButton handleFloorWithDimension;
+	QRadioButton drawHatchContour;
 };
 
 class lc_Listdlg : public QDialog

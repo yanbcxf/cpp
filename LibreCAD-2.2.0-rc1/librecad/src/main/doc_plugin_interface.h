@@ -145,7 +145,7 @@ public:
 	/*
 	* yangbin : 在图上画出 hatch 最外层边界
 	*/
-	void drawHatchContour(Plug_Entity *ent, QString layerName);
+	void drawHatchContour(Plug_Entity *ent, QString floorDimension);
 private:
     RS_Document *doc;
     RS_Graphic *docGr;

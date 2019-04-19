@@ -340,6 +340,9 @@ void Plugin_Entity::getData(QHash<int, QVariant> *data){
 		data->insert(DPI::ETYPE, DPI::HATCH);
 		RS_HatchData d = static_cast<RS_Hatch*>(entity)->getData();
 		data->insert(DPI::HATCHSOLID, d.solid);
+		data->insert(DPI::HATCHANGLE, d.angle);
+		data->insert(DPI::HATCHSCALE, d.scale);
+		data->insert(DPI::HATCHPATTERN, d.pattern);
 		break; }
     case RS2::EntitySpline:
         data->insert(DPI::ETYPE, DPI::SPLINE);
@@ -819,7 +822,7 @@ bool Plugin_Entity::isPointInsideContour(QPointF pt) {
 	return bInside;
 }
 
-void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString layerName) {
+void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimension) {
 	RS2::EntityType et = reinterpret_cast<Plugin_Entity*>(ent)->getEnt()->rtti();
 	if (!doc)	return;
 	if (et == RS2::EntityHatch) {
@@ -867,68 +870,92 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString layerName)
 					if (bInside) break;
 				}
 				if (!bInside) {
-					for (auto e : *(it->first)) {
+					double area = it->first->areaLineIntegral();
+					area = area / 100 / 100 / 100;	// 换算成 平方米
+					
+					if (area > 1.5) {
+						/* 当没有板厚标注时， 绘制环的轮廓 和 环的面积 */
+						if (floorDimension.isEmpty()) {
+							for (auto e : *(it->first)) {
 
-						switch (e->rtti()) {
-						case RS2::EntityLine: {
-							RS_Line* entity = new RS_Line{ doc, e->getStartpoint(), e->getEndpoint() };
-							doc->addEntity(entity);
-							if (!haveUndo) {
-								doc->startUndoCycle();
-								haveUndo = true;
+								switch (e->rtti()) {
+								case RS2::EntityLine: {
+									RS_Line* entity = new RS_Line{ doc, e->getStartpoint(), e->getEndpoint() };
+									doc->addEntity(entity);
+									if (!haveUndo) {
+										doc->startUndoCycle();
+										haveUndo = true;
+									}
+									doc->addUndoable(entity);
+								}
+													  break;
+
+								case RS2::EntityArc: {
+									RS_Arc* arc = static_cast<RS_Arc*>(e);
+									RS_ArcData d(arc->getCenter(), arc->getRadius(),
+										arc->getAngle1(),
+										arc->getAngle2(),
+										arc->isReversed());
+									RS_Arc* entity = new RS_Arc(doc, d);
+									doc->addEntity(entity);
+									if (!haveUndo) {
+										doc->startUndoCycle();
+										haveUndo = true;
+									}
+									doc->addUndoable(entity);
+								}
+													 break;
+
+								case RS2::EntityCircle: {
+									RS_Circle* circle = static_cast<RS_Circle*>(e);
+									RS_CircleData d(circle->getCenter(), circle->getRadius());
+									RS_Circle* entity = new RS_Circle(doc, d);
+
+									doc->addEntity(entity);
+									if (!haveUndo) {
+										doc->startUndoCycle();
+										haveUndo = true;
+									}
+									doc->addUndoable(entity);
+								}
+														break;
+								case RS2::EntityEllipse:
+								{
+									auto ellipse = static_cast<RS_Ellipse*>(e);
+
+									RS_EllipseData ed{ ellipse->getCenter(), ellipse->getMajorP(), ellipse->getRatio(),
+										ellipse->getAngle1(), ellipse->getAngle2(), ellipse->isReversed() };
+									RS_Ellipse* entity = new RS_Ellipse(doc, ed);
+
+									doc->addEntity(entity);
+									if (!haveUndo) {
+										doc->startUndoCycle();
+										haveUndo = true;
+									}
+									doc->addUndoable(entity);
+								}
+								break;
+								default:
+									break;
+								}
 							}
-							doc->addUndoable(entity);
 						}
-											  break;
 
-						case RS2::EntityArc: {
-							RS_Arc* arc = static_cast<RS_Arc*>(e);
-							RS_ArcData d(arc->getCenter(), arc->getRadius(),
-								arc->getAngle1(),
-								arc->getAngle2(),
-								arc->isReversed());
-							RS_Arc* entity = new RS_Arc(doc, d);
-							doc->addEntity(entity);
-							if (!haveUndo) {
-								doc->startUndoCycle();
-								haveUndo = true;
-							}
-							doc->addUndoable(entity);
+						/* 标注 板厚 */
+						RS_Vector v1 = (it->first->getMin() + it->first->getMax()) / 2;
+						double width = 1.0;
+						RS_TextData d(v1, v1, 280, width, RS_TextData::VAMiddle, 
+							RS_TextData::HACenter,	RS_TextData::None, 
+							floorDimension.isEmpty() ? QString::number(area, 10, 2) : floorDimension,
+							"standard", 0, RS2::Update);
+						RS_Text* entity = new RS_Text(doc, d);
+
+						doc->addEntity(entity);
+						if (!haveUndo) {
+							doc->startUndoCycle();
+							haveUndo = true;
 						}
-											 break;
-
-						case RS2::EntityCircle: {
-							RS_Circle* circle = static_cast<RS_Circle*>(e);
-							RS_CircleData d(circle->getCenter(), circle->getRadius());
-							RS_Circle* entity = new RS_Circle(doc, d);
-
-							doc->addEntity(entity);
-							if (!haveUndo) {
-								doc->startUndoCycle();
-								haveUndo = true;
-							}
-							doc->addUndoable(entity);
-						}
-												break;
-						case RS2::EntityEllipse:
-						{
-							auto ellipse = static_cast<RS_Ellipse*>(e);
-
-							RS_EllipseData ed{ ellipse->getCenter(), ellipse->getMajorP(), ellipse->getRatio(),
-								ellipse->getAngle1(), ellipse->getAngle2(), ellipse->isReversed() };
-							RS_Ellipse* entity = new RS_Ellipse(doc, ed);
-
-							doc->addEntity(entity);
-							if (!haveUndo) {
-								doc->startUndoCycle();
-								haveUndo = true;
-							}
-							doc->addUndoable(entity);
-						}
-						break;
-						default:
-							break;
-						}
+						doc->addUndoable(entity);
 					}
 				}
 			}
