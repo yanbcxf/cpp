@@ -27,6 +27,8 @@
 #include "qg_commandhistory.h"
 #include <QAction>
 #include <QMouseEvent>
+#include <QMessageBox>
+#include "qg_commandwidget.h"
 
 // -- commandline history (output) widget --
 
@@ -69,3 +71,16 @@ void QG_CommandHistory::slotTextChanged()
 	m_pSelectAll->setVisible(! toPlainText().isEmpty());
 }
 
+void QG_CommandHistory::mouseDoubleClickEvent(QMouseEvent *e)
+{
+	if (e->button() == Qt::LeftButton )
+	{
+		QTextCursor t_tc = textCursor();
+		t_tc.select(QTextCursor::LineUnderCursor);
+		setTextCursor(t_tc);
+		QString txt = QTextEdit::textCursor().selectedText();
+
+		((QG_CommandWidget *)parent())->handleCommandHistory(txt);
+		
+	}
+}

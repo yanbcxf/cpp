@@ -45,6 +45,9 @@ private slots:
 
 	void mouseReleaseEvent(QMouseEvent* event);
 	void slotTextChanged();
+	/* 分析 message 文本，可能执行 co-ordinate view */
+	void mouseDoubleClickEvent(QMouseEvent *e);
+
 
 private:
 	/*menu item for Copy*/

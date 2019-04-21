@@ -54,6 +54,7 @@
 #include "rs_math.h"
 #include "rs_information.h"
 #include "rs_debug.h"
+#include "rs_dialogfactory.h"
 // #include <QDebug>
 
 convLTW::convLTW(){
@@ -822,10 +823,43 @@ bool Plugin_Entity::isPointInsideContour(QPointF pt) {
 	return bInside;
 }
 
-void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimension) {
+void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimension, QString targetText) {
 	RS2::EntityType et = reinterpret_cast<Plugin_Entity*>(ent)->getEnt()->rtti();
 	if (!doc)	return;
+
+	/* 寻找已标注板厚的 文本框 */
+	std::vector<RS_Entity *> markings;
+	for (auto e : *doc) {
+
+		if (e->isVisible() && e->rtti() == RS2::EntityText) {
+			RS_Text *t = (RS_Text *)e;
+			QRegExp rx;
+			rx.setPattern(targetText);
+			int idx = rx.indexIn(t->getText());
+			if (idx >= 0) {
+				markings.push_back(e);
+			}
+		}
+	}
+
 	if (et == RS2::EntityHatch) {
+
+		/* 首先选择 绘制属性 */
+		/*RS_AttributesData data;
+		data.pen = RS_Pen();
+		data.layer = "0";
+		data.changeColor = false;
+		data.changeLineType = false;
+		data.changeWidth = false;
+		data.changeLayer = false;
+
+		bool bCustomAttribute = false;
+
+		if (docGr) {
+			bCustomAttribute  = RS_DIALOGFACTORY->requestAttributesDialog(data, *docGr->getLayerList());
+		}*/
+
+		/*  */
 		RS_Hatch *h = (RS_Hatch *)reinterpret_cast<Plugin_Entity*>(ent)->getEnt();
 
 		int nLoops = h->countLoops();
@@ -881,6 +915,16 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 								switch (e->rtti()) {
 								case RS2::EntityLine: {
 									RS_Line* entity = new RS_Line{ doc, e->getStartpoint(), e->getEndpoint() };
+									/*if (bCustomAttribute) {
+										RS_Pen pen = entity->getPen(false);
+
+										if (data.changeLayer == true) entity->setLayer(data.layer);
+										if (data.changeColor == true) pen.setColor(data.pen.getColor());
+										if (data.changeLineType == true) pen.setLineType(data.pen.getLineType());
+										if (data.changeWidth == true) pen.setWidth(data.pen.getWidth());
+										
+										entity->setPen(pen);
+									}*/
 									doc->addEntity(entity);
 									if (!haveUndo) {
 										doc->startUndoCycle();
@@ -897,6 +941,7 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 										arc->getAngle2(),
 										arc->isReversed());
 									RS_Arc* entity = new RS_Arc(doc, d);
+									
 									doc->addEntity(entity);
 									if (!haveUndo) {
 										doc->startUndoCycle();
@@ -910,7 +955,6 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 									RS_Circle* circle = static_cast<RS_Circle*>(e);
 									RS_CircleData d(circle->getCenter(), circle->getRadius());
 									RS_Circle* entity = new RS_Circle(doc, d);
-
 									doc->addEntity(entity);
 									if (!haveUndo) {
 										doc->startUndoCycle();
@@ -926,7 +970,7 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 									RS_EllipseData ed{ ellipse->getCenter(), ellipse->getMajorP(), ellipse->getRatio(),
 										ellipse->getAngle1(), ellipse->getAngle2(), ellipse->isReversed() };
 									RS_Ellipse* entity = new RS_Ellipse(doc, ed);
-
+									
 									doc->addEntity(entity);
 									if (!haveUndo) {
 										doc->startUndoCycle();
@@ -941,21 +985,43 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 							}
 						}
 
-						/* 标注 板厚 */
-						RS_Vector v1 = (it->first->getMin() + it->first->getMax()) / 2;
-						double width = 1.0;
-						RS_TextData d(v1, v1, 280, width, RS_TextData::VAMiddle, 
-							RS_TextData::HACenter,	RS_TextData::None, 
-							floorDimension.isEmpty() ? QString::number(area, 10, 2) : floorDimension,
-							"standard", 0, RS2::Update);
-						RS_Text* entity = new RS_Text(doc, d);
-
-						doc->addEntity(entity);
-						if (!haveUndo) {
-							doc->startUndoCycle();
-							haveUndo = true;
+						bool bMarked = false;
+						RS_Entity * markedEntity;
+						for (auto e : markings) {
+							RS_Vector mid = (e->getMax() + e->getMin()) / 2;
+							bool onContour;
+							/* 包含在环内，即可认为处于 hatch 包围中 */
+							bMarked = RS_Information::isPointInsideContour(
+								mid, it->first, &onContour);
+							if (bMarked) {
+								markedEntity = e;
+								break;
+							}
 						}
-						doc->addUndoable(entity);
+						
+						if (bMarked) {
+							/* 更改原有标注的颜色样式等 */
+							markedEntity->setLayer(docGr->getActiveLayer());
+						}
+						else {
+							/* 新增 标注板厚 */
+							RS_Vector v1 = (it->first->getMin() + it->first->getMax()) / 2;
+							double width = 1.0;
+							RS_TextData d(v1, v1, 280, width, RS_TextData::VAMiddle,
+								RS_TextData::HACenter, RS_TextData::None,
+								floorDimension.isEmpty() ? QString::number(area, 10, 2) : floorDimension,
+								"standard", 0, RS2::Update);
+							RS_Text* entity = new RS_Text(doc, d);
+							
+							doc->addEntity(entity);
+							if (!haveUndo) {
+								doc->startUndoCycle();
+								haveUndo = true;
+							}
+							doc->addUndoable(entity);
+						}
+
+						
 					}
 				}
 			}
@@ -1369,6 +1435,17 @@ void Doc_plugin_interface::setLayer(QString name){
         docGr->addLayer(lay);
     }
     listLay->activate(lay, true);
+}
+
+/* 通过 对话框 产生新的 layer  */
+void Doc_plugin_interface::newLayer() {
+	if (docGr) {
+		RS_Layer* layer = RS_DIALOGFACTORY->requestNewLayerDialog(docGr->getLayerList());
+		if (layer) {
+			docGr->addLayer(layer);
+			docGr->getLayerList()->activate(layer, true);
+		}
+	}
 }
 
 QString Doc_plugin_interface::getCurrentLayer(){

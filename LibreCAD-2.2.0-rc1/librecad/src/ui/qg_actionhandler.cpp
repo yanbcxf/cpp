@@ -1920,5 +1920,13 @@ void QG_ActionHandler::toggleConstruction(RS_Layer* layer)
     view->setCurrentAction(a);
 }
 
+void QG_ActionHandler::zoomCoordinate(double x, double y) {
+	RS_Vector v1, v2;
+	v1.set(x - 3000, y - 3000);
+	v2.set(x + 3000, y + 3000);
+
+	view->zoomWindow(v1, v2, true);
+}
+
 // EOF
 

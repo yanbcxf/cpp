@@ -52,6 +52,8 @@ public slots:
     virtual void setNormalMode();
 	static QString getRootCommand( const QStringList & cmdList, const QString & typed );
     void setKeycodeMode(bool state);
+	/* 将 GraphicView 调整到某个中心点 */
+	void handleCommandHistory(QString txt);
 
 protected slots:
     virtual void languageChange();

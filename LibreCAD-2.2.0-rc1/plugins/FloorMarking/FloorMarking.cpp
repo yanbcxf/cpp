@@ -581,6 +581,7 @@ void  execComm3(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	QList<Plug_Entity *> obj;
 	std::vector<Plug_Entity *> entites;
 
+	
 	/* 获取选中的 hatch */
 	bool yes = doc->getSelect(&obj);
 	if (!yes || obj.isEmpty()) return;
@@ -594,11 +595,18 @@ void  execComm3(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	dlg.setWindowTitle("input floor thickness (example: h=300); if null , print floor area and contour");
 	if (dlg.exec()) {
 		if (hatchs.size() > 0) {
-			doc->setLayer(plugin->name());
-			doc->setCurrentLayerProperties(16711680 /* red */, DPI::Width23, DPI::SolidLine);
+			//doc->setLayer(plugin->name());
+			//doc->setCurrentLayerProperties(16711680 /* red */, DPI::Width23, DPI::SolidLine);
+			doc->newLayer();
 		}
 		for (auto h : hatchs) {
-			doc->drawHatchContour(h.ent, dlg.edit.toPlainText());
+			doc->drawHatchContour(h.ent, dlg.edit.toPlainText(), "^[Hh]=[0-9]+");
+		}
+		/* 正式生成 板厚标注后，即可删除 hatch */
+		if (dlg.edit.toPlainText().isEmpty() == false) {
+			for (auto h : hatchs) {
+				doc->removeEntity(h.ent);
+			}
 		}
 	}
 	

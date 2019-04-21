@@ -114,6 +114,7 @@ public:
 	void setSelectedEntity(Plug_Entity *ent, bool bSelected);
 
     void setLayer(QString name);
+	void newLayer();
     QString getCurrentLayer();
     QStringList getAllLayer();
     QStringList getAllBlocks();
@@ -143,9 +144,9 @@ public:
     bool addToUndo(RS_Entity* current, RS_Entity* modified);
 
 	/*
-	* yangbin : 在图上画出 hatch 最外层边界
+	* yangbin : 在图上画出 hatch 最外层边界 , targetText 要查找的文本
 	*/
-	void drawHatchContour(Plug_Entity *ent, QString floorDimension);
+	void drawHatchContour(Plug_Entity *ent, QString floorDimension, QString targetText);
 private:
     RS_Document *doc;
     RS_Graphic *docGr;

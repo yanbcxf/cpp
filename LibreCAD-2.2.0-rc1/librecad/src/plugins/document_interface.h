@@ -436,6 +436,9 @@ public:
 	*/
 	virtual void setSelectedEntity(Plug_Entity *ent, bool bSelected) = 0;
 
+	/* yangbin */
+	virtual void newLayer() = 0;
+
     //! Set the current layer in current document.
     /*! Set the current layer in current document, if not exist create it.
     *  \param name a QString with the name of the layer.
@@ -534,7 +537,7 @@ public:
 	/*
 	* yangbin : 在图上画出 hatch 最外层边界
 	*/
-	virtual void drawHatchContour(Plug_Entity *ent, QString layerName) = 0;
+	virtual void drawHatchContour(Plug_Entity *ent, QString layerName, QString targetText) = 0;
 };
 
 

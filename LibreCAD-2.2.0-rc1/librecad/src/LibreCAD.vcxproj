@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
@@ -27,7 +35,25 @@
     <IntermediateDirectory>..\..\generated\librecad\obj\</IntermediateDirectory>
     <PrimaryOutput>LibreCAD</PrimaryOutput>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <PlatformToolset>v141</PlatformToolset>
+    <OutputDirectory>..\..\windows\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>MultiByte</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>..\..\generated\librecad\obj\</IntermediateDirectory>
+    <PrimaryOutput>LibreCAD</PrimaryOutput>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v141</PlatformToolset>
+    <OutputDirectory>..\..\windows\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>MultiByte</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>..\..\generated\librecad\obj\</IntermediateDirectory>
+    <PrimaryOutput>LibreCAD</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
     <OutputDirectory>..\..\windows\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
@@ -50,24 +76,113 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\windows\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">LibreCAD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LibreCAD</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PostBuildEventUseInBuild>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\windows\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">LibreCAD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LibreCAD</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>..\..\generated\librecad\obj\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UndefinePreprocessorDefinitions>__STRICT_ANSI__;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>..\..\generated\lib\muparser.lib;..\..\generated\lib\dxfrw.lib;jwwlib.lib;log4cplus.lib;$(QTDIR)\lib\Qt5Svg.lib;$(QTDIR)\lib\Qt5PrintSupport.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\..\generated\lib;..\..\..\log4cplus-1.2.0\msvc10\x64\bin.Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\LibreCAD.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>2.2</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy     "$(SolutionDir)windows\LibreCAD.exe"  "$(LibreCADInstall)"  /Y
+./../../scripts/postprocess-win.bat 2.2.0-alpha
+</Command>
+      <Message>./../../scripts/postprocess-win.bat 2.2.0-alpha</Message>
+    </PostBuildEvent>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</Define>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/librecad/moc/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <InputFile>%(FullPath)</InputFile>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</IncludePath>
+    </QtMoc>
+    <QtRcc>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <Compression>default</Compression>
+      <InputFile>%(FullPath)</InputFile>
+    </QtRcc>
+    <QtUic>
+      <InputFile>%(FullPath)</InputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
@@ -140,6 +255,77 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>..\..\generated\librecad\obj\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UndefinePreprocessorDefinitions>__STRICT_ANSI__;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>..\..\generated\lib\muparser.lib;..\..\generated\lib\dxfrw.lib;jwwlib.lib;log4cplusD.lib;$(QTDIR)\lib\Qt5Svgd.lib;$(QTDIR)\lib\Qt5PrintSupportd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\..\generated\lib;..\..\..\log4cplus-1.2.0\msvc10\x64\bin.Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\LibreCAD.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>2.2</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>./../../scripts/postprocess-win.bat 2.2.0-alpha</Command>
+      <Message>./../../scripts/postprocess-win.bat 2.2.0-alpha</Message>
+    </PostBuildEvent>
+    <QtRcc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <Compression>default</Compression>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <InputFile>%(FullPath)</InputFile>
+    </QtRcc>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR="LibreCAD";LC_VERSION="2.2.0-alpha";QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/librecad/moc/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <InputFile>%(FullPath)</InputFile>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</IncludePath>
+    </QtMoc>
+    <QtUic>
+      <InputFile>%(FullPath)</InputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\..\log4cplus-1.2.0\include;..\..\..\..\boost_1_69_0;..\..\libraries\muparser\include;..\..\libraries\libdxfrw\src;..\..\libraries\jwwlib\src;cmd;lib\actions;lib\creation;lib\debug;lib\engine;lib\fileio;lib\filters;lib\generators;lib\gui;lib\information;lib\math;lib\modification;lib\printing;actions;main;test;plugins;ui;ui\forms;ui\generic;..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\librecad\moc;..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
@@ -560,15 +746,23 @@
     </QtMoc>
     <QtMoc Include="actions\rs_actionselecttext.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;C:\Program Files (x86)\Visual Leak Detector\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="actions\rs_actionzoomcoordinate.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\log4cplus-1.2.0\include;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\log4cplus-1.2.0\include;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\log4cplus-1.2.0\include;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\log4cplus-1.2.0\include;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="main\doc_plugin_interface.h" />
     <ClInclude Include="plugins\document_interface.h" />
@@ -659,9 +853,13 @@
     </QtMoc>
     <QtMoc Include="ui\generic\inputbox.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_MBCS</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;.\..\..\..\..\boost_1_69_0;.\..\..\libraries\muparser\include;.\..\..\libraries\libdxfrw\src;.\..\..\libraries\jwwlib\src;.\cmd;.\lib\actions;.\lib\creation;.\lib\debug;.\lib\engine;.\lib\fileio;.\lib\filters;.\lib\generators;.\lib\gui;.\lib\information;.\lib\math;.\lib\modification;.\lib\printing;.\actions;.\main;.\test;.\plugins;.\ui;.\ui\forms;.\ui\generic;.\..\res;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;.\..\..\generated\librecad\moc;.\..\..\generated\librecad\ui;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;DWGSUPPORT;QC_APPDIR=LibreCAD;LC_VERSION=2.2.0-alpha;QT_NO_DEBUG;QT_SVG_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="ui\qg_dialogfactory.h" />
     <QtMoc Include="ui\forms\qg_dimensionlabeleditor.h">
@@ -1169,13 +1367,21 @@
     <CustomBuild Include="..\..\generated\librecad\moc\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\librecad\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\librecad\moc\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate moc_predefs.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\generated\librecad\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\generated\librecad\moc\moc_predefs.h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\librecad\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\librecad\moc\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate moc_predefs.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\generated\librecad\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\generated\librecad\moc\moc_predefs.h;%(Outputs)</Outputs>
     </CustomBuild>
     <ClInclude Include="..\..\generated\librecad\ui\ui_colorwizard.h" />
     <ClInclude Include="..\..\generated\librecad\ui\ui_comboboxoption.h" />
@@ -1466,7 +1672,9 @@
   <ItemGroup>
     <QtRcc Include="..\res\actions\actions.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">actions</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">actions</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">actions</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">actions</InitFuncName>
     </QtRcc>
     <None Include="..\res\icons\add.svg" />
     <None Include="..\res\extui\align_bc.png" />
@@ -1666,7 +1874,9 @@
     <None Include="..\res\icons\export_pdf.svg" />
     <QtRcc Include="..\res\extui\extui.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">extui</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">extui</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">extui</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">extui</InitFuncName>
     </QtRcc>
     <None Include="..\res\actions\fileclose.png" />
     <None Include="..\res\actions\fileexport.png" />
@@ -1699,7 +1909,9 @@
     <None Include="..\res\ui\hiddenlayer.png" />
     <QtRcc Include="..\res\icons\icons.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">icons</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">icons</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">icons</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">icons</InitFuncName>
     </QtRcc>
     <None Include="..\res\icons\import.svg" />
     <None Include="..\res\extui\infoangle.png" />
@@ -1718,7 +1930,9 @@
     <None Include="..\res\main\librecad.png" />
     <QtRcc Include="..\..\licenses\licenses.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">licenses</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">licenses</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">licenses</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">licenses</InitFuncName>
     </QtRcc>
     <None Include="..\res\icons\line.svg" />
     <None Include="..\res\icons\line_2p.svg" />
@@ -1767,7 +1981,9 @@
     <None Include="..\res\ui\lockedlayer.png" />
     <QtRcc Include="..\res\main\main.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">main</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">main</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">main</InitFuncName>
     </QtRcc>
     <None Include="..\res\main\manual.png" />
     <None Include="..\res\icons\measure.svg" />
@@ -1942,7 +2158,9 @@
     <None Include="..\res\icons\trim_value.svg" />
     <QtRcc Include="..\res\ui\ui.qrc">
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui</InitFuncName>
       <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui</InitFuncName>
     </QtRcc>
     <None Include="..\res\icons\undo.svg" />
     <None Include="..\res\actions\undo2.png" />

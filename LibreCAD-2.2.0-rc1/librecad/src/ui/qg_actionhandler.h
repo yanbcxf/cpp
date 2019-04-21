@@ -259,6 +259,8 @@ public slots:
     void toggleLock(RS_Layer* layer);
     void togglePrint(RS_Layer* layer);
     void toggleConstruction(RS_Layer* layer);
+
+	void zoomCoordinate(double x, double y);
 private:
 
 	// Type of draw order selected command

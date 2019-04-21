@@ -32,6 +32,7 @@
 #include <QSettings>
 // yangbin
 #include <QAction>
+#include <QMessageBox>
 
 #include "qg_actionhandler.h"
 #include "rs_commands.h"
@@ -294,4 +295,23 @@ void QG_CommandWidget::handleKeycode(QString code)
 void QG_CommandWidget::setKeycodeMode(bool state)
 {
     leCommand->keycode_mode = state;
+}
+
+/* 将 GraphicView 调整到某个中心点 */
+void QG_CommandWidget::handleCommandHistory(QString  txt) {
+	QRegExp rx;
+	rx.setPattern("\\([0-9\\.\\s]+\\,[0-9\\.\\s]+\\)");
+	int idx = rx.indexIn(txt);
+	if (idx >= 0) {
+		QStringList ql = rx.capturedTexts();
+		txt = ql.at(0);
+		
+		idx = txt.indexOf(",");
+		double x = txt.mid(1, idx - 1).toDouble();
+		double y = txt.mid(idx + 1, txt.length() - idx - 2).toDouble();
+		// QMessageBox::information(this, "info", txt.mid(1, idx ));
+		if (actionHandler) {
+			actionHandler->zoomCoordinate(x, y);
+		}
+	}
 }
