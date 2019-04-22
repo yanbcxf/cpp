@@ -909,7 +909,7 @@ void Doc_plugin_interface::drawHatchContour(Plug_Entity *ent, QString floorDimen
 					
 					if (area > 1.5) {
 						/* 当没有板厚标注时， 绘制环的轮廓 和 环的面积 */
-						if (floorDimension.isEmpty()) {
+						if (/*floorDimension.isEmpty()*/ true) {
 							for (auto e : *(it->first)) {
 
 								switch (e->rtti()) {

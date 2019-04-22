@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D4C3E290-404F-414F-AD4C-9D328507635F}</ProjectGuid>
     <RootNamespace>ALLBUILD</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,15 +83,15 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy   "$(SolutionDir)windows\resources\plugins\list1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y 
-xcopy   "$(SolutionDir)windows\resources\plugins\ListLayer1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y 
-xcopy    "$(SolutionDir)windows\resources\plugins\liststrip1.dll"  "$(LibreCADInstall)resources\plugins\"  /Y
-xcopy     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y
-xcopy     "$(SolutionDir)windows\resources\plugins\SelectColumnFrame1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y
+      <Command>
 
-xcopy   "$(SolutionDir)windows\resources\plugins\ColumnTable1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y 
-xcopy   "$(SolutionDir)windows\resources\plugins\WallTable1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y
-xcopy   "$(SolutionDir)windows\resources\plugins\BeamMarking1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y  
+
+
+
+
+
+
+
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
