@@ -54,23 +54,53 @@ typedef struct _LineData {
 	_LineData() = default;
 
 	QPointF from, to;
+	double angle;		// 与 axis（1，0） 轴线的夹角，以便判断 梁的另一条平行线
+
 	Plug_Entity * ent;
 } LineData;
 
-typedef struct _HatchData {
+typedef struct _PolylineData {
+	/**
+	 * Default constructor. Leaves the data object uninitialized.
+	 */
+	_PolylineData() = default;
+		
+	QString		strLayer;
+	QString		strColor;
+	int			closed;
+	std::vector<double>	 angles;	// 边与边的夹角
+	std::vector<QPointF> vertexs;	//  polyline
+	Plug_Entity * ent;
+} PolylineData;
+
+typedef struct _NegativeReinforceData {
 	/**
 	* Default constructor. Leaves the data object uninitialized.
 	*/
-	_HatchData() = default;
+	_NegativeReinforceData() = default;
 
-	QString  floorText;
-	QPointF  pointText;
+	QString  steelText;
+	QString  sizeText;
 	double	 angle;
 	double	 scale;
 	QString	 pattern;
-	Plug_Entity * ent;
-} HatchData;
+	Plug_Entity * ent;			// 负筋线本身
+	Plug_Entity * ent_steel;	// 钢筋信息标注
+	Plug_Entity * ent_size;		// 负筋线尺寸标注
+} NegativeReinforceData;
 
+
+typedef struct _BeamData {
+	/**
+	* Default constructor. Leaves the data object uninitialized.
+	*/
+	_BeamData() = default;
+
+	LineData	line1;
+	LineData	line2;
+	double		width;		//	梁（墙）宽
+
+} BeamData;
 
 //class QTextEdit;
 class Plug_Entity;
@@ -89,7 +119,7 @@ class LC_List : public QObject, QC_PluginInterface
 
 private:
 	
-    QString getStrData(HatchData strip);
+    QString getStrData(PolylineData strip);
     double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };

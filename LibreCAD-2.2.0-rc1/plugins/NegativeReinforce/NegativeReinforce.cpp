@@ -44,14 +44,14 @@
 
 QString LC_List::name() const
  {
-     return (tr("Floor Marking"));
+     return (tr("Negative Reinforcement"));
  }
 
 PluginCapabilities LC_List::getCapabilities() const
 {
     PluginCapabilities pluginCapabilities;
     pluginCapabilities.menuEntryPoints
-            << PluginMenuLocation("plugins_menu", tr("Floor Marking"));
+            << PluginMenuLocation("plugins_menu", tr("Negative Reinforcement"));
     return pluginCapabilities;
 }
 
@@ -365,30 +365,67 @@ QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt) {
 	return pt;
 }
 
-/* 第一遍，过滤 Hatch 填充体 */
-void filterData1(Plug_Entity *ent, std::vector<HatchData>& hatchs) {
+/* 第一遍，过滤 负筋的钢筋线 和 梁（墙）等支座线 */
+void filterData1(Plug_Entity *ent, std::vector<PolylineData>& polylines, std::vector<LineData>& lines) {
 	if (NULL == ent)
 		return ;
 
 	QPointF ptA, ptB;
 	QHash<int, QVariant> data;
-	HatchData hatch;
 	//common entity data
 	ent->getData(&data);
 
 	//specific entity data
 	int et = data.value(DPI::ETYPE).toInt();
 	switch (et) {
-	case DPI::HATCH: {
-		bool bSolid = data.value(DPI::HATCHSOLID).toBool();
-		if (!bSolid) {
-			hatch.floorText = "";
-			hatch.ent = ent;
-			hatch.angle = data.value(DPI::HATCHANGLE).toDouble();
-			hatch.scale = data.value(DPI::HATCHSCALE).toDouble();
-			hatch.pattern = data.value(DPI::HATCHPATTERN).toString();
-			hatchs.push_back(hatch);
+	case DPI::POLYLINE: {
+		PolylineData strip;
+		strip.strLayer = data.value(DPI::LAYER).toString();
+		strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
+		strip.closed = data.value(DPI::CLOSEPOLY).toInt();
+		strip.ent = ent;
+
+		QList<Plug_VertexData> vl;
+		ent->getPolylineData(&vl);
+		int iVertices = vl.size();
+		for (int i = 0; i < iVertices; ++i) {
+			strip.vertexs.push_back(vl.at(i).point);
 		}
+
+		bool bNegativeReinforce = false;
+		if (iVertices >= 3 && !strip.closed) {
+			bNegativeReinforce = true;
+			for (int i = 0; i < iVertices -2; ++i) {
+				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
+				QPointF e2 = strip.vertexs[i + 1] - strip.vertexs[i + 2];
+				strip.angles.push_back(angle(e1, e2));
+			}
+			/* 边与边的夹角均应该为 90 度，才有可能为负筋 */
+			for (auto a : strip.angles) {
+				if (a > M_PI_2 + 0.0001 || a < M_PI_2 - 0.0001) {
+					bNegativeReinforce = false;
+					break;
+				}
+			}
+			if(bNegativeReinforce)
+				polylines.push_back(strip);
+		}
+		if (!bNegativeReinforce) {
+
+		}
+		break; }
+	case DPI::LINE: {
+		LineData line;
+		line.from.setX(data.value(DPI::STARTX).toDouble());
+		line.from.setY(data.value(DPI::STARTY).toDouble());
+		line.to.setX(data.value(DPI::ENDX).toDouble());
+		line.to.setY(data.value(DPI::ENDY).toDouble());
+		data.value(DPI::LTYPE);
+		line.ent = ent;
+		QPointF axis(1, 0);
+		line.angle = angle(axis, line.from - line.to);
+		lines.push_back(line);
+
 		break; }
 	default:
 		break;
@@ -397,7 +434,7 @@ void filterData1(Plug_Entity *ent, std::vector<HatchData>& hatchs) {
 }
 
 
-// 第二遍，寻找板标注文本信息
+// 第二遍，寻找负筋标注文本信息
 void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 	if (NULL == ent)
 		return;
@@ -442,30 +479,8 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 	}
 }
 
-/* 将板标注 匹配到 填充体Hatch */
-void Text2Hatch(std::vector<HatchData>& hatchs, std::vector<TextData>& texts) {
-	for (auto t : texts) {
-		for (int i = 0; i < hatchs.size(); i++) {
-			std::vector<QPointF>  vertex;
-			bool bInside = false;
-			QPointF pt = (t.maxPt + t.minPt) / 2;
-			
-			vertex.push_back(pt);
-			
-			for (auto v : vertex) {
-				if (hatchs[i].ent->isPointInsideContour(v)) {
-					hatchs[i].floorText = t.name;
-					hatchs[i].pointText = t.startPt;
-					bInside = true;
-					break;
-				}
-			}
-			if (bInside)
-				break;
-		}
-	}
 
-}
+
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
 	Q_UNUSED(parent);
@@ -478,19 +493,14 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	bool yes = doc->getAllEntities(&obj, true);
 	if (!yes || obj.isEmpty()) return;
 
-	// 表格线 及 表格文本
-	std::vector<TextData>   markings;
-	std::vector<HatchData>   hatchs;
+	// 过滤 负筋的钢筋线 和 梁（墙）等支座线
+	std::vector<PolylineData>   polylines;
+	std::vector<LineData>   lines;
 
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), hatchs);
+		filterData1(obj.at(i), polylines, lines);
 	}
-	// 第二遍，匹配 柱附近的标注引出线
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), markings);
-	}
-
-	Text2Hatch(hatchs, markings);
+	
 
 
 	QString text;
@@ -498,9 +508,9 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	text.append("========================================================\n");
 
 	// 按照匹配的先后顺序排序
-	for (int i = 0; i < hatchs.size(); i++) {
-		text.append(QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg(hatchs[i].floorText)
-			.arg(hatchs[i].pointText.x()).arg(hatchs[i].pointText.y()));
+	for (int i = 0; i < polylines.size(); i++) {
+		text.append(QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg(" ")
+			.arg(polylines[i].vertexs[0].x()).arg(polylines[i].vertexs[0].y()));
 
 		text.append("\n");
 	}
@@ -513,8 +523,8 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
 			bool bSelected = false;
-			for (auto h : hatchs) {
-				if (h.floorText.length() > 0 && h.ent == obj.at(n)) {
+			for (auto h : polylines) {
+				if ( h.ent == obj.at(n)) {
 					bSelected = true;
 					break;
 				}
@@ -528,12 +538,12 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 }
 
 
-QString LC_List::getStrData(HatchData strip) {
+QString LC_List::getStrData(PolylineData strip) {
     
 	QString strData(""), strCommon("  %1: %2\n");
     
 	
-    strData.append(strCommon.arg(tr("columnName")).arg(strip.floorText));
+    //strData.append(strCommon.arg(tr("columnName")).arg(strip.floorText));
 	
     return strData;
 }
@@ -542,39 +552,7 @@ void  execComm2(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	QList<Plug_Entity *> obj;
 	std::vector<Plug_Entity *> entites;
 
-	/* 获取选中的样本 hatch */
-	bool yes = doc->getSelect(&obj);
-	if (!yes || obj.isEmpty()) return;
-
-	std::vector<HatchData>   hatchs;
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), hatchs);
-	}
-
-	while (!obj.isEmpty())
-		delete obj.takeFirst();
-
-	/* 根据样本选择所有相同的 hatch */
-	yes = doc->getAllEntities(&obj, true);
-	if (!yes || obj.isEmpty()) return;
-
-	std::vector<HatchData>   allhatchs;
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), allhatchs);
-	}
-	for (auto ah : allhatchs) {
-		bool bSelected = false;
-		for (auto h : hatchs) {
-			if (h.angle == ah.angle && h.pattern == ah.pattern) {
-				bSelected = true;
-				break;
-			}
-		}
-		doc->setSelectedEntity(ah.ent, bSelected);
-	}
-
-	while (!obj.isEmpty())
-		delete obj.takeFirst();
+	
 }
 
 void  execComm3(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
@@ -582,36 +560,6 @@ void  execComm3(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	std::vector<Plug_Entity *> entites;
 
 	
-	/* 获取选中的 hatch */
-	bool yes = doc->getSelect(&obj);
-	if (!yes || obj.isEmpty()) return;
-
-	std::vector<HatchData>   hatchs;
-	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), hatchs);
-	}
-
-	inputdlg dlg(parent);
-	dlg.setWindowTitle("input floor thickness (example: h=300); if null , print floor area and contour");
-	if (dlg.exec()) {
-		if (hatchs.size() > 0) {
-			//doc->setLayer(plugin->name());
-			//doc->setCurrentLayerProperties(16711680 /* red */, DPI::Width23, DPI::SolidLine);
-			doc->newLayer();
-		}
-		for (auto h : hatchs) {
-			doc->drawHatchContour(h.ent, dlg.edit.toPlainText(), "^[Hh]=[0-9]+");
-		}
-		/* 正式生成 板厚标注后，即可删除 hatch */
-		if (dlg.edit.toPlainText().isEmpty() == false) {
-			for (auto h : hatchs) {
-				doc->removeEntity(h.ent);
-			}
-		}
-	}
-	
-	while (!obj.isEmpty())
-		delete obj.takeFirst();
 }
 
 void LC_List::execComm(Document_Interface *doc,
@@ -620,8 +568,9 @@ void LC_List::execComm(Document_Interface *doc,
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
 	
-	menudlg dlg(parent);
-	if (dlg.exec()) {
+	execComm1(doc, parent, cmd, this);
+	/*menudlg dlg(parent);
+	if ( dlg.exec()) {
 		if (dlg.handleFloorWithDimension.isChecked())
 		{
 			execComm1(doc, parent, cmd, this);
@@ -632,7 +581,7 @@ void LC_List::execComm(Document_Interface *doc,
 		else if (dlg.drawHatchContour.isChecked()) {
 			execComm3(doc, parent, cmd, this);
 		}
-	}
+	}*/
 
 }
 
@@ -697,7 +646,7 @@ menudlg::~menudlg()
 /*****************************/
 lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 {
-    setWindowTitle(tr("Floor Marking"));
+    setWindowTitle(tr("Negative Reinforcement"));
 //    QTextEdit *edit= new QTextEdit(this);
     edit.setReadOnly (true);
     edit.setAcceptRichText ( false );
