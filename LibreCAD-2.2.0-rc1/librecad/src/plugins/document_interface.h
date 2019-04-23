@@ -538,6 +538,11 @@ public:
 	* yangbin : 在图上画出 hatch 最外层边界
 	*/
 	virtual void drawHatchContour(Plug_Entity *ent, QString layerName, QString targetText) = 0;
+
+	/*
+	* yangbin : 在 commandHitory 栏输出调试信息
+	*/
+	virtual void commandMessage(const QString & msg) = 0;
 };
 
 

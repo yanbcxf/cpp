@@ -55,6 +55,8 @@
 #include "rs_information.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
+
+#include "qg_dialogfactory.h"
 // #include <QDebug>
 
 convLTW::convLTW(){
@@ -1727,4 +1729,9 @@ QString Doc_plugin_interface::realToStr(const qreal num, const int units, const 
 
     QString msg = RS_Units::formatLinear(num,RS2::None,lf,pr);
     return msg;
+}
+
+/* 向 commandHistory 栏目输出调试信息 */
+void Doc_plugin_interface::commandMessage(const QString & msg) {
+	QG_DIALOGFACTORY->commandMessage(msg);
 }

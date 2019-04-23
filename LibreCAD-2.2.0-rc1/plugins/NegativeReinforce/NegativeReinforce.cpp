@@ -393,7 +393,7 @@ void filterData1(Plug_Entity *ent, std::vector<PolylineData>& polylines, std::ve
 		}
 
 		bool bNegativeReinforce = false;
-		if (iVertices >= 3 && !strip.closed) {
+		if (iVertices >= 3 && !strip.closed && iVertices <= 4) {
 			bNegativeReinforce = true;
 			for (int i = 0; i < iVertices -2; ++i) {
 				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
@@ -402,7 +402,7 @@ void filterData1(Plug_Entity *ent, std::vector<PolylineData>& polylines, std::ve
 			}
 			/* 边与边的夹角均应该为 90 度，才有可能为负筋 */
 			for (auto a : strip.angles) {
-				if (a > M_PI_2 + 0.0001 || a < M_PI_2 - 0.0001) {
+				if (a > M_PI_2 + ONE_DEGREE || a < M_PI_2 - ONE_DEGREE) {
 					bNegativeReinforce = false;
 					break;
 				}
@@ -509,8 +509,13 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < polylines.size(); i++) {
-		text.append(QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg(" ")
-			.arg(polylines[i].vertexs[0].x()).arg(polylines[i].vertexs[0].y()));
+		QString msg = QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg("Negative Reinforcement ")
+			.arg(QString::number(polylines[i].vertexs[0].x(),10,2))
+			.arg(QString::number(polylines[i].vertexs[0].y(),10,2));
+		text.append(msg);
+
+		if (polylines[i].vertexs.size() > 4)
+			doc->commandMessage(msg);
 
 		text.append("\n");
 	}
