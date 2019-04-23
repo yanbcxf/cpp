@@ -366,7 +366,7 @@ QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt) {
 }
 
 /* 第一遍，过滤 负筋的钢筋线 和 梁（墙）等支座线 */
-void filterData1(Plug_Entity *ent, std::vector<PolylineData>& polylines, std::vector<LineData>& lines) {
+void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives, std::vector<PolylineData>& polylines, std::vector<LineData>& lines) {
 	if (NULL == ent)
 		return ;
 
@@ -395,23 +395,42 @@ void filterData1(Plug_Entity *ent, std::vector<PolylineData>& polylines, std::ve
 		bool bNegativeReinforce = false;
 		if (iVertices >= 3 && !strip.closed && iVertices <= 4) {
 			bNegativeReinforce = true;
+			int longest = -1;
+			double longest_dist = -1.0;
 			for (int i = 0; i < iVertices -2; ++i) {
 				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
 				QPointF e2 = strip.vertexs[i + 1] - strip.vertexs[i + 2];
-				strip.angles.push_back(angle(e1, e2));
+				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+				if (dist > longest_dist) {
+					longest_dist = dist;
+					longest = i;
+				}
+				double cp = crossProduct(e1, e2)> 0 ? 1.0 : -1.0;
+				double an = angle(e1, e2);
+				strip.angles.push_back(an * cp);
 			}
 			/* 边与边的夹角均应该为 90 度，才有可能为负筋 */
 			for (auto a : strip.angles) {
-				if (a > M_PI_2 + ONE_DEGREE || a < M_PI_2 - ONE_DEGREE) {
+				if (fabs(a) > M_PI_2 + ONE_DEGREE || fabs(a )< M_PI_2 - ONE_DEGREE) {
 					bNegativeReinforce = false;
 					break;
 				}
 			}
-			if(bNegativeReinforce)
-				polylines.push_back(strip);
+			if (bNegativeReinforce)
+			{
+				if (longest > 0) {
+					if()
+				} 
+				else {
+
+				}
+				NegativeReinforceData negative;
+				negative.steel = strip;
+				negatives.push_back(negative);
+			}
 		}
 		if (!bNegativeReinforce) {
-
+			polylines.push_back(strip);
 		}
 		break; }
 	case DPI::LINE: {
@@ -479,7 +498,15 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 	}
 }
 
+/* 将梁线匹配到某个负筋 */
+void line2negative(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives, std::vector<LineData>& lines)
+{
+	for (auto l : lines) {
+		for (int i = 0; i < negatives.size(); i++) {
 
+		}
+	}
+}
 
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
