@@ -54,6 +54,7 @@ typedef struct _LineData {
 	_LineData() = default;
 
 	QPointF from, to;
+	double length;
 	double angle;		// 与 axis（1，0） 轴线的夹角，以便判断 梁的另一条平行线
 
 	Plug_Entity * ent;
@@ -81,7 +82,6 @@ typedef struct _NegativeReinforceData {
 	*/
 	_NegativeReinforceData() = default;
 
-	QString  steelText;
 	QString  sizeText;
 	double	 angle;
 	double	 scale;
@@ -89,7 +89,7 @@ typedef struct _NegativeReinforceData {
 	PolylineData	steel;			// 负筋线本身
 	TextData		steelText;	// 钢筋信息标注
 	std::vector<LineData>	beam;		// 梁支座线
-	std::vector<PolylineData>	wall:	//	墙支座线
+	std::vector<PolylineData>	wall;	//	墙支座线
 } NegativeReinforceData;
 
 

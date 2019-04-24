@@ -365,6 +365,51 @@ QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt) {
 	return pt;
 }
 
+
+bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
+	//************************************************************************
+	//  求二条直线的交点的公式
+	//  有如下方程 (x-x1)/(y-y1) = (x2-x1)/(y2-y1) ==> a1*x+b1*y=c1
+	//            (x-x3)/(y-y3) = (x4-x3)/(y4-y3) ==> a2*x+b2*y=c2
+	//  则交点为
+	//                x= | c1 b1|  / | a1 b1 |      y= | a1 c1| / | a1 b1 |
+	//                   | c2 b2|  / | a2 b2 |         | a2 c2| / | a2 b2 |
+	//
+	//   a1= y2-y1
+	//   b1= x1-x2
+	//   c1= x1*y2-x2*y1
+	//   a2= y4-y3
+	//   b2= x3-x4
+	//   c2= x3*y4-x4*y3
+
+	double a1 = p2.y() - p1.y();
+	double b1 = p1.x() - p2.x();
+	double c1 = p1.x() * p2.y() - p2.x() * p1.y();
+	double a2 = p4.y() - p3.y();
+	double b2 = p3.x() - p4.x();
+	double c2 = p3.x() * p4.y() - p4.x() *p3.y();
+	double det = a1 * b2 - a2 * b1;
+
+	if (det == 0) return false;
+
+	crossPoint.setX((c1*b2 - c2 * b1) / det);
+	crossPoint.setY((a1*c2 - a2 * c1) / det);
+
+	// Now this is cross point of lines
+	// Do we need the cross Point of segments(need to judge x,y within 4 endpoints)
+	// 是否要判断线段相交
+	if ((abs(crossPoint.x() - (p1.x() + p2.x()) / 2) <= (abs(p2.x() - p1.x()) / 2) + TOLERANCE/1000) &&
+		(abs(crossPoint.y() - (p1.y() + p2.y()) / 2) <= (abs(p2.y() - p1.y()) / 2) + TOLERANCE/1000) &&
+		(abs(crossPoint.x() - (p3.x() + p4.x()) / 2) <= (abs(p4.x() - p3.x()) / 2) + TOLERANCE/1000) &&
+		(abs(crossPoint.y() - (p3.y() + p4.y()) / 2) <= (abs(p4.y() - p3.y()) / 2) + TOLERANCE/1000))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
 /* 第一遍，过滤 负筋的钢筋线 和 梁（墙）等支座线 */
 void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives, std::vector<PolylineData>& polylines, std::vector<LineData>& lines) {
 	if (NULL == ent)
@@ -418,11 +463,26 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 			}
 			if (bNegativeReinforce)
 			{
+				/* 调整负筋线的正方向 */
 				if (longest > 0) {
-					if()
+					if (strip.angles[longest - 1] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest+1];
+					} 
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
 				} 
 				else {
-
+					if (strip.angles[longest] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest + 1];
+					}
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
 				}
 				NegativeReinforceData negative;
 				negative.steel = strip;
@@ -441,8 +501,18 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 		line.to.setY(data.value(DPI::ENDY).toDouble());
 		data.value(DPI::LTYPE);
 		line.ent = ent;
-		QPointF axis(1, 0);
-		line.angle = angle(axis, line.from - line.to);
+		
+		/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+		QPointF ptC = line.to - line.from;
+		double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+		double numB = asin(ptC.y() / numA);
+		if (ptC.x() < 0) numB = M_PI - numB;
+		if (numB < 0) numB = 2 * M_PI + numB;
+		line.angle = numB;
+		// line.angle = angle(axis, line.from - line.to);
+
+		QPointF e = line.from - line.to;
+		line.length = sqrt(e.x() * e.x() + e.y() * e.y());
 		lines.push_back(line);
 
 		break; }
@@ -499,11 +569,57 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 }
 
 /* 将梁线匹配到某个负筋 */
-void line2negative(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives, std::vector<LineData>& lines)
+void line2negative(std::vector<NegativeReinforceData>& negatives, std::vector<LineData>& lines)
 {
+	/* 按照梁与负筋线是否有交点, 可能某梁线是 多个负筋线的共同梁线 */
 	for (auto l : lines) {
 		for (int i = 0; i < negatives.size(); i++) {
+			QPointF crossPoint;
+			bool bCross = find_crossPoint(l.from, l.to, negatives[i].steel.from, negatives[i].steel.to, crossPoint);
+			if (bCross) {
+				negatives[i].beam.push_back(l);
+			}
+		}
+	}
+	/* 梁线 不与其它梁线平行 ，则剔除 */
+	for (int i = 0; i < negatives.size(); i++) {
+		std::vector<LineData> lines;
+		for (int k = 0; k < negatives[i].beam.size(); k++) {
+			for (int m = 0; m < negatives[i].beam.size(); m++) {
+				if (k != m) {
+					double cycle = fabs(negatives[i].beam[k].angle - negatives[i].beam[m].angle) / M_PI;
+					cycle = fabs(cycle - int(cycle + 0.5));
+					if (cycle * M_PI < ONE_DEGREE ) {
+						lines.push_back(negatives[i].beam[k]);
+						break;
+					}
+				}
+			}
+		}
+		negatives[i].beam = lines;
+	}
+}
 
+/* 将墙线匹配到某个负筋 */
+void polyline2negative(std::vector<NegativeReinforceData>& negatives, std::vector<PolylineData>& polylines) {
+	/* 按照 墙与负筋线是否有交点, 可能某墙是 多个负筋线的共同墙 */
+	for (auto l : polylines) {
+		
+		for (int i = 0; i < negatives.size(); i++) {
+			bool bCross = false;
+			for (int m = 0, n = l.vertexs.size() - 1; m < l.vertexs.size(); n = m++) {
+				QPointF p1, p2;
+				p1 = l.vertexs[m];	p2 = l.vertexs[n];
+				QPointF crossPoint;
+				if(find_crossPoint(p1, p2, negatives[i].steel.from, negatives[i].steel.to, crossPoint)) {
+					bCross = true;
+					break;
+				}
+			}
+				
+			if (bCross) {
+				negatives[i].wall.push_back(l);
+			}
 		}
 	}
 }
@@ -523,25 +639,30 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	// 过滤 负筋的钢筋线 和 梁（墙）等支座线
 	std::vector<PolylineData>   polylines;
 	std::vector<LineData>   lines;
+	std::vector<NegativeReinforceData>   negatives;
 
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData1(obj.at(i), polylines, lines);
+		filterData1(obj.at(i), negatives, polylines, lines);
 	}
 	
-
+	line2negative(negatives, lines);
+	polyline2negative(negatives, polylines);
 
 	QString text;
 
 	text.append("========================================================\n");
 
 	// 按照匹配的先后顺序排序
-	for (int i = 0; i < polylines.size(); i++) {
-		QString msg = QString("N %1 %2 ( %3, %4 )  \n").arg(i).arg("Negative Reinforcement ")
-			.arg(QString::number(polylines[i].vertexs[0].x(),10,2))
-			.arg(QString::number(polylines[i].vertexs[0].y(),10,2));
+	for (int i = 0; i < negatives.size(); i++) {
+		QString msg = QString("N %1 (%2, %3) beams=%4 walls=%5  \n")
+			.arg(i)
+			.arg(QString::number(negatives[i].steel.vertexs[0].x(), 10, 2))
+			.arg(QString::number(negatives[i].steel.vertexs[0].y(), 10, 2))
+			.arg(negatives[i].beam.size())
+			.arg(negatives[i].wall.size());
 		text.append(msg);
 
-		if (polylines[i].vertexs.size() > 4)
+		if (negatives[i].beam.size() != 2)
 			doc->commandMessage(msg);
 
 		text.append("\n");
@@ -553,16 +674,20 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	if (dlg.exec()) {
 
 		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
-		for (int n = 0; n < obj.size(); ++n) {
+		/*for (int n = 0; n < obj.size(); ++n) {
 			bool bSelected = false;
-			for (auto h : polylines) {
-				if ( h.ent == obj.at(n)) {
+			for (auto h : negatives) {
+				if ( h.steel.ent == obj.at(n)) {
 					bSelected = true;
 					break;
 				}
 			}
 			doc->setSelectedEntity(obj.at(n), bSelected);
-		}
+		}*/
+
+		/*for (auto h : negatives) {
+			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+		}*/
 	}
 
 	while (!obj.isEmpty())
