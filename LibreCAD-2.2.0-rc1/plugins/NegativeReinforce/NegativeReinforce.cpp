@@ -658,27 +658,38 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 				}
 			}
 		}
-		if (closest >= 0) {
+		if (closest_dist < 0) {
 			negatives[i].steelMarking = steelMarkings[closest];
 		}
 	}
-	/* 查找尺寸标注 */
+	/* 查找尺寸标注, 可能左右各一个 */
 	for (int i = 0; i < negatives.size(); i++) {
-		int closest = -1;
-		double closest_dist = 1.0e+10;
+		int first = -1;
+		int second = -1;
+		double first_dist = 1.0e+10;
+		double second_dist = 1.0e+10;
 		for (int k = 0; k < sizeMarkings.size(); k++) {
 			double cycle = fabs(negatives[i].steel.angle - sizeMarkings[k].startAngle) / M_PI;
 			cycle = fabs(cycle - int(cycle + 0.5));
 			if (cycle * M_PI < ONE_DEGREE) {
 				double dist = pointToPolyline(sizeMarkings[k].startPt, negatives[i].steel.vertexs);
-				if (dist < closest_dist) {
-					closest_dist = dist;
-					closest = k;
+				if (dist < first_dist) {
+					second_dist = first_dist;
+					second = first;
+					first_dist = dist;
+					first = k;
+				} 
+				else if (dist < second_dist) {
+					second_dist = dist;
+					second = k;
 				}
 			}
 		}
-		if (closest >= 0) {
-			negatives[i].sizeMarking = sizeMarkings[closest];
+		if (first_dist < 500) {
+			negatives[i].sizeMarkings.push_back(sizeMarkings[first]);
+		}
+		if (second_dist < 500) {
+			negatives[i].sizeMarkings.push_back(sizeMarkings[second]);
 		}
 	}
 }
@@ -725,7 +736,8 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			.arg(negatives[i].beam.size())
 			.arg(negatives[i].wall.size())
 			.arg(negatives[i].steelMarking.name)
-			.arg(negatives[i].sizeMarking.name);
+			.arg(negatives[i].sizeMarkings.size()==2 ? (negatives[i].sizeMarkings[0].name + "," + negatives[i].sizeMarkings[1].name)
+				: (negatives[i].sizeMarkings.size() == 1 ? negatives[i].sizeMarkings[0].name: "" ));
 		text.append(msg);
 
 		if (negatives[i].beam.size() != 2)

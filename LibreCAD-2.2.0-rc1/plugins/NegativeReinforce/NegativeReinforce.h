@@ -89,7 +89,7 @@ typedef struct _NegativeReinforceData {
 	QString	 pattern;
 	PolylineData	steel;			// 负筋线本身
 	TextData		steelMarking;	// 钢筋信息标注
-	TextData		sizeMarking;
+	std::vector<TextData>		sizeMarkings;
 	std::vector<LineData>	beam;		// 梁支座线
 	std::vector<PolylineData>	wall;	//	墙支座线
 } NegativeReinforceData;
