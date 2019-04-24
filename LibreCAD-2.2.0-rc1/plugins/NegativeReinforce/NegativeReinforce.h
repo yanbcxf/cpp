@@ -72,6 +72,7 @@ typedef struct _PolylineData {
 	std::vector<double>	 angles;	// 边与边的夹角
 	std::vector<QPointF> vertexs;	//  polyline
 	QPointF		from, to;			//	负筋线的起止点
+	double		angle;				//	负筋线的主要方向
 	double		length;				//  负筋线的长度
 	Plug_Entity * ent;
 } PolylineData;
@@ -87,7 +88,8 @@ typedef struct _NegativeReinforceData {
 	double	 scale;
 	QString	 pattern;
 	PolylineData	steel;			// 负筋线本身
-	TextData		steelText;	// 钢筋信息标注
+	TextData		steelMarking;	// 钢筋信息标注
+	TextData		sizeMarking;
 	std::vector<LineData>	beam;		// 梁支座线
 	std::vector<PolylineData>	wall;	//	墙支座线
 } NegativeReinforceData;

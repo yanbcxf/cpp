@@ -484,6 +484,15 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 						strip.from = strip.vertexs[longest + 1];
 					}
 				}
+
+				/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+				QPointF ptC = strip.to - strip.from;
+				double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+				double numB = asin(ptC.y() / numA);
+				if (ptC.x() < 0) numB = M_PI - numB;
+				if (numB < 0) numB = 2 * M_PI + numB;
+				strip.angle = numB;
+
 				NegativeReinforceData negative;
 				negative.steel = strip;
 				negatives.push_back(negative);
@@ -524,7 +533,7 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 
 
 // 第二遍，寻找负筋标注文本信息
-void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
+void filterData2(Plug_Entity *ent, std::vector<TextData>& steelMarkings, std::vector<TextData>& sizeMarkings) {
 	if (NULL == ent)
 		return;
 
@@ -556,10 +565,18 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 		txt.endPt = crossover(txt.startPt, txt.startAngle, ptB, ptA);
 				
 		QRegExp rx;
-		rx.setPattern("^[Hh]=[0-9]+");
+		rx.setPattern("^[Kk][0-9]+");
 		int idx = rx.indexIn(txt.name);
 		if (idx >= 0) {
-			markings.push_back(txt);
+			steelMarkings.push_back(txt);
+		}
+		else 
+		{
+			rx.setPattern("^[0-9]+");
+			idx = rx.indexIn(txt.name);
+			if (idx >= 0) {
+				sizeMarkings.push_back(txt);
+			}
 		}
 	}
 		break;
@@ -624,6 +641,48 @@ void polyline2negative(std::vector<NegativeReinforceData>& negatives, std::vecto
 	}
 }
 
+/* 将负筋标注匹配到某个负筋 */
+void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector<TextData>& steelMarkings, std::vector<TextData>& sizeMarkings) {
+	/* 查找钢筋标注 */
+	for (int i = 0; i < negatives.size(); i++) {
+		int closest = -1;
+		double closest_dist = 1.0e+10;
+		for (int k = 0; k < steelMarkings.size(); k++) {
+			double cycle = fabs(negatives[i].steel.angle - steelMarkings[k].startAngle) / M_PI;
+			cycle = fabs(cycle - int(cycle + 0.5));
+			if (cycle * M_PI < ONE_DEGREE) {
+				double dist = pointToPolyline(steelMarkings[k].startPt, negatives[i].steel.vertexs);
+				if (dist < closest_dist) {
+					closest_dist = dist;
+					closest = k;
+				}
+			}
+		}
+		if (closest >= 0) {
+			negatives[i].steelMarking = steelMarkings[closest];
+		}
+	}
+	/* 查找尺寸标注 */
+	for (int i = 0; i < negatives.size(); i++) {
+		int closest = -1;
+		double closest_dist = 1.0e+10;
+		for (int k = 0; k < sizeMarkings.size(); k++) {
+			double cycle = fabs(negatives[i].steel.angle - sizeMarkings[k].startAngle) / M_PI;
+			cycle = fabs(cycle - int(cycle + 0.5));
+			if (cycle * M_PI < ONE_DEGREE) {
+				double dist = pointToPolyline(sizeMarkings[k].startPt, negatives[i].steel.vertexs);
+				if (dist < closest_dist) {
+					closest_dist = dist;
+					closest = k;
+				}
+			}
+		}
+		if (closest >= 0) {
+			negatives[i].sizeMarking = sizeMarkings[closest];
+		}
+	}
+}
+
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
 	Q_UNUSED(parent);
@@ -640,13 +699,18 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	std::vector<PolylineData>   polylines;
 	std::vector<LineData>   lines;
 	std::vector<NegativeReinforceData>   negatives;
+	std::vector<TextData>   sizeMarkings;
+	std::vector<TextData>   steelMarkings;
 
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), negatives, polylines, lines);
+		filterData2(obj.at(i), steelMarkings, sizeMarkings);
 	}
+	
 	
 	line2negative(negatives, lines);
 	polyline2negative(negatives, polylines);
+	marking2negative(negatives, steelMarkings, sizeMarkings);
 
 	QString text;
 
@@ -654,12 +718,14 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < negatives.size(); i++) {
-		QString msg = QString("N %1 (%2, %3) beams=%4 walls=%5  \n")
+		QString msg = QString("N %1 (%2, %3) beams=%4 walls=%5 steel=%6 size=%7  \n")
 			.arg(i)
 			.arg(QString::number(negatives[i].steel.vertexs[0].x(), 10, 2))
 			.arg(QString::number(negatives[i].steel.vertexs[0].y(), 10, 2))
 			.arg(negatives[i].beam.size())
-			.arg(negatives[i].wall.size());
+			.arg(negatives[i].wall.size())
+			.arg(negatives[i].steelMarking.name)
+			.arg(negatives[i].sizeMarking.name);
 		text.append(msg);
 
 		if (negatives[i].beam.size() != 2)
