@@ -676,7 +676,7 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 				double cp1 = crossProduct(e1, e2);
 				double an1 = angle(e1, e2);
 				e1 = negatives[i].steel.from - negatives[i].steel.to;
-				e2 = steelMarkings[k].startPt - negatives[i].steel.to;
+				e2 = steelMarkings[k].endPt - negatives[i].steel.to;
 				double cp2 = crossProduct(e1, e2);
 				double an2 = angle(e1, e2);
 				if (cp1 > 0 && an1 < M_PI_2 && cp2 < 0 && an2 < M_PI_2) {
@@ -708,10 +708,10 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 				double cp1 = crossProduct(e1, e2);
 				double an1 = angle(e1, e2);
 				e1 = negatives[i].steel.from - negatives[i].steel.to;
-				e2 = sizeMarkings[k].startPt - negatives[i].steel.to;
+				e2 = sizeMarkings[k].endPt - negatives[i].steel.to;
 				double cp2 = crossProduct(e1, e2);
 				double an2 = angle(e1, e2);
-				if (cp1 < 0 && an1 < M_PI_2 && cp2 > 0 && an2 < M_PI_2) {
+				if (cp1 < 0 && an1 < (M_PI_2 + 5 * ONE_DEGREE) && cp2 > 0 && an2 < (M_PI_2 + 5 * ONE_DEGREE)) {
 					double dist = pointToPolyline(sizeMarkings[k].startPt, negatives[i].steel.vertexs);
 					if (dist < first_dist) {
 						second_dist = first_dist;
@@ -858,12 +858,12 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 							negatives[i].sizeMarkings[0].startPt, negatives[i].sizeMarkings[0].endPt);
 						QPointF to = footpointOfLine(negatives[i].steel.to, 
 							negatives[i].sizeMarkings[0].startPt, negatives[i].sizeMarkings[0].endPt);
-						to = from + (to - from) * 2 / 3;		/* 确定第二个标注的起始点 */
+						to = from + (to - from) * 9 / 10;		/* 确定第二个标注的起始点 */
 
 						doc->setLayer(layer);
 						doc->removeEntity(negatives[i].sizeMarkings[0].ent);
 						doc->addText(QString::number(len /2, 10, 0),"standard", &from, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
-						doc->addText(QString::number(len / 2, 10, 0), "standard", &to, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
+						doc->addText(QString::number(len / 2, 10, 0), "standard", &to, 300, angle, DPI::HAlignRight, DPI::VAlignMiddle);
 					}
 				}
 				else {
