@@ -120,7 +120,8 @@
       <DynamicSource>output</DynamicSource>
     </QtMoc>
     <PostBuildEvent>
-      <Command>xcopy     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y</Command>
+      <Command>xcopy     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.dll"   "$(LibreCADInstall)resources\plugins\"  /Y
+del     "$(SolutionDir)windows\resources\plugins\SelectByPolyline1.*" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

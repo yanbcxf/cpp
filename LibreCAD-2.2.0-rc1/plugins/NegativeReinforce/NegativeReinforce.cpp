@@ -96,6 +96,23 @@ double pointToLine(const QPointF& pt, const QPointF& v1, const QPointF& v2) {
 	return abs(a * pt.x() + b * pt.y() + c) / sqrt(a * a + b * b);
 }
 
+/**
+* 计算点在直线的垂足.
+*/
+QPointF footpointOfLine(const QPointF& pt, const QPointF& v1, const QPointF& v2) {
+
+	double a, b, c;		// 直线一般式方程的系数
+	a = v2.y() - v1.y();
+	b = v1.x() - v2.x();
+	c = v2.x() * v1.y() - v1.x() * v2.y();
+
+	QPointF r;
+	r.setX((b * b * pt.x() - a * b * pt.y() - a * c) / (a * a + b * b));
+	r.setY((a * a * pt.y() - a * b * pt.x() - b * c) / (a * a + b * b));
+	return r;
+}
+
+
 bool isInsideTriangle(const QPointF& pt, const QPointF& v1, const QPointF& v2, const QPointF& v3) {
 	double s1 = triangleArea(pt, v1, v2);
 	double s2 = triangleArea(pt, v2, v3);
@@ -556,6 +573,7 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& steelMarkings, std::ve
 		txt.startPt.setX(data.value(DPI::STARTX).toDouble());
 		txt.startPt.setY(data.value(DPI::STARTY).toDouble());
 		txt.height = data.value(DPI::HEIGHT).toDouble();
+		txt.strLayer = data.value(DPI::LAYER).toString();
 		txt.ent = ent;
 
 		QPointF ptA = ent->getMaxOfBorder();
@@ -650,15 +668,27 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 		for (int k = 0; k < steelMarkings.size(); k++) {
 			double cycle = fabs(negatives[i].steel.angle - steelMarkings[k].startAngle) / M_PI;
 			cycle = fabs(cycle - int(cycle + 0.5));
+			/* 须与负筋线平行 */
 			if (cycle * M_PI < ONE_DEGREE) {
-				double dist = pointToPolyline(steelMarkings[k].startPt, negatives[i].steel.vertexs);
-				if (dist < closest_dist) {
-					closest_dist = dist;
-					closest = k;
+				/* 确保要匹配的标注 在 负筋线的正上方 */
+				QPointF e1 = negatives[i].steel.to - negatives[i].steel.from;
+				QPointF e2 = steelMarkings[k].startPt - negatives[i].steel.from;
+				double cp1 = crossProduct(e1, e2);
+				double an1 = angle(e1, e2);
+				e1 = negatives[i].steel.from - negatives[i].steel.to;
+				e2 = steelMarkings[k].startPt - negatives[i].steel.to;
+				double cp2 = crossProduct(e1, e2);
+				double an2 = angle(e1, e2);
+				if (cp1 > 0 && an1 < M_PI_2 && cp2 < 0 && an2 < M_PI_2) {
+					double dist = pointToPolyline(steelMarkings[k].startPt, negatives[i].steel.vertexs);
+					if (dist < closest_dist) {
+						closest_dist = dist;
+						closest = k;
+					}
 				}
 			}
 		}
-		if (closest_dist < 0) {
+		if (closest_dist < 500) {
 			negatives[i].steelMarking = steelMarkings[closest];
 		}
 	}
@@ -672,16 +702,27 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 			double cycle = fabs(negatives[i].steel.angle - sizeMarkings[k].startAngle) / M_PI;
 			cycle = fabs(cycle - int(cycle + 0.5));
 			if (cycle * M_PI < ONE_DEGREE) {
-				double dist = pointToPolyline(sizeMarkings[k].startPt, negatives[i].steel.vertexs);
-				if (dist < first_dist) {
-					second_dist = first_dist;
-					second = first;
-					first_dist = dist;
-					first = k;
-				} 
-				else if (dist < second_dist) {
-					second_dist = dist;
-					second = k;
+				/* 确保要匹配的标注 在 负筋线的正下方 */
+				QPointF e1 = negatives[i].steel.to - negatives[i].steel.from;
+				QPointF e2 = sizeMarkings[k].startPt - negatives[i].steel.from;
+				double cp1 = crossProduct(e1, e2);
+				double an1 = angle(e1, e2);
+				e1 = negatives[i].steel.from - negatives[i].steel.to;
+				e2 = sizeMarkings[k].startPt - negatives[i].steel.to;
+				double cp2 = crossProduct(e1, e2);
+				double an2 = angle(e1, e2);
+				if (cp1 < 0 && an1 < M_PI_2 && cp2 > 0 && an2 < M_PI_2) {
+					double dist = pointToPolyline(sizeMarkings[k].startPt, negatives[i].steel.vertexs);
+					if (dist < first_dist) {
+						second_dist = first_dist;
+						second = first;
+						first_dist = dist;
+						first = k;
+					}
+					else if (dist < second_dist) {
+						second_dist = dist;
+						second = k;
+					}
 				}
 			}
 		}
@@ -740,8 +781,8 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				: (negatives[i].sizeMarkings.size() == 1 ? negatives[i].sizeMarkings[0].name: "" ));
 		text.append(msg);
 
-		if (negatives[i].beam.size() != 2)
-			doc->commandMessage(msg);
+		/*if (negatives[i].sizeMarkings.size() == 1 )
+			doc->commandMessage(msg);*/
 
 		text.append("\n");
 	}
@@ -766,6 +807,84 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		/*for (auto h : negatives) {
 			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}*/
+
+		/* 对于仅有单个尺寸标注的负筋线，改成双边标注 */
+		for (int i = 0; i < negatives.size(); i++) {
+			if (negatives[i].sizeMarkings.size() == 1) {
+				/* 标注的尺寸与负筋线长度相等时， 改成双边标注 */
+				QPointF e = negatives[i].steel.from - negatives[i].steel.to;
+				int len = int (sqrt(e.x() * e.x() + e.y() * e.y()) + 0.5);
+				int size = negatives[i].sizeMarkings[0].name.toInt();
+				if (len == size) {
+					/* 尺寸标注在 墙或梁 的上面时，改成双边标注 */
+					QPointF minPt = negatives[i].sizeMarkings[0].minPt;
+					QPointF maxPt = negatives[i].sizeMarkings[0].maxPt;
+					bool bSplit = false;
+					if (negatives[i].beam.size() > 0) {
+						for (auto k : negatives[i].beam) {
+							QPointF crossPoint;
+							bSplit = find_crossPoint(minPt, maxPt, k.from, k.to, crossPoint);
+							if (bSplit) break;
+						}
+					}
+					else if (negatives[i].wall.size() > 0) {
+						for (auto k : negatives[i].wall) {
+							for (int m = 0, n = k.vertexs.size() - 1; m < k.vertexs.size(); n = m++) {
+								QPointF p1, p2;
+								p1 = k.vertexs[m];	p2 = k.vertexs[n];
+								QPointF crossPoint;
+								bSplit = find_crossPoint(minPt, maxPt, p1, p2, crossPoint);
+								if (bSplit) break;
+							}
+						}
+					}
+
+					if (bSplit) {
+						QString msg = QString("N %1 (%2, %3) beams=%4 walls=%5 steel=%6 size=%7  \n")
+							.arg(i)
+							.arg(QString::number(negatives[i].steel.vertexs[0].x(), 10, 2))
+							.arg(QString::number(negatives[i].steel.vertexs[0].y(), 10, 2))
+							.arg(negatives[i].beam.size())
+							.arg(negatives[i].wall.size())
+							.arg(negatives[i].steelMarking.name)
+							.arg(negatives[i].sizeMarkings.size() == 2 ? (negatives[i].sizeMarkings[0].name + "," + negatives[i].sizeMarkings[1].name)
+								: (negatives[i].sizeMarkings.size() == 1 ? negatives[i].sizeMarkings[0].name : ""));
+
+						doc->commandMessage(msg);
+
+						QString layer = negatives[i].sizeMarkings[0].strLayer;
+						double angle = negatives[i].sizeMarkings[0].startAngle;
+						QPointF from = footpointOfLine(negatives[i].steel.from, 
+							negatives[i].sizeMarkings[0].startPt, negatives[i].sizeMarkings[0].endPt);
+						QPointF to = footpointOfLine(negatives[i].steel.to, 
+							negatives[i].sizeMarkings[0].startPt, negatives[i].sizeMarkings[0].endPt);
+						to = from + (to - from) * 2 / 3;		/* 确定第二个标注的起始点 */
+
+						doc->setLayer(layer);
+						doc->removeEntity(negatives[i].sizeMarkings[0].ent);
+						doc->addText(QString::number(len /2, 10, 0),"standard", &from, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
+						doc->addText(QString::number(len / 2, 10, 0), "standard", &to, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
+					}
+				}
+				else {
+					/* 标注尺寸与 负筋线长度不相等 */
+					QString msg = QString("%1 (%2, %3) beams=%4 walls=%5 steel=%6 size=%7  \n")
+						.arg(QString::fromLocal8Bit("标注尺寸!=负筋线长"))
+						.arg(QString::number(negatives[i].steel.vertexs[0].x(), 10, 2))
+						.arg(QString::number(negatives[i].steel.vertexs[0].y(), 10, 2))
+						.arg(negatives[i].beam.size())
+						.arg(negatives[i].wall.size())
+						.arg(negatives[i].steelMarking.name)
+						.arg(negatives[i].sizeMarkings.size() == 2 ? (negatives[i].sizeMarkings[0].name + "," + negatives[i].sizeMarkings[1].name)
+							: (negatives[i].sizeMarkings.size() == 1 ? negatives[i].sizeMarkings[0].name : ""));
+
+					doc->commandMessage(msg);
+				}
+			}
+
+			/* 更改所有不规范的钢筋标注 */
+
+		}
 	}
 
 	while (!obj.isEmpty())

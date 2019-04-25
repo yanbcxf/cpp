@@ -39,6 +39,7 @@ typedef struct _TextData {
 	*/
 	_TextData() = default;
 	QString name;
+	QString strLayer;
 	QPointF startPt, endPt;
 	QPointF maxPt, minPt;
 	double startAngle;
