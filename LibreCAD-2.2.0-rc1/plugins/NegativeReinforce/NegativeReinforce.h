@@ -153,9 +153,8 @@ public:
 public slots:
 
 public:
-	QRadioButton selectSimilarHatch;
-	QRadioButton handleFloorWithDimension;
-	QRadioButton drawHatchContour;
+	QRadioButton ignoreSizeNomatch;
+	QRadioButton considerSizeNomatch;
 };
 
 class lc_Listdlg : public QDialog

@@ -471,13 +471,28 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 				double an = angle(e1, e2);
 				strip.angles.push_back(an * cp);
 			}
-			/* 边与边的夹角均应该为 90 度，才有可能为负筋 */
+
+			/* 梁宽不会太小，负筋线更不会小 */
+			if (longest_dist < 100) {
+				bNegativeReinforce = false;
+			}
+
+			/* 边与边的夹角均应该为 90 度，才有可能为负筋 ; 负筋的相邻角应该同时 顺时针 或者 逆时针  */
+			double sign = 1;
 			for (auto a : strip.angles) {
+				sign = sign * a;
 				if (fabs(a) > M_PI_2 + ONE_DEGREE || fabs(a )< M_PI_2 - ONE_DEGREE) {
 					bNegativeReinforce = false;
 					break;
 				}
 			}
+			
+			if (bNegativeReinforce) {
+				if (strip.angles.size() % 2 == 0) {
+					if (sign < 0) bNegativeReinforce = false;
+				}
+			}
+
 			if (bNegativeReinforce)
 			{
 				/* 调整负筋线的正方向 */
@@ -492,6 +507,7 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 					}
 				} 
 				else {
+					/* longest = 0 说明第一条边最长 */
 					if (strip.angles[longest] < 0) {
 						strip.from = strip.vertexs[longest];
 						strip.to = strip.vertexs[longest + 1];
@@ -726,17 +742,17 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 				}
 			}
 		}
-		if (first_dist < 500) {
+		if (first_dist < 800) {
 			negatives[i].sizeMarkings.push_back(sizeMarkings[first]);
 		}
-		if (second_dist < 500) {
+		if (second_dist < 800) {
 			negatives[i].sizeMarkings.push_back(sizeMarkings[second]);
 		}
 	}
 }
 
 
-void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
+void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin, bool bConsiderSizeNomatch) {
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
 	
@@ -815,15 +831,21 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				QPointF e = negatives[i].steel.from - negatives[i].steel.to;
 				int len = int (sqrt(e.x() * e.x() + e.y() * e.y()) + 0.5);
 				int size = negatives[i].sizeMarkings[0].name.toInt();
-				if (len == size) {
+				if (len == size || bConsiderSizeNomatch) {
 					/* 尺寸标注在 墙或梁 的上面时，改成双边标注 */
 					QPointF minPt = negatives[i].sizeMarkings[0].minPt;
 					QPointF maxPt = negatives[i].sizeMarkings[0].maxPt;
+					QPointF minPt1, maxPt1;
+					minPt1.setX(minPt.x()); minPt1.setY(maxPt.y());
+					maxPt1.setX(maxPt.x()); maxPt1.setY(minPt.y());
 					bool bSplit = false;
 					if (negatives[i].beam.size() > 0) {
 						for (auto k : negatives[i].beam) {
 							QPointF crossPoint;
 							bSplit = find_crossPoint(minPt, maxPt, k.from, k.to, crossPoint);
+							if (bSplit) break;
+							/* 换一个对角线 判断 */
+							bSplit = find_crossPoint(minPt1, maxPt1, k.from, k.to, crossPoint);
 							if (bSplit) break;
 						}
 					}
@@ -834,6 +856,9 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 								p1 = k.vertexs[m];	p2 = k.vertexs[n];
 								QPointF crossPoint;
 								bSplit = find_crossPoint(minPt, maxPt, p1, p2, crossPoint);
+								if (bSplit) break;
+								/* 换一个对角线 判断 */
+								bSplit = find_crossPoint(minPt1, maxPt1, p1, p2, crossPoint);
 								if (bSplit) break;
 							}
 						}
@@ -862,8 +887,8 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 						doc->setLayer(layer);
 						doc->removeEntity(negatives[i].sizeMarkings[0].ent);
-						doc->addText(QString::number(len /2, 10, 0),"standard", &from, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
-						doc->addText(QString::number(len / 2, 10, 0), "standard", &to, 300, angle, DPI::HAlignRight, DPI::VAlignMiddle);
+						doc->addText(QString::number(size /2, 10, 0),"standard", &from, 300, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
+						doc->addText(QString::number(size / 2, 10, 0), "standard", &to, 300, angle, DPI::HAlignRight, DPI::VAlignMiddle);
 					}
 				}
 				else {
@@ -880,6 +905,18 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 					doc->commandMessage(msg);
 				}
+			}
+			else if (negatives[i].sizeMarkings.size() == 0) {
+				/* 没有标注尺寸 */
+				QString msg = QString("%1 (%2, %3) beams=%4 walls=%5 steel=%6  \n")
+					.arg(QString::fromLocal8Bit("没有标注尺寸"))
+					.arg(QString::number(negatives[i].steel.vertexs[0].x(), 10, 2))
+					.arg(QString::number(negatives[i].steel.vertexs[0].y(), 10, 2))
+					.arg(negatives[i].beam.size())
+					.arg(negatives[i].wall.size())
+					.arg(negatives[i].steelMarking.name);
+
+				doc->commandMessage(msg);
 			}
 
 			/* 更改所有不规范的钢筋标注 */
@@ -922,20 +959,12 @@ void LC_List::execComm(Document_Interface *doc,
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
 	
-	execComm1(doc, parent, cmd, this);
-	/*menudlg dlg(parent);
+	
+	menudlg dlg(parent);
 	if ( dlg.exec()) {
-		if (dlg.handleFloorWithDimension.isChecked())
-		{
-			execComm1(doc, parent, cmd, this);
-		}
-		else if (dlg.selectSimilarHatch.isChecked()) {
-			execComm2(doc, parent, cmd, this);
-		}
-		else if (dlg.drawHatchContour.isChecked()) {
-			execComm3(doc, parent, cmd, this);
-		}
-	}*/
+		execComm1(doc, parent, cmd, this, dlg.considerSizeNomatch.isChecked());
+		
+	}
 
 }
 
@@ -971,15 +1000,14 @@ menudlg::menudlg(QWidget *parent) : QDialog(parent)
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 
 	QGroupBox *menubox = new QGroupBox(tr("Menu"));
-	selectSimilarHatch.setText("Select Similar Hatch");
-	handleFloorWithDimension.setText("Handle Floor With Dimension");
-	drawHatchContour.setText("Draw Hatch Contour");
-	selectSimilarHatch.setChecked(true);
+	ignoreSizeNomatch.setText(QString::fromLocal8Bit("忽略 负筋线长度与标注尺寸不匹配"));
+	considerSizeNomatch.setText(QString::fromLocal8Bit("处理 负筋线长度与标注尺寸不匹配"));
+	
+	considerSizeNomatch.setChecked(true);
 	
 	QVBoxLayout *menulayout = new QVBoxLayout;
-	menulayout->addWidget(&selectSimilarHatch);
-	menulayout->addWidget(&handleFloorWithDimension);
-	menulayout->addWidget(&drawHatchContour);
+	menulayout->addWidget(&considerSizeNomatch);
+	menulayout->addWidget(&ignoreSizeNomatch);
 	menulayout->addStretch(1);
 	menubox->setLayout(menulayout);
 
