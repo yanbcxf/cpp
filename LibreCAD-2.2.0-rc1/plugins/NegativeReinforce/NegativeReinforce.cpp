@@ -920,7 +920,21 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			}
 
 			/* 更改所有不规范的钢筋标注 */
-
+			QString cap = "";
+			int uCode = 0;
+			bool ok = false;
+			QString newMarking = negatives[i].steelMarking.name;
+			QRegExp regexp("[Kk][0-9]+");
+			regexp.indexIn(newMarking);
+			cap = regexp.cap();
+			if (!cap.isNull()) {
+				uCode = cap.mid(1).toInt(&ok, 10);
+				// workaround for Qt 3.0.x:
+				newMarking.replace(QRegExp("^[Kk]" + cap.mid(1)), "C" + QString::number(uCode, 10, 0) + "@200");
+				QHash<int, QVariant> hash;
+				hash.insert(DPI::TEXTCONTENT, newMarking);
+				negatives[i].steelMarking.ent->updateData(&hash);
+			}
 		}
 	}
 
