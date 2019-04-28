@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C82879C2-C2ED-4BBA-B475-A8CF738E91E4}</ProjectGuid>
-    <RootNamespace>NegativeReinforce</RootNamespace>
+    <ProjectGuid>{E427A741-DFF0-4484-9FF8-6D4D16311D33}</ProjectGuid>
+    <RootNamespace>BeamCentreLine</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
@@ -32,8 +32,8 @@
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>MultiByte</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <IntermediateDirectory>..\..\generated\plugin\NegativeReinforce\obj\</IntermediateDirectory>
-    <PrimaryOutput>NegativeReinforce1</PrimaryOutput>
+    <IntermediateDirectory>..\..\generated\plugin\BeamCentreLine\obj\</IntermediateDirectory>
+    <PrimaryOutput>BeamCentreLine1</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
@@ -41,8 +41,8 @@
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>MultiByte</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <IntermediateDirectory>..\..\generated\plugin\NegativeReinforce\obj\</IntermediateDirectory>
-    <PrimaryOutput>NegativeReinforce1</PrimaryOutput>
+    <IntermediateDirectory>..\..\generated\plugin\BeamCentreLine\obj\</IntermediateDirectory>
+    <PrimaryOutput>BeamCentreLine1</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
@@ -50,8 +50,8 @@
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>MultiByte</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <IntermediateDirectory>..\..\generated\plugin\NegativeReinforce\obj\</IntermediateDirectory>
-    <PrimaryOutput>NegativeReinforced1</PrimaryOutput>
+    <IntermediateDirectory>..\..\generated\plugin\BeamCentreLine\obj\</IntermediateDirectory>
+    <PrimaryOutput>BeamCentreLined1</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
@@ -59,8 +59,8 @@
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>MultiByte</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <IntermediateDirectory>..\..\generated\plugin\NegativeReinforce\obj\</IntermediateDirectory>
-    <PrimaryOutput>NegativeReinforced1</PrimaryOutput>
+    <IntermediateDirectory>..\..\generated\plugin\BeamCentreLine\obj\</IntermediateDirectory>
+    <PrimaryOutput>BeamCentreLined1</PrimaryOutput>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -90,8 +90,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\windows\resources\plugins\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NegativeReinforce1</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NegativeReinforce1</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">BeamCentreLine1</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">BeamCentreLine1</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
@@ -99,16 +99,16 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\windows\resources\plugins\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NegativeReinforced1</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NegativeReinforced1</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BeamCentreLined1</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">BeamCentreLined1</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\NegativeReinforce\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\BeamCentreLine\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\generated\plugin\NegativeReinforce\obj\</AssemblerListingLocation>
+      <AssemblerListingLocation>..\..\generated\plugin\BeamCentreLine\obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -133,7 +133,7 @@
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkDLL>true</LinkDLL>
       <LinkIncremental>false</LinkIncremental>
-      <OutputFile>$(OutDir)\NegativeReinforce1.dll</OutputFile>
+      <OutputFile>$(OutDir)\BeamCentreLine1.dll</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -154,20 +154,20 @@
       <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;../../librecad/src/plugins;$(QTDIR)\include;$(QTDIR)\include/QtSvg;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
       <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_SVG_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/NegativeReinforce/moc/moc_predefs.h</Include>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/BeamCentreLine/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
     </QtMoc>
     <PostBuildEvent>
-      <Command>xcopy   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y 
-del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
+      <Command>xcopy   "$(SolutionDir)windows\resources\plugins\BeamCentreLine1.dll"    "$(LibreCADInstall)resources\plugins\"   /Y 
+del   "$(SolutionDir)windows\resources\plugins\BeamCentreLine1.*"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\NegativeReinforce\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\BeamCentreLine\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\generated\plugin\NegativeReinforce\obj\</AssemblerListingLocation>
+      <AssemblerListingLocation>..\..\generated\plugin\BeamCentreLine\obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -192,7 +192,7 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkDLL>true</LinkDLL>
       <LinkIncremental>false</LinkIncremental>
-      <OutputFile>$(OutDir)\NegativeReinforce1.dll</OutputFile>
+      <OutputFile>$(OutDir)\BeamCentreLine1.dll</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -213,16 +213,16 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;../../librecad/src/plugins;$(QTDIR)\include;$(QTDIR)\include/QtSvg;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
       <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_SVG_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/NegativeReinforce/moc/moc_predefs.h</Include>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/BeamCentreLine/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\NegativeReinforce\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\BeamCentreLine\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\generated\plugin\NegativeReinforce\obj\</AssemblerListingLocation>
+      <AssemblerListingLocation>..\..\generated\plugin\BeamCentreLine\obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -246,7 +246,7 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkDLL>true</LinkDLL>
-      <OutputFile>$(OutDir)\NegativeReinforced1.dll</OutputFile>
+      <OutputFile>$(OutDir)\BeamCentreLined1.dll</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -267,16 +267,16 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;../../librecad/src/plugins;$(QTDIR)\include;$(QTDIR)\include/QtSvg;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
       <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_PLUGIN;QT_SVG_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/NegativeReinforce/moc/moc_predefs.h</Include>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/BeamCentreLine/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\NegativeReinforce\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\..\librecad\src\plugins;$(QTDIR)\include;$(QTDIR)\include\QtSvg;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;..\..\generated\plugin\BeamCentreLine\moc;C:\VulkanSDK\1.0.51.0\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -g -g -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\generated\plugin\NegativeReinforce\obj\</AssemblerListingLocation>
+      <AssemblerListingLocation>..\..\generated\plugin\BeamCentreLine\obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -300,7 +300,7 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkDLL>true</LinkDLL>
-      <OutputFile>$(OutDir)\NegativeReinforced1.dll</OutputFile>
+      <OutputFile>$(OutDir)\BeamCentreLined1.dll</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -321,45 +321,45 @@ del   "$(SolutionDir)windows\resources\plugins\NegativeReinforce1.*"</Command>
       <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;../../librecad/src/plugins;$(QTDIR)\include;$(QTDIR)\include/QtSvg;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
       <Define>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_PLUGIN;QT_SVG_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/NegativeReinforce/moc/moc_predefs.h</Include>
+      <Include>F:/workspace/cpp/LibreCAD-2.2.0-rc1/generated/plugin/BeamCentreLine/moc/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NegativeReinforce.cpp" />
+    <ClCompile Include="BeamCentreLine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="NegativeReinforce.h">
+    <QtMoc Include="BeamCentreLine.h">
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h.cbt">
+    <CustomBuild Include="..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate moc_predefs.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -U__STRICT_ANSI__ -g -Zi -MDd -g -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate moc_predefs.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\generated\plugin\NegativeReinforce\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\generated\plugin\BeamCentreLine\moc\moc_predefs.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\NegativeReinforce_resource.rc">
+    <ResourceCompile Include=".\BeamCentreLine_resource.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include=".\NegativeReinforced_resource.rc">
+    <ResourceCompile Include=".\BeamCentreLined_resource.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
