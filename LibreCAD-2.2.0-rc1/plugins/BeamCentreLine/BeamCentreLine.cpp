@@ -460,19 +460,29 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 			bClosed = true;
 		}
 		else {
-			// 从第 5 个点开始 尝试后续点 与前面的 点是否构成封闭
+			/* 从第 5 个点开始 尝试后续点 与前面的 点是否构成封闭 
+			 * 多边形的封闭起止节点
+			 */
+			int	nStart, nEnd;					
 			for (int i = 4; i < iVertices; i++) {
 				for (int j = 0; j <= i - 4; j++) {
 					QPointF p1 = strip.vertexs[i] - strip.vertexs[j];
 					double dist = sqrt(p1.x() * p1.x() + p1.y() * p1.y());
 					if (dist < 1) {
 						bClosed = true;
-						strip.nStart = j;
-						strip.nEnd = i - 1;
+						nStart = j;
+						nEnd = i - 1;
 						break;
 					}
 				}
 				if (bClosed) break;
+			}
+			if (bClosed) {
+				std::vector<QPointF> vec;
+				for (int i = nStart; i <= nEnd; i++) {
+					vec.push_back(strip.vertexs[i]);
+				}
+				strip.vertexs = vec;
 			}
 		}
 
@@ -683,7 +693,21 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 				beamspans[j].bHandled = true;
 				break;
 			}
-			
+			else if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent || beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
+				|| beamspans[i].beam[0].ent == beamspans[j].beam[1].ent || beamspans[i].beam[1].ent == beamspans[j].beam[0].ent) {
+				/* 有一根梁线相同， 也判断为一个梁跨 */
+
+				beamspans[i].bHandled = true;
+				beamspans[j].bHandled = true;
+				break;
+			}
+			else {
+				/* 两根梁线平行且 延伸线相交，也判断为一个梁跨  */
+
+				beamspans[i].bHandled = true;
+				beamspans[j].bHandled = true;
+				break;
+			}
 		}
 	}
 }
