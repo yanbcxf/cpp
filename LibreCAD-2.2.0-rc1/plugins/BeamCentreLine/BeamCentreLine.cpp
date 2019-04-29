@@ -382,6 +382,32 @@ QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt) {
 	return pt;
 }
 
+/* 计算平行线的距离 */
+double distanceBetweenParallelLine(LineData & a, LineData & b) {
+	double det = a.fa * b.fb - b.fa * a.fb;
+
+	/* 对于平行线，det 应该为 0 */
+	// if (abs(det) > 1.0e-10) return -1.0;
+
+	/* 将两个方程的参数进行统一 */
+	double c2 = b.fc * a.fa / b.fa;
+
+	return abs(c2 - a.fc) / sqrt(a.fa * a.fa + a.fb * a.fb);
+}
+
+bool customLess(LineData&  a, LineData&  b) 
+{
+	double ds = distanceBetweenParallelLine(a, b);
+	if (ds < 1) return false;
+	double fc = b.fc * a.fa / b.fa;
+	return a.fc < fc;
+}
+
+/* 对平行线进行排序 */
+std::vector<LineData> sortParallelLines(std::vector<LineData> beam) {
+	std::sort(beam.begin(), beam.end(), customLess);
+	return beam;
+}
 
 bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
 	//************************************************************************
@@ -483,46 +509,14 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 					vec.push_back(strip.vertexs[i]);
 				}
 				strip.vertexs = vec;
+				iVertices = vec.size();
 			}
 		}
 
-		bool bColumnOrWall = false;
 		if (iVertices >= 4 && bClosed) {
-			bColumnOrWall = true;
-			int longest = -1;
-			double longest_dist = -1.0;
-			for (int i = 0; i < iVertices -2; ++i) {
-				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
-				QPointF e2 = strip.vertexs[i + 1] - strip.vertexs[i + 2];
-				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
-				if (dist > longest_dist) {
-					longest_dist = dist;
-					longest = i;
-				}
-				double cp = crossProduct(e1, e2)> 0 ? 1.0 : -1.0;
-				double an = angle(e1, e2);
-				strip.angles.push_back(an * cp);
-			}
-
-			/* 梁宽不会太小，负筋线更不会小 */
-			if (longest_dist < 100) {
-				bColumnOrWall = false;
-			}
-
-			/* 边与边的夹角均应该为 90 度，才有可能为负筋 ; 负筋的相邻角应该同时 顺时针 或者 逆时针  */
-			double sign = 1;
-			for (auto a : strip.angles) {
-				sign = sign * a;
-				if (fabs(a) > M_PI_2 + ONE_DEGREE || fabs(a )< M_PI_2 - ONE_DEGREE) {
-					bColumnOrWall = false;
-					break;
-				}
-			}
-			
-		}
-		if (bColumnOrWall) {
 			polylines.push_back(strip);
 		}
+		
 		break; }
 	case DPI::LINE: {
 		/* 梁线 */
@@ -543,8 +537,17 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 		line.angle = numB;
 		// line.angle = angle(axis, line.from - line.to);
 
-		QPointF e = line.from - line.to;
+		QPointF e = line.to - line.from;
 		line.length = sqrt(e.x() * e.x() + e.y() * e.y());
+
+		/* 计算直线的单位方向向量，以便直线延伸 */
+		line.direction = e / line.length;
+
+		/* 计算直线方程一般式的参数 */
+		line.fa = line.to.y() - line.from.y();
+		line.fb = line.from.x() - line.to.x();
+		line.fc = line.from.x() * line.to.y() - line.to.x() * line.from.y();
+
 		lines.push_back(line);
 
 		break; }
@@ -616,17 +619,14 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 	/* 先以柱墙为中心生成梁跨， 一个柱墙可能会生成多个梁跨 */
 	for (auto p : polylines) {
 		for(auto l : lines) {
-			QPointF direction = l.to - l.from;
-			double ds = sqrt(direction.x() * direction.x() + direction.y() * direction.y());
-			if (ds < 100) continue;
+			if (l.length < 100) continue;
 			
 			/* 每次将梁线端向两侧延伸 25mm ,探测是否伸入柱墙等支座 */
 			int bCross = 0;
-			direction /= ds;
 			for (int i = 0; i <= 20; i++) {
 				QPointF from, to;
-				from = l.from - direction * i * 25; 
-				to = l.to + direction * i * 25;
+				from = l.from - l.direction * i * 25; 
+				to = l.to + l.direction * i * 25;
 				bCross = isInsidePolyline(from, p.vertexs);
 				if (!bCross) {
 					bCross = isInsidePolyline(to, p.vertexs);
@@ -635,6 +635,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 						QPointF tmp = l.from;
 						l.from = l.to;
 						l.to = tmp;
+						l.direction = -l.direction;
 					}
 				}
 				if (bCross) break;
@@ -671,7 +672,36 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 			}
 		}
 	}
-	
+
+	/* 对剪力墙 含有多个平行的梁的情况 */
+	bool bLoop = true;
+	do {
+		bLoop = false;
+		std::vector<BeamSpanData>::iterator it = beamspans.begin();
+		for (; it != beamspans.end(); it++) {
+			if (it->beam.size() != 2) {
+				std::vector<LineData> beam = sortParallelLines(it->beam);
+				BeamSpanData bsd = *it;
+				beamspans.erase(it);
+
+				/* 按照两个梁为一组，分成多个梁跨 */
+				for (int i = 0; i < beam.size() / 2; i++) {
+					bsd.beam.clear();
+					bsd.beam.push_back(beam[2 * i]);
+					bsd.beam.push_back(beam[2 * i + 1]);
+					beamspans.push_back(bsd);
+				}
+
+				if (beam.size() % 2) {
+					int ttt = 1;
+				}
+
+				bLoop = true;
+				break;
+			}
+		}
+	} while (bLoop);
+		
 	/* 对梁跨进行两两合并 */
 	for (int i = 0; i < beamspans.size(); i++) {
 		if (beamspans[i].beam.size() != 2) continue;
@@ -696,23 +726,76 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 			else if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent || beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
 				|| beamspans[i].beam[0].ent == beamspans[j].beam[1].ent || beamspans[i].beam[1].ent == beamspans[j].beam[0].ent) {
 				/* 有一根梁线相同， 也判断为一个梁跨 */
-
+				BeamSpanData b3 = beamspans[i];
+				b3.columnOrWall.push_back(beamspans[j].columnOrWall[0]);
+				if (b3.beam[0].ent != beamspans[j].beam[0].ent && b3.beam[1].ent != beamspans[j].beam[0].ent) {
+					b3.beam.push_back(beamspans[j].beam[0]);
+				}
+				else {
+					b3.beam.push_back(beamspans[j].beam[1]);
+				}
+				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
 				break;
 			}
 			else {
-				/* 两根梁线平行且 延伸线相交，也判断为一个梁跨  */
+				
+			}
+		}
+	}
 
+	/* 在第一遍的基础上，再进行合并 */
+	for (int i = 0; i < beamspans.size(); i++) {
+		if (beamspans[i].beam.size() != 2) continue;
+		if (beamspans[i].bHandled) continue;
+
+		for (int j = 0; j < beamspans.size(); j++) {
+			if (beamspans[j].beam.size() != 2) continue;
+			if (beamspans[j].bHandled) continue;
+
+			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) continue;
+
+			/* 两根梁线平行且 延伸线相交，也判断为一个梁跨  */
+			BeamSpanData b3 = beamspans[i];
+			BeamSpanData b1 = beamspans[j];
+			double cycle = abs(b3.beam[0].angle - b1.beam[0].angle) / M_PI;
+			cycle = abs(cycle - int(cycle + 0.5));
+			bool bIntersected = false;
+			if (cycle * M_PI < ONE_DEGREE) {
+				for (int k = 0; k < 20; k++) {
+					QPointF to_a1 = b1.beam[0].to + k * 25 * b1.beam[0].direction;
+					QPointF to_a2 = b1.beam[1].to + k * 25 * b1.beam[1].direction;
+					QPointF to_b1 = b3.beam[0].to + k * 25 * b3.beam[0].direction;
+					QPointF to_b2 = b3.beam[1].to + k * 25 * b3.beam[1].direction;
+					QPointF e1 = to_a1 - to_b1;
+					QPointF e2 = to_a2 - to_b2;
+					QPointF e3 = to_a1 - to_b2;
+					QPointF e4 = to_a2 - to_b1;
+					double ds1 = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+					double ds2 = sqrt(e2.x() * e2.x() + e2.y() * e2.y());
+					double ds3 = sqrt(e3.x() * e3.x() + e3.y() * e3.y());
+					double ds4 = sqrt(e4.x() * e4.x() + e4.y() * e4.y());
+					if (ds1 < 1 || ds2 < 1 || ds3 < 1 || ds4 < 1) {
+						bIntersected = true;
+						break;
+					}
+				}
+			}
+			if (bIntersected) {
+				b3.columnOrWall.push_back(b1.columnOrWall[0]);
+				b3.beam.push_back(b1.beam[0]);
+				b3.beam.push_back(b1.beam[1]);
+				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
 				break;
 			}
+
 		}
+
 	}
 }
-
-
 
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin, bool bConsiderSizeNomatch) {
@@ -778,9 +861,27 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		/* 对于仅有单个尺寸标注的负筋线，改成双边标注 */
 		for (auto b: beamspans_ok) {
 			QHash<int, QVariant> hash;
-			hash.insert(DPI::COLOR, 16711680);
-			b.beam[0].ent->updateData(&hash);
-			b.beam[1].ent->updateData(&hash);
+			if (b.beam.size() == 2) {
+				hash.insert(DPI::COLOR, 0xff0000);
+				b.beam[0].ent->updateData(&hash);
+				b.beam[1].ent->updateData(&hash);
+			}
+			else if (b.beam.size() == 3) {
+				hash.insert(DPI::COLOR, 0xff7f00);
+				b.beam[0].ent->updateData(&hash);
+				b.beam[1].ent->updateData(&hash);
+				b.beam[2].ent->updateData(&hash);
+			}
+			else if (b.beam.size() == 4) {
+				hash.insert(DPI::COLOR, 0xff00ff);
+				b.beam[0].ent->updateData(&hash);
+				b.beam[1].ent->updateData(&hash);
+				b.beam[2].ent->updateData(&hash);
+				b.beam[3].ent->updateData(&hash);
+			}
+			else {
+				int ll = 11;
+			}
 		}
 	}
 
@@ -818,7 +919,6 @@ void LC_List::execComm(Document_Interface *doc,
 {
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
-	
 	
 	menudlg dlg(parent);
 	if ( dlg.exec()) {

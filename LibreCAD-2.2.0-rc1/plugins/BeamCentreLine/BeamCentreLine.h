@@ -57,6 +57,8 @@ typedef struct _LineData {
 	QPointF from, to;
 	double length;
 	double angle;		// 夹角，以便判断 梁的另一条平行线
+	double fa, fb, fc;
+	QPointF direction;
 
 	Plug_Entity * ent;
 } LineData;
