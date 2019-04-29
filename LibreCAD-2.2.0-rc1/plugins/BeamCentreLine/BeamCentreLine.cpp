@@ -397,10 +397,17 @@ double distanceBetweenParallelLine(LineData & a, LineData & b) {
 
 bool customLess(LineData&  a, LineData&  b) 
 {
-	double ds = distanceBetweenParallelLine(a, b);
-	if (ds < 1) return false;
-	double fc = b.fc * a.fa / b.fa;
-	return a.fc < fc;
+	/* 根据截距方程来比较 */
+	if (abs(a.fb) < 1.0e-8) {
+		double aa = a.fc / a.fa;
+		double bb = b.fc / b.fa;
+		return aa < bb;
+	}
+	else {
+		double aa = a.fc / a.fb;
+		double bb = b.fc / b.fb;
+		return aa < bb;
+	}
 }
 
 /* 对平行线进行排序 */
@@ -622,11 +629,16 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 			if (l.length < 100) continue;
 			
 			/* 每次将梁线端向两侧延伸 25mm ,探测是否伸入柱墙等支座 */
-			int bCross = 0;
+			int bCrossFrom = 0;
 			for (int i = 0; i <= 20; i++) {
-				QPointF from, to;
-				from = l.from - l.direction * i * 25; 
-				to = l.to + l.direction * i * 25;
+				QPointF from = l.from - l.direction * i * 25; 
+				bCrossFrom = isInsidePolyline(from, p.vertexs);
+				if (bCrossFrom) break;
+			}
+
+			int bCrossTo = 0;
+			for (int i = 0; i <= 20; i++) {
+				QPointF to =  l.to + l.direction * i * 25;
 				bCross = isInsidePolyline(from, p.vertexs);
 				if (!bCross) {
 					bCross = isInsidePolyline(to, p.vertexs);
