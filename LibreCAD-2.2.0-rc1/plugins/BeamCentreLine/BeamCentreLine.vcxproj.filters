@@ -30,6 +30,9 @@
     <ClCompile Include="BeamCentreLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="k-means.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BeamCentreLine.h">
@@ -44,5 +47,10 @@
   <ItemGroup>
     <ResourceCompile Include=".\BeamCentreLine_resource.rc" />
     <ResourceCompile Include=".\BeamCentreLined_resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="k-means.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

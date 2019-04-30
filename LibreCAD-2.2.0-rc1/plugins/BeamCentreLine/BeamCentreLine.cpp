@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <set>
 #include "BeamCentreLine.h"
+#include "k-means.h"
 
 // yangbin
 #ifndef M_PI
@@ -416,6 +417,68 @@ std::vector<LineData> sortParallelLines(std::vector<LineData> beam) {
 	return beam;
 }
 
+/* 按照平行线在支座的交点进行聚类分组 */
+std::vector<BeamSpanData> clusterParallelLines(BeamSpanData bsd) {
+	
+	std::vector<BeamSpanData> spans;
+	std::map<int, BeamSpanData> spanMap;
+
+	int size = bsd.beam.size(); //Number of samples
+	int dim = 2;   //Dimension of feature
+	int cluster_num = size/2; //Cluster number
+
+	if (size < 2) return spans;
+
+	double * data = new double[size * 2];
+	for (int i = 0; i < size; i++) {
+		data[2 * i] = bsd.beam[i].crossFrom.x();
+		data[2 * i + 1] = bsd.beam[i].crossFrom.y();
+	}
+
+	KMeans* kmeans = new KMeans(dim, cluster_num);
+	int* labels = new int[size];
+	kmeans->SetInitMode(KMeans::InitUniform);
+	kmeans->Cluster(data, size, labels);
+
+	for (int i = 0; i < size; ++i)
+	{
+		if (spanMap.count(labels[i]) > 0) {
+
+			if (spanMap[labels[i]].beam.size() == 2) {
+				/* 根据 梁线长度差异，替换其中一根 */
+				double ds0 = abs(spanMap[labels[i]].beam[0].length - bsd.beam[i].length);
+				double ds1 = abs(spanMap[labels[i]].beam[1].length - bsd.beam[i].length);
+				if (ds0 > ds1) {
+					spanMap[labels[i]].beam[0] = bsd.beam[i];
+				}
+				else {
+					spanMap[labels[i]].beam[1] = bsd.beam[i];
+				}
+			}
+			else 
+				spanMap[labels[i]].beam.push_back(bsd.beam[i]);
+		}
+		else {
+			BeamSpanData bs = bsd;
+			bs.beam.clear();
+			bs.beam.push_back(bsd.beam[i]);
+			spanMap[labels[i]] = bs;
+		}
+
+		
+	}
+
+	delete[] labels;
+	delete[] data;
+	delete kmeans;
+
+	std::map<int, BeamSpanData>::iterator it = spanMap.begin();
+	for (; it != spanMap.end(); it++) {
+		spans.push_back(it->second);
+	}
+	return spans;
+}
+
 bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
 	//************************************************************************
 	//  求二条直线的交点的公式
@@ -620,9 +683,10 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& steelMarkings, std::ve
 }
 
 /* 生成匹配的梁跨 */
-void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanData> & beamspans_ok, 
+void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok, 
 	 std::vector <PolylineData> & polylines, std::vector<LineData>& lines)
 {
+	std::vector<BeamSpanData>  beamspans;
 	/* 先以柱墙为中心生成梁跨， 一个柱墙可能会生成多个梁跨 */
 	for (auto p : polylines) {
 		for(auto l : lines) {
@@ -633,42 +697,66 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 			for (int i = 0; i <= 20; i++) {
 				QPointF from = l.from - l.direction * i * 25; 
 				bCrossFrom = isInsidePolyline(from, p.vertexs);
-				if (bCrossFrom) break;
+				if (bCrossFrom) {
+					l.crossFrom = from;
+					break;
+				}
 			}
 
 			int bCrossTo = 0;
 			for (int i = 0; i <= 20; i++) {
 				QPointF to =  l.to + l.direction * i * 25;
-				bCross = isInsidePolyline(from, p.vertexs);
-				if (!bCross) {
-					bCross = isInsidePolyline(to, p.vertexs);
-					if (bCross) {
-						/* 规定与支座相交的为 from 点 */
-						QPointF tmp = l.from;
-						l.from = l.to;
-						l.to = tmp;
-						l.direction = -l.direction;
-					}
+				bCrossTo = isInsidePolyline(to, p.vertexs);
+				if (bCrossTo) {
+					l.crossTo = to;
+					break;
 				}
-				if (bCross) break;
 			}
-			
-			if (bCross) {
+
+			LineData ll = l;
+			for (int nLoop = 0; nLoop < 2; nLoop++)
+			{
+				bool bContinue = true;
+				if (nLoop==0 && bCrossFrom)
+				{
+					l = ll;
+					l.crossTo.setX(0.0);
+					l.crossTo.setY(0.0);
+					bContinue = false;
+				}
+				else if (nLoop == 1 && bCrossTo) {
+					l = ll;
+					/* 规定与支座相交的为 from 点 */
+					QPointF tmp = l.from;
+					l.from = l.to;
+					l.to = tmp;
+					l.direction = -l.direction;
+					l.angle += M_PI;
+					l.crossFrom = l.crossTo;
+					l.crossTo.setX(0.0);
+					l.crossTo.setY(0.0);
+					bContinue = false;
+				}
+				if (bContinue) continue;
+
 				bool bMerge = false;
 				for (int i = 0; i < beamspans.size(); i++) {
-					if ( beamspans[i].columnOrWall[0].ent == p.ent) {
+					if (beamspans[i].columnOrWall[0].ent == p.ent ) {
+						/* 与另一条梁线 相同支座 */
 						double cycle = abs(l.angle - beamspans[i].beam[0].angle) / M_PI;
-						cycle = abs(cycle - int(cycle + 0.5));
-						if (cycle * M_PI < ONE_DEGREE) {
-							/* 与另一条梁线平行 且 处于支座同侧，则归并入现有梁跨 */
-							QPointF e = l.to - beamspans[i].beam[0].to;
+						int nCycle = int(cycle + 0.5);
+						cycle = abs(cycle - nCycle);
+						if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 0) {
+							/* 且 处于支座同侧 */
+							QPointF e = beamspans[i].beam[0].crossFrom - l.crossFrom;
 							double ds = sqrt(e.x() * e.x() + e.y() * e.y());
-							if (ds < (l.length + beamspans[i].beam[0].length)) {
-								/* 处于支座同侧, 则距离必然短 */
+							if (/* ds < 1000 */ true) {
+								/* 且支座交点距离接近（防止剪力墙有多个梁跨） ，则归并入现有梁跨 */
 								beamspans[i].beam.push_back(l);
 								bMerge = true;
 								break;
 							}
+							
 						}
 					}
 				}
@@ -692,20 +780,15 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 		std::vector<BeamSpanData>::iterator it = beamspans.begin();
 		for (; it != beamspans.end(); it++) {
 			if (it->beam.size() != 2) {
-				std::vector<LineData> beam = sortParallelLines(it->beam);
+				// std::vector<LineData> beam = sortParallelLines(it->beam);
 				BeamSpanData bsd = *it;
 				beamspans.erase(it);
 
 				/* 按照两个梁为一组，分成多个梁跨 */
-				for (int i = 0; i < beam.size() / 2; i++) {
-					bsd.beam.clear();
-					bsd.beam.push_back(beam[2 * i]);
-					bsd.beam.push_back(beam[2 * i + 1]);
-					beamspans.push_back(bsd);
-				}
-
-				if (beam.size() % 2) {
-					int ttt = 1;
+				std::vector<BeamSpanData> spans = clusterParallelLines(bsd);
+								
+				for (int i = 0; i < spans.size(); i++) {
+					beamspans.push_back(spans[i]);
 				}
 
 				bLoop = true;
@@ -722,9 +805,22 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 		for (int j = 0; j < beamspans.size(); j++) {
 			if (beamspans[j].beam.size() != 2) continue;
 			if (beamspans[j].bHandled) continue;
+			if (i == j) continue;
 
-			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) continue;
+			bool bContinue = true;
+			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) {
+				double cycle = abs(beamspans[i].beam[0].angle - beamspans[j].beam[0].angle) / M_PI;
+				int nCycle = int(cycle + 0.5);
+				cycle = abs(cycle - nCycle);
+				if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
+					bContinue = false;
+			}
+			else {
+				bContinue = false;
+			}
+			if(bContinue) continue;
 
+			/* 到此步，不同支座 或者 相同支座但支座交点距离较远 */
 			if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent && beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
 				|| beamspans[i].beam[0].ent == beamspans[j].beam[1].ent && beamspans[i].beam[1].ent == beamspans[j].beam[0].ent) {
 				/* 相同的两根梁线，则判断为一个梁跨 */
@@ -765,35 +861,47 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans, std::vector<BeamSpanDa
 		for (int j = 0; j < beamspans.size(); j++) {
 			if (beamspans[j].beam.size() != 2) continue;
 			if (beamspans[j].bHandled) continue;
+			if (i == j) continue;
 
-			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) continue;
+			bool bContinue = true;
+			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) {
+				double cycle = abs(beamspans[i].beam[0].angle - beamspans[j].beam[0].angle) / M_PI;
+				int nCycle = int(cycle + 0.5);
+				cycle = abs(cycle - nCycle);
+				if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
+					bContinue = false;
+			}
+			else {
+				bContinue = false;
+			}
+			if (bContinue) continue;
 
+			/* 到此步，不同支座 或者 相同支座但支座交点距离较远 */
 			/* 两根梁线平行且 延伸线相交，也判断为一个梁跨  */
 			BeamSpanData b3 = beamspans[i];
 			BeamSpanData b1 = beamspans[j];
-			double cycle = abs(b3.beam[0].angle - b1.beam[0].angle) / M_PI;
-			cycle = abs(cycle - int(cycle + 0.5));
+			
 			bool bIntersected = false;
-			if (cycle * M_PI < ONE_DEGREE) {
-				for (int k = 0; k < 20; k++) {
-					QPointF to_a1 = b1.beam[0].to + k * 25 * b1.beam[0].direction;
-					QPointF to_a2 = b1.beam[1].to + k * 25 * b1.beam[1].direction;
-					QPointF to_b1 = b3.beam[0].to + k * 25 * b3.beam[0].direction;
-					QPointF to_b2 = b3.beam[1].to + k * 25 * b3.beam[1].direction;
-					QPointF e1 = to_a1 - to_b1;
-					QPointF e2 = to_a2 - to_b2;
-					QPointF e3 = to_a1 - to_b2;
-					QPointF e4 = to_a2 - to_b1;
-					double ds1 = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
-					double ds2 = sqrt(e2.x() * e2.x() + e2.y() * e2.y());
-					double ds3 = sqrt(e3.x() * e3.x() + e3.y() * e3.y());
-					double ds4 = sqrt(e4.x() * e4.x() + e4.y() * e4.y());
-					if (ds1 < 1 || ds2 < 1 || ds3 < 1 || ds4 < 1) {
-						bIntersected = true;
-						break;
-					}
+			for (int k = 1; k < 10; k++) {
+				QPointF to_a1 = b1.beam[0].to + k * 25 * b1.beam[0].direction;
+				QPointF to_a2 = b1.beam[1].to + k * 25 * b1.beam[1].direction;
+				QPointF to_b1 = b3.beam[0].to + k * 25 * b3.beam[0].direction;
+				QPointF to_b2 = b3.beam[1].to + k * 25 * b3.beam[1].direction;
+				std::vector<QPointF>  a1;	a1.push_back(to_a1);	a1.push_back(b1.beam[0].to);
+				std::vector<QPointF>  a2;	a2.push_back(to_a2);	a1.push_back(b1.beam[1].to);
+				std::vector<QPointF>  b1;	b1.push_back(to_b1);	b1.push_back(b3.beam[0].to);
+				std::vector<QPointF>  b2;	b2.push_back(to_b2);	b2.push_back(b3.beam[1].to);
+
+				double ds1 = pointToPolyline(to_a1, b1);
+				double ds2 = pointToPolyline(to_a1, b2);
+				double ds3 = pointToPolyline(to_a2, b1);
+				double ds4 = pointToPolyline(to_a2, b2);
+				if (ds1 < 1 || ds2 < 1 || ds3 < 1 || ds4 < 1) {
+					bIntersected = true;
+					break;
 				}
 			}
+
 			if (bIntersected) {
 				b3.columnOrWall.push_back(b1.columnOrWall[0]);
 				b3.beam.push_back(b1.beam[0]);
@@ -831,7 +939,7 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		filterData1(obj.at(i), polylines, lines);
 	}
 	
-	BeamSpanMatch(beamspans, beamspans_ok, polylines, lines);
+	BeamSpanMatch(beamspans_ok, polylines, lines);
 
 	QString text;
 	text.append("========================================================\n");

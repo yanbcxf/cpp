@@ -55,6 +55,7 @@ typedef struct _LineData {
 	_LineData() = default;
 
 	QPointF from, to;
+	QPointF crossFrom, crossTo; // 梁线 与 支座的交点
 	double length;
 	double angle;		// 夹角，以便判断 梁的另一条平行线
 	double fa, fb, fc;
