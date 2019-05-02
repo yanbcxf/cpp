@@ -417,12 +417,132 @@ std::vector<LineData> sortParallelLines(std::vector<LineData> beam) {
 	return beam;
 }
 
+/* 以下代码不可用  */
+std::vector<std::vector<unsigned char>> fetch2FromN(std::vector<unsigned char> vec) {
+	std::vector<std::vector<unsigned char>> res;
+	if (vec.size() <= 1) return res;
+	
+	for (int i = 0; i < vec.size() - 1; i++) {
+		for (int j = i + 1; j < vec.size(); j++) {
+			
+			std::vector<unsigned char> remain;
+			for (int k = 0; k < vec.size(); k++) {
+				if (k != i && k != j) remain.push_back(vec[k]);
+			}
+			std::vector<std::vector<unsigned char>> sub = fetch2FromN(remain);
+			if (sub.size() > 0) {
+				for (int k = 0; k < sub.size(); k++) {
+					std::vector<unsigned char> element;
+					element.push_back(vec[i]);
+					element.push_back(vec[j]);
+					for (int t = 0; t < sub[k].size(); t++) {
+						element.push_back(sub[k][t]);
+					}
+					res.push_back(element);
+				}
+			}
+			else {
+				std::vector<unsigned char> element;
+				element.push_back(vec[i]);
+				element.push_back(vec[j]);
+				
+				res.push_back(element);
+			}
+		}
+	}
+
+	return res;
+}
+
 /* 按照平行线在支座的交点进行聚类分组 */
-std::vector<BeamSpanData> clusterParallelLines(BeamSpanData bsd) {
+std::vector<BeamSpanData> clusterParallelLines(BeamSpanData bsd, std::vector<QString> & debugInfo) {
 	
 	std::vector<BeamSpanData> spans;
-	std::map<int, BeamSpanData> spanMap;
+	
+	char  * a = new char[bsd.beam.size() + 1];
+	char  * aa = new char[bsd.beam.size() + 1];
+	a[bsd.beam.size()] = 0;
+	aa[bsd.beam.size()] = 0;
+	for (int i = 0; i < bsd.beam.size(); i++) {
+		a[i] = 65 + i;
+	}
+	int len = strlen(a);
+	std::sort(a, a + len);									//	要先排好序，因为他是按照字典顺序自动排的
+	double dist = -1;
+	do
+	{
+		// debugInfo.push_back("------------ ++++++++++++ " + QString(a));
+		bool bContinue = false;
+		for (int i = 0; i < bsd.beam.size() / 2; i++) {
+			if (a[2 * i] > a[2 * i + 1] ) {
+				bContinue = true;
+				break;
+			}
+		}
+		if(bContinue ) continue;
 
+		for (int i = 0; i < (bsd.beam.size() / 2) - 1; i++) {
+			if (a[2 * i] > a[2 * i + 2]) {
+				bContinue = true;
+				break;
+			}
+		}
+		if (bContinue) continue;
+
+		// debugInfo.push_back("------------ " + QString(a));
+
+		double dist0 = 0.0;
+		std::vector<QPointF> means;
+		for (int i = 0; i < bsd.beam.size() / 2; i++) {
+			// double ds = distanceBetweenParallelLine(bsd.beam[a[2 * i] - 65], bsd.beam[a[2 * i + 1] - 65]);
+			double ds = pointToLine(bsd.beam[a[2 * i + 1] - 65].from, bsd.beam[a[2 * i] - 65].from, bsd.beam[a[2 * i] - 65].to);
+			if (ds > 800 || ds < 1) {
+				/* 梁宽太大 或者 太小 是不合法的组合 */
+				bContinue = true;
+				break;
+			}
+			QPointF mean = (bsd.beam[a[2 * i] - 65].crossFrom + bsd.beam[a[2 * i + 1] - 65].crossFrom) / 2;
+			means.push_back(mean);
+		}
+		if (bContinue) continue;
+
+		/* 对当前分组中心 进行 k-means 算法的评价 */
+		if (means.size() > 1) {
+			for (int i = 0; i < means.size() - 1; i++) {
+				for (int j = i + 1; j < means.size(); j++) {
+					QPointF e = means[i] - means[j];
+					dist0 += sqrt(e.x() * e.x() + e.y() * e.y());
+				}
+			}
+		}
+		else if (means.size() == 1) {
+			dist0 = 1.0;
+		}
+
+		if (dist0 > dist) {
+			dist = dist0;
+			for (int i = 0; i < bsd.beam.size(); i++) {
+				aa[i] = a[i];
+			}
+		}
+
+	} while (std::next_permutation(a, a + strlen(a)));			//	调用全排列函数
+
+	for (int i = 0; i < bsd.beam.size() / 2 && dist > 0; i++) {
+		BeamSpanData bs = bsd;
+		bs.beam.clear();
+		bs.beam.push_back(bsd.beam[aa[2 * i] - 65]);
+		bs.beam.push_back(bsd.beam[aa[2 * i + 1] - 65]);
+		spans.push_back(bs);
+	}
+
+	delete[] a;
+	delete[] aa;
+	return spans;
+
+	/****************************************/
+	/* 以下代码不用   */
+	std::map<int, BeamSpanData> spanMap;
 	int size = bsd.beam.size(); //Number of samples
 	int dim = 2;   //Dimension of feature
 	int cluster_num = size/2; //Cluster number
@@ -477,6 +597,29 @@ std::vector<BeamSpanData> clusterParallelLines(BeamSpanData bsd) {
 		spans.push_back(it->second);
 	}
 	return spans;
+}
+
+/* 计算梁跨的中心线 */
+void beamCentreLine(std::vector<LineData> & beamLines, QPointF & from, QPointF & to) {
+	if (beamLines.size() <= 3) {
+		double len = 0.0;
+		for (auto l : beamLines) 
+			if (l.length > len) len = l.length;
+
+		QPointF foot = footpointOfLine(beamLines[0].from, beamLines[1].from, beamLines[1].to);
+		from = (beamLines[0].from + foot) / 2;
+		to = from + beamLines[0].direction * (len + 600);
+		from = from - beamLines[0].direction * 600;
+	} 
+	else {
+		QPointF foot = footpointOfLine(beamLines[0].from, beamLines[1].from, beamLines[1].to);
+		from = (beamLines[0].from + foot) / 2;
+		from = from - beamLines[0].direction * 600;
+
+		foot = footpointOfLine(beamLines[2].from, beamLines[3].from, beamLines[3].to);
+		to = (beamLines[2].from + foot) / 2;
+		to = to - beamLines[2].direction * 600;
+	}
 }
 
 bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
@@ -616,7 +759,7 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 		/* 计算直线方程一般式的参数 */
 		line.fa = line.to.y() - line.from.y();
 		line.fb = line.from.x() - line.to.x();
-		line.fc = line.from.x() * line.to.y() - line.to.x() * line.from.y();
+		line.fc = line.to.x() * line.from.y() - line.from.x() * line.to.y();
 
 		lines.push_back(line);
 
@@ -628,63 +771,10 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 }
 
 
-// 第二遍，寻找负筋标注文本信息
-void filterData2(Plug_Entity *ent, std::vector<TextData>& steelMarkings, std::vector<TextData>& sizeMarkings) {
-	if (NULL == ent)
-		return;
-
-	QPointF ptA, ptB;
-	QString textContent;
-	QHash<int, QVariant> data;
-	std::vector<QPointF> vertexs;
-	//common entity data
-	ent->getData(&data);
-
-	//specific entity data
-	int et = data.value(DPI::ETYPE).toInt();
-	switch (et) {
-
-	case DPI::MTEXT:
-	case DPI::TEXT: {
-		TextData txt;
-		txt.name = data.value(DPI::TEXTCONTENT).toString();
-		txt.startAngle = data.value(DPI::STARTANGLE).toDouble();
-		txt.startPt.setX(data.value(DPI::STARTX).toDouble());
-		txt.startPt.setY(data.value(DPI::STARTY).toDouble());
-		txt.height = data.value(DPI::HEIGHT).toDouble();
-		txt.strLayer = data.value(DPI::LAYER).toString();
-		txt.ent = ent;
-
-		QPointF ptA = ent->getMaxOfBorder();
-		QPointF ptB = ent->getMinOfBorder();
-		txt.maxPt = ptA;
-		txt.minPt = ptB;
-		txt.endPt = crossover(txt.startPt, txt.startAngle, ptB, ptA);
-				
-		QRegExp rx;
-		rx.setPattern("^[Kk][0-9]+");
-		int idx = rx.indexIn(txt.name);
-		if (idx >= 0) {
-			steelMarkings.push_back(txt);
-		}
-		else 
-		{
-			rx.setPattern("^[0-9]+");
-			idx = rx.indexIn(txt.name);
-			if (idx >= 0) {
-				sizeMarkings.push_back(txt);
-			}
-		}
-	}
-		break;
-	default:
-		break;
-	}
-}
 
 /* 生成匹配的梁跨 */
 void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok, 
-	 std::vector <PolylineData> & polylines, std::vector<LineData>& lines)
+	 std::vector <PolylineData> & polylines, std::vector<LineData>& lines, std::vector<QString> & debugInfo)
 {
 	std::vector<BeamSpanData>  beamspans;
 	/* 先以柱墙为中心生成梁跨， 一个柱墙可能会生成多个梁跨 */
@@ -784,11 +874,32 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				BeamSpanData bsd = *it;
 				beamspans.erase(it);
 
+				bsd.beam = sortParallelLines(bsd.beam);
 				/* 按照两个梁为一组，分成多个梁跨 */
-				std::vector<BeamSpanData> spans = clusterParallelLines(bsd);
-								
+				std::vector<BeamSpanData> spans = clusterParallelLines(bsd, debugInfo);
+				
+				QString msg = QString("=======> New BeamSpan beam size = %1 ")
+					.arg(bsd.beam.size());
+				debugInfo.push_back(msg);
+				
 				for (int i = 0; i < spans.size(); i++) {
 					beamspans.push_back(spans[i]);
+
+					QString msg = QString("N %1 BeamSpan beam0 (%2, %3) ")
+						.arg(i)
+						.arg(QString::number(spans[i].beam[0].crossFrom.x(), 10, 2))
+						.arg(QString::number(spans[i].beam[0].crossFrom.y(), 10, 2));
+					debugInfo.push_back(msg);
+
+					if (spans[i].beam.size() > 1) {
+						msg = QString("N %1 BeamSpan beam1 (%2, %3) ")
+							.arg(i)
+							.arg(QString::number(spans[i].beam[1].crossFrom.x(), 10, 2))
+							.arg(QString::number(spans[i].beam[1].crossFrom.y(), 10, 2));
+						debugInfo.push_back(msg);
+					}
+					
+					debugInfo.push_back("\n");
 				}
 
 				bLoop = true;
@@ -808,17 +919,12 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 			if (i == j) continue;
 
 			bool bContinue = true;
-			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) {
-				double cycle = abs(beamspans[i].beam[0].angle - beamspans[j].beam[0].angle) / M_PI;
-				int nCycle = int(cycle + 0.5);
-				cycle = abs(cycle - nCycle);
-				if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
-					bContinue = false;
-			}
-			else {
+			double cycle = abs(beamspans[i].beam[0].angle - beamspans[j].beam[0].angle) / M_PI;
+			int nCycle = int(cycle + 0.5);
+			cycle = abs(cycle - nCycle);
+			if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
 				bContinue = false;
-			}
-			if(bContinue) continue;
+			if (bContinue) continue;
 
 			/* 到此步，不同支座 或者 相同支座但支座交点距离较远 */
 			if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent && beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
@@ -853,7 +959,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 		}
 	}
 
-	/* 在第一遍的基础上，再进行合并 */
+	/* 第二遍， 在第一遍的基础上，再进行合并 */
 	for (int i = 0; i < beamspans.size(); i++) {
 		if (beamspans[i].beam.size() != 2) continue;
 		if (beamspans[i].bHandled) continue;
@@ -864,22 +970,18 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 			if (i == j) continue;
 
 			bool bContinue = true;
-			if (beamspans[i].columnOrWall[0].ent == beamspans[j].columnOrWall[0].ent) {
-				double cycle = abs(beamspans[i].beam[0].angle - beamspans[j].beam[0].angle) / M_PI;
-				int nCycle = int(cycle + 0.5);
-				cycle = abs(cycle - nCycle);
-				if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
-					bContinue = false;
-			}
-			else {
+			BeamSpanData b3 = beamspans[i];
+			BeamSpanData b1 = beamspans[j];
+			double cycle = abs(b3.beam[0].angle - b1.beam[0].angle) / M_PI;
+			int nCycle = int(cycle + 0.5);
+			cycle = abs(cycle - nCycle);
+			if (cycle * M_PI < ONE_DEGREE && nCycle % 2 == 1 /* 相向而行 */)
 				bContinue = false;
-			}
 			if (bContinue) continue;
 
 			/* 到此步，不同支座 或者 相同支座但支座交点距离较远 */
 			/* 两根梁线平行且 延伸线相交，也判断为一个梁跨  */
-			BeamSpanData b3 = beamspans[i];
-			BeamSpanData b1 = beamspans[j];
+			
 			
 			bool bIntersected = false;
 			for (int k = 1; k < 10; k++) {
@@ -887,15 +989,15 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				QPointF to_a2 = b1.beam[1].to + k * 25 * b1.beam[1].direction;
 				QPointF to_b1 = b3.beam[0].to + k * 25 * b3.beam[0].direction;
 				QPointF to_b2 = b3.beam[1].to + k * 25 * b3.beam[1].direction;
-				std::vector<QPointF>  a1;	a1.push_back(to_a1);	a1.push_back(b1.beam[0].to);
-				std::vector<QPointF>  a2;	a2.push_back(to_a2);	a1.push_back(b1.beam[1].to);
-				std::vector<QPointF>  b1;	b1.push_back(to_b1);	b1.push_back(b3.beam[0].to);
-				std::vector<QPointF>  b2;	b2.push_back(to_b2);	b2.push_back(b3.beam[1].to);
+				std::vector<QPointF>  aa1;	aa1.push_back(to_a1);	aa1.push_back(b1.beam[0].to);
+				std::vector<QPointF>  aa2;	aa2.push_back(to_a2);	aa2.push_back(b1.beam[1].to);
+				std::vector<QPointF>  bb1;	bb1.push_back(to_b1);	bb1.push_back(b3.beam[0].to);
+				std::vector<QPointF>  bb2;	bb2.push_back(to_b2);	bb2.push_back(b3.beam[1].to);
 
-				double ds1 = pointToPolyline(to_a1, b1);
-				double ds2 = pointToPolyline(to_a1, b2);
-				double ds3 = pointToPolyline(to_a2, b1);
-				double ds4 = pointToPolyline(to_a2, b2);
+				double ds1 = pointToPolyline(to_a1, bb1);
+				double ds2 = pointToPolyline(to_a1, bb2);
+				double ds3 = pointToPolyline(to_a2, bb1);
+				double ds4 = pointToPolyline(to_a2, bb2);
 				if (ds1 < 1 || ds2 < 1 || ds3 < 1 || ds4 < 1) {
 					bIntersected = true;
 					break;
@@ -913,15 +1015,55 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 			}
 
 		}
-
 	}
+
+	/* 第三遍, 处理一端在柱墙上，另一端在其它梁上的情况 */
+	bLoop = true;
+	do {
+		bLoop = false;
+		for (int i = 0; i < beamspans.size(); i++) {
+			if (beamspans[i].beam.size() != 2) continue;
+			if (beamspans[i].bHandled) continue;
+
+			bool bIntersected = false;
+			BeamSpanData from = beamspans[i];
+			for (int k = 1; k < 20; k++) {
+				QPointF to1 = from.beam[0].to + k * 25 * from.beam[0].direction;
+				QPointF to2 = from.beam[1].to + k * 25 * from.beam[1].direction;
+
+				for (auto bs : beamspans_ok) {
+					for (auto line : bs.beam) {
+						QPointF crossPoint;
+						if (find_crossPoint(to1, from.beam[0].from, line.from, line.to, crossPoint)) {
+							bIntersected = true;
+							break;
+						}
+						if (find_crossPoint(to2, from.beam[1].from, line.from, line.to, crossPoint)) {
+							bIntersected = true;
+							break;
+						}
+					}
+					if (bIntersected) break;
+				}
+				if (bIntersected) break;
+			}
+
+			if (bIntersected) {
+				beamspans_ok.push_back(from);
+				beamspans[i].bHandled = true;
+				bLoop = true;
+			}
+		}
+
+	} while (bLoop);
 }
 
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin, bool bConsiderSizeNomatch) {
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
-	
+
+		
 	QList<Plug_Entity *> obj;
 	std::vector<Plug_Entity *> entites;
 	/*bool yes = doc->getSelect(&obj);
@@ -931,15 +1073,16 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 	// 过滤 负筋的钢筋线 和 梁（墙）等支座线
 	std::vector<PolylineData>   polylines;
-	std::vector<LineData>   lines;
+	std::vector<LineData>		lines;
 	std::vector<BeamSpanData>   beamspans;
 	std::vector<BeamSpanData>   beamspans_ok;
+	std::vector<QString>		debugInfo;
 	
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), polylines, lines);
 	}
 	
-	BeamSpanMatch(beamspans_ok, polylines, lines);
+	BeamSpanMatch(beamspans_ok, polylines, lines, debugInfo);
 
 	QString text;
 	text.append("========================================================\n");
@@ -957,6 +1100,11 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		text.append("\n");
 	}
 
+	for (auto debug : debugInfo) {
+		doc->commandMessage(debug);
+	}
+
+	
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
@@ -978,9 +1126,10 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}*/
 
-		/* 对于仅有单个尺寸标注的负筋线，改成双边标注 */
+		/*  */
+		doc->setLayer(plugin->name());
 		for (auto b: beamspans_ok) {
-			QHash<int, QVariant> hash;
+			/*QHash<int, QVariant> hash;
 			if (b.beam.size() == 2) {
 				hash.insert(DPI::COLOR, 0xff0000);
 				b.beam[0].ent->updateData(&hash);
@@ -1001,7 +1150,12 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			}
 			else {
 				int ll = 11;
-			}
+			}*/
+
+			QPointF from, to;
+			beamCentreLine(b.beam, from, to);
+
+			doc->addLine(&from, &to);
 		}
 	}
 
