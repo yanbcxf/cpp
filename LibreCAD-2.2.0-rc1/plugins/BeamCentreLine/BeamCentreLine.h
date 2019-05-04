@@ -61,6 +61,8 @@ typedef struct _LineData {
 	double fa, fb, fc;
 	QPointF direction;
 
+	int		columnFrom, columnTo;	//	ÖùÇ½µÄÐòºÅ
+
 	Plug_Entity * ent;
 } LineData;
 
@@ -75,6 +77,10 @@ typedef struct _PolylineData {
 	int			closed;
 	std::vector<double>	 angles;	// ±ßÓë±ßµÄ¼Ð½Ç
 	std::vector<QPointF> vertexs;	//  polyline
+
+	int			nSerial;			// ÐòºÅ
+
+	std::vector<LineData>	beamCentreLines;
 	
 	Plug_Entity * ent;
 } PolylineData;

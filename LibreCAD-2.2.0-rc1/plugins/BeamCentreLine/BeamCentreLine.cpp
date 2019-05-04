@@ -727,6 +727,7 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 		}
 
 		if (iVertices >= 4 && bClosed) {
+			strip.nSerial = polylines.size();
 			polylines.push_back(strip);
 		}
 		
@@ -789,6 +790,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				bCrossFrom = isInsidePolyline(from, p.vertexs);
 				if (bCrossFrom) {
 					l.crossFrom = from;
+					l.columnFrom = p.nSerial;
 					break;
 				}
 			}
@@ -799,6 +801,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				bCrossTo = isInsidePolyline(to, p.vertexs);
 				if (bCrossTo) {
 					l.crossTo = to;
+					l.columnTo = p.nSerial;
 					break;
 				}
 			}
@@ -812,6 +815,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 					l = ll;
 					l.crossTo.setX(0.0);
 					l.crossTo.setY(0.0);
+					l.columnTo = -1;
 					bContinue = false;
 				}
 				else if (nLoop == 1 && bCrossTo) {
@@ -825,6 +829,8 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 					l.crossFrom = l.crossTo;
 					l.crossTo.setX(0.0);
 					l.crossTo.setY(0.0);
+					l.columnFrom = l.columnTo;
+					l.columnTo = -1;
 					bContinue = false;
 				}
 				if (bContinue) continue;
@@ -935,6 +941,20 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
+
+				if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent && beamspans[i].beam[1].ent == beamspans[j].beam[1].ent)
+				{
+					LineData line1 = beamspans[i].beam[0];
+					LineData line2 = beamspans[i].beam[1];
+					line1.crossTo = beamspans[j].beam[0].crossFrom;
+					line2.crossTo = beamspans[j].beam[1].crossFrom;
+					line1.columnTo = beamspans[j].beam[0].columnFrom;
+					line2.columnTo = beamspans[j].beam[1].columnFrom;
+					
+				}
+				else {
+
+				}
 				break;
 			}
 			else if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent || beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
