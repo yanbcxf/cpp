@@ -28,6 +28,8 @@
 #include "BeamCentreLine.h"
 #include "k-means.h"
 
+using namespace std;
+
 // yangbin
 #ifndef M_PI
 #define M_PI       3.141592653589793238462643
@@ -58,7 +60,7 @@ PluginCapabilities LC_List::getCapabilities() const
 
 
 /**
-* 计算两个向量的夹角 (in rad).
+* 计算两个向量正方向的夹角 (in rad), 取较小的夹角，因此范围在 0 - PI 之间.
 */
 double angle(QPointF a, QPointF b) {
 	// 先将向量标准化
@@ -622,6 +624,41 @@ void beamCentreLine(std::vector<LineData> & beamLines, QPointF & from, QPointF &
 	}
 }
 
+LineData beamCentreLine2(std::vector<LineData> & beamLines) {
+	QPointF from, to;
+	LineData centre;
+	if (beamLines.size() <= 3) {
+		double len = 0.0;
+		for (auto l : beamLines)
+			if (l.length > len) len = l.length;
+
+		QPointF foot = footpointOfLine(beamLines[0].from, beamLines[1].from, beamLines[1].to);
+		from = (beamLines[0].from + foot) / 2;
+		to = from + beamLines[0].direction * (len);
+		centre.from = from;
+		centre.to = to;
+		centre.columnFrom = beamLines[0].columnFrom;
+		centre.columnTo = beamLines[0].columnTo;
+		centre.angle = beamLines[0].angle;
+		centre.direction = beamLines[0].direction;
+	}
+	else {
+		QPointF foot = footpointOfLine(beamLines[0].from, beamLines[1].from, beamLines[1].to);
+		from = (beamLines[0].from + foot) / 2;
+		
+		foot = footpointOfLine(beamLines[2].from, beamLines[3].from, beamLines[3].to);
+		to = (beamLines[2].from + foot) / 2;
+		
+		centre.from = from;
+		centre.to = to;
+		centre.columnFrom = beamLines[0].columnFrom;
+		centre.columnTo = beamLines[2].columnFrom;
+		centre.angle = beamLines[0].angle;
+		centre.direction = beamLines[0].direction;
+	}
+	return centre;
+}
+
 bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
 	//************************************************************************
 	//  求二条直线的交点的公式
@@ -942,19 +979,17 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
 
-				if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent && beamspans[i].beam[1].ent == beamspans[j].beam[1].ent)
-				{
-					LineData line1 = beamspans[i].beam[0];
-					LineData line2 = beamspans[i].beam[1];
-					line1.crossTo = beamspans[j].beam[0].crossFrom;
-					line2.crossTo = beamspans[j].beam[1].crossFrom;
-					line1.columnTo = beamspans[j].beam[0].columnFrom;
-					line2.columnTo = beamspans[j].beam[1].columnFrom;
-					
-				}
-				else {
-
-				}
+				/* 以柱墙为中心，汇总从该柱墙发出的梁中心线 */
+				LineData centre = beamCentreLine2(b3.beam);
+				centre.columnTo = beamspans[j].columnOrWall[0].nSerial;
+				polylines[centre.columnFrom].sourceCentreLines.push_back(centre);
+				
+				LineData centre2;
+				centre2.from = centre.to;	centre2.to = centre.from;
+				centre2.columnFrom = centre.columnTo;	centre2.columnTo = centre.columnFrom;
+				centre2.direction = -centre.direction;
+				centre2.angle = centre.angle + M_PI;
+				polylines[centre2.columnFrom].sourceCentreLines.push_back(centre2);
 				break;
 			}
 			else if (beamspans[i].beam[0].ent == beamspans[j].beam[0].ent || beamspans[i].beam[1].ent == beamspans[j].beam[1].ent
@@ -971,6 +1006,18 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
+
+				/* 以柱墙为中心，汇总从该柱墙发出的梁中心线 */
+				LineData centre = beamCentreLine2(b3.beam);
+				centre.columnTo = beamspans[j].columnOrWall[0].nSerial;
+				polylines[centre.columnFrom].sourceCentreLines.push_back(centre);
+
+				LineData centre2;
+				centre2.from = centre.to;	centre2.to = centre.from;
+				centre2.columnFrom = centre.columnTo;	centre2.columnTo = centre.columnFrom;
+				centre2.direction = -centre.direction;
+				centre2.angle = centre.angle + M_PI;
+				polylines[centre2.columnFrom].sourceCentreLines.push_back(centre2);
 				break;
 			}
 			else {
@@ -1031,6 +1078,18 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 				beamspans[j].bHandled = true;
+
+				/* 以柱墙为中心，汇总从该柱墙发出的梁中心线 */
+				LineData centre = beamCentreLine2(b3.beam);
+				centre.columnTo = b1.columnOrWall[0].nSerial;
+				polylines[centre.columnFrom].sourceCentreLines.push_back(centre);
+
+				LineData centre2;
+				centre2.from = centre.to;	centre2.to = centre.from;
+				centre2.columnFrom = centre.columnTo;	centre2.columnTo = centre.columnFrom;
+				centre2.direction = -centre.direction;
+				centre2.angle = centre.angle + M_PI;
+				polylines[centre2.columnFrom].sourceCentreLines.push_back(centre2);
 				break;
 			}
 
@@ -1078,6 +1137,115 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 	} while (bLoop);
 }
 
+void sortBeamLine(PolylineData & column, LineData & coming) {
+	vector<LineData> vec;
+	for (auto l : column.sourceCentreLines) {
+		/* 不是入射梁线 */
+		if (l.from != coming.to) {
+			QPointF e1 = coming.to - coming.from;
+			QPointF e2 = l.from - coming.to;
+			double cp = crossProduct(e1, e2);
+			
+			/* 确保 出射点在 入射梁线的下方 */
+			if (cp < 0) {
+				/* 计算 出射梁线的终点  */
+				e2 = l.to - coming.to;
+				cp = crossProduct(e1, e2);
+				if (cp < 0) {
+					l.angle = angle(e1, e2);
+					vec.push_back(l);
+				}
+			}
+		}
+	}
+
+	struct {
+		bool operator()(LineData a, LineData b) const
+		{
+			return a.angle > b.angle;
+		}
+	} customLess;
+	std::sort(vec.begin(), vec.end(), customLess);
+
+	column.sourceCentreLines = vec;
+}
+
+/* 利用回溯算法，搜索从某柱的某梁开始的最小环（板） */
+vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int nBeam, vector<QString>& debugInfo) {
+	vector<QPointF> vertex;
+	vector<PolylineData>	 path;
+	if (nBeam >= polylines[nColumn].sourceCentreLines.size())
+		return vertex;
+
+	LineData coming = polylines[nColumn].sourceCentreLines[nBeam];
+
+	QString msg = QString("searchFloor begin ...... ...... Column %1, Beam %2) ")
+		.arg(QString::number(nColumn, 10, 0))
+		.arg(QString::number(nBeam, 10, 0));
+	debugInfo.push_back(msg);
+
+	while (true) {
+		
+		msg = QString("N %1 searchFloor comming (%2, %3) - (%4, %5) ")
+			.arg(1)
+			.arg(QString::number(coming.from.x(), 10, 2))
+			.arg(QString::number(coming.from.y(), 10, 2))
+			.arg(QString::number(coming.to.x(), 10, 2))
+			.arg(QString::number(coming.to.y(), 10, 2));
+		debugInfo.push_back(msg);
+
+		if (coming.columnTo == nColumn) {
+			/* 找到最小环 */
+
+			break;
+		}
+
+		PolylineData currentColumn = polylines[coming.columnTo];
+		/* 根据入射梁线，对出射梁线进行排序 */
+		sortBeamLine(currentColumn, coming);
+
+		if (currentColumn.sourceCentreLines.size() == 0) {
+			/* 回退到上一个柱, 确定出射梁线 */
+			while (path.size() > 0) {
+				int nLast = path.size() - 1;
+				if (path[nLast].nPath >= (path[nLast].sourceCentreLines.size() - 1)) {
+					path.pop_back();
+				}
+				else {
+					path[nLast].nPath++;
+					coming = path[nLast].sourceCentreLines[path[nLast].nPath];
+					break;
+				}
+			}
+			if (path.size() == 0) {
+				/* 无法找到环 */
+				break;
+			}
+		}
+		else {
+			/* 确定出射梁线 */
+			currentColumn.nPath = 0;
+			path.push_back(currentColumn);
+			coming = currentColumn.sourceCentreLines[currentColumn.nPath];
+		}
+	}
+	
+	debugInfo.push_back("searchFloor end");
+
+	/* 输出板的外围线 */
+	if (path.size() > 0) {
+		LineData first = polylines[nColumn].sourceCentreLines[nBeam];
+		vertex.push_back(first.from);
+		vertex.push_back(first.to);
+		for (auto p : path) {
+			LineData l = p.sourceCentreLines[p.nPath];
+			vertex.push_back(l.from);
+			vertex.push_back(l.to);
+		}
+	}
+	
+	return vertex;
+}
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin, bool bConsiderSizeNomatch) {
 	Q_UNUSED(parent);
@@ -1146,7 +1314,7 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}*/
 
-		/*  */
+		/* 绘制梁中心线 */
 		doc->setLayer(plugin->name());
 		for (auto b: beamspans_ok) {
 			/*QHash<int, QVariant> hash;
@@ -1175,8 +1343,33 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			QPointF from, to;
 			beamCentreLine(b.beam, from, to);
 
-			doc->addLine(&from, &to);
+			// doc->addLine(&from, &to);
 		}
+
+		/* 绘制梁中心线 */
+		doc->setLayer(plugin->name());
+		//for (int i = 0; i < polylines.size(); i++) {
+			
+			//for (int j = 0; j < polylines[i].sourceCentreLines.size(); j++) {
+				debugInfo.clear();
+
+				vector<QPointF> ver = searchFloor(polylines, 168, 0, debugInfo);
+
+				for (auto debug : debugInfo) {
+					doc->commandMessage(debug);
+				}
+
+				if (ver.size() > 0) {
+					std::vector<Plug_VertexData> vertexes;
+					for (auto v : ver) {
+						vertexes.push_back(Plug_VertexData(v, 0));
+					}
+					doc->addPolyline(vertexes, true);
+				}
+			//}
+			
+		//}
+
 	}
 
 	while (!obj.isEmpty())

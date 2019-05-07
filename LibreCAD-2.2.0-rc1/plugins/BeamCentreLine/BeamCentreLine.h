@@ -80,7 +80,8 @@ typedef struct _PolylineData {
 
 	int			nSerial;			// 序号
 
-	std::vector<LineData>	beamCentreLines;
+	std::vector<LineData>	sourceCentreLines;
+	int			nPath;				// 当前出射梁 在  sourceCentreLines 中序号
 	
 	Plug_Entity * ent;
 } PolylineData;
