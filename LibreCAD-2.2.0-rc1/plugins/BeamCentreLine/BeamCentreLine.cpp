@@ -1142,20 +1142,25 @@ void sortBeamLine(PolylineData & column, LineData & coming) {
 	for (auto l : column.sourceCentreLines) {
 		/* 不是入射梁线 */
 		if (l.from != coming.to) {
-			QPointF e1 = coming.to - coming.from;
-			QPointF e2 = l.from - coming.to;
-			double cp = crossProduct(e1, e2);
 			
-			/* 确保 出射点在 入射梁线的下方 */
-			if (cp < 0) {
-				/* 计算 出射梁线的终点  */
-				e2 = l.to - coming.to;
-				cp = crossProduct(e1, e2);
-				if (cp < 0) {
-					l.angle = angle(e1, e2);
-					vec.push_back(l);
-				}
+			QPointF e0 = coming.to - coming.from;
+			QPointF e1 = l.from - coming.to;
+			double  ds = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+			double  cp = crossProduct(e0, e1);
+			double  an = angle(e0, e1);
+
+			if (1) {
+				
+				QPointF e2 = l.to - coming.to;
+				double cp = crossProduct(e0, e2);
+				if (cp < 0)
+					l.angle = angle(e0, e2);
+				else
+					l.angle = -angle(e0, e2);
+
+				vec.push_back(l);
 			}
+			
 		}
 	}
 
@@ -1196,7 +1201,22 @@ vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int n
 
 		if (coming.columnTo == nColumn) {
 			/* 找到最小环 */
+			debugInfo.push_back(QString::fromLocal8Bit("找到最小板"));
+			break;
+		}
 
+		bool bExist = false;
+		for (auto p : path) {
+			if (p.nSerial == coming.columnTo) {
+				bExist = true;
+				break;
+			}
+
+		}
+		if (bExist) {
+
+			debugInfo.push_back(QString::fromLocal8Bit("在查找路径上形成回路，停止搜索"));
+			path.clear();
 			break;
 		}
 
@@ -1210,10 +1230,12 @@ vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int n
 				int nLast = path.size() - 1;
 				if (path[nLast].nPath >= (path[nLast].sourceCentreLines.size() - 1)) {
 					path.pop_back();
+					debugInfo.push_back(QString::fromLocal8Bit("开始回退 ... pop_back "));
 				}
 				else {
 					path[nLast].nPath++;
 					coming = path[nLast].sourceCentreLines[path[nLast].nPath];
+					debugInfo.push_back(QString::fromLocal8Bit("开始回退 ... next beam "));
 					break;
 				}
 			}
@@ -1227,6 +1249,13 @@ vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int n
 			currentColumn.nPath = 0;
 			path.push_back(currentColumn);
 			coming = currentColumn.sourceCentreLines[currentColumn.nPath];
+		}
+
+		if (path.size() > 20) {
+			/*  */
+			debugInfo.push_back(QString::fromLocal8Bit("路径过长，停止搜索"));
+			path.clear();
+			break;
 		}
 	}
 	
@@ -1351,21 +1380,24 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		//for (int i = 0; i < polylines.size(); i++) {
 			
 			//for (int j = 0; j < polylines[i].sourceCentreLines.size(); j++) {
-				debugInfo.clear();
+		for (int j = 170; j < 180; j++) {
+			debugInfo.clear();
 
-				vector<QPointF> ver = searchFloor(polylines, 168, 0, debugInfo);
+			vector<QPointF> ver = searchFloor(polylines, j, 0, debugInfo);
 
-				for (auto debug : debugInfo) {
-					doc->commandMessage(debug);
+			for (auto debug : debugInfo) {
+				doc->commandMessage(debug);
+			}
+
+			if (ver.size() > 0) {
+				std::vector<Plug_VertexData> vertexes;
+				for (auto v : ver) {
+					vertexes.push_back(Plug_VertexData(v, 0));
 				}
-
-				if (ver.size() > 0) {
-					std::vector<Plug_VertexData> vertexes;
-					for (auto v : ver) {
-						vertexes.push_back(Plug_VertexData(v, 0));
-					}
-					doc->addPolyline(vertexes, true);
-				}
+				doc->addPolyline(vertexes, true);
+			}
+		}
+				
 			//}
 			
 		//}
