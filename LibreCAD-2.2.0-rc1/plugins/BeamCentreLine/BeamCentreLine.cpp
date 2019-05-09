@@ -659,6 +659,89 @@ LineData beamCentreLine2(std::vector<LineData> & beamLines) {
 	return centre;
 }
 
+/* 求两个多边形相重合的边线，作一条与该边线垂直的虚拟梁中心线 */
+LineData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& polyline2) {
+	LineData res;
+	for (int i = 0, j = polyline1.size() - 1; i < polyline1.size(); j = i++) {
+		QPointF e1,  p1, p2;
+		p1 = polyline1[i];
+		p2 = polyline1[j];
+		e1 = p1 - p2;
+		
+		for (int m = 0, n = polyline2.size() - 1; m < polyline2.size(); n = m++) {
+			QPointF p3, p4, e2;
+			p3 = polyline1[m];
+			p4 = polyline1[n];
+			e2 = p3 - p4;
+
+			/* 要求 两边平行 且 重合 */
+			double cycle = angle(e1, e2) / M_PI;
+			int nCycle = int(cycle + 0.5);
+			cycle = abs(cycle - nCycle);
+			if (cycle * M_PI < (ONE_DEGREE/10) ) {
+				double ds = pointToLine(p1, p3, p4);
+				if (ds < 0.5) {
+					
+					/* 先对同一条边的两个端点排序 */
+					if (p1.x() > p2.x()) {
+						e1 = p1; p1 = p2; p2 = e1;
+					}
+					else if (p1.x() == p2.x()) {
+						if (p1.y() > p2.y()) {
+							e1 = p1; p1 = p2; p2 = e1;
+						}
+					}
+
+					if (p3.x() > p4.x()) {
+						e1 = p3; p3 = p4; p3 = e1;
+					}
+					else if (p3.x() == p4.x()) {
+						if (p3.y() > p4.y()) {
+							e1 = p3; p3 = p4; p4 = e1;
+						}
+					}
+					/* 确定重合边线的端点 */
+					e1 = p1;
+					if (p3.x() > e1.x()) e1 = p3;
+					else if (p3.x() == e1.x()) {
+						if (p3.y() > e1.y()) e1 = p3;
+					}
+					e2 = p2;
+					if (p4.x() < e2.x()) e2 = p4;
+					else if (p4.x() == e2.x()) {
+						if (p4.y() < e2.y()) e2 = p4;
+					}
+					/* 做重合边线的 虚拟梁中心线 */
+					QPointF mid = (e1 + e2) / 2;
+					double k;   // 斜率
+					QPointF dir;
+					if (e1.x() == e2.x()) {
+						dir.setX(0); dir.setY(1);
+					}
+					else {
+						k = (e2.y() - e1.y()) / (e2.x() - e1.x());
+						k = -1 / k;
+						double len = sqrt(1 + k * k);
+						dir.setX(1 / len); dir.setY(k / len);
+					}
+					
+					res.from = mid - dir * 10;
+					res.to = mid + dir * 10;
+					res.direction = dir;
+					if (isInsidePolyline(res.from, polyline2)) {
+						res.to = mid - dir * 10;
+						res.from = mid + dir * 10;
+						res.direction = -dir;
+					}
+					return res;
+				}
+			}
+
+		}
+	}
+	return res;
+}
+
 bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &crossPoint) {
 	//************************************************************************
 	//  求二条直线的交点的公式
@@ -1135,6 +1218,18 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 		}
 
 	} while (bLoop);
+
+	/* 当墙与墙间直接相连时，增加虚拟梁线 */
+	for (int i = 0; i < polylines.size() - 1; i++) {
+		for (int j = i + 1; j < polylines.size(); j++) {
+			if (i != j) {
+				LineData l = intersectEdge(polylines[i].vertexs, polylines[j].vertexs);
+				if (!l.from.isNull() && !l.to.isNull()) {
+
+				}
+			}
+		}
+	}
 }
 
 void sortBeamLine(PolylineData & column, LineData & coming) {
