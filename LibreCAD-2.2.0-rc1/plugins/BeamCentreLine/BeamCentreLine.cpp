@@ -663,17 +663,17 @@ LineData beamCentreLine2(std::vector<LineData> & beamLines) {
 LineData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& polyline2) {
 	LineData res;
 	for (int i = 0, j = polyline1.size() - 1; i < polyline1.size(); j = i++) {
-		QPointF e1,  p1, p2;
+		QPointF e1, p1, p2;
 		p1 = polyline1[i];
 		p2 = polyline1[j];
-		e1 = p1 - p2;
+		e1 = p2 - p1;
 		
 		for (int m = 0, n = polyline2.size() - 1; m < polyline2.size(); n = m++) {
 			QPointF p3, p4, e2;
-			p3 = polyline1[m];
-			p4 = polyline1[n];
-			e2 = p3 - p4;
-
+			p3 = polyline2[m];
+			p4 = polyline2[n];
+			e2 = p4 - p3;
+			
 			/* 要求 两边平行 且 重合 */
 			double cycle = angle(e1, e2) / M_PI;
 			int nCycle = int(cycle + 0.5);
@@ -683,43 +683,46 @@ LineData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& po
 				if (ds < 0.5) {
 					
 					/* 先对同一条边的两个端点排序 */
-					if (p1.x() > p2.x()) {
-						e1 = p1; p1 = p2; p2 = e1;
+					if (nCycle % 2 == 1) {
+						QPointF t = p3; p3 = p4; p4 = t;
 					}
-					else if (p1.x() == p2.x()) {
-						if (p1.y() > p2.y()) {
-							e1 = p1; p1 = p2; p2 = e1;
-						}
-					}
-
-					if (p3.x() > p4.x()) {
-						e1 = p3; p3 = p4; p3 = e1;
-					}
-					else if (p3.x() == p4.x()) {
-						if (p3.y() > p4.y()) {
-							e1 = p3; p3 = p4; p4 = e1;
-						}
-					}
+					
 					/* 确定重合边线的端点 */
-					e1 = p1;
-					if (p3.x() > e1.x()) e1 = p3;
-					else if (p3.x() == e1.x()) {
-						if (p3.y() > e1.y()) e1 = p3;
-					}
-					e2 = p2;
-					if (p4.x() < e2.x()) e2 = p4;
-					else if (p4.x() == e2.x()) {
-						if (p4.y() < e2.y()) e2 = p4;
-					}
+					QPointF end1, end2;
+
+					e2 = p3 - p1;
+					cycle = angle(e1, e2) / M_PI;
+					nCycle = int(cycle + 0.5);
+					if (nCycle % 2 == 0) end1 = p3;
+					else end1 = p1;
+
+					e2 = p4 - p2;
+					cycle = angle(e1, e2) / M_PI;
+					nCycle = int(cycle + 0.5);
+					if (nCycle % 2 == 0) end2 = p2;
+					else end2 = p4;
+
+					e2 = end2 - end1;
+					/* 单点重合 忽略 */
+					ds = sqrt(e2.x() * e2.x() + e2.y() * e2.y());
+					if (ds < 0.5)
+						continue;
+
+					/* 无重合部分则忽略 */
+					cycle = angle(e1, e2) / M_PI;
+					nCycle = int(cycle + 0.5);
+					if (nCycle % 2 == 1) 
+						continue;
+					
 					/* 做重合边线的 虚拟梁中心线 */
-					QPointF mid = (e1 + e2) / 2;
+					QPointF mid = (end1 + end2) / 2;
 					double k;   // 斜率
 					QPointF dir;
-					if (e1.x() == e2.x()) {
+					if (end1.x() == end2.x()) {
 						dir.setX(0); dir.setY(1);
 					}
 					else {
-						k = (e2.y() - e1.y()) / (e2.x() - e1.x());
+						k = (end2.y() - end1.y()) / (end2.x() - end1.x());
 						k = -1 / k;
 						double len = sqrt(1 + k * k);
 						dir.setX(1 / len); dir.setY(k / len);
@@ -733,6 +736,14 @@ LineData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& po
 						res.from = mid + dir * 10;
 						res.direction = -dir;
 					}
+
+					/* 直线在 XY Plane 的倾斜角 */
+					QPointF ptC = res.to - res.from;
+					double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+					double numB = asin(ptC.y() / numA);
+					if (ptC.x() < 0) numB = M_PI - numB;
+					if (numB < 0) numB = 2 * M_PI + numB;
+					res.angle = numB;
 					return res;
 				}
 			}
@@ -805,6 +816,8 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 		strip.strLayer = data.value(DPI::LAYER).toString();
 		strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
 		strip.closed = data.value(DPI::CLOSEPOLY).toInt();
+		strip.maxPt = ent->getMaxOfBorder();
+		strip.minPt = ent->getMinOfBorder();
 		strip.ent = ent;
 
 		QList<Plug_VertexData> vl;
@@ -1220,12 +1233,21 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 	} while (bLoop);
 
 	/* 当墙与墙间直接相连时，增加虚拟梁线 */
-	for (int i = 0; i < polylines.size() - 1; i++) {
-		for (int j = i + 1; j < polylines.size(); j++) {
+	for (int i = 0; i < polylines.size(); i++) {
+		for (int j = 0; j < polylines.size(); j++) {
 			if (i != j) {
+				if (polylines[j].maxPt.x() < polylines[i].minPt.x() ||
+					polylines[j].maxPt.y() < polylines[i].minPt.y() ||
+					polylines[j].minPt.x() > polylines[i].maxPt.x() ||
+					polylines[j].minPt.y() > polylines[i].maxPt.y()) {
+					continue;
+				}
+
 				LineData l = intersectEdge(polylines[i].vertexs, polylines[j].vertexs);
 				if (!l.from.isNull() && !l.to.isNull()) {
-
+					l.columnFrom = i;
+					l.columnTo = j;
+					polylines[l.columnFrom].sourceCentreLines.push_back(l);
 				}
 			}
 		}
@@ -1472,10 +1494,17 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 		/* 绘制梁中心线 */
 		doc->setLayer(plugin->name());
+
+		/*for (auto p : polylines) {
+			for (auto l : p.sourceCentreLines) {
+				doc->addLine(&l.from, &l.to);
+			}
+		}*/
+
 		//for (int i = 0; i < polylines.size(); i++) {
 			
 			//for (int j = 0; j < polylines[i].sourceCentreLines.size(); j++) {
-		for (int j = 170; j < 180; j++) {
+		for (int j = 200; j < 1000; j++) {
 			debugInfo.clear();
 
 			vector<QPointF> ver = searchFloor(polylines, j, 0, debugInfo);

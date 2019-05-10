@@ -77,6 +77,8 @@ typedef struct _PolylineData {
 	int			closed;
 	std::vector<double>	 angles;	// ±ßÓë±ßµÄ¼Ð½Ç
 	std::vector<QPointF> vertexs;	//  polyline
+	QPointF		maxPt;
+	QPointF		minPt;
 
 	int			nSerial;			// ÐòºÅ
 
