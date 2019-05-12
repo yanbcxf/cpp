@@ -62,6 +62,8 @@ typedef struct _LineData {
 	QPointF direction;
 
 	int		columnFrom, columnTo;	//	柱墙的序号
+	int		nSerial;			// 序号
+	bool	bHandled;
 
 	Plug_Entity * ent;
 } LineData;
@@ -81,6 +83,7 @@ typedef struct _PolylineData {
 	QPointF		minPt;
 
 	int			nSerial;			// 序号
+	int			nType;				// 墙柱的类型  0 ： 真实柱   1 ： 虚拟柱
 
 	std::vector<LineData>	sourceCentreLines;
 	int			nPath;				// 当前出射梁 在  sourceCentreLines 中序号
@@ -102,6 +105,8 @@ typedef struct _BeamSpanData {
 	bool	bHandled;					// 是否经过了梁跨匹配处理，不代表匹配成功
 	std::vector<LineData>	beam;		// 梁支座线
 	std::vector<PolylineData>	columnOrWall;	//	柱墙支座线
+	std::vector<LineData>	beamLeft;	// 梁支座左线
+	std::vector<LineData>	beamRight;	// 梁支座右线
 } BeamSpanData;
 
 typedef struct _BeamCentreLineData {
