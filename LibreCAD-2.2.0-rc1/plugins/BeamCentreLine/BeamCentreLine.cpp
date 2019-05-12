@@ -1422,36 +1422,36 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 			if (beamspans[i].beam.size() != 2) continue;
 			if (beamspans[i].bHandled) continue;
 
-			bool bIntersected = false;
-			BeamSpanData from = beamspans[i];
+			int nIntersected = -1;
+			BeamSpanData b3 = beamspans[i];
 			for (int k = 1; k < 20; k++) {
-				QPointF to1 = from.beamLeft[from.beamLeft.size()-1].to + k * 25 * from.beamLeft[0].direction;
-				QPointF to2 = from.beamRight[from.beamRight.size()-1].to + k * 25 * from.beamRight[0].direction;
+				QPointF foot = footpointOfLine(b3.beamLeft[b3.beamLeft.size() - 1].to, b3.beamRight[0].from, b3.beamRight[0].to);
+				QPointF mid = (b3.beamLeft[b3.beamLeft.size() - 1].to + foot) / 2;
 
-				for (auto bs : beamspans_ok) {
-					for (auto line : bs.beam) {
-						QPointF crossPoint;
-						if (find_crossPoint(to1, from.beam[0].from, line.from, line.to, crossPoint)) {
-							bIntersected = true;
-							break;
-						}
-						if (find_crossPoint(to2, from.beam[1].from, line.from, line.to, crossPoint)) {
-							bIntersected = true;
+				for (auto p : polylines) {
+					if (p.nType == 1) {
+						QPointF d = mid - p.vertexs[0];
+						double ds = sqrt(d.x() * d.x() + d.y() * d.y());
+						if (ds < 400) {
+							nIntersected = p.nSerial;
 							break;
 						}
 					}
-					if (bIntersected) break;
+					if (nIntersected >= 0) break;
 				}
-				if (bIntersected) break;
+				if (nIntersected >= 0) break;
 			}
 
-			if (bIntersected) {
-				beamspans_ok.push_back(from);
+			if (nIntersected>=0) {
+				beamspans_ok.push_back(b3);
 				beamspans[i].bHandled = true;
 
-
-
 				bLoop = true;
+
+				b3.beamLeft[b3.beamLeft.size() - 1].columnTo = nIntersected;
+				b3.beamRight[b3.beamRight.size() - 1].columnTo = nIntersected;
+				/* 以柱墙为中心，汇总从该柱墙发出的梁中心线 */
+				beamCentreLineByLeftRight(b3.beamLeft, b3.beamRight, polylines);
 			}
 		}
 
