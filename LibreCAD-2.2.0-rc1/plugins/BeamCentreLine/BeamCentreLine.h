@@ -136,6 +136,19 @@ typedef struct _BeamData {
 
 } BeamData;
 
+typedef struct _FloorData {
+	/**
+	* Default constructor. Leaves the data object uninitialized.
+	*/
+	_FloorData() = default;
+
+	vector<QPointF>	vertexs;
+	QPointF	centre;		//	板的重心
+	double	area;		//	板的面积
+
+} FloorData;
+
+
 //class QTextEdit;
 class Plug_Entity;
 

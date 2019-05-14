@@ -736,13 +736,13 @@ void beamCentreLineByLeftRight(vector<LineData> &left, vector<LineData> &right,
 						QPointF prev = *(it - 1);
 						prev = prev - mid;
 						double ds = sqrt(prev.x() * prev.x() + prev.y() * prev.y());
-						if (ds < 800)
+						if (ds < 600)
 							break;
 					}
 					QPointF next = *(it);
 					next = next - mid;
 					double ds = sqrt(next.x() * next.x() + next.y() * next.y());
-					if (ds < 800)
+					if (ds < 600)
 						break;
 
 					mids.insert(it, mid);
@@ -754,7 +754,7 @@ void beamCentreLineByLeftRight(vector<LineData> &left, vector<LineData> &right,
 				QPointF prev = mids[mids.size()-1];
 				prev = prev - mid;
 				double ds = sqrt(prev.x() * prev.x() + prev.y() * prev.y());
-				if (ds > 800)
+				if (ds > 600)
 					mids.insert(it, mid);
 			}
 		}
@@ -907,7 +907,10 @@ LineData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& po
 					QPointF mid = (end1 + end2) / 2;
 					double k;   // 斜率
 					QPointF dir;
-					if (end1.x() == end2.x()) {
+					if (abs(end1.x() - end2.x()) < 1.0e-6) {
+						dir.setX(1); dir.setY(0);
+					} 
+					else if (abs(end1.y() - end2.y()) < 1.0e-6) {
 						dir.setX(0); dir.setY(1);
 					}
 					else {
@@ -1220,14 +1223,14 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 						.arg(i)
 						.arg(QString::number(spans[i].beam[0].crossFrom.x(), 10, 2))
 						.arg(QString::number(spans[i].beam[0].crossFrom.y(), 10, 2));
-					debugInfo.push_back(msg);
+					// debugInfo.push_back(msg);
 
 					if (spans[i].beam.size() > 1) {
 						msg = QString("N %1 BeamSpan beam1 (%2, %3) ")
 							.arg(i)
 							.arg(QString::number(spans[i].beam[1].crossFrom.x(), 10, 2))
 							.arg(QString::number(spans[i].beam[1].crossFrom.y(), 10, 2));
-						debugInfo.push_back(msg);
+						// debugInfo.push_back(msg);
 					}
 					
 					debugInfo.push_back("\n");
@@ -1287,7 +1290,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				if (distLeft <= 0.5) {
 					QPointF d = l.from - lastLeft.to;
 					distLeft = sqrt(d.x() * d.x() + d.y() * d.y());
-					if (distLeft < 800) {
+					if (distLeft < 600) {
 						bLoop = true;
 						beamspans[i].beamLeft.push_back(l);
 						lines[l.nSerial].bHandled = true;
@@ -1296,7 +1299,7 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				else {
 					QPointF d = l.from - lastRight.to;
 					distRight = sqrt(d.x() * d.x() + d.y() * d.y());
-					if (distRight < 800) {
+					if (distRight < 600) {
 						bLoop = true;
 						beamspans[i].beamRight.push_back(l);
 						lines[l.nSerial].bHandled = true;
@@ -1308,8 +1311,6 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 		}
 	} while (bLoop);
 
-	
-		
 	/* 对梁跨进行两两合并 */
 	for (int i = 0; i < beamspans.size(); i++) {
 		if (beamspans[i].beam.size() != 2) continue;
@@ -1500,13 +1501,13 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 	} while (bLoop);
 
 	/* 当墙与墙间直接相连时，增加虚拟梁线 */
-	for (int i = 0; i < polylines.size(); i++) {
-		for (int j = 0; j < polylines.size(); j++) {
-			if (i != j && polylines[i].nType == 0 && polylines[j].nType == 0 ) {
-				if (polylines[j].maxPt.x() < polylines[i].minPt.x() ||
-					polylines[j].maxPt.y() < polylines[i].minPt.y() ||
-					polylines[j].minPt.x() > polylines[i].maxPt.x() ||
-					polylines[j].minPt.y() > polylines[i].maxPt.y()) {
+	for (int i = 0; i < polylines.size()-1; i++) {
+		for (int j = i+1; j < polylines.size(); j++) {
+			if (polylines[i].nType == 0 && polylines[j].nType == 0 ) {
+				if (polylines[j].maxPt.x() - polylines[i].minPt.x() < -0.5 ||
+					polylines[j].maxPt.y() - polylines[i].minPt.y() < -0.5 ||
+					polylines[j].minPt.x() - polylines[i].maxPt.x() > 0.5 ||
+					polylines[j].minPt.y() - polylines[i].maxPt.y() > 0.5)  {
 					continue;
 				}
 
@@ -1514,6 +1515,8 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				if (!l.from.isNull() && !l.to.isNull()) {
 					l.columnFrom = i;
 					l.columnTo = j;
+					polylines[l.columnFrom].sourceCentreLines.push_back(l);
+					l = negativeBeamLine(l);
 					polylines[l.columnFrom].sourceCentreLines.push_back(l);
 				}
 			}
@@ -1525,7 +1528,7 @@ void sortBeamLine(PolylineData & column, LineData & coming) {
 	vector<LineData> vec;
 	for (auto l : column.sourceCentreLines) {
 		/* 不是入射梁线 */
-		if (l.from != coming.to) {
+		if (l.to != coming.from) {
 			
 			QPointF e0 = coming.to - coming.from;
 			QPointF e1 = l.from - coming.to;
@@ -1577,10 +1580,11 @@ vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int n
 
 	while (true) {
 		
-		msg = QString("N %1 searchFloor comming (%2, %3) - (%4, %5) ")
-			.arg(1)
+		msg = QString("searchFloor comming P %1 (%2, %3) - P %4 (%5, %6) ")
+			.arg(coming.columnFrom)
 			.arg(QString::number(coming.from.x(), 10, 2))
 			.arg(QString::number(coming.from.y(), 10, 2))
+			.arg(coming.columnTo)
 			.arg(QString::number(coming.to.x(), 10, 2))
 			.arg(QString::number(coming.to.y(), 10, 2));
 		debugInfo.push_back(msg);
@@ -1765,17 +1769,28 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 		doc->setLayer(plugin->name());
 
 		for (auto p : polylines) {
-			for (auto l : p.sourceCentreLines) {
+			/*for (auto l : p.sourceCentreLines) {
 				doc->addLine(&l.from, &l.to);
-			}
+			}*/
 			if (p.nType == 1)
 				doc->addCircle(&p.vertexs[0], 300);
+
+			QPointF end = p.vertexs[0];
+			QString txt;
+			if(p.nType == 1)
+				txt = QString("C%1").arg(p.nSerial);
+			else
+				txt = QString("P%1").arg(p.nSerial);
+			doc->addText(txt, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}
 
 		//for (int i = 0; i < polylines.size(); i++) {
 			
 			//for (int j = 0; j < polylines[i].sourceCentreLines.size(); j++) {
-		for (int j = 200; j < 205; j++) {
+
+		vector<FloorData>	floors;
+
+		for (int j = 0; j < polylines.size(); j++) {
 			debugInfo.clear();
 
 			vector<QPointF> ver = searchFloor(polylines, j, 0, debugInfo);
@@ -1785,11 +1800,19 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			}
 
 			if (ver.size() > 0) {
-				std::vector<Plug_VertexData> vertexes;
+				/*std::vector<Plug_VertexData> vertexes;
 				for (auto v : ver) {
 					vertexes.push_back(Plug_VertexData(v, 0));
 				}
-				doc->addPolyline(vertexes, true);
+				doc->addPolyline(vertexes, true);*/
+
+				FloorData fl;
+				fl.centre = centreOfGravity(ver);
+				fl.vertexs = ver;
+
+				/*QString txt;
+				txt = QString("B:%1").arg(j);
+				doc->addText(txt, "standard", &centre, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);*/
 			}
 		}
 				
