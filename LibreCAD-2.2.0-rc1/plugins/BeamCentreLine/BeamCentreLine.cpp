@@ -265,10 +265,10 @@ int pointHorizontalCrossTable(const QPointF& pt, std::vector<LineData>& lines) {
 	return nCross;
 }
 
-/* 计算任意多边形重心 
+/* 计算任意多边形重心 和 面积
  * https://blog.csdn.net/youth_shouting/article/details/79247170
  */
-QPointF centreOfGravity(std::vector<QPointF>& polyline) {
+QPointF centreOfGravity(std::vector<QPointF>& polyline, double & area) {
 	int n;
 	int m = polyline.size();;
 	double ss = 0;  //元面积
@@ -276,6 +276,7 @@ QPointF centreOfGravity(std::vector<QPointF>& polyline) {
 	double gx = 0;  //重心和的 x部分
 	double gy = 0;  //重心和的 y部分
 	QPointF g(0, 0);
+	area = 0.0;
 
 	for (int i = 0, j = polyline.size() - 1; i < polyline.size(); j = i++) {
 		QPointF p1, p2;
@@ -293,6 +294,8 @@ QPointF centreOfGravity(std::vector<QPointF>& polyline) {
 	{
 		g.setX(gx / S / 3);
 		g.setY(gy / S / 3);
+
+		area = S;
 	}
 	return g;
 }
@@ -1666,7 +1669,7 @@ vector<QPointF> searchFloor(vector<PolylineData> & polylines, int nColumn, int n
 	return vertex;
 }
 
-void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin, bool bConsiderSizeNomatch) {
+void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
 
@@ -1716,62 +1719,14 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
-
-		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
-		/*for (int n = 0; n < obj.size(); ++n) {
-			bool bSelected = false;
-			for (auto h : negatives) {
-				if ( h.steel.ent == obj.at(n)) {
-					bSelected = true;
-					break;
-				}
-			}
-			doc->setSelectedEntity(obj.at(n), bSelected);
-		}*/
-
-		/*for (auto h : negatives) {
-			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
-		}*/
-
+		
 		/* 绘制梁中心线 */
-		doc->setLayer(plugin->name());
-		for (auto b: beamspans_ok) {
-			/*QHash<int, QVariant> hash;
-			if (b.beam.size() == 2) {
-				hash.insert(DPI::COLOR, 0xff0000);
-				b.beam[0].ent->updateData(&hash);
-				b.beam[1].ent->updateData(&hash);
-			}
-			else if (b.beam.size() == 3) {
-				hash.insert(DPI::COLOR, 0xff7f00);
-				b.beam[0].ent->updateData(&hash);
-				b.beam[1].ent->updateData(&hash);
-				b.beam[2].ent->updateData(&hash);
-			}
-			else if (b.beam.size() == 4) {
-				hash.insert(DPI::COLOR, 0xff00ff);
-				b.beam[0].ent->updateData(&hash);
-				b.beam[1].ent->updateData(&hash);
-				b.beam[2].ent->updateData(&hash);
-				b.beam[3].ent->updateData(&hash);
-			}
-			else {
-				int ll = 11;
-			}*/
-
-			QPointF from, to;
-			beamCentreLine(b.beam, from, to);
-
-			// doc->addLine(&from, &to);
-		}
-
-		/* 绘制梁中心线 */
-		doc->setLayer(plugin->name());
+		doc->setLayer(plugin->name()+ QString::fromLocal8Bit("- 梁中心线"));
 
 		for (auto p : polylines) {
-			/*for (auto l : p.sourceCentreLines) {
+			for (auto l : p.sourceCentreLines) {
 				doc->addLine(&l.from, &l.to);
-			}*/
+			}
 			if (p.nType == 1)
 				doc->addCircle(&p.vertexs[0], 300);
 
@@ -1784,41 +1739,61 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			doc->addText(txt, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}
 
-		//for (int i = 0; i < polylines.size(); i++) {
-			
-			//for (int j = 0; j < polylines[i].sourceCentreLines.size(); j++) {
-
+		/* 绘制板标识 */
+		doc->setLayer(plugin->name() + QString::fromLocal8Bit("- 板标识"));
 		vector<FloorData>	floors;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < polylines.size(); j++) {
+				debugInfo.clear();
 
-		for (int j = 0; j < polylines.size(); j++) {
-			debugInfo.clear();
+				vector<QPointF> ver = searchFloor(polylines, j, i, debugInfo);
 
-			vector<QPointF> ver = searchFloor(polylines, j, 0, debugInfo);
-
-			for (auto debug : debugInfo) {
-				doc->commandMessage(debug);
-			}
-
-			if (ver.size() > 0) {
-				/*std::vector<Plug_VertexData> vertexes;
-				for (auto v : ver) {
-					vertexes.push_back(Plug_VertexData(v, 0));
+				for (auto debug : debugInfo) {
+					doc->commandMessage(debug);
 				}
-				doc->addPolyline(vertexes, true);*/
 
-				FloorData fl;
-				fl.centre = centreOfGravity(ver);
-				fl.vertexs = ver;
+				if (ver.size() > 0) {
+					/*std::vector<Plug_VertexData> vertexes;
+					for (auto v : ver) {
+						vertexes.push_back(Plug_VertexData(v, 0));
+					}
+					doc->addPolyline(vertexes, true);*/
 
-				/*QString txt;
-				txt = QString("B:%1").arg(j);
-				doc->addText(txt, "standard", &centre, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);*/
+					FloorData fl;
+					fl.centre = centreOfGravity(ver, fl.area);
+					fl.vertexs = ver;
+					fl.nSerial = j;
+
+					bool bAdd = true;
+					for (int k = 0; k < floors.size(); k++) {
+						bool bInside1 = isInsidePolyline(fl.centre, floors[k].vertexs);
+						bool bInside2 = isInsidePolyline(floors[k].centre, fl.vertexs);
+						if (bInside1 || bInside2) {
+							bAdd = false;
+							if (floors[k].area > fl.area) {
+								floors[k] = fl;
+							}
+							break;
+						}
+					}
+					if (bAdd) {
+						floors.push_back(fl);
+					}
+				}
 			}
 		}
-				
-			//}
-			
-		//}
+		
+
+		for (auto f : floors) {
+
+			QString txt; 
+			QPointF start = f.centre;
+			txt = QString("LB%1 h=%2").arg(f.nSerial).arg(200);
+			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			txt = QString("B:X%1; Y%2").arg("C10@100").arg("C12@150");
+			start.setY(start.y() - 125);
+			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+		}
 
 	}
 
@@ -1857,12 +1832,12 @@ void LC_List::execComm(Document_Interface *doc,
 	Q_UNUSED(parent);
 	Q_UNUSED(cmd);
 	
-	menudlg dlg(parent);
+	/*menudlg dlg(parent);
 	if ( dlg.exec()) {
 		execComm1(doc, parent, cmd, this, dlg.considerSizeNomatch.isChecked());
 		
-	}
-
+	}*/
+	execComm1(doc, parent, cmd, this);
 }
 
 double LC_List::polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB)

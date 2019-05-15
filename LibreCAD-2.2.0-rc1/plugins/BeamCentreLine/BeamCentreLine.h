@@ -142,7 +142,8 @@ typedef struct _FloorData {
 	*/
 	_FloorData() = default;
 
-	vector<QPointF>	vertexs;
+	int		nSerial;
+	std::vector<QPointF>	vertexs;
 	QPointF	centre;		//	板的重心
 	double	area;		//	板的面积
 
