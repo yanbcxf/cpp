@@ -43,7 +43,14 @@ typedef struct _TextData {
 	QPointF maxPt, minPt;
 	double startAngle;
 	double height;
-	
+
+	int	 floorThinkness;	//	板厚	
+	QString floorBottomLine;//  板底钢筋线上的标注
+	double floorHeightDiff;	//  高差
+	QString floorBottom;	//	板底部通长筋
+	QString floorTop;		//	板面部通长筋
+	QString hatchPattern;	//  填充模式
+
 	Plug_Entity * ent;
 } TextData;
 
@@ -70,6 +77,37 @@ typedef struct _HatchData {
 	QString	 pattern;
 	Plug_Entity * ent;
 } HatchData;
+
+typedef struct _PolylineData {
+	/**
+	 * Default constructor. Leaves the data object uninitialized.
+	 */
+	_PolylineData() = default;
+
+	QString		strLayer;
+	QString		strColor;
+	int			closed;
+	std::vector<double>	 angles;	// 边与边的夹角
+	std::vector<QPointF> vertexs;	//  polyline
+	QPointF		from, to;			//	板底筋线的起止点
+	double		angle;				//	板底筋线的主要方向
+	double		length;				//  板底筋线的长度
+	Plug_Entity * ent;
+} PolylineData;
+
+typedef struct _BottomReinforceData {
+	/**
+	* Default constructor. Leaves the data object uninitialized.
+	*/
+	_BottomReinforceData() = default;
+
+	QString  sizeText;
+	double	 angle;
+	double	 scale;
+	QString	 pattern;
+	PolylineData	steel;			// 板底筋线本身
+	TextData		steelMarking;	// 钢筋信息标注
+} BottomReinforceData;
 
 
 //class QTextEdit;

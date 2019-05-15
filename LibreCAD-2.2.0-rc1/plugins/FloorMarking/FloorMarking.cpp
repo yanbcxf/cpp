@@ -25,6 +25,9 @@
 #include <cmath>
 #include <algorithm>
 #include <set>
+
+using namespace std;
+
 #include "FloorMarking.h"
 
 // yangbin
@@ -398,7 +401,7 @@ void filterData1(Plug_Entity *ent, std::vector<HatchData>& hatchs) {
 
 
 // 第二遍，寻找板标注文本信息
-void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
+void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>& floors) {
 	if (NULL == ent)
 		return;
 
@@ -435,6 +438,13 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 		if (idx >= 0) {
 			markings.push_back(txt);
 		}
+
+		rx.setPattern("^BCL[0-9]+");
+		idx = rx.indexIn(txt.name);
+		if (idx >= 0) {
+			/* 由分析插件生成 */
+			floors.push_back(txt);
+		}
 	}
 		break;
 	default:
@@ -442,26 +452,181 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& markings) {
 	}
 }
 
-/* 将板标注 匹配到 填充体Hatch */
-void Text2Hatch(std::vector<HatchData>& hatchs, std::vector<TextData>& texts) {
-	for (auto t : texts) {
-		for (int i = 0; i < hatchs.size(); i++) {
-			std::vector<QPointF>  vertex;
-			bool bInside = false;
-			QPointF pt = (t.maxPt + t.minPt) / 2;
-			
-			vertex.push_back(pt);
-			
-			for (auto v : vertex) {
-				if (hatchs[i].ent->isPointInsideContour(v)) {
-					hatchs[i].floorText = t.name;
-					hatchs[i].pointText = t.startPt;
-					bInside = true;
+
+/* 第三遍，过滤 底筋的钢筋线 */
+void filterData3(Plug_Entity *ent, vector<BottomReinforceData>& bottoms) {
+	if (NULL == ent)
+		return;
+
+	QPointF ptA, ptB;
+	QHash<int, QVariant> data;
+	//common entity data
+	ent->getData(&data);
+
+	//specific entity data
+	int et = data.value(DPI::ETYPE).toInt();
+	switch (et) {
+	case DPI::POLYLINE: {
+		PolylineData strip;
+		strip.strLayer = data.value(DPI::LAYER).toString();
+		strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
+		strip.closed = data.value(DPI::CLOSEPOLY).toInt();
+		strip.ent = ent;
+
+		QList<Plug_VertexData> vl;
+		ent->getPolylineData(&vl);
+		int iVertices = vl.size();
+		for (int i = 0; i < iVertices; ++i) {
+			strip.vertexs.push_back(vl.at(i).point);
+		}
+
+		bool bBottomReinforce = false;
+		if (iVertices >= 3 && !strip.closed && iVertices <= 4) {
+			bBottomReinforce = true;
+			int longest = -1;
+			double longest_dist = -1.0;
+			for (int i = 0; i < iVertices - 2; ++i) {
+				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
+				QPointF e2 = strip.vertexs[i + 1] - strip.vertexs[i + 2];
+				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+				if (dist > longest_dist) {
+					longest_dist = dist;
+					longest = i;
+				}
+				double cp = crossProduct(e1, e2) > 0 ? 1.0 : -1.0;
+				double an = angle(e1, e2);
+				strip.angles.push_back(an * cp);
+			}
+
+			/* 梁跨不会太小，板底筋线更不会小 */
+			if (longest_dist < 500) {
+				bBottomReinforce = false;
+			}
+
+			/* 边与边的夹角均应该为 45 度，才有可能为负筋 ; 板底筋的相邻角应该同时 顺时针 或者 逆时针  */
+			double sign = 1;
+			for (auto a : strip.angles) {
+				sign = sign * a;
+				if (fabs(a) > (M_PI_2 /2 + ONE_DEGREE) || fabs(a) < (M_PI_2/2 - ONE_DEGREE)) {
+					bBottomReinforce = false;
 					break;
 				}
 			}
-			if (bInside)
+
+			if (bBottomReinforce) {
+				if (strip.angles.size() % 2 == 0) {
+					if (sign < 0) bBottomReinforce = false;
+				}
+			}
+
+			if (bBottomReinforce)
+			{
+				/* 调整负筋线的正方向 */
+				if (longest > 0) {
+					if (strip.angles[longest - 1] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest + 1];
+					}
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
+				}
+				else {
+					/* longest = 0 说明第一条边最长 */
+					if (strip.angles[longest] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest + 1];
+					}
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
+				}
+
+				/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+				QPointF ptC = strip.to - strip.from;
+				double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+				double numB = asin(ptC.y() / numA);
+				if (ptC.x() < 0) numB = M_PI - numB;
+				if (numB < 0) numB = 2 * M_PI + numB;
+				strip.angle = numB;
+
+				BottomReinforceData negative;
+				negative.steel = strip;
+				bottoms.push_back(negative);
+			}
+		}
+		
+		break; }
+	
+	default:
+		break;
+	}
+
+}
+
+
+/* 生成板的集中标注 */
+void Text2Hatch(std::vector<HatchData>& hatchs, vector<TextData>& markings, 
+	vector<TextData>& floors, vector<BottomReinforceData>& bottoms) {
+	
+	/* 将板厚信息匹配到某块板 */
+	for (auto m : markings) {
+		int closest = -1;
+		double closest_dist = 1.0e+10;
+		for (int k = 0; k < floors.size(); k++) {
+			QPointF d = m.startPt - floors[k].startPt;
+			double ds = sqrt(d.x() * d.x() + d.y() * d.y());
+			if (ds < closest_dist) {
+				closest_dist = ds;
+				closest = k;
+			}
+		}
+		floors[closest].floorThinkness =  m.name.mid(2).toInt();
+	}
+
+	/* 将板底钢筋线上的 标注匹配到某块板 */
+	for (auto m : bottoms) {
+		int closest = -1;
+		double closest_dist = 1.0e+10;
+		for (int k = 0; k < floors.size(); k++) {
+			QPointF d = (m.steel.from + m.steel.to) / 2;
+			d = d - floors[k].startPt;
+			double ds = sqrt(d.x() * d.x() + d.y() * d.y());
+			if (ds < closest_dist) {
+				closest_dist = ds;
+				closest = k;
+			}
+		}
+		floors[closest].floorBottomLine = "BL1";
+	}
+
+	for (int k = 0; k < floors.size(); k++) {
+		/* 板是否处于某个的 hatch 中 */
+		int i = 0;
+		for ( ; i < hatchs.size(); i++) {
+			if (hatchs[i].ent->isPointInsideContour(floors[k].startPt)) {
+				floors[k].hatchPattern = hatchs[i].pattern;
 				break;
+			}
+		}
+		if (i == hatchs.size()) {
+			/* 不在任何的 Hatch 中 */
+			floors[k].hatchPattern = "";
+		}
+
+		/* 根据板厚、位置、填充模式等信息确定 板底纵筋  */
+		if (floors[k].hatchPattern.isEmpty()) {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 250;
+
+			if (floors[k].floorBottomLine.isEmpty()) {
+				floors[k].floorBottom = "B:X&Y C12@200";
+			}
+
+			floors[k].floorTop = "T:X&Y C12@200";
+			floors[k].floorHeightDiff = -1.3;
 		}
 	}
 
@@ -478,19 +643,26 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	bool yes = doc->getAllEntities(&obj, true);
 	if (!yes || obj.isEmpty()) return;
 
-	// 表格线 及 表格文本
-	std::vector<TextData>   markings;
-	std::vector<HatchData>   hatchs;
+	vector<TextData>    floors;
+	vector<TextData>    markings;
+	vector<HatchData>   hatchs;
+	vector<BottomReinforceData> bottoms;
 
+	// 第一遍，提取标识板的填充体
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), hatchs);
 	}
-	// 第二遍，匹配 柱附近的标注引出线
+	// 第二遍，提取板的特殊标识 和 插件分析后生成的板标识
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), markings);
+		filterData2(obj.at(i), markings, floors);
 	}
-
-	Text2Hatch(hatchs, markings);
+	// 第三遍，提取板底钢筋线
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData3(obj.at(i), bottoms);
+	}
+	
+	// 生成板的集中标注
+	Text2Hatch(hatchs, markings, floors, bottoms);
 
 
 	QString text;
@@ -510,16 +682,31 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	//dlg.exec();
 	if (dlg.exec()) {
 
-		// 如果是 close 按钮，除了匹配的 Hatch 图元外都不被选中 
-		for (int n = 0; n < obj.size(); ++n) {
-			bool bSelected = false;
-			for (auto h : hatchs) {
-				if (h.floorText.length() > 0 && h.ent == obj.at(n)) {
-					bSelected = true;
-					break;
-				}
+		for (int k = 0; k < floors.size(); k++) {
+
+			QString txt;
+			QPointF start = floors[k].startPt;
+
+			/* 板名称 板厚 */
+			txt = QString("LB%1 h=%2").arg(k+1).arg(floors[k].floorThinkness);
+			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			/* 板底钢筋 */
+			if (!floors[k].floorBottom.isEmpty()) {
+				start.setY(start.y() - 125);
+				doc->addText(floors[k].floorBottom, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 			}
-			doc->setSelectedEntity(obj.at(n), bSelected);
+			/* 板面钢筋 */
+			if (!floors[k].floorTop.isEmpty()) {
+				start.setY(start.y() - 125);
+				doc->addText(floors[k].floorTop, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			}
+			/* 板高差 */
+			if (!floors[k].floorHeightDiff > 0) {
+				txt = QString("(%1)").arg(QString::number(floors[k].floorHeightDiff, 10, 3));
+				start.setY(start.y() - 125);
+				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			}
+			
 		}
 	}
 
@@ -669,7 +856,7 @@ menudlg::menudlg(QWidget *parent) : QDialog(parent)
 
 	QGroupBox *menubox = new QGroupBox(tr("Menu"));
 	selectSimilarHatch.setText("Select Similar Hatch");
-	handleFloorWithDimension.setText("Handle Floor With Dimension");
+	handleFloorWithDimension.setText(QString::fromLocal8Bit("提取板标识，再提取插件分析后生成的板标识，生成板集中标注"));
 	drawHatchContour.setText("Draw Hatch Contour");
 	selectSimilarHatch.setChecked(true);
 	
