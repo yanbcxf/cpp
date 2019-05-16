@@ -1736,7 +1736,7 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				txt = QString("C%1").arg(p.nSerial);
 			else
 				txt = QString("P%1").arg(p.nSerial);
-			doc->addText(txt, "standard", &end, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+			doc->addText(txt, "standard", &end, 150, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}
 
 		/* 绘制板标识 */
@@ -1788,13 +1788,7 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 			QString txt; 
 			QPointF start = f.centre;
-			txt = QString("LB%1 h=%2").arg(f.nSerial).arg(234);
-			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-			txt = QString("B X:%1 Y:%2").arg("C10@100").arg("C12@150");
-			start.setY(start.y() - 125);
-			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-			txt = QString("(-0.432)");
-			start.setY(start.y() - 125);
+			txt = QString("BCL%1").arg(f.nSerial);
 			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 		}
 		

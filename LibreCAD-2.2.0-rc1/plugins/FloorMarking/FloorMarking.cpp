@@ -401,7 +401,7 @@ void filterData1(Plug_Entity *ent, std::vector<HatchData>& hatchs) {
 
 
 // 第二遍，寻找板标注文本信息
-void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>& floors) {
+void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>& steelMarkings, vector<TextData>& floors) {
 	if (NULL == ent)
 		return;
 
@@ -419,6 +419,12 @@ void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>&
 	case DPI::MTEXT:
 	case DPI::TEXT: {
 		TextData txt;
+		txt.floorThinkness = 0;
+		txt.floorHeightDiff = 0;
+		txt.floorBottomX = "";
+		txt.floorTopX = "";
+		txt.floorBottomY = "";
+		txt.floorTopY = "";
 		txt.name = data.value(DPI::TEXTCONTENT).toString();
 		txt.startAngle = data.value(DPI::STARTANGLE).toDouble();
 		txt.startPt.setX(data.value(DPI::STARTX).toDouble());
@@ -445,6 +451,13 @@ void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>&
 			/* 由分析插件生成 */
 			floors.push_back(txt);
 		}
+
+		rx.setPattern("^[ABCE][0-9]+@[0-9]+");
+		idx = rx.indexIn(txt.name);
+		if (idx >= 0) {
+			/* 板底筋线标注 */
+			steelMarkings.push_back(txt);
+		}
 	}
 		break;
 	default:
@@ -454,7 +467,7 @@ void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>&
 
 
 /* 第三遍，过滤 底筋的钢筋线 */
-void filterData3(Plug_Entity *ent, vector<BottomReinforceData>& bottoms) {
+void filterData3(Plug_Entity *ent, vector<BottomReinforceData>& bottoms, vector<LineData>& beams) {
 	if (NULL == ent)
 		return;
 
@@ -507,7 +520,7 @@ void filterData3(Plug_Entity *ent, vector<BottomReinforceData>& bottoms) {
 			double sign = 1;
 			for (auto a : strip.angles) {
 				sign = sign * a;
-				if (fabs(a) > (M_PI_2 /2 + ONE_DEGREE) || fabs(a) < (M_PI_2/2 - ONE_DEGREE)) {
+				if (fabs(a) > (M_PI_2 * 3 /2 + ONE_DEGREE) || fabs(a) < (M_PI_2 * 3 /2 - ONE_DEGREE)) {
 					bBottomReinforce = false;
 					break;
 				}
@@ -559,11 +572,188 @@ void filterData3(Plug_Entity *ent, vector<BottomReinforceData>& bottoms) {
 		}
 		
 		break; }
+	case DPI::LINE: {
+		/* 提取 BeamCentreLine 插件分析出的梁中心线 */
+		QString strLayer = data.value(DPI::LAYER).toString();
+		
+		QString strPattern = QString::fromLocal8Bit("BeamCentreLine");
+		if (strLayer.indexOf(strPattern) >= 0) {
+			LineData line;
+			line.from.setX(data.value(DPI::STARTX).toDouble());
+			line.from.setY(data.value(DPI::STARTY).toDouble());
+			line.to.setX(data.value(DPI::ENDX).toDouble());
+			line.to.setY(data.value(DPI::ENDY).toDouble());
+			data.value(DPI::LTYPE);
+			line.ent = ent;
+
+			/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+			QPointF ptC = line.to - line.from;
+			double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+			double numB = asin(ptC.y() / numA);
+			if (ptC.x() < 0) numB = M_PI - numB;
+			if (numB < 0) numB = 2 * M_PI + numB;
+			line.angle = numB;
+
+
+			QPointF e = line.from - line.to;
+			line.length = sqrt(e.x() * e.x() + e.y() * e.y());
+			beams.push_back(line);
+		}
+		break; }
+	default:
+		break;
+	}
+
+}
+
+/* 第四遍，过滤 面筋的钢筋线  */
+void filterData4(Plug_Entity *ent, vector<TopReinforceData>& tops, vector<LineData>& beams) {
+	if (NULL == ent)
+		return;
+
+	QPointF ptA, ptB;
+	QHash<int, QVariant> data;
+	//common entity data
+	ent->getData(&data);
+
+	//specific entity data
+	int et = data.value(DPI::ETYPE).toInt();
+	switch (et) {
+	case DPI::POLYLINE: {
+		PolylineData strip;
+		strip.strLayer = data.value(DPI::LAYER).toString();
+		strip.strColor = ent->intColor2str(data.value(DPI::COLOR).toInt());
+		strip.closed = data.value(DPI::CLOSEPOLY).toInt();
+		strip.ent = ent;
+
+		QList<Plug_VertexData> vl;
+		ent->getPolylineData(&vl);
+		int iVertices = vl.size();
+		for (int i = 0; i < iVertices; ++i) {
+			strip.vertexs.push_back(vl.at(i).point);
+		}
+
+		bool bTopReinforce = false;
+		if (iVertices >= 3 && !strip.closed && iVertices <= 4) {
+			bTopReinforce = true;
+			int longest = -1;
+			double longest_dist = -1.0;
+			for (int i = 0; i < iVertices - 2; ++i) {
+				QPointF e1 = strip.vertexs[i] - strip.vertexs[i + 1];
+				QPointF e2 = strip.vertexs[i + 1] - strip.vertexs[i + 2];
+				double dist = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+				if (dist > longest_dist) {
+					longest_dist = dist;
+					longest = i;
+				}
+				double cp = crossProduct(e1, e2) > 0 ? 1.0 : -1.0;
+				double an = angle(e1, e2);
+				strip.angles.push_back(an * cp);
+			}
+
+			/* 梁宽不会太小，负筋线更不会小 */
+			if (longest_dist < 1000) {
+				bTopReinforce = false;
+			}
+
+			/* 边与边的夹角均应该为 90 度，才有可能为负筋 ; 负筋的相邻角应该同时 顺时针 或者 逆时针  */
+			double sign = 1;
+			for (auto a : strip.angles) {
+				sign = sign * a;
+				if (fabs(a) > M_PI_2 + ONE_DEGREE || fabs(a) < M_PI_2 - ONE_DEGREE) {
+					bTopReinforce = false;
+					break;
+				}
+			}
+
+			if (bTopReinforce) {
+				if (strip.angles.size() % 2 == 0) {
+					if (sign < 0) bTopReinforce = false;
+				}
+			}
+
+			if (bTopReinforce)
+			{
+				/* 调整板面筋线的正方向 */
+				if (longest > 0) {
+					if (strip.angles[longest - 1] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest + 1];
+					}
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
+				}
+				else {
+					/* longest = 0 说明第一条边最长 */
+					if (strip.angles[longest] < 0) {
+						strip.from = strip.vertexs[longest];
+						strip.to = strip.vertexs[longest + 1];
+					}
+					else {
+						strip.to = strip.vertexs[longest];
+						strip.from = strip.vertexs[longest + 1];
+					}
+				}
+
+				/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+				QPointF ptC = strip.to - strip.from;
+				double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+				double numB = asin(ptC.y() / numA);
+				if (ptC.x() < 0) numB = M_PI - numB;
+				if (numB < 0) numB = 2 * M_PI + numB;
+				strip.angle = numB;
+
+				
+
+				TopReinforceData top;
+				top.steel = strip;
+				tops.push_back(top);
+			}
+		}
+		
+		break; }
 	
 	default:
 		break;
 	}
 
+}
+
+/* 将板底筋标注匹配到某个底筋 */
+void marking2bottom(vector<BottomReinforceData>& bottoms, vector<TextData>& steelMarkings) {
+	/* 查找钢筋标注 */
+	for (int i = 0; i < bottoms.size(); i++) {
+		int closest = -1;
+		double closest_dist = 1.0e+10;
+		for (int k = 0; k < steelMarkings.size(); k++) {
+			double cycle = fabs(bottoms[i].steel.angle - steelMarkings[k].startAngle) / M_PI;
+			cycle = fabs(cycle - int(cycle + 0.5));
+			/* 须与板底筋线平行 */
+			if (cycle * M_PI < ONE_DEGREE) {
+				/* 确保要匹配的标注 在 板底筋线的正下方 */
+				QPointF e1 = bottoms[i].steel.from - bottoms[i].steel.to;
+				QPointF e2 = steelMarkings[k].startPt - bottoms[i].steel.to;
+				double cp1 = crossProduct(e1, e2);
+				double an1 = angle(e1, e2);
+				e1 = bottoms[i].steel.to - bottoms[i].steel.from;
+				e2 = steelMarkings[k].endPt - bottoms[i].steel.from;
+				double cp2 = crossProduct(e1, e2);
+				double an2 = angle(e1, e2);
+				if (cp1 > 0 && an1 < M_PI_2 && cp2 < 0 && an2 < M_PI_2) {
+					double dist = pointToPolyline(steelMarkings[k].startPt, bottoms[i].steel.vertexs);
+					if (dist < closest_dist) {
+						closest_dist = dist;
+						closest = k;
+					}
+				}
+			}
+		}
+		if (closest_dist < 500) {
+			bottoms[i].steelMarking = steelMarkings[closest];
+		}
+	}
 }
 
 
@@ -599,7 +789,12 @@ void Text2Hatch(std::vector<HatchData>& hatchs, vector<TextData>& markings,
 				closest = k;
 			}
 		}
-		floors[closest].floorBottomLine = "BL1";
+		if(m.steel.angle > M_PI_2 /2 && m.steel.angle < M_PI_2 * 3/2)
+			floors[closest].floorBottomY = m.steelMarking.name;
+		else if (m.steel.angle > M_PI_2  * 5 / 2 && m.steel.angle < M_PI_2 * 7 / 2)
+			floors[closest].floorBottomY = m.steelMarking.name;
+		else 
+			floors[closest].floorBottomX = m.steelMarking.name;
 	}
 
 	for (int k = 0; k < floors.size(); k++) {
@@ -616,20 +811,179 @@ void Text2Hatch(std::vector<HatchData>& hatchs, vector<TextData>& markings,
 			floors[k].hatchPattern = "";
 		}
 
-		/* 根据板厚、位置、填充模式等信息确定 板底纵筋  */
+		/* 根据板厚、位置、填充模式等信息确定 板底筋 和 板面筋  */
 		if (floors[k].hatchPattern.isEmpty()) {
 			if (floors[k].floorThinkness == 0)
 				floors[k].floorThinkness = 250;
 
-			if (floors[k].floorBottomLine.isEmpty()) {
-				floors[k].floorBottom = "B:X&Y C12@200";
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				floors[k].floorBottomX = "C12@200";
+				floors[k].floorBottomY = "C12@200";
 			}
 
-			floors[k].floorTop = "T:X&Y C12@200";
+			floors[k].floorTopX = "C12@200";
+			floors[k].floorTopY = "C12@200";
+
+			floors[k].floorHeightDiff = -1.3;
+		}
+		else if (floors[k].hatchPattern == "HEX") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 180;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				floors[k].floorBottomX = "C10@200";
+				floors[k].floorBottomY = "C10@200";
+			}
+
+			floors[k].floorTopX = "C12@200";
+			floors[k].floorTopY = "C12@200";
+
+			floors[k].floorHeightDiff = -0.9;
+		}
+		else if (floors[k].hatchPattern == "ANGLE") {
+
+			if (floors[k].startPt.y() < 643300) {
+				if (floors[k].floorThinkness == 0)
+					floors[k].floorThinkness = 180;
+
+				if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+					floors[k].floorBottomX = "C10@200";
+					floors[k].floorBottomY = "C10@200";
+				}
+
+				floors[k].floorTopX = "C12@200";
+				floors[k].floorTopY = "C12@200";
+
+				floors[k].floorHeightDiff = -0.6;
+			}
+			else {
+				if (floors[k].floorThinkness == 0)
+					floors[k].floorThinkness = 200;
+
+				if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+					if (floors[k].floorThinkness == 200) {
+						floors[k].floorBottomX = "C12@200";
+						floors[k].floorBottomY = "C12@200";
+					}
+					else {
+						/* 250 300 厚板 */
+						floors[k].floorBottomX = "C14@200";
+						floors[k].floorBottomY = "C14@200";
+					}
+				}
+
+				floors[k].floorTopX = "C14@200";
+				floors[k].floorTopY = "C14@200";
+
+				floors[k].floorHeightDiff = -0.9;
+			}
+			
+		}
+		else if (floors[k].hatchPattern == "ANSI32") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 180;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				floors[k].floorBottomX = "C10@200";
+				floors[k].floorBottomY = "C10@200";
+			}
+
+			floors[k].floorTopX = "C12@200";
+			floors[k].floorTopY = "C12@200";
+
+			floors[k].floorHeightDiff = -0.65;
+		}
+		else if (floors[k].hatchPattern == "STARS") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 200;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				floors[k].floorBottomX = "C10@200";
+				floors[k].floorBottomY = "C10@200";
+			}
+
+			floors[k].floorTopX = "C12@200";
+			floors[k].floorTopY = "C12@200";
+
+			floors[k].floorHeightDiff = -0.65;
+		}
+		else if (floors[k].hatchPattern == "FLEX") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 200;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				floors[k].floorBottomX = "C10@200";
+				floors[k].floorBottomY = "C10@200";
+			}
+
+			floors[k].floorTopX = "C12@200";
+			floors[k].floorTopY = "C12@200";
+
+			floors[k].floorHeightDiff = -0.5;
+		}
+		else if (floors[k].hatchPattern == "AR-HBONE") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 200;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				
+				if (floors[k].floorThinkness == 200 ) {
+					floors[k].floorBottomX = "C10@200";
+					floors[k].floorBottomY = "C10@200";
+				}
+				else {
+					/* 250 300 厚板 */
+					floors[k].floorBottomX = "C14@200";
+					floors[k].floorBottomY = "C14@200";
+				}
+			}
+
+			floors[k].floorTopX = "C14@200";
+			floors[k].floorTopY = "C14@200";
+
+			floors[k].floorHeightDiff = -0.8;
+		}
+		else if (floors[k].hatchPattern == "ANSI31") {
+			if (floors[k].floorThinkness == 0)
+				floors[k].floorThinkness = 250;
+
+			if (floors[k].floorBottomX.isEmpty() && floors[k].floorBottomY.isEmpty()) {
+				if (floors[k].floorThinkness == 200) {
+					floors[k].floorBottomX = "C10@200";
+					floors[k].floorBottomY = "C10@200";
+				}
+				else {
+					/* 250 300 厚板 */
+					floors[k].floorBottomX = "C14@200";
+					floors[k].floorBottomY = "C14@200";
+				}
+			}
+
+			floors[k].floorTopX = "C14@200";
+			floors[k].floorTopY = "C14@200";
+
 			floors[k].floorHeightDiff = -1.3;
 		}
 	}
 
+	/* 将同板厚、同标高、同配筋的 板的名称定为相同 */
+	map<QString, int> map1;
+	int nFloorNum = 1;
+	for (int k = 0; k < floors.size(); k++) {
+		QString digest = QString("T=%1; H=%2; BX=%3; BY=%4; TX=%5; TY=%6")
+			.arg(QString::number(floors[k].floorThinkness, 10, 0))
+			.arg(QString::number(floors[k].floorHeightDiff, 10, 3))
+			.arg(floors[k].floorBottomX)
+			.arg(floors[k].floorBottomY)
+			.arg(floors[k].floorTopX)
+			.arg(floors[k].floorTopY);
+
+		if (map1.count(digest) == 0) {
+			map1[digest] = nFloorNum;
+			nFloorNum++;
+		}
+		floors[k].name = QString::number(map1[digest], 10, 0);
+	}
 }
 
 void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
@@ -645,8 +999,11 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 
 	vector<TextData>    floors;
 	vector<TextData>    markings;
+	vector<TextData>	steelMarkings;
 	vector<HatchData>   hatchs;
 	vector<BottomReinforceData> bottoms;
+	vector<TopReinforceData> tops;
+	vector<LineData>	beams;
 
 	// 第一遍，提取标识板的填充体
 	for (int i = 0; i < obj.size(); ++i) {
@@ -654,19 +1011,25 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	}
 	// 第二遍，提取板的特殊标识 和 插件分析后生成的板标识
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData2(obj.at(i), markings, floors);
+		filterData2(obj.at(i), markings, steelMarkings, floors);
 	}
-	// 第三遍，提取板底钢筋线
+	// 第三遍，提取板底钢筋线 和 梁中心线
 	for (int i = 0; i < obj.size(); ++i) {
-		filterData3(obj.at(i), bottoms);
+		filterData3(obj.at(i), bottoms, beams);
+	}
+	// 第四遍，提取板面钢筋线, 利用梁中心线对面筋线进行过滤
+	for (int i = 0; i < obj.size(); ++i) {
+		filterData4(obj.at(i), tops, beams);
 	}
 	
+	// 匹配板底筋线和它的钢筋标注
+	marking2bottom(bottoms, steelMarkings);
+
 	// 生成板的集中标注
 	Text2Hatch(hatchs, markings, floors, bottoms);
 
 
 	QString text;
-
 	text.append("========================================================\n");
 
 	// 按照匹配的先后顺序排序
@@ -682,23 +1045,43 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 	//dlg.exec();
 	if (dlg.exec()) {
 
+		// 如果是 close 按钮，除了匹配的 板底钢筋 图元外都不被选中 
+		/*for (int n = 0; n < obj.size(); ++n) {
+			bool bSelected = false;
+			for (auto h : bottoms) {
+				if (h.steel.ent == obj.at(n)) {
+					bSelected = true;
+					break;
+				}
+			}
+			doc->setSelectedEntity(obj.at(n), bSelected);
+		}*/
+	
+		doc->setLayer(plugin->name() + "- floor");
 		for (int k = 0; k < floors.size(); k++) {
 
 			QString txt;
 			QPointF start = floors[k].startPt;
 
 			/* 板名称 板厚 */
-			txt = QString("LB%1 h=%2").arg(k+1).arg(floors[k].floorThinkness);
+			txt = QString("LB%1 h=%2").arg(floors[k].name).arg(floors[k].floorThinkness);
 			doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+									
 			/* 板底钢筋 */
-			if (!floors[k].floorBottom.isEmpty()) {
+			if (!floors[k].floorBottomX.isEmpty() || !floors[k].floorBottomY.isEmpty()) {
+				txt = QString("B %1 %2")
+					.arg(floors[k].floorBottomX.isEmpty() ? "" : "X:" + floors[k].floorBottomX)
+					.arg(floors[k].floorBottomY.isEmpty() ? "" : "Y:" + floors[k].floorBottomY);
 				start.setY(start.y() - 125);
-				doc->addText(floors[k].floorBottom, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 			}
 			/* 板面钢筋 */
-			if (!floors[k].floorTop.isEmpty()) {
+			if (!floors[k].floorTopX.isEmpty() || !floors[k].floorTopY.isEmpty()) {
+				txt = QString("T %1 %2")
+					.arg(floors[k].floorTopX.isEmpty() ? "" : "X:" + floors[k].floorTopX)
+					.arg(floors[k].floorTopY.isEmpty() ? "" : "Y:" + floors[k].floorTopY);
 				start.setY(start.y() - 125);
-				doc->addText(floors[k].floorTop, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 			}
 			/* 板高差 */
 			if (!floors[k].floorHeightDiff > 0) {
@@ -706,7 +1089,12 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				start.setY(start.y() - 125);
 				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 			}
-			
+
+			if (!floors[k].hatchPattern.isEmpty()) {
+				txt = QString("Pattern %1").arg(floors[k].hatchPattern);
+				start.setY(start.y() - 125);
+				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+			}
 		}
 	}
 
@@ -858,7 +1246,7 @@ menudlg::menudlg(QWidget *parent) : QDialog(parent)
 	selectSimilarHatch.setText("Select Similar Hatch");
 	handleFloorWithDimension.setText(QString::fromLocal8Bit("提取板标识，再提取插件分析后生成的板标识，生成板集中标注"));
 	drawHatchContour.setText("Draw Hatch Contour");
-	selectSimilarHatch.setChecked(true);
+	handleFloorWithDimension.setChecked(true);
 	
 	QVBoxLayout *menulayout = new QVBoxLayout;
 	menulayout->addWidget(&selectSimilarHatch);
