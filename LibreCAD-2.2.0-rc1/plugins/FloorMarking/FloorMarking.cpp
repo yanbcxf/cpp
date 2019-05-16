@@ -418,6 +418,9 @@ void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>&
 
 	case DPI::MTEXT:
 	case DPI::TEXT: {
+		QString strLayer = data.value(DPI::LAYER).toString();
+		QString strPattern = QString::fromLocal8Bit("BeamCentreLine");
+
 		TextData txt;
 		txt.floorThinkness = 0;
 		txt.floorHeightDiff = 0;
@@ -448,8 +451,11 @@ void filterData2(Plug_Entity *ent, vector<TextData>& markings, vector<TextData>&
 		rx.setPattern("^BCL[0-9]+");
 		idx = rx.indexIn(txt.name);
 		if (idx >= 0) {
-			/* 由分析插件生成 */
-			floors.push_back(txt);
+			if (strLayer.indexOf(strPattern) >= 0) {
+				/* 由分析插件生成 */
+				floors.push_back(txt);
+			}
+			
 		}
 
 		rx.setPattern("^[ABCE][0-9]+@[0-9]+");
@@ -1084,7 +1090,7 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 			}
 			/* 板高差 */
-			if (!floors[k].floorHeightDiff > 0) {
+			if (!floors[k].floorHeightDiff != 0) {
 				txt = QString("(%1)").arg(QString::number(floors[k].floorHeightDiff, 10, 3));
 				start.setY(start.y() - 125);
 				doc->addText(txt, "standard", &start, 100, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
