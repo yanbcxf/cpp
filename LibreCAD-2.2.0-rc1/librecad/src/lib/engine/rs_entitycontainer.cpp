@@ -1575,8 +1575,8 @@ bool RS_EntityContainer::optimizeContours() {
     while(count()>0) {
         double dist(0.);
         RS_Vector&& vpTmp=getNearestEndpoint(vpEnd,&dist,&next);
-        if(dist>1e-8) {
-            if(vpEnd.squaredTo(vpStart) < 1e-8) {
+        if(dist>0.05 /* yangbin 1e-8 */) {
+            if(vpEnd.squaredTo(vpStart) < 0.05 /* yangbin 1e-8 */ ) {
                 RS_Entity* e2=entityAt(0);
                 tmp.addEntity(e2->clone());
                 vpStart=e2->getStartpoint();

@@ -1822,6 +1822,8 @@ void DRW_Hatch::parseCode(int code, dxfReader *reader){
     case 73:
         if (arc) arc->isccw = reader->getInt32();
         else if (pline) pline->flags = reader->getInt32();
+		/* yangbin : 2019-5-18 */
+		else if (ellipse) ellipse->isccw = reader->getInt32();
         break;
     case 75:
         hstyle = reader->getInt32();

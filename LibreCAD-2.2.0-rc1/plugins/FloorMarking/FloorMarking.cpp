@@ -1120,6 +1120,63 @@ QString LC_List::getStrData(HatchData strip) {
 }
 
 void  execComm2(Document_Interface *doc, QWidget *parent, QString cmd, QC_PluginInterface * plugin) {
+
+	QPointF center(349896.49152091838, 653481.66924000368);
+	QPointF majorP(-424.26406871197543, 424.26406871197543);
+	double ratio = 1.0;
+	double a1 = 305.4072043469678 / 180 * M_PI;
+	double a2 = 144.5927956530264 / 180 * M_PI;
+	doc->addEllipse(&center, &majorP, ratio, a1, a2);
+
+	QPointF p1(349996.4783809236, 652890.0590407793);
+	QPointF p2(349996.4783809236, 651202.1113650047);
+	doc->addLine(&p1, &p2);
+
+	QPointF p11(349996.4783809236, 651202.1113650047);
+	QPointF p22(353996.4878116266, 651202.1113650046);
+	doc->addLine(&p11, &p22);
+
+	QPointF p111(353996.4878116266, 651202.1113650046);
+	QPointF p222(353996.4878116257, 652915.9851265011);
+	doc->addLine(&p111, &p222);
+
+	{
+		QPointF center(354196.4915209184, 653481.6692400037);
+		QPointF majorP(-424.26406871197543, 424.26406871197543);
+		double ratio = 1.0;
+		double a1 = 115.52840366717 / 180 * M_PI;
+		double a2 = -25.52840366711404 / 180 * M_PI;
+		doc->addEllipse(&center, &majorP, ratio, a1, a2);
+	}
+
+	{
+		QPointF p1(353996.4878116251, 654047.3533535053);
+		QPointF p2(353996.4878116239, 655944.7073022344);
+		doc->addLine(&p1, &p2);
+	}
+
+
+	{
+		QPointF p1(353996.4878116239, 655944.7073022344);
+		QPointF p2(353696.4878116123, 655944.7073022332);
+		doc->addLine(&p1, &p2);
+	}
+
+	{
+		QPointF p1(353696.4783809235, 655944.7011987632);
+		QPointF p2(349996.4783809236, 655944.7011987636);
+		doc->addLine(&p1, &p2);
+	}
+
+	{
+		QPointF p1(349996.4783809236, 655944.7011987636);
+		QPointF p2(349996.4783809236, 654073.2794392281);
+		doc->addLine(&p1, &p2);
+	}
+
+
+	return;
+
 	QList<Plug_Entity *> obj;
 	std::vector<Plug_Entity *> entites;
 

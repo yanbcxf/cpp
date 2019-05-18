@@ -433,7 +433,7 @@ void RS_DimAngular::mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoi
 void RS_DimAngular::calcDimension(void)
 {
     // get unit vectors for definition points
-    dimDir1s = RS_Vector::polar( 1.0, RS_Math::correctAngle( edata.definitionPoint2.angleTo( edata.definitionPoint1)));
+	dimDir1s = RS_Vector::polar( 1.0, RS_Math::correctAngle( edata.definitionPoint2.angleTo( edata.definitionPoint1)));
     dimDir1e = RS_Vector::polar( 1.0, RS_Math::correctAngle( edata.definitionPoint1.angleTo( edata.definitionPoint2)));
     dimDir2s = RS_Vector::polar( 1.0, RS_Math::correctAngle( data.definitionPoint.angleTo( edata.definitionPoint3)));
     dimDir2e = RS_Vector::polar( 1.0, RS_Math::correctAngle( edata.definitionPoint3.angleTo( data.definitionPoint)));
@@ -442,16 +442,17 @@ void RS_DimAngular::calcDimension(void)
     dimLine1 = RS_ConstructionLine( nullptr,
                                     RS_ConstructionLineData( edata.definitionPoint2,
                                                              edata.definitionPoint1));
-    dimLine2 = RS_ConstructionLine( nullptr,
-                                    RS_ConstructionLineData( data.definitionPoint,
-                                                             edata.definitionPoint3));
+	dimLine2 = RS_ConstructionLine( nullptr,
+                                    RS_ConstructionLineData(data.definitionPoint,
+															edata.definitionPoint3 ));
 
     RS_VectorSolutions vs {RS_Information::getIntersection( &dimLine1, &dimLine2, false)};
     dimCenter = vs.get(0);
     dimRadius = dimCenter.distanceTo( edata.definitionPoint4);
     dimDirRad = RS_Vector::polar( 1.0, RS_Math::correctAngle( dimCenter.angleTo( edata.definitionPoint4)));
 
-    fixDimension();
+	/* yangbin */
+    // fixDimension();
 
     dimAngleL1 = dimLine1.getDirection2();
     dimAngleL2 = dimLine2.getDirection2();

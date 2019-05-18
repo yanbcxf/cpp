@@ -1316,26 +1316,36 @@ void RS_FilterDXFRW::addHatch(const DRW_Hatch *data) {
 					DRW_Ellipse *e2 = (DRW_Ellipse *)ent.get();
                     double ang1 = e2->staparam;
                     double ang2 = e2->endparam;
-					if ( fabs(ang2 - 2.*M_PI) < 1.0e-10 && fabs(ang1) < 1.0e-10 )
-                        ang2 = 0.0;
-                    else { //convert angle to parameter
-                        ang1 = atan(tan(ang1)/e2->ratio);
-                        ang2 = atan(tan(ang2)/e2->ratio);
-                        if (ang1 < 0){//quadrant 2 & 4
-                            ang1 +=M_PI;
-                            if (e2->staparam > M_PI) //quadrant 4
-                                ang1 +=M_PI;
-                        } else if (e2->staparam > M_PI){//3 quadrant
-                            ang1 +=M_PI;
-                        }
-                        if (ang2 < 0){//quadrant 2 & 4
-                            ang2 +=M_PI;
-                            if (e2->endparam > M_PI) //quadrant 4
-                                ang2 +=M_PI;
-                        } else if (e2->endparam > M_PI){//3 quadrant
-                            ang2 +=M_PI;
-                        }
-                    }
+					/* yangbin : 当为顺时针方向角度时，取反。 因为系统内部采用逆时针角度  */
+					if (e2->isccw == 0) {
+						ang1 = -ang1;
+						ang2 = -ang2;
+					}
+					if (0) {
+						if (fabs(ang2 - 2.*M_PI) < 1.0e-10 && fabs(ang1) < 1.0e-10)
+							ang2 = 0.0;
+						else { //convert angle to parameter
+							ang1 = atan(tan(ang1) / e2->ratio);
+							ang2 = atan(tan(ang2) / e2->ratio);
+							if (ang1 < 0) {//quadrant 2 & 4
+								ang1 += M_PI;
+								if (e2->staparam > M_PI) //quadrant 4
+									ang1 += M_PI;
+							}
+							else if (e2->staparam > M_PI) {//3 quadrant
+								ang1 += M_PI;
+							}
+							if (ang2 < 0) {//quadrant 2 & 4
+								ang2 += M_PI;
+								if (e2->endparam > M_PI) //quadrant 4
+									ang2 += M_PI;
+							}
+							else if (e2->endparam > M_PI) {//3 quadrant
+								ang2 += M_PI;
+							}
+						}
+					}
+					
 					e = new RS_Ellipse{hatchLoop,
 					{{e2->basePoint.x, e2->basePoint.y},
 					{e2->secPoint.x, e2->secPoint.y},
