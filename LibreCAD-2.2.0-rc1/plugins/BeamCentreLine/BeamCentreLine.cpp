@@ -1211,32 +1211,54 @@ void BeamSpanMatch(std::vector<BeamSpanData> & beamspans_ok,
 				BeamSpanData bsd = *it;
 				beamspans.erase(it);
 
+				if (bsd.beam.size() > 16) {
+					/* 对于有太多梁线的情况，应该不是梁跨，排除 */
+					bLoop = true;
+					break;
+				}
+
+				/* 排除重合梁线 */
+				vector<LineData> beamN;
+				for (auto l1 : bsd.beam) {
+					bool bOk = true;
+					for (auto l2 : beamN) {
+						double ds = pointToLine(l1.from, l2.from, l2.to);
+						if (ds < 1) {
+							bOk = false;
+							break;
+						}
+					}
+					if (bOk)
+						beamN.push_back(l1);
+				}
+				bsd.beam = beamN;
+
 				bsd.beam = sortParallelLines(bsd.beam);
 				/* 按照两个梁为一组，分成多个梁跨 */
 				std::vector<BeamSpanData> spans = clusterParallelLines(bsd, debugInfo);
 				
 				QString msg = QString("=======> New BeamSpan beam size = %1 ")
 					.arg(bsd.beam.size());
-				debugInfo.push_back(msg);
+				//debugInfo.push_back(msg);
 				
 				for (int i = 0; i < spans.size(); i++) {
 					beamspans.push_back(spans[i]);
 
-					QString msg = QString("N %1 BeamSpan beam0 (%2, %3) ")
+					/*QString msg = QString("N %1 BeamSpan beam0 (%2, %3) ")
 						.arg(i)
 						.arg(QString::number(spans[i].beam[0].crossFrom.x(), 10, 2))
 						.arg(QString::number(spans[i].beam[0].crossFrom.y(), 10, 2));
-					// debugInfo.push_back(msg);
+					debugInfo.push_back(msg);
 
 					if (spans[i].beam.size() > 1) {
 						msg = QString("N %1 BeamSpan beam1 (%2, %3) ")
 							.arg(i)
 							.arg(QString::number(spans[i].beam[1].crossFrom.x(), 10, 2))
 							.arg(QString::number(spans[i].beam[1].crossFrom.y(), 10, 2));
-						// debugInfo.push_back(msg);
+						debugInfo.push_back(msg);
 					}
 					
-					debugInfo.push_back("\n");
+					debugInfo.push_back("\n");*/
 				}
 
 				bLoop = true;
