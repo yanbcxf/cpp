@@ -20,16 +20,8 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
-#define M_PI       3.14159265358979323846   // pi
+#include "../libs/AnalyticGeometry.h"
 
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#define min(a,b) (((a) < (b)) ? (a) : (b))
-
-const double eps = 1.0e-8;
-
-namespace {
-	constexpr double m_piX2 = M_PI * 2; //2*PI
-}
 
 typedef struct _TextData {
 	/**
@@ -43,15 +35,39 @@ typedef struct _TextData {
 	Plug_Entity * ent;
 } TextData;
 
-typedef struct _LineData {
+
+class  LineData : public LineBaseData {
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-	_LineData() = default;
+public:
+	LineData() {};
+	LineData(const LineBaseData & l) {
+		this->from = l.from;
+		this->to = l.to;
+		this->angle = l.angle;
+		this->direction = l.direction;
+		this->length = l.length;
+		this->fa = l.fa;
+		this->fb = l.fb;
+		this->fc = l.fc;
+	};
 
-	QPointF from, to;
+	LineData & operator=(const LineBaseData & l) {
+		this->from = l.from;
+		this->to = l.to;
+		this->angle = l.angle;
+		this->direction = l.direction;
+		this->length = l.length;
+		this->fa = l.fa;
+		this->fb = l.fb;
+		this->fc = l.fc;
+
+		return *this;
+	};
+public:
 	Plug_Entity * ent;
-} LineData;
+};
 
 typedef struct _WallData {
 	/**

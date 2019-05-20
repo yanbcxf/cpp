@@ -22,16 +22,7 @@
 #include <QGroupBox>
 #include <QRadioButton>
 
-#define M_PI       3.14159265358979323846   // pi
-
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#define min(a,b) (((a) < (b)) ? (a) : (b))
-
-const double eps = 1.0e-8;
-
-namespace {
-	constexpr double m_piX2 = M_PI * 2; //2*PI
-}
+#include "../libs/AnalyticGeometry.h"
 
 typedef struct _TextData {
 	/**
@@ -48,25 +39,45 @@ typedef struct _TextData {
 	Plug_Entity * ent;
 } TextData;
 
-typedef struct _LineData {
+class  LineData : public LineBaseData{
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-	_LineData() = default;
+public:
+	LineData() {};
+	LineData(const LineBaseData & l) {
+		this->from = l.from;
+		this->to = l.to;
+		this->angle = l.angle;
+		this->direction = l.direction;
+		this->length = l.length;
+		this->fa = l.fa;
+		this->fb = l.fb;
+		this->fc = l.fc;
+	};
 
-	QPointF from, to;
+	LineData & operator=(const LineBaseData & l) {
+		this->from = l.from;
+		this->to = l.to;
+		this->angle = l.angle;
+		this->direction = l.direction;
+		this->length = l.length;
+		this->fa = l.fa;
+		this->fb = l.fb;
+		this->fc = l.fc;
+
+		return *this;
+	};
+public:
+	
 	QPointF crossFrom, crossTo; // 梁线 与 支座的交点
-	double length;
-	double angle;		// 夹角，以便判断 梁的另一条平行线
-	double fa, fb, fc;
-	QPointF direction;
-
+	
 	int		columnFrom, columnTo;	//	柱墙的序号
 	int		nSerial;			// 序号
 	bool	bHandled;
 
 	Plug_Entity * ent;
-} LineData;
+};
 
 typedef struct _PolylineData {
 	/**

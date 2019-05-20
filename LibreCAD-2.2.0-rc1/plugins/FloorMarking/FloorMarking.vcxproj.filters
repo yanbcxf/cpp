@@ -30,6 +30,9 @@
     <ClCompile Include="FloorMarking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libs\AnalyticGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FloorMarking.h">
@@ -44,5 +47,10 @@
   <ItemGroup>
     <ResourceCompile Include=".\FloorMarking_resource.rc" />
     <ResourceCompile Include=".\FloorMarkingd_resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\AnalyticGeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -33,6 +33,9 @@
     <ClCompile Include="k-means.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libs\AnalyticGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BeamCentreLine.h">
@@ -50,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k-means.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\AnalyticGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
