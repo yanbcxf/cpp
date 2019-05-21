@@ -251,6 +251,38 @@ QString LC_List::getStrData(WallData strip) {
     return strData;
 }
 
+/* 读取图纸中已经以 MText 形式保存的各层连梁数据 */
+QString readBeamData(Document_Interface *doc, QString layerName) {
+	QString beams = "";
+	QList<Plug_Entity *> obj;
+	bool yes = doc->getAllEntities(&obj, false);
+	if (!yes || obj.isEmpty()) return beams;
+
+	for (int i = 0; i < obj.size(); ++i) {
+		QHash<int, QVariant> data;
+		obj.at(i)->getData(&data);
+		int et = data.value(DPI::ETYPE).toInt();
+		QString strLayer = data.value(DPI::LAYER).toString();
+		if (et == DPI::MTEXT && strLayer == layerName) {
+			beams = data.value(DPI::TEXTCONTENT).toString();
+			break;
+		}
+	}
+
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
+	return beams;
+}
+
+/* 以 MText 形式保存各层连梁数据 */
+void writeBeamData(Document_Interface *doc, QString beams, QString layerName) {
+	/* 删除旧数据 */
+	doc->deleteLayer(layerName);
+
+	doc->setLayer(layerName);
+	QPointF pos = QPointF(0, 0);
+	doc->addMText(beams, "standard", &pos, 250, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+}
 
 void LC_List::execComm(Document_Interface *doc,
 	QWidget *parent, QString cmd)
@@ -269,7 +301,7 @@ void LC_List::execComm(Document_Interface *doc,
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData1(obj.at(i), lines);
 	}
-	// 第二遍，匹配 柱附近的标注引出线
+	// 第二遍，寻找墙文本信息 并标注 ( 行, 列 )
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData2(obj.at(i), lines, texts);
 	}
@@ -348,8 +380,6 @@ void LC_List::execComm(Document_Interface *doc,
 			pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, i * cellHeight);
 			doc->addText(walls[t].steelTie, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 		}
-
-		
 
 	}
 
