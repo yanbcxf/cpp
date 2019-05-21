@@ -57,6 +57,9 @@
 #include "rs_dialogfactory.h"
 
 #include "qg_dialogfactory.h"
+
+#include "rs_font.h"
+#include "rs_fontlist.h"
 // #include <QDebug>
 
 convLTW::convLTW(){
@@ -1107,10 +1110,15 @@ void Doc_plugin_interface::addMText(QString txt, QString sty, QPointF *start,
     if (doc) {
         double width = 100.0;
 
+		double lineSpacingFactor = 0.0;
+		RS_Font* font = RS_FONTLIST->requestFont(sty);
+		if (font)
+			lineSpacingFactor = font->getLineSpacingFactor();
+
         RS_MTextData::VAlign valign = static_cast <RS_MTextData::VAlign>(va);
         RS_MTextData::HAlign halign = static_cast <RS_MTextData::HAlign>(ha);
         RS_MTextData d(v1, height, width, valign, halign,
-                  RS_MTextData::ByStyle, RS_MTextData::Exact, 0.0,
+                  RS_MTextData::ByStyle, RS_MTextData::Exact, lineSpacingFactor,
                   txt, sty, angle, RS2::Update);
         RS_MText* entity = new RS_MText(doc, d);
 
