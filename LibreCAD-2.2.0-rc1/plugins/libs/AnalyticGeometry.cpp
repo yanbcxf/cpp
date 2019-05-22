@@ -26,6 +26,27 @@
 #include "AnalyticGeometry.h"
 
 
+void LineBaseData::intialize() {
+	/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
+	QPointF ptC = this->to - this->from;
+	double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
+	double numB = asin(ptC.y() / numA);
+	if (ptC.x() < 0) numB = M_PI - numB;
+	if (numB < 0) numB = 2 * M_PI + numB;
+	this->angle = numB;
+	// line.angle = angle(axis, line.from - line.to);
+
+	QPointF e = this->to - this->from;
+	this->length = sqrt(e.x() * e.x() + e.y() * e.y());
+
+	/* 计算直线的单位方向向量，以便直线延伸 */
+	this->direction = e / this->length;
+
+	/* 计算直线方程一般式的参数 */
+	this->fa = this->to.y() - this->from.y();
+	this->fb = this->from.x() - this->to.x();
+	this->fc = this->to.x() * this->from.y() - this->from.x() * this->to.y();
+}
 
 
 /**
@@ -204,9 +225,31 @@ double pointToPolyline(const QPointF& pt, std::vector<QPointF>& polyline) {
 	return dist;
 }
 
+bool customLess(LineBaseData&  a, LineBaseData&  b)
+{
+	/* 根据截距方程来比较 */
+	if (abs(a.fb) < 1.0e-8) {
+		double aa = a.fc / a.fa;
+		double bb = b.fc / b.fa;
+		return aa < bb;
+	}
+	else {
+		double aa = a.fc / a.fb;
+		double bb = b.fc / b.fb;
+		return aa < bb;
+	}
+}
+
+/* 对平行线进行排序 */
+std::vector<LineBaseData> sortParallelLines(std::vector<LineBaseData> beam) {
+	std::sort(beam.begin(), beam.end(), customLess);
+	return beam;
+}
+
 /* 计算点垂直向上穿越 Table 交点数  */
 int pointVerticalCrossTable(const QPointF& pt, std::vector<LineBaseData>& lines) {
 	int nCross = 0;
+	double dist = -1; // 保存最后一个穿越点 到 pt 的距离
 	for (int i = 0; i < lines.size(); i++) {
 		QPointF p1, p2;
 		p1 = lines[i].from;
@@ -214,7 +257,14 @@ int pointVerticalCrossTable(const QPointF& pt, std::vector<LineBaseData>& lines)
 		// 以 pt 为起点向上垂直射出
 		if (((p1.x() > pt.x()) != (p2.x() > pt.x())) &&
 			(pt.y() < (p2.y() - p1.y()) * (pt.x() - p1.x()) / (p2.x() - p1.x()) + p1.y()))
-			nCross++;
+		{
+			double ds = pointToLine(pt, p1, p2);
+			/* 规避两条重合的边线造成的错误判断 */
+			if (abs(ds - dist) > 0.5) {
+				dist = ds;
+				nCross++;
+			}
+		}
 	}
 	return nCross;
 }
@@ -222,6 +272,7 @@ int pointVerticalCrossTable(const QPointF& pt, std::vector<LineBaseData>& lines)
 /* 计算点水平向左穿越 Table 交点数  */
 int pointHorizontalCrossTable(const QPointF& pt, std::vector<LineBaseData>& lines) {
 	int nCross = 0;
+	double dist = -1; // 保存最后一个穿越点 到 pt 的距离
 	for (int i = 0; i < lines.size(); i++) {
 		QPointF p1, p2;
 		p1 = lines[i].from;
@@ -229,7 +280,14 @@ int pointHorizontalCrossTable(const QPointF& pt, std::vector<LineBaseData>& line
 		// 以 pt 为起点水平向左射出
 		if (((p1.y() > pt.y()) != (p2.y() > pt.y())) &&
 			(pt.x() > (p2.x() - p1.x()) * (pt.y() - p1.y()) / (p2.y() - p1.y()) + p1.x()))
-			nCross++;
+		{
+			double ds = pointToLine(pt, p1, p2);
+			/* 规避两条重合的边线造成的错误判断 */
+			if (abs(ds - dist) > 0.5) {
+				dist = ds;
+				nCross++;
+			}
+		}
 	}
 	return nCross;
 }

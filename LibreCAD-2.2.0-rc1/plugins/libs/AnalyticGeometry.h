@@ -49,12 +49,15 @@ class LineBaseData {
 	 */
 public:
 	LineBaseData() {};
+	void intialize();
 
 	QPointF from, to;
 	double length;
 	double angle;		// 夹角，以便判断 梁的另一条平行线
 	double fa, fb, fc;
 	QPointF direction;
+
+
 };
 
 double angle(QPointF a, QPointF b);
@@ -73,5 +76,7 @@ double crossProduct(QPointF e1, QPointF e2);
 QPointF crossover(QPointF startPt, double angle, QPointF minPt, QPointF maxPt);
 double distanceBetweenParallelLine(LineBaseData & a, LineBaseData & b);
 LineBaseData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& polyline2);
+
+vector<LineBaseData> sortParallelLines(vector<LineBaseData> beam);
 
 #endif // LIST_H

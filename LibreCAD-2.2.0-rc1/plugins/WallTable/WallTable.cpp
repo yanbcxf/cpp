@@ -67,6 +67,9 @@ void filterData1(Plug_Entity *ent, std::vector<LineData>& lines) {
 		line.to.setX(data.value(DPI::ENDX).toDouble());
 		line.to.setY(data.value(DPI::ENDY).toDouble());
 		line.ent = ent;
+
+		line.intialize();
+
 		QPointF axis(1, 0);
 		double a1 = angle(axis, line.from - line.to);
 		if (a1< 0.0001 || (a1 > (M_PI - 0.0001) / 2 && a1 < (M_PI + 0.0001) / 2) || a1> M_PI - 0.0001) {

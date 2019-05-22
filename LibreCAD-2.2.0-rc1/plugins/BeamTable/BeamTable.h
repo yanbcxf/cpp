@@ -36,58 +36,23 @@ typedef struct _TextData {
 } TextData;
 
 
-class  LineData : public LineBaseData {
+typedef struct _BeamData {
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-public:
-	LineData() {};
-	LineData(const LineBaseData & l) {
-		this->from = l.from;
-		this->to = l.to;
-		this->angle = l.angle;
-		this->direction = l.direction;
-		this->length = l.length;
-		this->fa = l.fa;
-		this->fb = l.fb;
-		this->fc = l.fc;
-	};
-
-	LineData & operator=(const LineBaseData & l) {
-		this->from = l.from;
-		this->to = l.to;
-		this->angle = l.angle;
-		this->direction = l.direction;
-		this->length = l.length;
-		this->fa = l.fa;
-		this->fb = l.fb;
-		this->fc = l.fc;
-
-		return *this;
-	};
-public:
-	Plug_Entity * ent;
-};
-
-typedef struct _WallData {
-	/**
-	 * Default constructor. Leaves the data object uninitialized.
-	 */
-	_WallData() = default;
+	_BeamData() = default;
 	
-	QString name;				// Ç½Ãû³Æ
-	QString thickness;
-	QString highness;
-	QString steelVertical;
-	QString steelHorizontal;
-	QString steelTie;			//	À­½î
-	QString steelReinforce;		//	¼ÓÇ¿½î
+	QString name;				// ÁºÃû³Æ
+	QString bxh;				//  ½ØÃæ³ß´ç
+	QString steelTop;
+	QString steelBottom;
+	QString steelHooping;		//	¹¿½î
+	QString steelMiddle;		//	Ñü½î
 
 	int col, row;
-	int width, height;
 
 	Plug_Entity * ent;
-} WallData;
+} BeamData;
 
 
 //class QTextEdit;
@@ -106,11 +71,8 @@ class LC_List : public QObject, QC_PluginInterface
                           QWidget *parent, QString cmd) Q_DECL_OVERRIDE;
 
 private:
-	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
-	
-	
-    QString getStrData(WallData strip);
-    double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
+		
+    QString getStrData(BeamData strip);
     Document_Interface *d;
 };
 

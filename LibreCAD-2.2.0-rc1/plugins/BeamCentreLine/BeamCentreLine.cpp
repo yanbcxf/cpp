@@ -537,25 +537,7 @@ void filterData1(Plug_Entity *ent,  std::vector<PolylineData>& polylines, std::v
 		data.value(DPI::LTYPE);
 		line.ent = ent;
 		
-		/* 判断平行，需要使用以下方法计算 直线在 XY Plane 的倾斜角 */
-		QPointF ptC = line.to - line.from;
-		double numA = sqrt((ptC.x()*ptC.x()) + (ptC.y()*ptC.y()));
-		double numB = asin(ptC.y() / numA);
-		if (ptC.x() < 0) numB = M_PI - numB;
-		if (numB < 0) numB = 2 * M_PI + numB;
-		line.angle = numB;
-		// line.angle = angle(axis, line.from - line.to);
-
-		QPointF e = line.to - line.from;
-		line.length = sqrt(e.x() * e.x() + e.y() * e.y());
-
-		/* 计算直线的单位方向向量，以便直线延伸 */
-		line.direction = e / line.length;
-
-		/* 计算直线方程一般式的参数 */
-		line.fa = line.to.y() - line.from.y();
-		line.fb = line.from.x() - line.to.x();
-		line.fc = line.to.x() * line.from.y() - line.from.x() * line.to.y();
+		line.intialize();
 
 		line.nSerial = lines.size();
 		line.bHandled = false;
