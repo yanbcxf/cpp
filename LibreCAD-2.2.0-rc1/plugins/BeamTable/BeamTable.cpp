@@ -21,6 +21,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QDoubleValidator>
+#include <QCloseEvent>
 #include <cmath>
 #include <algorithm>
 #include "BeamTable.h"
@@ -127,7 +128,8 @@ bool getCellText(int col, int row, std::vector<TextData>& texts, QString& txt) {
 	return true;
 }
 
-void NewBeamTable(std::vector<TextData>& texts, std::vector<BeamData>& beams) {
+/* 解析连梁表: 福州精业建筑工程设计咨询有限公司 */
+void parseLinkBeamTable(std::vector<TextData>& texts, std::vector<BeamData>& beams) {
 	/* 按照梁名称匹配，可能一个行会生成 多个梁 */
 	for (int i = 1; i < 1000; i++) {
 		QString txt;
@@ -196,7 +198,53 @@ void NewBeamTable(std::vector<TextData>& texts, std::vector<BeamData>& beams) {
 		beam.steelTie = QString::fromLocal8Bit("拉筋");
 		beams.insert(beams.begin(), beam);
 	}*/
-	
+}
+
+/**/
+void parseBeamTable(std::vector<TextData>& texts, std::vector<BeamData>& beams) {
+	/* 按照梁名称匹配 */
+	for (int i = 1; i < 1000; i++) {
+		QString txt;
+		if (getCellText(1, i, texts, txt)) {
+			BeamData beam;
+			beam.col = 1;
+			beam.row = i;
+			
+			// 准备单元格的宽高
+			beam.name = txt;
+			if (beam.name.indexOf("L") >= 0)
+				beams.push_back(beam);
+
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// 针对每个梁 获取钢筋信息
+	for (int i = 0; i < beams.size(); i++) {
+		QString breadth, heigth;
+		getCellText(beams[i].col + 1, beams[i].row, texts, breadth);
+		getCellText(beams[i].col + 2, beams[i].row, texts, heigth);
+		beams[i].bxh = breadth + "x" + heigth;
+		getCellText(beams[i].col + 3, beams[i].row, texts, beams[i].steelTop);
+		getCellText(beams[i].col + 4, beams[i].row, texts, beams[i].steelBottom);
+		getCellText(beams[i].col + 5, beams[i].row, texts, beams[i].steelMiddle);
+		getCellText(beams[i].col + 6, beams[i].row, texts, beams[i].steelHooping);
+	}
+	// 增加标题栏
+	/*if (walls.size() > 0) {
+		BeamData beam;
+		beam.width = walls[0].width;
+		beam.height = walls[0].height;
+		beam.name = QString::fromLocal8Bit("名称");
+		beam.thickness = QString::fromLocal8Bit("墙厚");
+		beam.steelHorizontal = QString::fromLocal8Bit("水平分布筋");
+		beam.steelVertical = QString::fromLocal8Bit("垂直分布筋");
+		beam.steelTie = QString::fromLocal8Bit("拉筋");
+		beams.insert(beams.begin(), beam);
+	}*/
 }
 
 QString LC_List::getStrData(BeamData strip) {
@@ -207,6 +255,65 @@ QString LC_List::getStrData(BeamData strip) {
     strData.append(strCommon.arg(tr("columnName")).arg(strip.name));
 	
     return strData;
+}
+
+QString floorNum2String(vector<int> floors) {
+	QString text;
+	int segmentS, segmentE;
+	segmentS =  segmentE = -1000;
+	std::sort(floors.begin(), floors.end());
+
+	for (int i = 0; i < floors.size(); i++) {
+		if (segmentE + 1 == floors[i]) {
+			segmentE++;
+		}
+		else {
+			if (segmentS >= 0) {
+				if (segmentS == segmentE) {
+					text.append(QString::number(segmentE) + " ");
+				}
+				else {
+					text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+				}
+			}
+			segmentS = segmentE = floors[i];
+		}
+	}
+	if (floors.size() == 0) {
+		/* 未指明所属楼层时，默认为首层 */
+		text = "0";
+	}
+	else {
+		if (segmentS >= 0) {
+			if (segmentS == segmentE) {
+				text.append(QString::number(segmentE) + " ");
+			}
+			else {
+				text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+			}
+		}
+	}
+	return text;
+}
+
+vector<int> String2floorNum(QString text) {
+	vector<int> floors;
+	QStringList cols = text.split(' ', QString::SkipEmptyParts);
+	for (int i = 0; i < cols.size(); i++) {
+		QStringList segments = cols[i].split('~', QString::SkipEmptyParts);
+		if (segments.size() == 2) {
+			int segmentS = segments[0].toInt();
+			int segmentE = segments[1].toInt();
+			for (int k = segmentS; k <= segmentE; k++) {
+				floors.push_back(k);
+			}
+		}
+		else if(segments.size() == 1) {
+			floors.push_back(segments[0].toInt());
+		}
+	}
+	std::sort(floors.begin(), floors.end());
+	return floors;
 }
 
 /* 读取图纸中已经以 MText 形式保存的各层连梁数据 */
@@ -235,19 +342,75 @@ void readBeamData(Document_Interface *doc, QString layerName, vector< BeamData>&
 		BeamData beam;
 		QStringList cols = lines.at(i).split(',', QString::SkipEmptyParts);
 		if (cols.size() > 0)	beam.name = cols.at(0).trimmed();
-		if (cols.size() > 1)	beam.bxh = cols.at(1).trimmed();
-		if (cols.size() > 2)	beam.steelTop = cols.at(2).trimmed();
-		if (cols.size() > 3)	beam.steelBottom = cols.at(3).trimmed();
-		if (cols.size() > 4)	beam.steelHooping = cols.at(4).trimmed();
-		if (cols.size() > 5)	beam.steelMiddle = cols.at(5).trimmed();
+		if (cols.size() > 1) {
+			/* 所属楼层编号 */
+			beam.floors = String2floorNum(cols.at(1));
+		}
+		if (cols.size() > 2)	beam.bxh = cols.at(2).trimmed();
+		if (cols.size() > 3)	beam.steelTop = cols.at(3).trimmed();
+		if (cols.size() > 4)	beam.steelBottom = cols.at(4).trimmed();
+		if (cols.size() > 5)	beam.steelHooping = cols.at(5).trimmed();
+		if (cols.size() > 6)	beam.steelMiddle = cols.at(6).trimmed();
 		beams.push_back(beam);
 	}
 
 	return;
 }
 
-/* 以 MText 形式保存各层连梁数据 */
-void writeBeamData(Document_Interface *doc, vector< BeamData>& beams, QString layerName) {
+
+vector<BeamData> mergeBeams(vector<BeamData>& newBeams, vector<BeamData>& oldBeams) {
+	vector<BeamData> beams;
+	beams = oldBeams;
+	for (auto b : newBeams) {
+		int i = 0;
+		for (; i < beams.size(); i++) {
+			if (b.bxh == beams[i].bxh && b.name == beams[i].name && b.steelBottom == beams[i].steelBottom &&
+				b.steelTop == beams[i].steelTop && b.steelHooping == beams[i].steelHooping &&
+				b.steelMiddle == beams[i].steelMiddle) {
+				// 该梁增加所属楼层编号
+				for (auto f : b.floors) {
+					bool bExist = false;
+					for (auto f1 : beams[i].floors) {
+						if (f == f1) {
+							bExist = true;
+							break;
+						}
+					}
+					if(!bExist)
+						beams[i].floors.push_back(f);
+				}
+				break;
+			}
+		}
+		if (i == beams.size()) {
+			beams.push_back(b);
+		}
+	}
+	/*beams = oldBeams;
+	for (auto b : newBeams) {
+		beams.push_back(b);
+	} */
+
+	struct {
+		bool operator()(BeamData a, BeamData b) const
+		{
+			if( a.name < b.name ) 
+				return true;
+			else if (a.name == b.name) {
+				QString afloor = floorNum2String(a.floors);
+				QString bfloor = floorNum2String(b.floors);
+				return afloor < bfloor;
+			} else
+				return false;
+		}
+	} customLess;
+	std::sort(beams.begin(), beams.end(), customLess);
+
+	return beams;
+}
+
+/* 以 MText 形式保存各层连梁数据,并绘制新的连梁表 */
+void writeBeamData(Document_Interface *doc, vector< BeamData>& newBeams, QString layerName) {
 	/* 读人旧数据 */
 	vector< BeamData> oldBeams;
 	readBeamData(doc, layerName, oldBeams);
@@ -256,9 +419,7 @@ void writeBeamData(Document_Interface *doc, vector< BeamData>& beams, QString la
 	doc->deleteLayer(layerName);
 
 	/* 对新旧数据进行合并 */
-	for (auto b : oldBeams) {
-		beams.push_back(b);
-	}
+	vector<BeamData> beams = mergeBeams(newBeams, oldBeams);
 
 	doc->setLayer(layerName);
 
@@ -266,17 +427,19 @@ void writeBeamData(Document_Interface *doc, vector< BeamData>& beams, QString la
 	QString text;
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < beams.size(); i++) {
-		text.append(QString("%1, %2, %3, %4, %5, %6 \n")
-			.arg(beams[i].name).arg(beams[i].bxh).arg(beams[i].steelTop)
-			.arg(beams[i].steelBottom).arg(beams[i].steelHooping).arg(beams[i].steelMiddle));
+		
+		text.append(QString("%1, %2, %3, %4, %5, %6, %7 \n")
+			.arg(beams[i].name.trimmed()).arg(floorNum2String(beams[i].floors).trimmed())
+			.arg(beams[i].bxh.trimmed()).arg(beams[i].steelTop.trimmed()).arg(beams[i].steelBottom.trimmed())
+			.arg(beams[i].steelHooping.trimmed()).arg(beams[i].steelMiddle.trimmed()));
 	}
 	doc->addMText(text, "standard", &pos, 250, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 
-	/* 绘制新的剪力墙表 */
+	/* 绘制新的连梁表 */
 	int cellWidth = 2300;
 	int cellHeight = 350;
 	
-	QPointF columnPos[7];
+	QPointF columnPos[8];
 	columnPos[0] = QPointF(0, 0);			//	梁名称列 起始点
 	
 	columnPos[1] = columnPos[0] + QPointF(cellWidth, 0);			//	截面尺寸
@@ -284,41 +447,54 @@ void writeBeamData(Document_Interface *doc, vector< BeamData>& beams, QString la
 	columnPos[3] = columnPos[2] + QPointF(cellWidth, 0);			//	下部纵筋
 	columnPos[4] = columnPos[3] + QPointF(cellWidth, 0);			//	箍筋
 	columnPos[5] = columnPos[4] + QPointF(cellWidth, 0);			//	腰筋
-	columnPos[6] = columnPos[5] + QPointF(cellWidth, 0);			
+	columnPos[6] = columnPos[5] + QPointF(cellWidth, 0);			//  所属楼层编号
+	columnPos[7] = columnPos[6] + QPointF(cellWidth, 0);
+	
+	// 填写单元格文本, 队尾的放在最下面
+	int t = beams.size() - 1;
+	int row = 0;
+	for (int i = 0; i < beams.size(); i++, t--) {
+		/* 某梁适用于多个楼层段的，要分成多行输出 */
+		QStringList segments = floorNum2String(beams[t].floors).split(' ', QString::SkipEmptyParts);
+		for (int k = 0; k < segments.size(); k++) {
+			QPointF pos = (columnPos[0] + columnPos[1]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[1] + columnPos[2]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].bxh, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[2] + columnPos[3]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].steelTop, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[3] + columnPos[4]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].steelBottom, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].steelHooping, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[5] + columnPos[6]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(beams[t].steelMiddle, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			pos = (columnPos[6] + columnPos[7]) / 2 + QPointF(0, row * cellHeight);
+			doc->addText(segments.at(k), "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
+
+			row++;
+		}
+	}
+
 	// 先画表格横线 
-	for (int i = 0; i < beams.size() + 1; i++) {
+	for (int i = 0; i < row + 1; i++) {
 		QPointF start, end;
 		start = columnPos[0] + QPointF(0, i * cellHeight);
-		end = columnPos[5] + QPointF(0, i * cellHeight);
+		end = columnPos[7] + QPointF(0, i * cellHeight);
 		doc->addLine(&start, &end);
 	}
 	// 再画表格竖线
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 8; i++) {
 		QPointF start, end;
 		start = columnPos[i];
-		end = columnPos[i] + QPointF(0, beams.size() * cellHeight);
+		end = columnPos[i] + QPointF(0, row * cellHeight);
 		doc->addLine(&start, &end);
-	}
-	// 填写单元格文本, 队尾的放在最下面
-	int t = beams.size() - 1;
-	for (int i = 0; i < beams.size(); i++, t--) {
-		QPointF pos = (columnPos[0] + columnPos[1]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].name, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-		pos = (columnPos[1] + columnPos[2]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].bxh, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-		pos = (columnPos[2] + columnPos[3]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].steelTop, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-		pos = (columnPos[3] + columnPos[4]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].steelBottom, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-		pos = (columnPos[4] + columnPos[5]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].steelHooping, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
-
-		pos = (columnPos[5] + columnPos[6]) / 2 + QPointF(0, i * cellHeight);
-		doc->addText(beams[t].steelMiddle, "standard", &pos, 250, 0, DPI::HAlignCenter, DPI::VAlignMiddle);
 	}
 }
 
@@ -348,8 +524,10 @@ void LC_List::execComm(Document_Interface *doc,
 		filterData2(obj.at(i), vlines, hlines, texts);
 	}
 
+	// note : 针对不同的设计院的图纸，需做代码调整
 	std::vector<BeamData> beams;
-	NewBeamTable(texts, beams);
+	// parseLinkBeamTable(texts, beams);
+	parseBeamTable(texts, beams);
 
 	QString text;
 	
@@ -360,13 +538,25 @@ void LC_List::execComm(Document_Interface *doc,
 			.arg(beams[i].steelBottom).arg(beams[i].steelHooping).arg(beams[i].steelMiddle));
 	}
 
+	// 恢复图元不被选中 
+	for (int n = 0; n < obj.size(); ++n) {
+		doc->setSelectedEntity(obj.at(n), false);
+	}
+
 	lc_Listdlg dlg(parent);
 	dlg.setText(text);
 	//dlg.exec();
 	if (dlg.exec()) {
-
+		
+		/* 输入这些梁所属的楼层编号 */
+		int floorStart = dlg.startxedit->text().toInt();
+		int floorEnd = dlg.startyedit->text().toInt();
+		for (int i = 0; i < beams.size(); i++) {
+			for (int k = floorStart; k <= floorEnd; k++) {
+				beams[i].floors.push_back(k);
+			}
+		}
 		writeBeamData(doc, beams, name());
-
 	}
 
 	while (!obj.isEmpty())
@@ -388,16 +578,16 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 	QHBoxLayout *loCheck = new QHBoxLayout;
 
 	QLabel *label;
-	QDoubleValidator *val = new QDoubleValidator(0);
+	QIntValidator *val = new QIntValidator(0);
 
-	label = new QLabel(tr("Start X:"));
+	label = new QLabel(QString::fromLocal8Bit("起始楼层编号:"));
 	loCheck->addWidget(label);
 	startxedit = new QLineEdit();
 	startxedit->setValidator(val);
 	loCheck->addWidget(startxedit);
 	loCheck->addStretch();
 
-	label = new QLabel(tr("Start Y:"));
+	label = new QLabel(QString::fromLocal8Bit("结束楼层编号:"));
 	loCheck->addWidget(label);
 	startyedit = new QLineEdit();
 	startyedit->setValidator(val);
@@ -411,7 +601,7 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
     this->setLayout(mainLayout);
     this->resize ( 850, 400 );
 
-    connect(bb, SIGNAL(rejected()), this, SLOT(accept()));
+    connect(bb, SIGNAL(rejected()), this, SLOT(ClickCloseButton()));
 }
 
 void lc_Listdlg::setText(QString text)
@@ -420,4 +610,40 @@ void lc_Listdlg::setText(QString text)
 }
 lc_Listdlg::~lc_Listdlg()
 {
+}
+
+void lc_Listdlg::ClickCloseButton()
+{
+	/* QMessageBox::StandardButton button;
+	button = QMessageBox::question(this, tr("退出程序"),
+		QString(tr("警告：程序有一个任务正在运行中，是否结束操作退出?")),
+		QMessageBox::Yes | QMessageBox::No);
+
+	if (button == QMessageBox::No) {
+		event->ignore();
+	}
+	else if (button == QMessageBox::Yes) {
+		event->accept();
+	} */
+
+	if (startxedit->text().isEmpty() || startyedit->text().isEmpty()) {
+		QString dlgTitle = "information";
+		QString strInfo = QString::fromLocal8Bit("起始楼层、结束楼层 必填");
+		QMessageBox::information(this, dlgTitle, strInfo,
+			QMessageBox::Ok, QMessageBox::NoButton);
+	}
+	else {
+		int start = startxedit->text().toInt();
+		int end = startyedit->text().toInt();
+		if (start > end) {
+			QString dlgTitle = "information";
+			QString strInfo = QString::fromLocal8Bit("起始楼层 需满足<= 结束楼层");
+			QMessageBox::information(this, dlgTitle, strInfo,
+				QMessageBox::Ok, QMessageBox::NoButton);
+		}
+		else
+		{
+			accept();
+		}
+	}
 }

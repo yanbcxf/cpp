@@ -49,6 +49,8 @@ typedef struct _BeamData {
 	QString steelHooping;		//	¹¿½î
 	QString steelMiddle;		//	Ñü½î
 
+	vector<int>	floors;			//  ËùÊôÂ¥²ã±àºÅ
+
 	int col, row;
 
 	Plug_Entity * ent;
@@ -84,8 +86,10 @@ public:
     explicit lc_Listdlg(QWidget *parent = 0);
     ~lc_Listdlg();
     void setText(QString text);
+	// void closeEvent(QCloseEvent *event);
 
 public slots:
+	void ClickCloseButton();
 //    void processAction(QStringList *commandList);
 //    void processAction(Document_Interface *doc);
 //    void checkAccept();
