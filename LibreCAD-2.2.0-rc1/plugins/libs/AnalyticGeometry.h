@@ -78,5 +78,7 @@ double distanceBetweenParallelLine(LineBaseData & a, LineBaseData & b);
 LineBaseData intersectEdge(std::vector<QPointF>& polyline1, std::vector<QPointF>& polyline2);
 
 vector<LineBaseData> sortParallelLines(vector<LineBaseData> beam);
+QString floorNum2String(vector<int> floors);
+vector<int> String2floorNum(QString text);
 
 #endif // LIST_H

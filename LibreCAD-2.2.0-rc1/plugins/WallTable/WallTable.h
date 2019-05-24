@@ -77,14 +77,15 @@ typedef struct _WallData {
 	
 	QString name;				// Ç½Ãû³Æ
 	QString thickness;
-	QString highness;
+	QString height;
 	QString steelVertical;
 	QString steelHorizontal;
 	QString steelTie;			//	À­½î
 	QString steelReinforce;		//	¼ÓÇ¿½î
 
 	int col, row;
-	int width, height;
+	
+	vector<int>	floors;			//  ËùÊôÂ¥²ã±àºÅ
 
 	Plug_Entity * ent;
 } WallData;
@@ -106,43 +107,42 @@ class LC_List : public QObject, QC_PluginInterface
                           QWidget *parent, QString cmd) Q_DECL_OVERRIDE;
 
 private:
-	bool sign(const QPointF& v1, const QPointF& v2, const QPointF& v3);
-	
 	
     QString getStrData(WallData strip);
-    double polylineRadius( const Plug_VertexData& ptA, const Plug_VertexData& ptB);
     Document_Interface *d;
 };
 
 class lc_Listdlg : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit lc_Listdlg(QWidget *parent = 0);
-    ~lc_Listdlg();
-    void setText(QString text);
+	explicit lc_Listdlg(QWidget *parent = 0);
+	~lc_Listdlg();
+	void setText(QString text);
+	// void closeEvent(QCloseEvent *event);
 
 public slots:
-//    void processAction(QStringList *commandList);
-//    void processAction(Document_Interface *doc);
-//    void checkAccept();
+	void ClickCloseButton();
+	//    void processAction(QStringList *commandList);
+	//    void processAction(Document_Interface *doc);
+	//    void checkAccept();
 
 protected:
-//    void closeEvent(QCloseEvent *event);
+	//    void closeEvent(QCloseEvent *event);
 
 private:
-//    void readSettings();
-//    void writeSettings();
-//    bool failGUI(QString *msg);
+	//    void readSettings();
+	//    void writeSettings();
+	//    bool failGUI(QString *msg);
 
 private:
-//    QString errmsg;
-//    QLineEdit *startxedit;
-//    QLineEdit *startyedit;
-//    QLineEdit *endxedit;
+	//    QString errmsg;
+	//    QLineEdit *startxedit;
+	//    QLineEdit *startyedit;
+	//    QLineEdit *endxedit;
 public:
-    QTextEdit edit;
+	QTextEdit edit;
 	/*QCheckBox columnCheck;
 	QCheckBox lineCheck;
 	QCheckBox textCheck;*/

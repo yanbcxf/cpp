@@ -567,3 +567,64 @@ bool find_crossPoint(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF &cr
 
 	return false;
 }
+
+/* 将楼层编号集合转换为 字串进行表达, 如 2 5~6 9 12~21 */
+QString floorNum2String(vector<int> floors) {
+	QString text;
+	int segmentS, segmentE;
+	segmentS = segmentE = -1000;
+	std::sort(floors.begin(), floors.end());
+
+	for (int i = 0; i < floors.size(); i++) {
+		if (segmentE + 1 == floors[i]) {
+			segmentE++;
+		}
+		else {
+			if (segmentS >= 0) {
+				if (segmentS == segmentE) {
+					text.append(QString::number(segmentE) + " ");
+				}
+				else {
+					text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+				}
+			}
+			segmentS = segmentE = floors[i];
+		}
+	}
+	if (floors.size() == 0) {
+		/* 未指明所属楼层时，默认为首层 */
+		text = "0";
+	}
+	else {
+		if (segmentS >= 0) {
+			if (segmentS == segmentE) {
+				text.append(QString::number(segmentE) + " ");
+			}
+			else {
+				text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+			}
+		}
+	}
+	return text;
+}
+
+/* 将字串解析为楼层编号集合 */
+vector<int> String2floorNum(QString text) {
+	vector<int> floors;
+	QStringList cols = text.split(' ', QString::SkipEmptyParts);
+	for (int i = 0; i < cols.size(); i++) {
+		QStringList segments = cols[i].split('~', QString::SkipEmptyParts);
+		if (segments.size() == 2) {
+			int segmentS = segments[0].toInt();
+			int segmentE = segments[1].toInt();
+			for (int k = segmentS; k <= segmentE; k++) {
+				floors.push_back(k);
+			}
+		}
+		else if (segments.size() == 1) {
+			floors.push_back(segments[0].toInt());
+		}
+	}
+	std::sort(floors.begin(), floors.end());
+	return floors;
+}

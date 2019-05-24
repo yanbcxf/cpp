@@ -257,64 +257,6 @@ QString LC_List::getStrData(BeamData strip) {
     return strData;
 }
 
-QString floorNum2String(vector<int> floors) {
-	QString text;
-	int segmentS, segmentE;
-	segmentS =  segmentE = -1000;
-	std::sort(floors.begin(), floors.end());
-
-	for (int i = 0; i < floors.size(); i++) {
-		if (segmentE + 1 == floors[i]) {
-			segmentE++;
-		}
-		else {
-			if (segmentS >= 0) {
-				if (segmentS == segmentE) {
-					text.append(QString::number(segmentE) + " ");
-				}
-				else {
-					text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
-				}
-			}
-			segmentS = segmentE = floors[i];
-		}
-	}
-	if (floors.size() == 0) {
-		/* 未指明所属楼层时，默认为首层 */
-		text = "0";
-	}
-	else {
-		if (segmentS >= 0) {
-			if (segmentS == segmentE) {
-				text.append(QString::number(segmentE) + " ");
-			}
-			else {
-				text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
-			}
-		}
-	}
-	return text;
-}
-
-vector<int> String2floorNum(QString text) {
-	vector<int> floors;
-	QStringList cols = text.split(' ', QString::SkipEmptyParts);
-	for (int i = 0; i < cols.size(); i++) {
-		QStringList segments = cols[i].split('~', QString::SkipEmptyParts);
-		if (segments.size() == 2) {
-			int segmentS = segments[0].toInt();
-			int segmentE = segments[1].toInt();
-			for (int k = segmentS; k <= segmentE; k++) {
-				floors.push_back(k);
-			}
-		}
-		else if(segments.size() == 1) {
-			floors.push_back(segments[0].toInt());
-		}
-	}
-	std::sort(floors.begin(), floors.end());
-	return floors;
-}
 
 /* 读取图纸中已经以 MText 形式保存的各层连梁数据 */
 void readBeamData(Document_Interface *doc, QString layerName, vector< BeamData>& beams) {
@@ -519,7 +461,7 @@ void LC_List::execComm(Document_Interface *doc,
 	vlines = sortParallelLines(vlines);
 	hlines = sortParallelLines(hlines);
 
-	// 第二遍，寻找墙文本信息 并标注 ( 行, 列 )
+	// 第二遍，寻找表格单元文本信息 并标注 ( 行, 列 )
 	for (int i = 0; i < obj.size(); ++i) {
 		filterData2(obj.at(i), vlines, hlines, texts);
 	}
