@@ -1743,3 +1743,16 @@ QString Doc_plugin_interface::realToStr(const qreal num, const int units, const 
 void Doc_plugin_interface::commandMessage(const QString & msg) {
 	QG_DIALOGFACTORY->commandMessage(msg);
 }
+
+void Doc_plugin_interface::getBorder(QPointF &minPt, QPointF &maxPt) {
+	if (doc) {
+		doc->calculateBorders();
+		RS_Vector vMin = doc->getMin();
+		minPt.setX(vMin.x);
+		minPt.setY(vMin.y);
+
+		RS_Vector vMax = doc->getMax();
+		maxPt.setX(vMax.x);
+		maxPt.setY(vMax.y);
+	}
+}
