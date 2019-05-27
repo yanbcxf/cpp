@@ -141,6 +141,7 @@ public:
     QString realToStr(const qreal num, const int units = 0, const int prec = 0);
 
 	void commandMessage(const QString & msg);
+	void getBorder(QPointF &minPt, QPointF &maxPt);
 
     //method to handle undo in Plugin_Entity 
     bool addToUndo(RS_Entity* current, RS_Entity* modified);

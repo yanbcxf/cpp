@@ -21,6 +21,7 @@
 #include <QCheckBox>
 
 #include "../libs/AnalyticGeometry.h"
+#include "../libs/BeamUtils.h"
 
 
 typedef struct _TextData {
@@ -36,25 +37,36 @@ typedef struct _TextData {
 } TextData;
 
 
-typedef struct _BeamData {
+class BeamData : public BeamBaseData {
 	/**
 	 * Default constructor. Leaves the data object uninitialized.
 	 */
-	_BeamData() = default;
-	
-	QString name;				// ÁºÃû³Æ
-	QString bxh;				//  ½ØÃæ³ß´ç
-	QString steelTop;
-	QString steelBottom;
-	QString steelHooping;		//	¹¿½î
-	QString steelMiddle;		//	Ñü½î
+public:
+	BeamData() {};
+	BeamData(const BeamBaseData & l) {
+		this->name = l.name;
+		this->bxh = l.bxh;
+		this->steelBottom = l.steelBottom;
+		this->steelTop = l.steelTop;
+		this->steelMiddle = l.steelMiddle;
+		this->steelHooping = l.steelHooping;
+		this->floors = l.floors;
+	};
 
-	vector<int>	floors;			//  ËùÊôÂ¥²ã±àºÅ
+	BeamData & operator=(const BeamBaseData & l) {
+		this->name = l.name;
+		this->bxh = l.bxh;
+		this->steelBottom = l.steelBottom;
+		this->steelTop = l.steelTop;
+		this->steelMiddle = l.steelMiddle;
+		this->steelHooping = l.steelHooping;
+		this->floors = l.floors;
 
+		return *this;
+	};
 	int col, row;
-
 	Plug_Entity * ent;
-} BeamData;
+};
 
 
 //class QTextEdit;
@@ -90,23 +102,7 @@ public:
 
 public slots:
 	void ClickCloseButton();
-//    void processAction(QStringList *commandList);
-//    void processAction(Document_Interface *doc);
-//    void checkAccept();
 
-protected:
-//    void closeEvent(QCloseEvent *event);
-
-private:
-//    void readSettings();
-//    void writeSettings();
-//    bool failGUI(QString *msg);
-
-private:
-//    QString errmsg;
-//    QLineEdit *startxedit;
-//    QLineEdit *startyedit;
-//    QLineEdit *endxedit;
 public:
     QTextEdit edit;
 	/*QCheckBox columnCheck;

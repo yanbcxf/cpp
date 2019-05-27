@@ -30,6 +30,12 @@
     <ClCompile Include="BeamMarking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libs\AnalyticGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\BeamUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BeamMarking.h">
@@ -44,5 +50,13 @@
   <ItemGroup>
     <ResourceCompile Include=".\BeamMarking_resource.rc" />
     <ResourceCompile Include=".\BeamMarkingd_resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\AnalyticGeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\BeamUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

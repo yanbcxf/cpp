@@ -547,6 +547,8 @@ public:
 	* yangbin : 在 commandHitory 栏输出调试信息
 	*/
 	virtual void commandMessage(const QString & msg) = 0;
+
+	virtual void getBorder(QPointF &minPt, QPointF &maxPt) = 0;
 };
 
 
