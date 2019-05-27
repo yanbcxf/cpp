@@ -1,0 +1,563 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{e261f71a-7ebe-40db-a2ad-af5c5dd641ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MultiVariateStatistic">
+      <UniqueIdentifier>{b1da5554-a46f-4675-8f58-8d506446e9df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CatalogQueryDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CatalogTreeView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GB28181ClientMDI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GB28181ClientMDIDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GB28181ClientMDIView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="jmutex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaybackPannel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaybackView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaybackWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RealplayPannel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RealplayView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RealplayWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolPic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\BitmapSlider.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Hyperlink.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\PlayTimeCtrl.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\SkinButton.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\SkinWnd.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CatalogQueryDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CatalogTreeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FileView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GB28181ClientMDI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GB28181ClientMDIDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GB28181ClientMDIView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jmutex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jmutexautolock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaybackPannel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaybackView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaybackWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RealplayPannel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RealplayView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RealplayWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolPic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\BitmapSlider.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Hyperlink.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\memdc.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\PlayTimeCtrl.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\SkinButton.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\SkinWnd.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="playbackbmp\BMP\btns_background.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\btns_sepBmp.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\capture_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\capture_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\capture_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\class_view.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\class_view_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\classview.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\classview_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\down_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Down_Down.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\down_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\down_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Down_Up.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\explorer.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\explorer_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\file_view.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\file_view_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\fileview.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\fileview_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\find_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\find_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\four_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\four_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\four_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\fullscreen_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\fullscreen_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\fullscreen_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\GB28181ClientMDI.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\GB28181ClientMDI.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\GB28181ClientMDIDoc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\hide_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\hide_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\hide_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Left_down.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Left_Up.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\menuimages.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\menuimages_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\one_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\one_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\one_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\onebyone_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\onebyone_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\onebyone_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\output_wnd.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\output_wnd_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\pause_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\pause_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\pause_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\play_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\play_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\play_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\PlayBackCtl.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\record_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\record_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\record_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Right_down.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Right_Up.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\show_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\show_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\show_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\sort.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\sort_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\SpeedSlider_bk_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\SpeedSlider_text.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\SpeedSliderThumb_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stop_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stop_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stop_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stopRecord_d.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stopRecord_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\stopRecord_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Up_down.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\Up_Up.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="UserImages.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\voice_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\voice_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\voiceclose_m.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="playbackbmp\BMP\voiceclose_n.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\ZoomIn_Down.BMP">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\ZoomIn_Normal.BMP">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\ZoomOut_down.BMP">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\ZoomOut_Normal.BMP">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\亮度减.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\亮度加.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\停止录像.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\停止录像C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\停止预览.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\停止预览C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\关闭.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\参数设置.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\声音.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\声音.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\声音C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\声音关.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\声音关C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\对比度减.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\对比度加.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\录像.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\录像.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\录像C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\抓图.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\抓图.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\抓图C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\视频参数.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\视频参数C.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\音量+.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\音量-.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\颜色减.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\颜色加.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\饱和度减.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="11\饱和度加.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T1_1_scatter.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T1_2_scatter.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T1_3_std.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T1_8_3d.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T2_Matrix.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="MultiVariateStatistics\T2_probability.m">
+      <Filter>MultiVariateStatistic</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GB28181ClientMDI.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

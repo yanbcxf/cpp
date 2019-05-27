@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="dll_junior">
+      <UniqueIdentifier>{e06ee286-e333-4078-be28-5900842ba3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="callback">
+      <UniqueIdentifier>{74ca1a3b-10c7-4cf6-b281-a7e627496e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sip_junior">
+      <UniqueIdentifier>{6608da90-d45c-4dfa-adb2-971122119ac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sip_superior">
+      <UniqueIdentifier>{57095e8c-ccd3-4ed9-bd4b-7605f0016243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dll_superior">
+      <UniqueIdentifier>{fc72efaa-6735-4ff5-abe7-a0aa02f846d1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AbstractCommand.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivePsParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicHashTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandCallback.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dll28181_Layer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DllEnvironment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Gb28181_Layer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GB28181Client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HashTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="jmutex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="jthread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Medium.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PS_test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UsageEnvironment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DllAlarmControl.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllAlarmSubscribeRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllAlarmSubscribeSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllCallBye.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllCallMediaControl.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllCallPlayPlaybackDownload.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllCataloginfoRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllCataloginfoSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllDeviceControlSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllDeviceinfoRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllDeviceinfoSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllMediaSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllPtzAutoScan.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllPtzMove.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllPtzPreset.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllPtzTour.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllRecordControl.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllRegisterResponse.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllRegisterSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllSearchRecordfileRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllSearchRecordfileSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllStateinfoRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="DllStateinfoSession.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdAlarmNotify.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCall200ok.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCallFileToEnd.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCallNoAnswer.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCataloginfoResponse.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdDeviceinfoResponse.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdKeepaliveRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdMessage200ok.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdMessageFailure.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdRegisterRequest.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdSearchRecordfileResponse.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdStateinfoResponse.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdSubscribe200ok.cpp">
+      <Filter>dll_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackAlarmNotify.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllAlarmSubscribeResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllCallDataResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllCallResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllCataloginfoResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllDeviceinfoResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllPtzResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllRegisterRequest.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllSearchRecordfileResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllStateinfoResponse.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBackDllUnregisterRequest.cpp">
+      <Filter>callback</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Alarm.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Catalog.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_DeviceControl.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_DeviceInfo.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Invite.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Recordfile.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Register.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Stateinfo.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Junior_Subscribe.cpp">
+      <Filter>sip_junior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Alarm.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Catalog.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_DeviceControl.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_DeviceInfo.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Invite.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Recordfile.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Register.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip_Superior_Stateinfo.cpp">
+      <Filter>sip_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCataloginfoRequest.cpp">
+      <Filter>dll_superior</Filter>
+    </ClCompile>
+    <ClCompile Include="SipdCataloginfoSession.cpp">
+      <Filter>dll_superior</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GB28181Client.def">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractCommand.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivePsParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicHashTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandCallback.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dll28181_Layer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DllEnvironment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Gb28181_Layer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jmutex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jmutexautolock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jthread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Medium.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UsageEnvironment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DllAlarmControl.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllAlarmSubscribeRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllAlarmSubscribeSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllCallBye.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllCallMediaControl.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllCallPlayPlaybackDownload.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllCataloginfoRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllCataloginfoSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllDeviceControlSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllDeviceinfoRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllDeviceinfoSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllMediaSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllPtzAutoScan.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllPtzMove.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllPtzPreset.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllPtzTour.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllRecordControl.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllRegisterResponse.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllRegisterSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllSearchRecordfileRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllSearchRecordfileSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllStateinfoRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="DllStateinfoSession.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdAlarmNotify.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCall200ok.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCallFileToEnd.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCallNoAnswer.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCataloginfoResponse.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdDeviceinfoResponse.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdKeepaliveRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdMessage200ok.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdMessageFailure.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdRegisterRequest.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdSearchRecordfileResponse.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdStateinfoResponse.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdSubscribe200ok.h">
+      <Filter>dll_junior</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackAlarmNotify.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllAlarmSubscribeResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllCallDataResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllCallResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllCataloginfoResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllDeviceinfoResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllPtzResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllRegisterRequest.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllSearchRecordfileResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllStateinfoResponse.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackDllUnregisterRequest.h">
+      <Filter>callback</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCataloginfoRequest.h">
+      <Filter>dll_superior</Filter>
+    </ClInclude>
+    <ClInclude Include="SipdCataloginfoSession.h">
+      <Filter>dll_superior</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

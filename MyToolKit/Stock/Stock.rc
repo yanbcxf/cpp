@@ -1,0 +1,1289 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\Stock.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""          // 标准组件\r\n"
+    "#include ""l.CHS\\afxprint.rc""        // 打印/打印预览资源\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""l.CHS\\afxribbon.rc""               // MFC 功能区和控件条资源\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\Stock.ico"
+IDR_StockTYPE           ICON                    "res\\StockDoc.ico"
+IDI_FILE_VIEW           ICON                    "res\\file_view.ico"
+IDI_FILE_VIEW_HC        ICON                    "res\\file_view_hc.ico"
+IDI_CLASS_VIEW          ICON                    "res\\class_view.ico"
+IDI_CLASS_VIEW_HC       ICON                    "res\\class_view_hc.ico"
+IDI_OUTPUT_WND          ICON                    "res\\output_wnd.ico"
+IDI_OUTPUT_WND_HC       ICON                    "res\\output_wnd_hc.ico"
+IDI_PROPERTIES_WND      ICON                    "res\\properties_wnd.ico"
+IDI_PROPERTIES_WND_HC   ICON                    "res\\properties_wnd_hc.ico"
+IDR_CsvTYPE             ICON                    "res\\idr_stoc.ico"
+IDR_DatabaseTYPE        ICON                    "res\\icon1.ico"
+IDR_AutodownloadTYPE    ICON                    "res\\ico00001.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+IDR_SORT                BITMAP                  "res\\sort.bmp"
+IDB_SORT_24             BITMAP                  "res\\sort_hc.bmp"
+IDB_FILE_VIEW           BITMAP                  "res\\fileview.bmp"
+IDB_FILE_VIEW_24        BITMAP                  "res\\fileview_hc.bmp"
+IDB_CLASS_VIEW          BITMAP                  "res\\classview.bmp"
+IDB_CLASS_VIEW_24       BITMAP                  "res\\classview_hc.bmp"
+IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
+IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
+IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+IDR_PROPERTIES          BITMAP                  "res\\properties.bmp"
+IDB_PROPERTIES_HC       BITMAP                  "res\\properties_hc.bmp"
+IDR_STOCKINFO           BITMAP                  "res\\sort1.bmp"
+IDR_PLATEINFO           BITMAP                  "res\\toolbar1.bmp"
+IDB_SPLASH              BITMAP                  "res\\splash.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME_256 TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_SORT TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_SORT_MENU
+    BUTTON      ID_NEW_FOLDER
+END
+
+IDR_EXPLORER TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_PROPERTIES
+END
+
+IDR_MENU_IMAGES TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_WINDOW_MANAGER
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_TOOLS_MACRO
+    BUTTON      ID_SORTING_SORTALPHABETIC
+    BUTTON      ID_SORTING_SORTBYTYPE
+    BUTTON      ID_SORTING_SORTBYACCESS
+    BUTTON      ID_SORTING_GROUPBYTYPE
+END
+
+IDR_PROPERTIES TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_EXPAND_ALL
+    BUTTON      ID_SORTPROPERTIES
+    BUTTON      ID_PROPERTIES1
+    BUTTON      ID_PROPERTIES2
+END
+
+IDR_STOCKINFO TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FIND_STOCK_BY_CODE
+END
+
+IDR_PLATEINFO TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FOCUS_NEXT_ON_PLATE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "新建(&N)\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "打开(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "关闭(&C)",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "打印设置(&R)...",                 ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最近的文件",                       ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "退出(&X)",                      ID_APP_EXIT
+        MENUITEM "Newmat11 测试",                 ID_NEWMAT11_TEST
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 2005(&5)",  ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 Stock(&A)...",             ID_APP_ABOUT
+    END
+END
+
+IDR_StockTYPE MENU 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "选择股票...",                     ID_SELECT_STOCK
+        MENUITEM "新建(&N)\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "打开(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "关闭(&C)",                      ID_FILE_CLOSE
+        MENUITEM "保存(&S)\tCtrl+S",              ID_FILE_SAVE
+        MENUITEM "另存为(&A)...",                  ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "打印(&P)...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "打印预览(&V)",                    ID_FILE_PRINT_PREVIEW
+        MENUITEM "打印设置(&R)...",                 ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最近的文件",                       ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "退出(&X)",                      ID_APP_EXIT
+    END
+    POPUP "编辑(&E)"
+    BEGIN
+        MENUITEM "撤消(&U)\tCtrl+Z",              ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 2005(&5)",  ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+        MENUITEM "选择视图范围......",                ID_SET_STOCK_RANGE
+    END
+    POPUP "窗口(&W)"
+    BEGIN
+        MENUITEM "新建窗口(&N)",                    ID_WINDOW_NEW
+    END
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 Stock(&A)...",             ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_EDIT MENU 
+BEGIN
+    POPUP "编辑"
+    BEGIN
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
+    END
+END
+
+IDR_POPUP_SORT MENU 
+BEGIN
+    POPUP "排序"
+    BEGIN
+        MENUITEM "按字母顺序排序(&S)",                 ID_SORTING_SORTALPHABETIC
+        MENUITEM "按类型排序(&T)",                   ID_SORTING_SORTBYTYPE
+        MENUITEM "按访问排序(&E)",                   ID_SORTING_SORTBYACCESS
+        MENUITEM "按类型分组(&Y)",                   ID_SORTING_GROUPBYTYPE
+    END
+END
+
+IDR_POPUP_EXPLORER MENU 
+BEGIN
+    POPUP "资源管理器"
+    BEGIN
+        MENUITEM "打开(&O)",                      ID_OPEN
+        MENUITEM "打开方式(&W)....",                ID_OPEN_WITH
+        MENUITEM SEPARATOR
+        MENUITEM "编译(&C)",                      ID_DUMMY_COMPILE
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "删除(&R)",                      ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "属性(&P)...",                   ID_PROPERTIES
+    END
+END
+
+IDR_OUTPUT_POPUP MENU 
+BEGIN
+    POPUP "弹出项"
+    BEGIN
+        MENUITEM "复制(&C)",                      ID_EDIT_COPY
+        MENUITEM "清除(&C)",                      ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "隐藏(&H)",                      ID_VIEW_OUTPUTWND
+    END
+END
+
+IDR_THEME_MENU MENU 
+BEGIN
+    MENUITEM "Office 2007 (蓝色样式)(&B)",      ID_VIEW_APPLOOK_OFF_2007_BLUE
+    MENUITEM "Office 2007 (黑色样式)(&L)",      ID_VIEW_APPLOOK_OFF_2007_BLACK
+    MENUITEM "Office 2007 (银色样式)(&S)",      ID_VIEW_APPLOOK_OFF_2007_SILVER
+    MENUITEM "Office 2007 (水绿色样式)(&A)",     ID_VIEW_APPLOOK_OFF_2007_AQUA
+END
+
+IDR_CsvTYPE MENU 
+BEGIN
+    POPUP "文件"
+    BEGIN
+        MENUITEM "打开",                          ID_CSV_OPEN
+        MENUITEM "导入",                          ID_CSV_IMPORT
+    END
+END
+
+IDR_AutodownloadTYPE MENU 
+BEGIN
+    POPUP "股票基础资料"
+    BEGIN
+        MENUITEM "深圳A股",                        ID_DOWNLOAD_STOCKINFO_SHENZHEN_ASHARE
+        MENUITEM "中小板",                         ID_DOWNLOAD_STOCKINFO_SMALLANDMID
+        MENUITEM "创业板",                         ID_DOWNLOAD_STOCKINFO_ENTERPRENEUR
+        MENUITEM "上海股票",                        ID_DOWNLOAD_STOCKINFO_SHANGHAI
+        MENUITEM "搜狐板块",                        ID_DOWNLOAD_SOUHU_STOCK_PLATE
+    END
+    POPUP "历史交易行情"
+    BEGIN
+        MENUITEM "深圳A股",                        ID_DOWNLOAD_TRADINGDAILY_SHENZHEN_ASHARE
+        MENUITEM "中小板",                         ID_DOWNLOAD_TRADINGDAILY_SMALL_AND_MID
+        MENUITEM "创业板",                         ID_DOWNLOAD_TRADINGDAILY_ENTERPRENUER
+        MENUITEM "上海股票",                        ID_DOWNLOAD_TRADINGDAILY_SHANGHAISTOCK
+    END
+    POPUP "财务报表"
+    BEGIN
+        MENUITEM "深圳A股",                        ID_DOWNLOAD_FINANCE_SHENZHEN_ASHARE
+        MENUITEM "中小板",                         ID_DOWNLOAD_FINANCE_SMALL_AND_MID
+        MENUITEM "创业板",                         ID_DOWNLOAD_FINANCE_ENTERPRENUER
+        MENUITEM "上海股票",                        ID_DOWNLOAD_FINANCE_SHENZHEN_ASHARE
+    END
+    POPUP "股本结构"
+    BEGIN
+        MENUITEM "上海股票",                        ID_DOWNLOAD_CAPITIALSTRUCT_SHANGHAI
+        MENUITEM "深圳股票",                        ID_DOWNLOAD_CAPITIALSTRUCT_SHENZHEN
+    END
+    POPUP "历史资金流向"
+    BEGIN
+        MENUITEM "深圳A股",                        ID_DOWNLOAD_CAPITALFLOW_SHENZHEN_ASHARE
+        MENUITEM "中小板",                         ID_DOWNLOAD_CAPITALFLOW_SMALL_AND_MID
+        MENUITEM "创业板",                         ID_DOWNLOAD_CAPITALFLOW_ENTERPRENUER
+        MENUITEM "上海股票",                        ID_DOWNLOAD_CAPITALFLOW_SHANGHAISTOCK
+    END
+    POPUP "其他"
+    BEGIN
+        MENUITEM "搜狐业绩预告",                      ID_DOWNLOAD_PERFORMANCE_FORECAST
+        MENUITEM "搜狐主营收入构成",                    ID_DOWNLOAD_INCOME_COMPOSITION
+        MENUITEM "和讯研究报告",                      ID_DOWNLOAD_HEXUN_RESEARCH_PAPER
+        MENUITEM "巨潮网分红扩股",                     ID_DOWNLOAD_CNINFO_BONUS_SHARE
+        MENUITEM "中财网分红扩股",                     ID_DOWNLOAD_CFI_BONUS_SHARE
+        MENUITEM "同花顺分红融资",                     ID_DOWNLOAD_10JQKA_BONUS_SHARE
+        MENUITEM "上证综指",                        ID_DOWNLOAD_SHANGHAI_COMPOSITE_INDEX
+        MENUITEM "沪深300指数",                     ID_DOWNLOAD_HUSHENG300_INDEX
+        MENUITEM "金融期货日行情",                     ID_DOWNLOAD_CFFEX_FUTURE_DAILY
+        MENUITEM "深证成指",                        ID_DOWNLOAD_SHENZHENG_COMPOSITE_INDEX
+        MENUITEM "巨潮网股票基础资料",                   ID_DOWNLOAD_CNINFO_STOCKINFO
+        MENUITEM "其他1",                         ID_DOWNLOAD_CNINFO_ANNOUNCEMENT
+        MENUITEM "深证新指数",                       ID_DOWNLOAD_SHENZHENG_NEW_INDEX
+        MENUITEM "中小板综合指数",                     ID_DOWNLOAD_SMALL_MIDDLE_INDEX
+        MENUITEM "创业板综合指数",                     ID_DOWNLOAD_ENTERPRENUER_INDEX
+        MENUITEM "巨潮公告深圳A股",                    ID_DOWNLOAD_CNINFO_ANNOUNCEMENT_SHENZHEN_ASHARE
+        MENUITEM "巨潮公告上海",                      ID_DOWNLOAD_CNINFO_ANNOUNCEMENT_SHANGHAI
+        MENUITEM "巨潮公告中小板",                     ID_DOWNLOAD_CNINFO_ANNOUNCEMENT_SMALLANDMID
+        MENUITEM "巨潮公告创业板",                     ID_DOWNLOAD_CNINFO_ANNOUNCEMENT_ENTERPRENEUR
+        MENUITEM "深圳股指样本",                      ID_DOWNLOAD_SHENZHEN_INDEX_YANGBEN
+    END
+    POPUP "基金持有"
+    BEGIN
+        MENUITEM "深圳A股",                        ID_DOWNLOAD_FUND_HOLD_SHENZHEN_ASHARE
+        MENUITEM "创业板",                         ID_DOWNLOAD_FUND_HOLD_ENTERPRENUER
+        MENUITEM "中小板",                         ID_DOWNLOAD_FUND_HOLD_SMALL_AND_MID
+        MENUITEM "上海股票",                        ID_DOWNLOAD_FUND_HOLD_SHANGHAI
+    END
+    POPUP "国家统计局"
+    BEGIN
+        MENUITEM "月度数据",                        ID_DOWNLOAD_STATSGOV_HGYD
+        MENUITEM "季度数据",                        ID_DOWNLOAD_STATSGOV_HGJD
+        MENUITEM "年度数据",                        ID_DOWNLOAD_STATSGOV_HGND
+        MENUITEM "分省月度数据",                      ID_DOWNLOAD_STATSGOV_FSYD
+        MENUITEM "分省季度数据",                      ID_DOWNLOAD_STATSGOV_FSJD
+        MENUITEM "分省年度数据",                      ID_DOWNLOAD_STATSGOV_FSND
+    END
+END
+
+IDR_POPUP_STOCKINFO MENU 
+BEGIN
+    POPUP "排序"
+    BEGIN
+        MENUITEM "个股数据读入及概述",                   ID_INDIVIDUAL_SUMMARY
+        MENUITEM "加入自选股",                       ID_INDIVIDUAL_ADD_TO_SELF_SELECT
+        MENUITEM "个股数据下载",                      ID_DOWNLOAD_INDIVIDUAL
+        POPUP "巨潮网公告"
+        BEGIN
+            MENUITEM "增发",                          ID_INDI_ADD_INSURANCE_ROADMAP
+            MENUITEM "其它重大事项",                      ID_INDI_IMPORTANT_EVENT_ROADMAP
+            MENUITEM "年度季度报告",                      ID_INDI_QUARTER_REPORT_ROADMAP
+            MENUITEM "交易",                          ID_INDI_TRADE_ROADMAP
+            MENUITEM "特别处理和退市",                     ID_INDI_SPECIAL_DISPOSAL_ROADMAP
+            MENUITEM "补充及更正",                       ID_INDI_SUPPLEMENT_CORRECTION_ROADMAP
+            MENUITEM "首次公开发行及上市",                   ID_INDI_ORIGINAL_ISSUE_ROADMAP
+        END
+        POPUP "股本结构"
+        BEGIN
+            MENUITEM "历年分红送股",                      ID_INDI_10JQKA_BONUS
+            MENUITEM "股本结构变迁",                      ID_INDIVIDUAL_CAPITAL_STRUCT
+            MENUITEM "基金持有 CSV文件",                  ID_INDIVIDUAL_CSV_FUND_HOLD
+            MENUITEM "基金持有市值跟踪",                    ID_INDIVIDUAL_FUND_HOLD_VALUE_ANALYSIS
+        END
+        POPUP "每日交易数据相关"
+        BEGIN
+            MENUITEM "每日总市值及动态PE",                  ID_INDI_PE_AND_VALUE_DAILY
+            MENUITEM "每日股票及动态PE",                   ID_STOCKINFO_OPEN
+            MENUITEM "MACD 分析",                     ID_INDIVIDUAL_MACD
+            MENUITEM "每日资金流向累计",                    ID_INDIVIDUAL_CAPITAL_FLOW
+            MENUITEM "深市股票PE",                      ID_INDIVIDUAL_SZSE_PE
+            MENUITEM "每日成交量",                       ID_INDIVIDUAL_VOLUME
+            MENUITEM "CSV文件视图",                     ID_INDIVIDUAL_CSV_TRADING
+            MENUITEM "每日资金流向与流通市值",                 ID_INDIVIDUAL_CAPITALFLOW_VALUE
+            MENUITEM "MCST 成本价分析",                  ID_INDIVIDUAL_MCST
+            MENUITEM "总市值指数分析",                     ID_INDI_MARKET_VALUE_INDEX_ANALYSIS
+            MENUITEM "中证公司数据分析",                    ID_INDI_CSINDEX_ANALYSIS
+            MENUITEM "DMI 分析",                      ID_INDI_DMI
+            MENUITEM "技术分析事件图",                     ID_INDI_TECH_ANALYSIS_ROADMAP
+            MENUITEM "模拟交易",                        ID_INDI_SIMULATED_ACCOUNT_QUERY
+        END
+        POPUP "利润表相关"
+        BEGIN
+            MENUITEM "今明年业绩预估",                     ID_INDI_INCOMESTATEMENT_FORECAST
+            MENUITEM "营业总成本构成",                     ID_OVERALL_COST
+            MENUITEM "主营收入成长构成",                    ID_INDI_MAIN_INCOME_GROWTH
+            MENUITEM "净利润构成",                       ID_INDIVIDUAL_NET_PROFITS
+            MENUITEM "CSV文件视图",                     32846
+        END
+        POPUP "资产负债表相关"
+        BEGIN
+            MENUITEM "流动资产",                        ID_BALANCE_CURRENT_ASSET
+            MENUITEM "非流动资产",                       ID_BALANCE_NON_CURRENT_ASSET
+            MENUITEM "流动负债",                        ID_32833
+            MENUITEM "非流动负债",                       ID_32834
+            MENUITEM "所有者权益",                       ID_32835
+            MENUITEM "CSV文件视图",                     ID_INDIVIDUAL_CSV_BALANCE
+        END
+        POPUP "现金流量表"
+        BEGIN
+            MENUITEM "现金流量小计",                      ID_CASHFLOW_SUMMARY
+            MENUITEM "CSV文件视图",                     ID_INDIVIDUAL_CSV_CASHFLOWS
+        END
+        POPUP "其他指标分析"
+        BEGIN
+            MENUITEM "僵尸指标分析",                      ID_INDIVIDUAL_ZOMBIE_ANALYSIS
+            MENUITEM "和讯研报EPS分布",                   ID_INDI_HEXUN_RESEARCH_PAPER_EPS
+            MENUITEM "毛利率变动比率",                     ID_INDI_GROSS_PROFIT_RATE
+        END
+    END
+END
+
+IDR_IndividualSummary MENU 
+BEGIN
+    POPUP "文件"
+    BEGIN
+        MENUITEM "板块分类",                        ID_SOUHU_PLATE
+        MENUITEM "全部股票概况列表",                    ID_ALL_STOCK_LIST
+        MENUITEM "资料下载",                        ID_ALL_STOCK_DOWNLOAD
+        MENUITEM "僵尸企业排序",                      ID_ZOMBIE_STOCK_LIST
+        MENUITEM "主营产品查询",                      ID_MAIN_PRODUCT_QUERY
+        MENUITEM "动态市盈率 PE 排序",                 ID_PE_STOCK_LIST
+        MENUITEM "MACD 股票买卖分析",                 ID_MACD_STOCK_LIST
+        MENUITEM "和讯研报查询",                      ID_HEXUN_RESEARCH_PAPER_QUERY
+        MENUITEM "主营收入逐年增长排序",                  ID_MAIN_INCOME_YEAR_GROWTH_QUERY
+        MENUITEM "主营利润逐年增长排序",                  ID_MAIN_PROFIT_YEAR_GROWTH_QUERY
+        MENUITEM "近期分红收益排序",                    ID_RECENT_BONUS_CASH_QUERY
+        MENUITEM "今年分红预案查询",                    ID_THIS_YEAR_BONUS_PLAN_QUERY
+        MENUITEM "成本价 MCST（市场热度） 排序",           ID_MCST_STOCK_LIST
+        POPUP "巨潮网公告"
+        BEGIN
+            MENUITEM "公告查询",                        ID_CNINFO_ANNOUNCEMENT_QUERY
+            MENUITEM "股权激励预案查询",                    ID_CNINFO_INCENTIVE_PLAN_QUERY
+            MENUITEM "竞得土地公告查询",                    ID_CNINFO_GET_PLAN_QUERY
+            MENUITEM "前 10 名股东持股查询",                ID_CNINFO_SHARE_HOLDING_QUERY
+            MENUITEM "前 10 名股东持股统计",                ID_CNINFO_SHARE_HOLDING_STATISTICS
+        END
+        POPUP "沪深股市分析"
+        BEGIN
+            MENUITEM "沪深涨跌率查询",                     ID_HUSHEN_CHANGE_RATE_QUERY
+            MENUITEM "上证指数(MATLAB)",                ID_SHANGHAI_INDEX
+            MENUITEM "中小板综指(MATLAB)",               ID_SMALL_MIDDLE_INDEX
+            MENUITEM "创业板综指(MATLAB)",               ID_ENTERPRENUER_INDEX
+        END
+        POPUP "技术分析"
+        BEGIN
+            MENUITEM "蜡烛图",                         ID_CANDLESTICKS_JAPAN_QUERY
+            MENUITEM "MACD",                        ID_MACD_QUERY
+            MENUITEM "BOLL",                        ID_BOLL_QUERY
+            MENUITEM "模拟交易",                        ID_SIMULATED_ACCOUNT_QUERY
+        END
+        MENUITEM "股票增发盈亏汇总",                    ID_ADD_ISSUANCE_STOCK_LIST
+        MENUITEM "毛利润PE 排序",                    ID_PE_GROSS_LIST
+        MENUITEM "巨潮网 PDF 分析",                  ID_CNINFO_PDF_QUERY
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 2005(&5)",  ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "数据筛选"
+    BEGIN
+        MENUITEM "表格高级查询",                      ID_TABLE_ADVANCED_QUERY
+        MENUITEM "选择视图范围......",                ID_SET_STOCK_RANGE
+        MENUITEM "加入自选股",                       ID_TABLE_ADD_TO_SELF_SELECT
+        MENUITEM "选择自选股范围",                     ID_TABLE_SET_SELF_SELECT_RANGE
+    END
+    POPUP "大盘分析"
+    BEGIN
+        POPUP "大盘分析"
+        BEGIN
+            MENUITEM "证券交易结算资金",                    ID_MARKET_EXCHANGE_FUND_IN_SETTLEMENT
+            MENUITEM "融资融券担保资金",                    ID_MARKET_MARGIN_GUARANTEE_FUND
+            MENUITEM "沪深300指数及期货",                  ID_MARKET_CFFEX_HS300_FUTURE
+            MENUITEM "大盘指数",                        ID_MARKET_INDEX
+            MENUITEM "投资者情况统计",                     ID_MARKET_INVESTOR_STAT
+        END
+    END
+    POPUP "宏观经济（国家统计局）"
+    BEGIN
+        MENUITEM "月度数据",                        ID_STATSGOV_HGYD_MENU
+        MENUITEM "季度数据",                        ID_STATSGOV_HGJD_MENU
+        MENUITEM "年度数据",                        ID_STATSGOV_HGND_MENU
+        MENUITEM "分省月度",                        ID_STATSGOV_FSYD_MENU
+        MENUITEM "分省季度",                        ID_STATSGOV_FSJD_MENU
+        MENUITEM "分省年度",                        ID_STATSGOV_FSND_MENU
+    END
+    POPUP "上市公司财务统计"
+    BEGIN
+        MENUITEM "主营业务收入",                      ID_FINANCE_SALES_FROM_OPERATIONS
+        MENUITEM "主营业务成本",                      ID_FINANCE_COST_OF_OPERATIONS
+    END
+END
+
+IDR_POPUP_STOCK_PLATE MENU 
+BEGIN
+    POPUP "弹出"
+    BEGIN
+        MENUITEM "股票列表",                        ID_PLATE_STOCK_LIST
+        MENUITEM "净利润比使用资金净额",                  ID_PLATE_NETPROFITS_RATIO
+        MENUITEM SEPARATOR
+        MENUITEM "增加股票自选分类",                    ID_PLATE_ADD_STOCK
+        MENUITEM "删除股票或自选分类",                   ID_PLATE_DEL_STOCK
+        MENUITEM "清空自选分类",                      ID_PLATE_CLEAR_STOCK
+        MENUITEM SEPARATOR
+        MENUITEM " 沪深指数分析",                     ID_PLATE_SHANGHAI_INDEX
+        POPUP "巨潮网公告"
+        BEGIN
+            MENUITEM "巨潮网公告查询",                     ID_PLATE_CNINFO_ANNOUNCEMENT_QUERY
+            MENUITEM "竞得土地公告查询",                    ID_PLATE_CNINFO_GET_LAND_QUERY
+            MENUITEM "股票激励预案查询",                    ID_PLATE_CNINFO_INCENTIVE_PLAN_QUERY
+            MENUITEM "前 10 名股东持股查询",                ID_PLATE_CNINFO_SHARE_HOLDING_QUERY
+            MENUITEM "巨潮网 PDF 分析",                  ID_PLATE_CNINFO_PDF_QUERY
+        END
+        MENUITEM "和讯研报查询",                      ID_PLATE_RESEARCH_PAPER_QUERY
+        MENUITEM "动态PE值排序",                     ID_PLATE_PE_STOCK_LIST
+        POPUP "中证指数公司"
+        BEGIN
+            MENUITEM "行业市盈率（静态PE）",                 ID_PLATE_INDUSTRY_STATIC_PE
+            MENUITEM "行业市盈率（滚动PE）",                 ID_PLATE_INDUSTRY_DYNAMIC_PE
+            MENUITEM "行业市净率（PB）",                   ID_PLATE_INDUSTRY_PB
+            MENUITEM "行业公司数",                       ID_PLATE_INDUSTRY_COMPANY_NUMBER
+            MENUITEM "行业股息率",                       ID_PLATE_DIVIDEND_YIELD_RATIO
+            MENUITEM "滚动 PE 值排序",                   ID_PLATE_CSI_DYNAMIC_PE_STOCK_LIST
+            MENUITEM "静态 PE 值排序",                   ID_PLATE_CSI_STATIC_PE_STOCK_LIST
+        END
+        POPUP "偿债能力分析"
+        BEGIN
+            MENUITEM "资产负债率",                       ID_DEBT_TO_ASSETS_RATIO
+            MENUITEM "所有者权益负债率",                    ID_DEBT_TO_CAPITAL_RATIO
+            MENUITEM "流动比率",                        ID_PLATE_LIQUIDITY_RATIO
+        END
+        POPUP "成长性分析"
+        BEGIN
+            MENUITEM "主营收入逐年增长排序",                  ID_PLATE_MAIN_INCOME_YEAR_GROWTH
+            MENUITEM "主营利润逐年增长排序",                  ID_PLATE_MAIN_PROFIT_YEAR_GROWTH
+            MENUITEM "总资产增长分析",                     ID_TOTAL_ASSETS_GROWTH
+            MENUITEM "固定资产（含在建工程）增长分析",             ID_NET_FIXED_ASSETS_GROWTH
+            MENUITEM "主营收入增长分析",                    ID_MAIN_INCOME_GROWTH
+            MENUITEM "主营利润增长分析",                    ID_32979
+            MENUITEM "净利润增长分析",                     ID_32980
+        END
+        POPUP "毛利率分析"
+        BEGIN
+            MENUITEM "产品毛利润",                       ID_PLATE_GROSS_PROFIT
+            MENUITEM "季度毛利率排序",                     ID_PLATE_GROSS_PROFIT_RATE_QUARTER_GROWTH
+            MENUITEM "前4季度平均毛利率排序",                 ID_PLATE_GROSS_PROFIT_RATE_4_QUARTER_GROWTH
+            MENUITEM "比上季度变动排序",                    ID_PLATE_GROSS_PROFIT_RATE_CHANGE_FOR_LAST
+            MENUITEM "比前4季度平均值排序",                  ID_PLATE_GROSS_PROFIT_CHANGE_FOR_AVERAGE
+        END
+        POPUP "经营效率分析"
+        BEGIN
+            MENUITEM "总资产周转次数",                     ID_TOTAL_ASSETS_TURNOVER_RATIO
+            MENUITEM "固定资产周转次数",                    ID_FIXED_ASSETS_TURNOVER_RATIO
+            MENUITEM "流动资产周转次数",                    ID_CURRENT_ASSETS_TURNOVER_RATIO
+            MENUITEM "存货周转次数",                      ID_INVENTORY_TURNOVER_RATIO
+        END
+        MENUITEM "基金持有",                        ID_FUND_HOLD_RATIO
+        MENUITEM "僵尸企业排序",                      ID_PLATE_ZOMBIE_STOCK_LIST
+        MENUITEM "今年分红预案查询",                    ID_PLATE_BONUS_PLAN_QUERY
+        MENUITEM "成本价（市场热度）排序",                 ID_PLATE_MCST_STOCK_LIST
+        MENUITEM "增发盈亏汇总",                      ID_PLATE_ADD_ISSUANCE_STOCK_LIST
+        MENUITEM "总市值（扣除大盘波动）",                 ID_PLATE_CORRECTED_MARKET_VALUE
+        MENUITEM "日成交明细",                       ID_PLATE_DEAL_DETAIL_DAILY
+        MENUITEM "换手率（市场活跃度）",                  ID_PLATE_TURNOVER_RATE_DAILY
+        MENUITEM "个股涨跌幅汇总排序",                   ID_PLATE_CHANGE_RATE_SUMMARY
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "D",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_RETURN,      ID_ENTER,               VIRTKEY, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 Stock"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "Stock，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2015",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_DATABASEVIEW DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "请将“输出”视图打开",IDC_STATIC,18,22,280,8
+    PUSHBUTTON      "Mysql Test",IDC_MYSQL_TEST,59,117,50,14
+    PUSHBUTTON      "“股票”数据表创建",IDC_STOCK_DB_SETUP,189,117,61,14
+    PUSHBUTTON      "curl 测试",IDC_CURL_TEST,54,63,63,19
+END
+
+IDD_STOCKRANGESET DIALOGEX 0, 0, 315, 184
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "对话框"
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,203,163,50,14
+    PUSHBUTTON      "取消",IDCANCEL,258,163,50,14
+    CONTROL         "",IDC_START_DATE,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,137,104,100,15
+    CONTROL         "",IDC_END_DATE,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,136,136,100,15
+    RTEXT           "开始日期",IDC_STATIC,40,105,70,14
+    RTEXT           "结束日期",IDC_STATIC,37,136,73,16
+    RTEXT           "视图类型",IDC_STATIC,74,33,35,8
+    CONTROL         "",IDC_LIST_VIEWTYPE,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,137,32,97,61
+END
+
+IDD_SELFSELECTPLATEDLG DIALOGEX 0, 0, 207, 226
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "对话框"
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,89,205,50,14
+    PUSHBUTTON      "取消",IDCANCEL,150,205,50,14
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SINGLEEXPAND | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,7,193,191
+END
+
+IDD_INPUTTEXTDLG DIALOGEX 0, 0, 179, 71
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "输入名称"
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,38,42,50,14
+    PUSHBUTTON      "取消",IDCANCEL,90,41,50,14
+    EDITTEXT        IDC_EDIT1,27,19,124,17,ES_AUTOHSCROLL
+END
+
+IDD_FIND_BY_CODE DIALOGEX 0, 0, 263, 70
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "股票代码输入查询"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,149,49,50,14
+    PUSHBUTTON      "取消",IDCANCEL,206,49,50,14
+    COMBOBOX        IDC_COMBO1,19,14,123,149,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SIMPLE_INPUT_BOX DIALOGEX 0, 0, 201, 70
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "输入框"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,84,49,50,14
+    PUSHBUTTON      "取消",IDCANCEL,139,49,50,14
+    COMBOBOX        IDC_COMBO1,21,23,157,183,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DEAL_DETAIL_DATE DIALOGEX 0, 0, 316, 159
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "成交明细日期选择"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,137,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,137,50,14
+    CONTROL         "自定义1",IDC_GRID,"MFCGridCtrl",WS_TABSTOP,7,7,302,128
+END
+
+IDD_STATSGOV_MENU_DLG DIALOGEX 0, 0, 607, 397
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "取消",IDCANCEL,221,376,50,14
+    CONTROL         "",IDC_TREE2,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,7,191,356
+    PUSHBUTTON      "以指标为固定维度",IDC_BTN_ZB,115,376,84,14
+END
+
+IDD_STOCK_GROUP_DLG DIALOGEX 0, 0, 463, 368
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,251,347,50,14
+    PUSHBUTTON      "取消",IDCANCEL,332,347,50,14
+    GROUPBOX        "区域",IDC_STATIC,258,7,198,338
+    CONTROL         "",IDC_TREE_REG,"SysTreeView32",TVS_HASLINES | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,264,40,187,300
+    CONTROL         "国家",IDC_RADIO_NATION,"Button",BS_AUTORADIOBUTTON | WS_GROUP,287,22,32,10
+    CONTROL         "省份",IDC_RADIO_PROVINCE,"Button",BS_AUTORADIOBUTTON,337,21,32,10
+    GROUPBOX        "行业",IDC_STATIC,7,7,247,337
+    CONTROL         "门类",IDC_RADIO_CSRC_GATE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,20,22,32,10
+    CONTROL         "大类",IDC_RADIO_CSRC_BIG,"Button",BS_AUTORADIOBUTTON,77,21,32,10
+    CONTROL         "",IDC_TREE_CSRC,"SysTreeView32",TVS_HASLINES | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,14,39,235,300
+END
+
+IDD_TIP_BOX DIALOGEX 0, 0, 470, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "消息提示"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "自定义1",IDC_GRID,"MFCGridCtrl",WS_TABSTOP,7,7,456,169
+END
+
+IDD_BASEMESSAGEFORMVIEW DIALOGEX 0, 0, 451, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "自定义1",IDC_GRID,"MFCGridCtrl",WS_TABSTOP,7,7,437,98
+    CONTROL         "自定义1",IDC_CHART,"MFCGridCtrl",WS_TABSTOP,86,139,253,33
+END
+
+IDD_FIND_BY_PINYIN DIALOGEX 0, 0, 263, 70
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "股票拼音简称查询"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,149,49,50,14
+    PUSHBUTTON      "取消",IDCANCEL,206,49,50,14
+    COMBOBOX        IDC_COMBO1,19,14,123,149,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_BASE_RICHEDIT_FORMVIEW DIALOGEX 0, 0, 451, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "自定义1",IDC_GRID,"MFCGridCtrl",WS_TABSTOP,2,28,445,77
+    CONTROL         "",IDC_RICHEDIT21,"RichEdit20A",ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_TABSTOP,35,121,382,54
+    PUSHBUTTON      "第一页",IDC_BTN_FIRST,2,3,52,14
+    PUSHBUTTON      "上一页",IDC_BTN_PAGEUP,65,3,50,14
+    PUSHBUTTON      "下一页",IDC_BTN_PAGEDOWN,123,3,50,14
+    PUSHBUTTON      "最后页",IDC_BTN_LAST,180,3,50,14
+    LTEXT           "   ",IDC_STATIC,242,7,184,8
+END
+
+IDD_PDF_STRUCTURE DIALOGEX 0, 0, 569, 291
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "PDF 文档结构"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "自定义1",IDC_GRID,"MFCGridCtrl",WS_TABSTOP,7,7,555,277
+END
+
+IDD_PLATE_SELECT_DLG DIALOGEX 0, 0, 279, 299
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "板块选择"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "取消",IDCANCEL,203,278,50,14
+    CONTROL         "",IDC_TREE2,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,7,263,259
+    PUSHBUTTON      "图表展示",IDC_BTN_GRAPH,7,278,84,14
+    PUSHBUTTON      "表格展示",IDC_BTN_TABLE,102,278,89,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "Stock.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "Stock.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_DATABASEVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_STOCKRANGESET, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 308
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+
+    IDD_SELFSELECTPLATEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_INPUTTEXTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_FIND_BY_CODE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_SIMPLE_INPUT_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 194
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_DEAL_DETAIL_DATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 151
+    END
+
+    IDD_STATSGOV_MENU_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 599
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 390
+    END
+
+    IDD_STOCK_GROUP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 456
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 361
+    END
+
+    IDD_TIP_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 463
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_BASEMESSAGEFORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 444
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_FIND_BY_PINYIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_BASE_RICHEDIT_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 447
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 196
+    END
+
+    IDD_PDF_STRUCTURE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 562
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 284
+    END
+
+    IDD_PLATE_SELECT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 271
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 292
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_HTML_FINDSTOCKBYCODEDLG HTML                    "FindStockByCodeDlg.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+    IDS_SHANGHAISTOCK_VIEW  "上海股票"
+    IDS_SOUHU_DIYU_PLATE    "地域板块"
+    IDS_SOUHU_HANGYE_PLATE  "行业分类"
+    IDP_SOCKETS_INIT_FAILED "Windows 套接字初始化失败。"
+    IDS_SOUHU_GAINIAN_PLATE "概念板块"
+    IDS_SELF_SELECT_PLATE   "自选板块"
+    IDS_CSINDEX_PLATE       "中证行业"
+    IDS_CSINDEX_CSRC_PLATE  "证监会行业"
+    IDS_SHENZHEN_INDEXINFO_PLATE "深证股指"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Stock"
+    IDS_ENTREPRENEUR_VIEW   "创业板"
+    IDR_StockTYPE           "\nStock\nStock\n\n\nStock.Document\nStock.Document"
+    IDR_DatabaseTYPE        "\nDatabase\nDatabase\n\n\nDatabase.Document\nDatabase.Document"
+    IDS_WINDOWS_MANAGER     "窗口(&W)..."
+    IDS_SMALLANDMID_VIEW    "中小板"
+    IDS_SHENZHENASHARE_VIEW "深圳A股"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Stock"
+    AFX_IDS_IDLEMESSAGE     "就绪"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "创建新文档\n新建"
+    ID_FILE_OPEN            "打开现有文档\n打开"
+    ID_FILE_CLOSE           "关闭活动文档\n关闭"
+    ID_FILE_SAVE            "保存活动文档\n保存"
+    ID_FILE_SAVE_AS         "用新名称保存活动文档\n另存为"
+    ID_FILE_PAGE_SETUP      "更改打印选项\n页面设置"
+    ID_FILE_PRINT_SETUP     "更改打印机选项和打印选项\n打印设置"
+    ID_FILE_PRINT           "打印活动文档\n打印"
+    ID_FILE_PRINT_DIRECT    "使用当前选项打印活动文档\n快速打印"
+    ID_FILE_PRINT_PREVIEW   "显示整页\n打印预览"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "显示程序信息、版本号和版权\n关于"
+    ID_APP_EXIT             "退出应用程序；提示保存文档\n退出"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "打开此文档"
+    ID_FILE_MRU_FILE2       "打开此文档"
+    ID_FILE_MRU_FILE3       "打开此文档"
+    ID_FILE_MRU_FILE4       "打开此文档"
+    ID_FILE_MRU_FILE5       "打开此文档"
+    ID_FILE_MRU_FILE6       "打开此文档"
+    ID_FILE_MRU_FILE7       "打开此文档"
+    ID_FILE_MRU_FILE8       "打开此文档"
+    ID_FILE_MRU_FILE9       "打开此文档"
+    ID_FILE_MRU_FILE10      "打开此文档"
+    ID_FILE_MRU_FILE11      "打开此文档"
+    ID_FILE_MRU_FILE12      "打开此文档"
+    ID_FILE_MRU_FILE13      "打开此文档"
+    ID_FILE_MRU_FILE14      "打开此文档"
+    ID_FILE_MRU_FILE15      "打开此文档"
+    ID_FILE_MRU_FILE16      "打开此文档"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "切换到下一个窗格\n下一窗格"
+    ID_PREV_PANE            "切换回上一个窗格\n上一窗格"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "为活动文档打开另一个窗口\n新建窗口"
+    ID_WINDOW_ARRANGE       "在窗口底部排列图标\n排列图标"
+    ID_WINDOW_CASCADE       "以重叠方式排列窗口\n层叠窗口"
+    ID_WINDOW_TILE_HORZ     "以非重叠的平铺方式排列窗口\n平铺窗口"
+    ID_WINDOW_TILE_VERT     "以非重叠的平铺方式排列窗口\n平铺窗口"
+    ID_WINDOW_SPLIT         "将活动窗口拆分为多个窗格\n拆分"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "清除选定内容\n清除"
+    ID_EDIT_CLEAR_ALL       "清除全部内容\n全部清除"
+    ID_EDIT_COPY            "复制选定内容并将其放到剪贴板上\n复制"
+    ID_EDIT_CUT             "剪切选定内容并将其放到剪贴板上\n剪切"
+    ID_EDIT_FIND            "查找指定的文本\n查找"
+    ID_EDIT_PASTE           "插入剪贴板内容\n粘贴"
+    ID_EDIT_REPEAT          "重复上一操作\n重复"
+    ID_EDIT_REPLACE         "用其他文本替换特定的文本\n替换"
+    ID_EDIT_SELECT_ALL      "选定整个文档\n全选"
+    ID_EDIT_UNDO            "撤消上一操作\n撤消"
+    ID_EDIT_REDO            "恢复上次撤消的操作\n重做"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_STATUS_BAR      "显示或隐藏状态栏\n切换状态栏"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "更改窗口大小"
+    AFX_IDS_SCMOVE          "更改窗口位置"
+    AFX_IDS_SCMINIMIZE      "将窗口缩小为图标"
+    AFX_IDS_SCMAXIMIZE      "使窗口最大化显示"
+    AFX_IDS_SCNEXTWINDOW    "切换到下一个文档窗口"
+    AFX_IDS_SCPREVWINDOW    "切换到前一个文档窗口"
+    AFX_IDS_SCCLOSE         "关闭活动窗口并提示保存文档"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "将窗口恢复到正常大小"
+    AFX_IDS_SCTASKLIST      "激活任务列表"
+    AFX_IDS_MDICHILD        "激活此窗口"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "关闭打印预览模式\n取消预览"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_PANE1        "窗格 1"
+    IDS_STATUS_PANE2        "窗格 2"
+    IDS_TOOLBAR_STANDARD    "标准"
+    IDS_TOOLBAR_CUSTOMIZE   "自定义..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FILE_VIEW           "文件视图"
+    IDS_CLASS_VIEW          "类视图"
+    IDS_OUTPUT_WND          "输出"
+    IDS_PROPERTIES_WND      "属性"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EXPLORER            "资源管理器"
+    IDS_EDIT_MENU           "编辑"
+    IDR_AutodownloadTYPE    "\nAutodownFile\nAutodownFile\nAutodownload Files (*.CSV)\n\nAutodown.Document\nAutodownloadFile.Document"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BUILD_TAB           "操作日志"
+    IDS_DEBUG_TAB           "后台自动读入"
+    IDS_FIND_TAB            "后台自动下载"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_CsvTYPE             "\nCsvFile\nCsvFile\nCsv Files (*.CSV)\n\nCsvFile.Document\nCsvFile.Document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FOCUS_NEXT_ON_PLATE  "查找下一个"
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\Stock.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"          // 标准组件
+#include "l.CHS\afxprint.rc"        // 打印/打印预览资源
+#if !defined(_AFXDLL)
+#include "l.CHS\afxribbon.rc"               // MFC 功能区和控件条资源
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

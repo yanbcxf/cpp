@@ -1,0 +1,509 @@
+<html><head><title>Windows Compiler Notes</title></head><body>
+
+<h2>Notes on Using Numerical Recipes in C++<br>with
+Various Windows Compilers</h2>
+
+<ul>
+<li><a href="#BVIS">Borland C++ Builder Visual Environment</a>
+<li><a href="#BDOS">Borland C++ Builder Command Line Usage</a>
+<li><a href="#MVIS">Microsoft Visual C++ Development Environment</a>
+<li><a href="#MDOS">Microsoft Visual C++ Command Line Usage</a>
+</ul>
+
+<pre>
+<a NAME="BVIS"></a>
+USING THE NUMERICAL RECIPES IN C++ WITH THE BORLAND 
+C++ BUILDER VISUAL ENVIRONMENT
+
+Let's assume that you have installed the C++ Recipes in
+a directory that we will refer to symbolically as CPPDIR.
+Typically CPPDIR will be something like "C:\numrec\c.210\cpp",
+and this directory will contain the subdirectories "recipes", 
+"examples", "other" and "data".  In the instructions
+below, you will need to substitute you actual installation
+directory path wherever we have written CPPDIR.
+
+We consider the case in which you are going to write a 
+program that uses the Numerical Recipe named svdcmp.cpp.  
+In this example, we use the Numerical Recipes Example Routine
+named xsvdcmp.cpp as our program, since it is a typical
+program making use of svdcmp.cpp.  This program may be found
+in the "examples" subdirectory of the installation directory.
+
+There are several ways in which to use your compiler to
+prepare an executable program.  We are just detailing one of 
+the possibilities, one that we have found convenient.
+
+1. First, create a working directory named "xsvdcmp" as
+a subdirectory of CPPDIR.  (You may name the subdirectory
+anything you like and locate it in some other place.
+However, we have chosen the name xsvdcmp because 
+that is the name of the program we will prepare, and we have
+chosen the CPPDIR location to keep the pathnames short in
+our example.)
+
+2. Into this working directory, copy the files that will
+be necessary for the project.  These files include:
+
+CPPDIR\examples\xsvdcmp.cpp
+CPPDIR\recipes\svdcmp.cpp
+CPPDIR\recipes\pythag.cpp
+CPPDIR\data\matrx3.dat
+
+Routine xsvdcmp.cpp is the main program.  It calls svdcmp(),
+which, in turn, makes calls to pythag().  The data file 
+matrx3.dat is a file containing test matrices, and is 
+used by xsvdcmp.cpp as a source of input data.
+
+(Note that it is not actually essential that the source
+files xsvdcmp.cpp, svdcmp.cpp and pythag.cpp be copied into
+a working directory.  They could be compiled in their
+original location.  However, in some cases you will want
+to modify the Numerical Recipes codes to suit your own
+applications, and collecting the codes into a working
+directory is a way of ensuring that the changes you make
+do not affect any of your other projects.)
+
+3. Start up the C++ Builder visual programming environment.
+
+4. Make the menu selection "File/New.../Console Wizard".  
+Our notation here is meant to indicate that you click on the
+"File" menu item, then select "New..." from the drop-down
+list, and finally select "Console Wizard" from the panel of
+options that appears.
+
+In the "Console Wizard" setup box, select:
+	Window Type: Console
+	Execution Type: EXE
+Then click on "Finish".
+
+5. This will produce a project window with a generic program
+name something like  "Project1.cpp".  We will next name our 
+project "p_xsvdcmp" and generate a program named "p_svdcmp.cpp"
+by the following procedure:
+
+6. Make the menu selection "File/Save Project As ..."
+
+Use the file-selection dialogue box that comes up to navigate 
+to the directory CPPDIR\xsvdcmp\ and save the project as 
+"p_svdcmp.bpr".  (Again, you could name it anything you like, 
+but stay with this for now.)  The program window will now have 
+the title p_svdcmp.cpp, and will have contents something like 
+this:
+
+	#pragma hdrstop
+	#include <condefs.h>
+
+	//---------------------------------------
+	#pragma argsused
+	int main(int argc, char* argv[])
+	{
+	        return 0;
+	}
+ 
+
+This bit of code framework is provided for you compliments of the
+vendor.  It can be turned into a workable C++ program by filling
+in the routine "main()" with whatever programming instructions
+you want to carry out.  Presumably, one of these instructions 
+will involve a call to the routine svdcmp.cpp, since that is the 
+point of this exercise.
+
+7. In the present case, for example, we could judiciously copy 
+the contents of the program xsvdcmp.cpp into this file, putting 
+the "include" statements near the top and the function "main()" 
+of xsvdcmp.cpp in place of the one-line "main()" routine that 
+has been automatically provided.  This, however, leaves some 
+Borland-specific statements  (particularly, the one about 
+"condefs.h") in the program, and makes  it less portable. We 
+generally try to isolate vendor-specific code into a separate 
+file, and the following steps show how to do that.
+
+8. Erase the code that has been provided, and replace it with 
+the two statements:
+
+	#include <condefs>
+	#define main
+
+9. Add the necessary files to your project, using the menu 
+selection "Project/Add to Project" to navigate to and select 
+the each of the source-code files in the working directory:
+
+	CPPDIR\xsvdcmp\xsvdcmp.cpp
+	CPPDIR\xsvdcmp\svdcmp.cpp
+	CPPDIR\xsvdcmp\pythag.cpp
+
+10. Your main project source code p_svdcmp.cpp will then read:
+
+	#include <condefs>
+	USEUNIT("xsvdcmp.cpp");
+	USEUNIT("svdcmp.cpp");
+	USEUNIT("pythag.cpp");
+	#define main
+
+11. There is one more issue.  Program xsvdcmp.cpp has an 
+include-statement that will try to include "nr.h", which it will 
+look for in the working directory "CPPDIR\xsvdcmp".  The actual 
+location of the "nr.h" file is the "other" subdirectory of the 
+Numerical Recipes installation directory.  There are at least
+two solutions to this problem:
+
+     a. Use the menu selection "Project/Options/
+     Directories/Conditionals", and add the text "..\other;" 
+     to the beginning of the include path.
+
+     OR
+
+     b. Create a file named "nr.h" in the working directory,
+     and in this file place the single line:
+     #include "..\other\nr.h"
+
+The virtue of either solution is that your installation will have 
+only one bona-fide "nr.h" file (the one in the "CPPDIR\other" 
+directory), rather than having copies in multiple locations.  
+Therefore, if you ever want to upgrade to a new version, or make 
+a correction to this file, you only need to edit a single file.  
+
+12. Now it is time to compile.  Just choose the menu selection
+"Project/Build p_svdcmp", wait for all the compilation and linking 
+to take place.  If there are any error messages (other than
+innocuous compiler warnings), you will need to do some debugging.
+
+13. You may now run the program with the menu selection "Run/Run",
+and witness the program output in the console window that appears. 
+
+14. One final note:  The "xsvdcmp.cpp" program reads in 
+several matrices, one-by-one, and pauses between each case so 
+that you can see the output.  Some of the Numerical Recipes 
+Example Routines, on the other hand, have the property that they 
+just do a calculation, print some output, and then terminate.  
+
+Unfortunately, under Borland C++ Builder, the completion of a 
+console application causes the console window to close 
+immediately, with the result that you get only a brief glimpse 
+at the data you have computed.
+
+The solution to this problem is to create a file named nrexit.cpp
+with the following contents:
+
+	#include <iostream>
+	using namespace std;
+
+	// Function used to stall exit in Borland C++ Builder
+
+	void nrexit(void)
+	{
+	        cin.get();
+	        return;
+	}
+
+	#pragma exit nrexit
+
+If you add this source file to your project along with the main
+routine and recipes, then you will find that upon completing your 
+program, the system will leave the console window open until 
+you press a key on the keyboard.
+
+
+<a NAME="BDOS"></a>
+USING THE NUMERICAL RECIPES IN C++ WITH BORLAND C++ BUILDER FROM 
+A DOS COMMAND LINE
+
+It is also possible use the Borland C++ Builder compiler to 
+compile and link Numerical Recipes programs from a DOS command 
+line.  In doing so, you give up the great advantages of the 
+integrated visual programming environment.  However, you gain 
+the ability to embed your compilation instructions into scripts 
+or makefiles.
+
+As above, we assume that the C++ Recipes are installed in a
+directory that we shall refer to symbolically as CPPDIR.  In 
+this directory there are subdirectories "recipes" containing 
+the Numerical Recipes, "examples" containing the Numerical 
+Recipes Example Routines, "other" containing the utility 
+routines, and "data" containing data files for testing.  In 
+all of the instructions below, you will need to change the 
+symbol CPPDIR to the actual path of this installation directory.
+
+We consider the case that you are going to write a 
+program that uses the Numerical Recipe named svdcmp.cpp.  
+In this example, we use the Numerical Recipes Example Routine
+named xsvdcmp.cpp as our program, since it is a typical
+program making use of svdcmp.cpp.  This program may be found
+in the "examples" subdirectory of CPPDIR.
+
+1. First, create a working directory named "xsvdcmp" as a 
+subdirectory of CPPDIR
+
+> mkdir xsvdcmp
+
+2. Move into this subdirectory
+
+> cd xsvdcmp
+
+3. Move the necessary files into the working directory
+
+> copy ..\examples\xsvdcmp.cpp
+> copy ..\recipes\svdcmp.cpp
+> copy ..\recipes\pythag.cpp
+> copy ..\data\matrx3.dat
+
+Routine xsvdcmp.cpp is the main program.  It calls svdcmp(),
+which, in turn, makes calls to pythag().  The data file matrx3.dat
+is a file containing test matrices, and is used by xsvdcmp.cpp as 
+a source of input data.
+
+4. The header file "nr.h" is also needed.  You may copy this from
+the directory "CPP\other", but we suggest instead that you create
+a file named "nr.h" in the working directory, and in this file put
+the single line
+
+#include "..\other\nr.h"
+
+Then when you include this "nr.h" file, it will in turn include 
+the "nr.h" file in the "CPPDIR\other" directory.
+
+The virtue of this method is that your installation will have only
+one bona-fide include file (the one in the "other" directory), 
+rather than having copies in multiple locations.  Therefore, if
+you ever want to upgrade to new versions, or to make corrections,
+you only need to modify the master file.  
+
+5. Next, compile each of the source files, producing a 
+corresponding object file .obj for each one:
+
+> bcc32 -c -w- -Od xsvdcmp.cpp
+> bcc32 -c -w- -Od svdcmp.cpp
+> bcc32 -c -w- -Od pythag.cpp
+
+The first of these commands, for example, compiles the source
+file xsvdcmp.cpp and produces the object file xsvdcmp.obj.
+
+6. Then link all of the object files to produce an executable 
+named "xsvdcmp.exe".
+
+> ILINK32 /ap /w- /x /C xsvdcmp.obj svdcmp.obj pythag.obj 
+   c0x32.obj cw32.lib import32.lib
+
+(This command belongs on a single line.)
+
+The first three object files on this line are object files
+produced in the previous step.  The following object file and
+libraries are compiler-related and should just be
+added routinely to your link commands.
+
+7. Following the linking operation, you may run the executable:
+
+> xsvdcmp
+
+
+<a NAME="MVIS"></a>
+USING THE NUMERICAL RECIPES IN C++ WITH THE MICROSOFT 
+VISUAL C++ DEVELOPMENT ENVIRONMENT
+
+Let's assume that the C++ Recipes have been installed in a
+directory that we shall refer to symbolically as CPPDIR. In 
+this directory there are subdirectories "recipes" containing 
+the Numerical Recipes, "examples" containing the Numerical 
+Recipes Example Routines, "other" containing the utilities, 
+and "data" containing data files for testing.  You will need 
+to change any references to the symbol CPPDIR below to the 
+actual name of the directory in which these subdirectories 
+are located.
+
+We shall consider the case that you are going to write a 
+program that uses the Numerical Recipe named svdcmp.cpp.  
+In this example, we use the Numerical Recipes Example Routine
+named xsvdcmp.cpp as our program, since it is a typical
+program making use of svdcmp.cpp.  This program may be found
+in the "examples" subdirectory of CPPDIR.
+
+There are several ways in which to use your compiler to
+prepare the executable program. We are just detailing one of 
+the possibilities, one that we have found convenient.
+
+1. First, create a working directory named "xsvdcmp" as
+a subdirectory of CPPDIR.  (You may name the subdirectory
+anything you like and locate it in some other place, 
+of course. However, we have chosen the name xsvdcmp because 
+that is the name of the program we will prepare, and we have
+chosen the CPPDIR location to keep the pathnames short in
+our example.)
+
+2. Into this working directory, copy the files that will
+be necessary for the project.  These files include:
+
+CPPDIR\examples\xsvdcmp.cpp
+CPPDIR\recipes\svdcmp.cpp
+CPPDIR\recipes\pythag.cpp
+CPPDIR\data\matrx3.dat
+
+Routine xsvdcmp.cpp is the main program.  It calls svdcmp(),
+which, in turn, makes calls to pythag().  The data file 
+matrx3.dat is a file containing test matrices, and is 
+used by xsvdcmp.cpp as a source of input data.
+
+(Note that it is not actually essential that the source
+files xsvdcmp.cpp, svdcmp.cpp and pythag.cpp be copied into
+a working directory.  They could be compiled in their
+original location.  However, in some cases you will want
+to modify the Numerical Recipes codes to suit your own
+applications, and collecting the codes into a working
+directory is a way of ensuring that the changes you make
+do not affect any of your other projects.)
+
+3. Start up the Visual C++ programming environment.
+
+4. Make the menu selection "File/New/Win32 Console Application"
+Our notation here is meant to indicate that you click on the
+"File" menu item, then select "New..." from the drop-down
+list, and finally select "Win32 Console Application" from the 
+panel of options that appears.  You will also need to fill in 
+this information in the panel:
+
+	Project Name: xsvdcmp
+	Location: CPPDIR\xsvdcmp
+	"Create new workspace" should be checked
+
+In the "Location:" entry, you should replace the symbol CPPDIR 
+by the actual path name of the directory in which the xsvdcmp 
+subdirectory has been created.
+
+Click <OK> and you will then be asked "What kind of Console 
+Application?". The answer is "Empty Project"
+
+You will then be shown a summary of your choices. Click on <OK>
+
+5. Next add the necessary source code files to your project.
+
+     Select "Project/Add to Project/Files"
+     Use file selector to select xsvdcmp.cpp, svdcmp.cpp
+          and pythag.cpp
+
+6. Program xsvdcmp.cpp has an include-statement that will try 
+to include "nr.h", which it will look for in the working 
+directory "CPPDIR\xsvdcmp".  The actual location of the "nr.h" 
+file is the "other" subdirectory of the Numerical Recipes 
+installation directory.
+
+To deal with this, create a file named "nr.h" in the 
+working directory, and in this file place the single line:
+
+     #include "..\other\nr.h"
+
+The virtue of this step is that your installation will have 
+only one bona-fide "nr.h" file (the one in the "CPPDIR\other" 
+directory), rather than having copies in multiple locations.  
+Therefore, if you ever want to upgrade to a new version, or 
+make a correction to this file, you only need to edit a single
+file.  
+
+7. Then compile and link the program with the menu selection
+"Build/Build xsvdcmp.exe".  If there are any errors reported 
+(other than innocuous compiler warnings) you will need to do 
+some debugging. 
+
+8. Run the program by selecting "Build/Execute xsvdcmp.exe" from
+the menu.
+
+
+<a NAME="MDOS"></a>
+USING THE NUMERICAL RECIPES IN C++ WITH MICROSOFT VISUAL C++
+FROM A DOS COMMAND LINE
+
+It is also possible use the Microsoft Visual C++ compiler to 
+compile and link Numerical Recipes programs from a DOS command 
+line.  In doing so, you give up the great advantages of the 
+integrated visual programming environment.  However,
+you gain the ability to embed your compilation instructions into
+scripts or makefiles.
+
+As above, we assume that the C++ Recipes are installed in a
+directory that we shall refer to symbolically as CPPDIR. In 
+this directory there are subdirectories "recipes" containing 
+the Numerical Recipes, "examples" containing the Numerical 
+Recipes Example Routines, "other" containing the utility 
+routines, and "data" containing data files for testing.  In 
+all of the instructions below, you will need to change the 
+symbol CPPDIR to the actual path of this installation directory.
+
+We shall consider the case that you are going to write a 
+program that uses the Numerical Recipe named svdcmp.cpp.  
+In this example, we use the Numerical Recipes Example Routine
+named xsvdcmp.cpp as our program, since it is a typical
+program making use of svdcmp.cpp.  This program may be found
+in the "examples" subdirectory in the Numerical Recipes 
+installation.
+
+1. First, create a working directory named "xsvdcmp" as
+a subdirectory of CPPDIR
+
+> mkdir xsvdcmp
+
+2. Move into that subdirectory
+
+> cd xsvdcmp
+
+3. Move the necessary files into your working directory
+
+> copy ..\examples\xsvdcmp.cpp
+> copy ..\recipes\svdcmp.cpp
+> copy ..\recipes\pythag.cpp
+> copy ..\data\matrx3.dat
+
+Routine xsvdcmp.cpp is the main program.  It calls svdcmp,
+which, in turn, makes a call to pythag.  The data file matrx3.dat
+is a file containing test matrices, and is used by xsvdcmp.cpp 
+as a source of input data.
+
+4. The header files "nr.h" is also needed.  Create 
+a file named "nr.h" and in this file put the single line
+
+#include "..\other\nr.h"
+
+Then when you include this "nr.h" file, it will in turn include 
+the "nr.h" file in the "CPPDIR\other" directory.
+
+The virtue of this method is that your installation will have 
+only one bona-fide include file (the one in the "other" directory), 
+rather than having copies in multiple locations.  Therefore, if you 
+ever want to upgrade to new versions, or to make corrections, you 
+only need to modify the master file.  
+
+5. Next, compile each of the source files, producing a 
+corresponding object file .obj for each one.
+
+> CL /c /w xsvdcmp.cpp
+> CL /c /w svdcmp.cpp
+> CL /c /w pythag.cpp
+
+The compile command used here assumes that the environment
+variables PATH and INCLUDE have been properly set, so
+that the compiler, include files and libraries can be found.
+(When you install Visual C++, the setup creates a batch file, 
+VCVARS32.BAT, containing commands to modify the PATH, LIB, and 
+INCLUDE environment variables. If these variables haven't been 
+set properly, run VCVARS32.BAT before you compile at the 
+command prompt. VCVARS32.BAT is located in the \bin 
+subdirectory of the C++ installation. 
+
+6. Link all of the object files to produce an executable 
+named "xsvdcmp.exe".
+
+> LINK xsvdcmp.obj svdcmp.obj pythag.obj
+
+(This command assumes that the LIB environment variable is
+properly defined.  See the note above about VCVARS32.BAT.)
+The three object files on this line are object files
+produced in the previous step. If there are any error 
+messages issued (other than innocuous compiler warnings), 
+then you will need to do some debugging before continuing.
+
+7. Following the linking operation, you may run the 
+executable:
+
+> xsvdcmp
+
+</pre>
+</body>
+</html>

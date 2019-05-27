@@ -1,0 +1,31 @@
+#ifndef HTTP_DEFINE_H
+#define HTTP_DEFINE_H
+
+#include "base64.h"
+
+#define LEN_MAX_HEADER_LINE 4096
+#define LEN_MAX_HEADER 40960
+#define LEN_MAX_RECV_DATA 100000
+#define LEN_RECV_ONCE 4096
+
+#define CR '\x0d'
+#define LF '\x0a'
+#define CRLF "\x0d\x0a"
+#define CRLFCRLF "\x0d\x0a\x0d\x0a"
+
+enum HTTP_QUERY_METHOD
+{
+	HTTP_QUERY_METHOD_GET,
+	HTTP_QUERY_METHOD_POST
+};
+
+enum HTTP_RECV_STEP
+{
+	HTTP_RECV_HEADER,
+	HTTP_RECV_POST_URL_ENCODE,
+	HTTP_RECV_POST_HEADER,
+	HTTP_RECV_POST_CONTENT,
+	HTTP_RECV_DONE,
+};
+
+#endif

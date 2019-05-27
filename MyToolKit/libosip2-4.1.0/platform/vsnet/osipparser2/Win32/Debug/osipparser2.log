@@ -1,0 +1,88 @@
+﻿Build started 2015/11/9 15:54:46.
+     1>Project "D:\workspace_c3\libosip2-4.1.0\platform\vsnet\osipparser2.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\osip\include /Zi /nologo /W3 /WX- /Od /Oy- /D ENABLE_TRACE /D SYSTEM_LOGGER_ENABLED /D _CRT_SECURE_NO_DEPRECATE /D WIN32 /D _DEBUG /D _LIB /D _VC80_UPGRADE=0x0710 /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"osipparser2\Win32\Debug\\" /Fd"osipparser2\Win32\Debug\osipparser2-vc80.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\..\osip\src\osipparser2\osip_accept.c ..\..\..\osip\src\osipparser2\osip_accept_encoding.c ..\..\..\osip\src\osipparser2\osip_accept_language.c ..\..\..\osip\src\osipparser2\osip_alert_info.c ..\..\..\osip\src\osipparser2\osip_allow.c ..\..\..\osip\src\osipparser2\osip_authentication_info.c ..\..\..\osip\src\osipparser2\osip_authorization.c ..\..\..\osip\src\osipparser2\osip_body.c ..\..\..\osip\src\osipparser2\osip_call_id.c ..\..\..\osip\src\osipparser2\osip_call_info.c ..\..\..\osip\src\osipparser2\osip_contact.c ..\..\..\osip\src\osipparser2\osip_content_disposition.c ..\..\..\osip\src\osipparser2\osip_content_encoding.c ..\..\..\osip\src\osipparser2\osip_content_length.c ..\..\..\osip\src\osipparser2\osip_content_type.c ..\..\..\osip\src\osipparser2\osip_cseq.c ..\..\..\osip\src\osipparser2\osip_error_info.c ..\..\..\osip\src\osipparser2\osip_from.c ..\..\..\osip\src\osipparser2\osip_header.c ..\..\..\osip\src\osipparser2\osip_list.c ..\..\..\osip\src\osipparser2\osip_md5c.c ..\..\..\osip\src\osipparser2\osip_message.c ..\..\..\osip\src\osipparser2\osip_message_parse.c ..\..\..\osip\src\osipparser2\osip_message_to_str.c ..\..\..\osip\src\osipparser2\osip_mime_version.c ..\..\..\osip\src\osipparser2\osip_parser_cfg.c ..\..\..\osip\src\osipparser2\osip_port.c ..\..\..\osip\src\osipparser2\osip_proxy_authenticate.c ..\..\..\osip\src\osipparser2\osip_proxy_authentication_info.c ..\..\..\osip\src\osipparser2\osip_proxy_authorization.c ..\..\..\osip\src\osipparser2\osip_record_route.c ..\..\..\osip\src\osipparser2\osip_route.c ..\..\..\osip\src\osipparser2\osip_to.c ..\..\..\osip\src\osipparser2\osip_uri.c ..\..\..\osip\src\osipparser2\osip_via.c ..\..\..\osip\src\osipparser2\osip_www_authenticate.c ..\..\..\osip\src\osipparser2\sdp_accessor.c ..\..\..\osip\src\osipparser2\sdp_message.c
+         sdp_message.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\sdp_message.c': No such file or directory
+         sdp_accessor.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\sdp_accessor.c': No such file or directory
+         osip_www_authenticate.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_www_authenticate.c': No such file or directory
+         osip_via.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_via.c': No such file or directory
+         osip_uri.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_uri.c': No such file or directory
+         osip_to.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_to.c': No such file or directory
+         osip_route.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_route.c': No such file or directory
+         osip_record_route.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_record_route.c': No such file or directory
+         osip_proxy_authorization.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_proxy_authorization.c': No such file or directory
+         osip_proxy_authentication_info.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_proxy_authentication_info.c': No such file or directory
+         osip_proxy_authenticate.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_proxy_authenticate.c': No such file or directory
+         osip_port.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_port.c': No such file or directory
+         osip_parser_cfg.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_parser_cfg.c': No such file or directory
+         osip_mime_version.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_mime_version.c': No such file or directory
+         osip_message_to_str.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_message_to_str.c': No such file or directory
+         osip_message_parse.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_message_parse.c': No such file or directory
+         osip_message.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_message.c': No such file or directory
+         osip_md5c.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_md5c.c': No such file or directory
+         osip_list.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_list.c': No such file or directory
+         osip_header.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_header.c': No such file or directory
+         Generating Code...
+         Compiling...
+         osip_from.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_from.c': No such file or directory
+         osip_error_info.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_error_info.c': No such file or directory
+         osip_cseq.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_cseq.c': No such file or directory
+         osip_content_type.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_content_type.c': No such file or directory
+         osip_content_length.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_content_length.c': No such file or directory
+         osip_content_encoding.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_content_encoding.c': No such file or directory
+         osip_content_disposition.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_content_disposition.c': No such file or directory
+         osip_contact.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_contact.c': No such file or directory
+         osip_call_info.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_call_info.c': No such file or directory
+         osip_call_id.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_call_id.c': No such file or directory
+         osip_body.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_body.c': No such file or directory
+         osip_authorization.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_authorization.c': No such file or directory
+         osip_authentication_info.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_authentication_info.c': No such file or directory
+         osip_allow.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_allow.c': No such file or directory
+         osip_alert_info.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_alert_info.c': No such file or directory
+         osip_accept_language.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_accept_language.c': No such file or directory
+         osip_accept_encoding.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_accept_encoding.c': No such file or directory
+         osip_accept.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osipparser2\osip_accept.c': No such file or directory
+         Generating Code...
+     1>Done Building Project "D:\workspace_c3\libosip2-4.1.0\platform\vsnet\osipparser2.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.46

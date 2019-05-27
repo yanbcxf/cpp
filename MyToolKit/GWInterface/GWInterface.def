@@ -1,0 +1,27 @@
+LIBRARY	"GWInterface"
+
+EXPORTS
+Sipd_Init
+Sipd_Start
+Sipd_GetSIPServerCfg
+Sipd_Register_ServerConfig_CB
+Sipd_Register_AlarmInd_CB
+Sipd_settime
+Sipd_PTZ_Move
+Sipd_PTZ_Tour
+Sipd_PTZ_Preset
+Sipd_PTZ_AutoScan
+Sipd_Reboot
+Sipd_record_control
+Sipd_alarm_control
+Sipd_Register_ControlRsp_CB
+Sipd_cataloginfo_request
+Sipd_deviceinfo_request
+Sipd_stateinfo_request
+Sipd_Register_InfoRsp_CB
+Sipd_search_recordfile_req
+Sipd_Register_MediaControl_CB
+Invite_play_playback_download
+Sipd_media_control_notify_CMS
+Sipd_Stop
+Sipd_Uninit

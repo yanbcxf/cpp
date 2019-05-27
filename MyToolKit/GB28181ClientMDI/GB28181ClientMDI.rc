@@ -1,0 +1,801 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\GB28181ClientMDI.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""          // 标准组件\r\n"
+    "#include ""l.CHS\\afxprint.rc""        // 打印/打印预览资源\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""l.CHS\\afxribbon.rc""               // MFC 功能区和控件条资源\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\GB28181ClientMDI.ico"
+IDR_GB28181ClientMDTYPE ICON                    "res\\GB28181ClientMDIDoc.ico"
+IDI_FILE_VIEW           ICON                    "res\\file_view.ico"
+IDI_FILE_VIEW_HC        ICON                    "res\\file_view_hc.ico"
+IDI_CLASS_VIEW          ICON                    "res\\class_view.ico"
+IDI_CLASS_VIEW_HC       ICON                    "res\\class_view_hc.ico"
+IDI_OUTPUT_WND          ICON                    "res\\output_wnd.ico"
+IDI_OUTPUT_WND_HC       ICON                    "res\\output_wnd_hc.ico"
+IDI_ICON_VOLUME_DEC     ICON                    "11\\音量-.ico"
+IDI_ICON_VOLUME_ADD     ICON                    "11\\音量+.ico"
+IDI_ICON_STOPSOUND      ICON                    "11\\声音关.ico"
+IDI_ICON_STOPRECORD     ICON                    "11\\停止录像.ico"
+IDI_ICON_STOPPLAY       ICON                    "11\\停止预览.ico"
+IDI_ICON_SOUND          ICON                    "11\\声音.ico"
+IDI_ICON_SATR_DEC       ICON                    "11\\饱和度减.ico"
+IDI_ICON_SATR_ADD       ICON                    "11\\饱和度加.ico"
+IDI_ICON_RECORD         ICON                    "11\\录像.ico"
+IDI_ICON_PARA           ICON                    "11\\视频参数.ico"
+IDI_ICON_HUE_DEC        ICON                    "11\\颜色减.ico"
+IDI_ICON_HUE_ADD        ICON                    "11\\颜色加.ico"
+IDI_ICON_CUR_STOPSOUND  ICON                    "11\\声音关C.ico"
+IDI_ICON_CUR_STOPRECORD ICON                    "11\\停止录像C.ico"
+IDI_ICON_CUR_STOPPLAY   ICON                    "11\\停止预览C.ico"
+IDI_ICON_CUR_SOUND      ICON                    "11\\声音C.ico"
+IDI_ICON_CUR_RECORD     ICON                    "11\\录像C.ico"
+IDI_ICON_CUR_PARA       ICON                    "11\\视频参数C.ico"
+IDI_ICON_CUR_CAPTURE    ICON                    "11\\抓图C.ico"
+IDI_ICON_CON_DEC        ICON                    "11\\对比度减.ico"
+IDI_ICON_CON_ADD        ICON                    "11\\对比度加.ico"
+IDI_ICON_CAPTURE        ICON                    "11\\抓图.ico"
+IDI_ICON_BRI_DEC        ICON                    "11\\亮度减.ico"
+IDI_ICON_BRI_ADD        ICON                    "11\\亮度加.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+IDR_SORT                BITMAP                  "res\\sort.bmp"
+IDB_SORT_24             BITMAP                  "res\\sort_hc.bmp"
+IDB_FILE_VIEW           BITMAP                  "res\\fileview.bmp"
+IDB_FILE_VIEW_24        BITMAP                  "res\\fileview_hc.bmp"
+IDB_CLASS_VIEW          BITMAP                  "res\\classview.bmp"
+IDB_CLASS_VIEW_24       BITMAP                  "res\\classview_hc.bmp"
+IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
+IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
+IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+IDB_VOICECLOSE_N        BITMAP                  "playbackbmp\\bmp\\voiceclose_n.bmp"
+IDB_VOICECLOSE_M        BITMAP                  "playbackbmp\\bmp\\voiceclose_m.bmp"
+IDB_VOICE_N             BITMAP                  "playbackbmp\\BMP\\voice_n.bmp"
+IDB_VOICE_M             BITMAP                  "playbackbmp\\BMP\\voice_m.bmp"
+IDB_STOP_RECORD_N       BITMAP                  "playbackbmp\\BMP\\stoprecord_n.bmp"
+IDB_STOP_RECORD_M       BITMAP                  "playbackbmp\\BMP\\stoprecord_m.bmp"
+IDB_STOP_RECORD_D       BITMAP                  "playbackbmp\\BMP\\stoprecord_d.bmp"
+IDB_STOP_N              BITMAP                  "playbackbmp\\BMP\\stop_n.bmp"
+IDB_STOP_M              BITMAP                  "playbackbmp\\BMP\\stop_m.bmp"
+IDB_STOP_D              BITMAP                  "playbackbmp\\BMP\\stop_d.bmp"
+IDB_SPEED_THUMB_N       BITMAP                  "playbackbmp\\BMP\\SpeedSliderThumb_n.bmp"
+IDB_SPEED_TEXT          BITMAP                  "playbackbmp\\BMP\\SpeedSlider_text.bmp"
+IDB_SPEED_BK_N          BITMAP                  "playbackbmp\\BMP\\SpeedSlider_bk_n.bmp"
+IDB_SHOW_N              BITMAP                  "playbackbmp\\BMP\\show_n.bmp"
+IDB_SHOW_M              BITMAP                  "playbackbmp\\BMP\\show_m.bmp"
+IDB_SHOW_D              BITMAP                  "playbackbmp\\BMP\\show_d.bmp"
+IDB_RECORD_N            BITMAP                  "playbackbmp\\BMP\\record_n.bmp"
+IDB_RECORD_M            BITMAP                  "playbackbmp\\BMP\\record_m.bmp"
+IDB_RECORD_D            BITMAP                  "playbackbmp\\BMP\\record_d.bmp"
+IDB_PLAYBACK            BITMAP                  "playbackbmp\\BMP\\PlayBackCtl.bmp"
+IDB_PLAY_N              BITMAP                  "playbackbmp\\BMP\\play_n.bmp"
+IDB_PLAY_M              BITMAP                  "playbackbmp\\BMP\\play_m.bmp"
+IDB_PLAY_D              BITMAP                  "playbackbmp\\BMP\\play_d.bmp"
+IDB_PAUSE_N             BITMAP                  "playbackbmp\\BMP\\pause_n.bmp"
+IDB_PAUSE_M             BITMAP                  "playbackbmp\\BMP\\pause_m.bmp"
+IDB_PAUSE_D             BITMAP                  "playbackbmp\\BMP\\pause_d.bmp"
+IDB_ONEBYONE_N          BITMAP                  "playbackbmp\\BMP\\onebyone_n.bmp"
+IDB_ONEBYONE_M          BITMAP                  "playbackbmp\\BMP\\onebyone_m.bmp"
+IDB_ONEBYONE_D          BITMAP                  "playbackbmp\\BMP\\onebyone_d.bmp"
+IDB_ONE_N               BITMAP                  "playbackbmp\\BMP\\one_n.bmp"
+IDB_ONE_M               BITMAP                  "playbackbmp\\BMP\\one_m.bmp"
+IDB_ONE_D               BITMAP                  "playbackbmp\\BMP\\one_d.bmp"
+IDB_HIDE_N              BITMAP                  "playbackbmp\\BMP\\hide_n.bmp"
+IDB_HIDE_M              BITMAP                  "playbackbmp\\BMP\\hide_m.bmp"
+IDB_HIDE_D              BITMAP                  "playbackbmp\\BMP\\hide_d.bmp"
+IDB_FULLSCREEN_N        BITMAP                  "playbackbmp\\BMP\\fullscreen_n.bmp"
+IDB_FULLSCREEN_M        BITMAP                  "playbackbmp\\BMP\\fullscreen_m.bmp"
+IDB_FULLSCREEN_D        BITMAP                  "playbackbmp\\BMP\\fullscreen_d.bmp"
+IDB_FOUR_N              BITMAP                  "playbackbmp\\BMP\\four_n.bmp"
+IDB_FOUR_M              BITMAP                  "playbackbmp\\BMP\\four_m.bmp"
+IDB_FOUR_D              BITMAP                  "playbackbmp\\BMP\\four_d.bmp"
+IDB_FIND_N              BITMAP                  "playbackbmp\\BMP\\find_n.bmp"
+IDB_FIND_D              BITMAP                  "playbackbmp\\BMP\\find_d.bmp"
+IDB_DOWN_N              BITMAP                  "playbackbmp\\BMP\\down_n.bmp"
+IDB_DOWN_M              BITMAP                  "playbackbmp\\BMP\\down_m.bmp"
+IDB_DOWN_D              BITMAP                  "playbackbmp\\BMP\\down_d.bmp"
+IDB_CAPTURE_N           BITMAP                  "playbackbmp\\BMP\\capture_n.bmp"
+IDB_CAPTURE_M           BITMAP                  "playbackbmp\\BMP\\capture_m.bmp"
+IDB_CAPTURE_D           BITMAP                  "playbackbmp\\BMP\\capture_d.bmp"
+IDB_BTNS_SEP            BITMAP                  "playbackbmp\\BMP\\btns_sepBmp.bmp"
+IDB_BTNS_BACKGROUND     BITMAP                  "playbackbmp\\BMP\\btns_background.bmp"
+IDB_PTZ_ZOOMOUT_DOWN    BITMAP                  "11\\ZoomOut_down.BMP"
+IDB_PTZ_ZOOMOUT         BITMAP                  "11\\ZoomOut_Normal.BMP"
+IDB_PTZ_ZOOMIN_DOWN     BITMAP                  "11\\ZoomIn_Down.BMP"
+IDB_PTZ_ZOOMIN          BITMAP                  "11\\ZoomIn_Normal.BMP"
+IDB_PTZ_UP_DOWN         BITMAP                  "11\\Up_down.bmp"
+IDB_PTZ_UP              BITMAP                  "11\\Up_Up.bmp"
+IDB_PTZ_RIGHT_DOWN      BITMAP                  "11\\Right_down.bmp"
+IDB_PTZ_RIGHT           BITMAP                  "11\\Right_Up.bmp"
+IDB_PTZ_LEFT_DOWN       BITMAP                  "11\\Left_down.bmp"
+IDB_PTZ_LEFT            BITMAP                  "11\\Left_Up.bmp"
+IDB_PTZ_DOWN_DOWN       BITMAP                  "11\\Down_Down.bmp"
+IDB_PTZ_DOWN            BITMAP                  "11\\Down_Up.bmp"
+IDB_BITMAP_VIDEO        BITMAP                  "11\\参数设置.bmp"
+IDB_BITMAP_SOUND        BITMAP                  "11\\声音.bmp"
+IDB_BITMAP_RECORD       BITMAP                  "11\\录像.bmp"
+IDB_BITMAP_CLOSE        BITMAP                  "11\\关闭.bmp"
+IDB_BITMAP_CAPTURE      BITMAP                  "11\\抓图.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME_256 TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_SORT TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_SORT_MENU
+    BUTTON      ID_NEW_FOLDER
+END
+
+IDR_EXPLORER TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_PROPERTIES
+END
+
+IDR_MENU_IMAGES TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_WINDOW_MANAGER
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_TOOLS_MACRO
+    BUTTON      ID_SORTING_SORTALPHABETIC
+    BUTTON      ID_SORTING_SORTBYTYPE
+    BUTTON      ID_SORTING_SORTBYACCESS
+    BUTTON      ID_SORTING_GROUPBYTYPE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "新建(&N)\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "打开(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "关闭(&C)",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "打印设置(&R)...",                 ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最近的文件",                       ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "退出(&X)",                      ID_APP_EXIT
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 2005(&5)",  ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 GB28181ClientMDI(&A)...",  ID_APP_ABOUT
+    END
+END
+
+IDR_GB28181ClientMDTYPE MENU 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "新建(&N)\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "打开(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "关闭(&C)",                      ID_FILE_CLOSE
+        MENUITEM "保存(&S)\tCtrl+S",              ID_FILE_SAVE
+        MENUITEM "另存为(&A)...",                  ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "打印(&P)...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "打印预览(&V)",                    ID_FILE_PRINT_PREVIEW
+        MENUITEM "打印设置(&R)...",                 ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最近的文件",                       ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "退出(&X)",                      ID_APP_EXIT
+    END
+    POPUP "编辑(&E)"
+    BEGIN
+        MENUITEM "撤消(&U)\tCtrl+Z",              ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 2005(&5)",  ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "窗口(&W)"
+    BEGIN
+        MENUITEM "新建窗口(&N)",                    ID_WINDOW_NEW
+    END
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 GB28181ClientMDI(&A)...",  ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_EDIT MENU 
+BEGIN
+    POPUP "编辑"
+    BEGIN
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
+    END
+END
+
+IDR_POPUP_SORT MENU 
+BEGIN
+    POPUP "排序"
+    BEGIN
+        MENUITEM "按字母顺序排序(&S)",                 ID_SORTING_SORTALPHABETIC
+        MENUITEM "按类型排序(&T)",                   ID_SORTING_SORTBYTYPE
+        MENUITEM "按访问排序(&E)",                   ID_SORTING_SORTBYACCESS
+        MENUITEM "按类型分组(&Y)",                   ID_SORTING_GROUPBYTYPE
+    END
+END
+
+IDR_POPUP_EXPLORER MENU 
+BEGIN
+    POPUP "资源管理器"
+    BEGIN
+        MENUITEM "打开(&O)",                      ID_OPEN
+        MENUITEM "打开方式(&W)....",                ID_OPEN_WITH
+        MENUITEM SEPARATOR
+        MENUITEM "编译(&C)",                      ID_DUMMY_COMPILE
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "删除(&R)",                      ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "属性(&P)...",                   ID_PROPERTIES
+    END
+END
+
+IDR_OUTPUT_POPUP MENU 
+BEGIN
+    POPUP "弹出项"
+    BEGIN
+        MENUITEM "复制(&C)",                      ID_EDIT_COPY
+        MENUITEM "清除(&C)",                      ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "隐藏(&H)",                      ID_VIEW_OUTPUTWND
+    END
+END
+
+IDR_THEME_MENU MENU 
+BEGIN
+    MENUITEM "Office 2007 (蓝色样式)(&B)",      ID_VIEW_APPLOOK_OFF_2007_BLUE
+    MENUITEM "Office 2007 (黑色样式)(&L)",      ID_VIEW_APPLOOK_OFF_2007_BLACK
+    MENUITEM "Office 2007 (银色样式)(&S)",      ID_VIEW_APPLOOK_OFF_2007_SILVER
+    MENUITEM "Office 2007 (水绿色样式)(&A)",     ID_VIEW_APPLOOK_OFF_2007_AQUA
+END
+
+IDR_POPUP_CHANNEL MENU 
+BEGIN
+    POPUP "点位"
+    BEGIN
+        MENUITEM "realplay",                    ID_REALPLAY
+        MENUITEM "playback",                    ID_PLAYBACK
+        MENUITEM "Alarm Subscribe",             ID_Alarm_Subscribe
+    END
+END
+
+IDR_MENU_FULL MENU 
+BEGIN
+    POPUP "fullscreen"
+    BEGIN
+        MENUITEM "123",                         IDM_FULL_SCREEN
+    END
+    MENUITEM SEPARATOR
+    MENUITEM "123",                         IDM_REGION_ZOOM
+    POPUP "显示比例"
+    BEGIN
+        MENUITEM "拉伸",                          ID_SHOW_RATIO_FULL, CHECKED
+        MENUITEM "4:3",                         ID_SHOW_RATIO_4_3, CHECKED
+        MENUITEM "16:9",                        ID_SHOW_RATIO_16_9, CHECKED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 GB28181ClientMDI"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "GB28181ClientMDI，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2017",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_REALPLAYVIEW DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+END
+
+IDD_CATALOGQUERYDLG DIALOG  0, 0, 320, 200
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "对话框"
+FONT 9, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,209,179,50,14
+    PUSHBUTTON      "取消",IDCANCEL,263,179,50,14
+END
+
+IDD_PLAYBACKVIEW DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    RTEXT           "播放方式",IDC_TITLE,95,96,53,20,NOT WS_VISIBLE
+END
+
+IDD_DIALOG_OUTPUT DIALOGEX 0, 0, 226, 178
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+EXSTYLE WS_EX_STATICEDGE
+FONT 9, "宋体", 0, 0, 0x1
+BEGIN
+    LTEXT           "Static",IDC_STATIC_NAME,3,0,79,11
+    ICON            IDI_ICON_SATR_ADD,IDC_SATURATIONADD,99,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_BRI_ADD,IDC_BRIGHTADD,15,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_BRI_DEC,IDC_BRIGHTDEC,37,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_CON_ADD,IDC_CONTRASTADD,57,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_CON_DEC,IDC_CONTRASTDEC,79,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_VOLUME_DEC,IDC_VOLUMEDEC,204,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_SATR_DEC,IDC_SATURATIONDEC,121,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_HUE_ADD,IDC_HUEADD,141,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_HUE_DEC,IDC_HUEDEC,163,21,20,20,SS_NOTIFY
+    ICON            IDI_ICON_VOLUME_ADD,IDC_VOLUMEADD,183,21,20,20,SS_NOTIFY
+    CONTROL         "",IDC_RECORD,"Static",SS_BLACKFRAME | SS_NOTIFY,121,1,20,20
+    ICON            IDI_ICON_CAPTURE,IDC_CAPTURE,142,2,20,20,SS_NOTIFY
+    ICON            IDI_ICON_PARA,IDC_EFFECT,163,0,20,20,SS_NOTIFY
+    CONTROL         "",IDC_SOUND,"Static",SS_BLACKFRAME | SS_NOTIFY,183,1,20,20
+    ICON            IDI_ICON_STOPPLAY,IDC_STOPPLAY,203,0,20,20,SS_NOTIFY
+    CTEXT           "",IDC_STATIC_WND,25,69,178,95,SS_CENTERIMAGE
+    RTEXT           "",IDC_TOOLTIP,91,3,25,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "GB28181ClientMDI.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "GB28181ClientMDI.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_REALPLAYVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_CATALOGQUERYDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_PLAYBACKVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "GB28181ClientMDI"
+    IDR_GB28181ClientMDTYPE "\nGB28181ClientMD\nGB28181ClientMD\n\n\nGB28181ClientMDI.Document\nGB28181ClientMDI.Document"
+    IDS_WINDOWS_MANAGER     "窗口(&W)..."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "GB28181ClientMDI"
+    AFX_IDS_IDLEMESSAGE     "就绪"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "创建新文档\n新建"
+    ID_FILE_OPEN            "打开现有文档\n打开"
+    ID_FILE_CLOSE           "关闭活动文档\n关闭"
+    ID_FILE_SAVE            "保存活动文档\n保存"
+    ID_FILE_SAVE_AS         "用新名称保存活动文档\n另存为"
+    ID_FILE_PAGE_SETUP      "更改打印选项\n页面设置"
+    ID_FILE_PRINT_SETUP     "更改打印机选项和打印选项\n打印设置"
+    ID_FILE_PRINT           "打印活动文档\n打印"
+    ID_FILE_PRINT_DIRECT    "使用当前选项打印活动文档\n快速打印"
+    ID_FILE_PRINT_PREVIEW   "显示整页\n打印预览"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "显示程序信息、版本号和版权\n关于"
+    ID_APP_EXIT             "退出应用程序；提示保存文档\n退出"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "打开此文档"
+    ID_FILE_MRU_FILE2       "打开此文档"
+    ID_FILE_MRU_FILE3       "打开此文档"
+    ID_FILE_MRU_FILE4       "打开此文档"
+    ID_FILE_MRU_FILE5       "打开此文档"
+    ID_FILE_MRU_FILE6       "打开此文档"
+    ID_FILE_MRU_FILE7       "打开此文档"
+    ID_FILE_MRU_FILE8       "打开此文档"
+    ID_FILE_MRU_FILE9       "打开此文档"
+    ID_FILE_MRU_FILE10      "打开此文档"
+    ID_FILE_MRU_FILE11      "打开此文档"
+    ID_FILE_MRU_FILE12      "打开此文档"
+    ID_FILE_MRU_FILE13      "打开此文档"
+    ID_FILE_MRU_FILE14      "打开此文档"
+    ID_FILE_MRU_FILE15      "打开此文档"
+    ID_FILE_MRU_FILE16      "打开此文档"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "切换到下一个窗格\n下一窗格"
+    ID_PREV_PANE            "切换回上一个窗格\n上一窗格"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "为活动文档打开另一个窗口\n新建窗口"
+    ID_WINDOW_ARRANGE       "在窗口底部排列图标\n排列图标"
+    ID_WINDOW_CASCADE       "以重叠方式排列窗口\n层叠窗口"
+    ID_WINDOW_TILE_HORZ     "以非重叠的平铺方式排列窗口\n平铺窗口"
+    ID_WINDOW_TILE_VERT     "以非重叠的平铺方式排列窗口\n平铺窗口"
+    ID_WINDOW_SPLIT         "将活动窗口拆分为多个窗格\n拆分"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "清除选定内容\n清除"
+    ID_EDIT_CLEAR_ALL       "清除全部内容\n全部清除"
+    ID_EDIT_COPY            "复制选定内容并将其放到剪贴板上\n复制"
+    ID_EDIT_CUT             "剪切选定内容并将其放到剪贴板上\n剪切"
+    ID_EDIT_FIND            "查找指定的文本\n查找"
+    ID_EDIT_PASTE           "插入剪贴板内容\n粘贴"
+    ID_EDIT_REPEAT          "重复上一操作\n重复"
+    ID_EDIT_REPLACE         "用其他文本替换特定的文本\n替换"
+    ID_EDIT_SELECT_ALL      "选定整个文档\n全选"
+    ID_EDIT_UNDO            "撤消上一操作\n撤消"
+    ID_EDIT_REDO            "恢复上次撤消的操作\n重做"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_STATUS_BAR      "显示或隐藏状态栏\n切换状态栏"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "更改窗口大小"
+    AFX_IDS_SCMOVE          "更改窗口位置"
+    AFX_IDS_SCMINIMIZE      "将窗口缩小为图标"
+    AFX_IDS_SCMAXIMIZE      "使窗口最大化显示"
+    AFX_IDS_SCNEXTWINDOW    "切换到下一个文档窗口"
+    AFX_IDS_SCPREVWINDOW    "切换到前一个文档窗口"
+    AFX_IDS_SCCLOSE         "关闭活动窗口并提示保存文档"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "将窗口恢复到正常大小"
+    AFX_IDS_SCTASKLIST      "激活任务列表"
+    AFX_IDS_MDICHILD        "激活此窗口"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "关闭打印预览模式\n取消预览"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_PANE1        "窗格 1"
+    IDS_STATUS_PANE2        "窗格 2"
+    IDS_TOOLBAR_STANDARD    "标准"
+    IDS_TOOLBAR_CUSTOMIZE   "自定义..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FILE_VIEW           "文件视图"
+    IDS_CLASS_VIEW          "类视图"
+    IDS_OUTPUT_WND          "输出"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EXPLORER            "资源管理器"
+    IDS_EDIT_MENU           "编辑"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BUILD_TAB           "生成"
+    IDS_DEBUG_TAB           "调试"
+    IDS_FIND_TAB            "查找"
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\GB28181ClientMDI.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"          // 标准组件
+#include "l.CHS\afxprint.rc"        // 打印/打印预览资源
+#if !defined(_AFXDLL)
+#include "l.CHS\afxribbon.rc"               // MFC 功能区和控件条资源
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

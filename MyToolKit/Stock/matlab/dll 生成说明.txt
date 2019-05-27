@@ -1,0 +1,38 @@
+
+function out = add(x,y)
+out  = x + y; 
+
+将M文件编译成DLL： 
+mcc -W lib:add -T link:lib add.m 
+
+用Matlab调用DLL查看函数
+loadlibrary('add.dll','add.h');
+
+%查看add.dll支持的函数接口
+libfunctions add -full 
+
+mysql-connector-java-5.1.7-bin.jar文件拷贝到D:/program files/MATLAB/R2009a/java/jar/toolbox
+到D:/program files/MATLAB/R2009a/toolbox/local，找到classpath.txt文件，打开，并添加用来加载mysql的jdbc驱动
+$matlabroot/java/jar/toolbox/mysql-connector-java-5.0.5-bin.jar
+
+
+检测交易数据 不满足的股票
+select code, abbreviation, a_time_to_market, min_tradedate
+from ( select code, abbreviation, a_time_to_market,
+(select min(TradeDate) from souhutradingdaily b where  b.code = a.code ) min_tradedate
+from stockinfo a where code >=600000 ) t where t.a_time_to_market < min_tradedate ORDER BY min_tradedate
+
+mex -setup:"C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\bin\win32\mexopts\msvc2008.xml" C -client  MBUILD
+mcc -d d:\workspace_c3\MyToolKit\Stock\matlab\bin\ -B csharedlib:stocktest d:\workspace_c3\MyToolKit\Stock\matlab\stocktest.m
+mcc -d ./bin/ -W cpplib:stocktest -T link:lib stocktest.m -C
+
+调整 java 内存， 在如下文件出新建 java.opts 文件
+C:\Program Files (x86)\MATLAB\MATLAB Runtime\v85\bin\win32
+C:\Program Files\MATLAB\MATLAB Runtime\v90\bin\win32
+
+mex -setup
+选择 使用 的编译器
+
+mex -setup:"D:\Program Files\MATLAB\R2016a\bin\win64\mexopts\msvcpp2008.xml" C++ -client MBUILD
+
+StShanghaiStockIndex('1', '2017-1-1', '2017-10-10', '1', [600500, 600321])

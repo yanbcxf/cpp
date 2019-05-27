@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A47E12D4-F0E8-4442-8947-0CEB49B28E5B}</ProjectGuid>
+    <RootNamespace>Stock</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm110 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../friso;../../boost_1_63_0;./matlab/StockMatlab/for_testing;C:\Program Files (x86)\MATLAB\MATLAB Runtime\v85\extern\include;./ColourPicker;../minizip;./ChartCtrl;C:\Users\Administrator\Downloads\zlib-1.2.8;./MessageString;./include_libxl;../newmat11;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;..\..\CommonLib\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>friso.lib;mclmcrrt.lib;minizip.lib;zdll.lib;newmat11.lib;NumericalRecipes.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;libcurld_imp.lib;iconv.lib;log4cplusD.lib;..\..\CommonLib\mysql-connector-c-6.1.5-win32\lib\libmysql.lib;StockMatlab.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>./matlab/StockMatlab/for_testing;./matlab/bin;$(OutDir);$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\opsource\lib\curl-7.21.7;C:\Program Files (x86)\MATLAB\MATLAB Runtime\v85\extern\lib\win32\microsoft;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm110 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../boost_1_63_0;../../CommonLib/libiconv-1.11.1/include;../friso;./matlab/StockMatlab/for_testing;C:\Program Files\MATLAB\MATLAB Runtime\v90\extern\include;./ColourPicker;../minizip;./ChartCtrl;C:\Program Files\zlib\include;./MessageString;./include_libxl;../newmat11;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;$(pubclib)\opsource\include;C:\Program Files\CURL\include;C:\Program Files\log4cplus\include;..\..\CommonLib\mysql-connector-c-6.1.5-winx64\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>friso.lib;mclmcrrt.lib;minizip.lib;newmat11.lib;NumericalRecipes.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;libcurl-d_imp.lib;log4cplusD.lib;..\..\CommonLib\mysql-connector-c-6.1.5-winx64\lib\libmysql.lib;StockMatlab.lib;zlibstaticd.lib;iconv.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>../../CommonLib/libiconv-1.11.1/lib;./matlab/StockMatlab/for_testing;./matlab/bin;$(OutDir);C:\Program Files\zlib\lib;C:\Program Files\log4cplus\lib;$(pubclib)\opsource\lib\libxml2-7.8;C:\Program Files\CURL\lib;C:\Program Files\MATLAB\MATLAB Runtime\v90\extern\lib\win64\microsoft;D:\workspace_c3\boost_1_63_0\bin\vc9-x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\include;./matlab/StockMatlab/for_testing;../minizip;../newmat11;./ColourPicker;./ChartCtrl;C:\Users\Administrator\Downloads\zlib-1.2.8;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;..\..\CommonLib\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;$(pubclib)\opsource\include\boost1.55.0;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>C:\Program Files (x86)\freetype\lib\freetyped.lib;log4cplus.lib;newmat11.lib;minizip.lib;libxml2.lib;libcurl_imp.lib;zdll.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;iconv.lib;..\..\CommonLib\mysql-connector-c-6.1.5-win32\lib\libmysql.lib;mclmcrrt.lib;StockMatlab.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\lib\win32\microsoft;./matlab/StockMatlab/for_testing;$(OutDir);$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\curl-7.21.7;$(pubclib)\opsource\lib\libxml2-7.8;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./matlab/bin;../minizip;../newmat11;./ColourPicker;./ChartCtrl;C:\Users\Administrator\Downloads\zlib-1.2.8;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;..\..\CommonLib\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;$(pubclib)\opsource\include\boost1.55.0;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>C:\Program Files (x86)\freetype\lib\freetyped.lib;log4cplus.lib;newmat11.lib;minizip.lib;libxml2.lib;libcurl_imp.lib;zdll.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;iconv.lib;..\..\CommonLib\mysql-connector-c-6.1.5-win32\lib\libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>./matlab/bin;$(OutDir);../../log4cplus-1.2.0/msvc10/x64/bin.Release;$(pubclib)\opsource\lib\curl-7.21.7;$(pubclib)\opsource\lib\libxml2-7.8;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AbsoluteBreadthIndex.cpp" />
+    <ClCompile Include="AbstractIndex.cpp" />
+    <ClCompile Include="AccumulationDistributionLine.cpp" />
+    <ClCompile Include="AllAddIssuanceListView.cpp" />
+    <ClCompile Include="AllCsiDynamicPeStockListView.cpp" />
+    <ClCompile Include="AllMainIncomeYearGrowthStockListView.cpp" />
+    <ClCompile Include="AllMainProfitYearGrowthStockListView.cpp" />
+    <ClCompile Include="AllMcstStockListView.cpp" />
+    <ClCompile Include="AllRecentBonusCashStockListView.cpp" />
+    <ClCompile Include="AllStockListView.cpp" />
+    <ClCompile Include="AllThisYearBonusListView.cpp" />
+    <ClCompile Include="AutoDownloadDoc.cpp" />
+    <ClCompile Include="AutoDownloadThread.cpp" />
+    <ClCompile Include="AutoDownloadView.cpp" />
+    <ClCompile Include="Balance.cpp" />
+    <ClCompile Include="BalanceCsvFileShow.cpp" />
+    <ClCompile Include="BaseChartCtlView.cpp" />
+    <ClCompile Include="BaseCsvFileShow.cpp" />
+    <ClCompile Include="BaseGridCtlView.cpp" />
+    <ClCompile Include="BaseHtmlView.cpp" />
+    <ClCompile Include="BaseMatlabView.cpp" />
+    <ClCompile Include="BaseMessageControl.cpp" />
+    <ClCompile Include="BaseMessageElementsParser.cpp" />
+    <ClCompile Include="BaseMessageFormView.cpp" />
+    <ClCompile Include="BaseMessageView.cpp" />
+    <ClCompile Include="BaseRichEditFormView.cpp" />
+    <ClCompile Include="BasicExcel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="BCMenu.cpp" />
+    <ClCompile Include="BollingerBands.cpp" />
+    <ClCompile Include="BollListView.cpp" />
+    <ClCompile Include="BonusOf10jqka.cpp" />
+    <ClCompile Include="BtnST.cpp" />
+    <ClCompile Include="BussinessUtils.cpp" />
+    <ClCompile Include="Calc10jqkaBonusViewData.cpp" />
+    <ClCompile Include="CalcAddIssuanceSummary.cpp" />
+    <ClCompile Include="CalcAssetsGrowth.cpp" />
+    <ClCompile Include="CalcBollQuery.cpp" />
+    <ClCompile Include="CalcCandlesticksJapanQuery.cpp" />
+    <ClCompile Include="CalcCapiStructDownload.cpp" />
+    <ClCompile Include="CalcCapitalFlow.cpp" />
+    <ClCompile Include="CalcCffexFutureHs300.cpp" />
+    <ClCompile Include="CalcCninfoAnnouceRoadMap.cpp" />
+    <ClCompile Include="CalcCninfoAnnouncementQuery.cpp" />
+    <ClCompile Include="CalcCninfoAnnouncePDFQuery.cpp" />
+    <ClCompile Include="CalcCninfoGetLandQuery.cpp" />
+    <ClCompile Include="CalcCninfoIncentivePlanQuery.cpp" />
+    <ClCompile Include="CalcCninfoShareHoldingQuery.cpp" />
+    <ClCompile Include="CalcCninfoShareHoldingStatistics.cpp" />
+    <ClCompile Include="CalcCsdcFundInSettlementStatDownload.cpp" />
+    <ClCompile Include="CalcCsdcInvestorStat.cpp" />
+    <ClCompile Include="CalcCsdcInvestorStatDownload.cpp" />
+    <ClCompile Include="CalcCsdcSecurityIssueStatDownload.cpp" />
+    <ClCompile Include="CalcCsdcTransferBonusStatDownload.cpp" />
+    <ClCompile Include="CalcCsiCsrcPeDailyDownload.cpp" />
+    <ClCompile Include="CalcCsiDynamicPeStockList.cpp" />
+    <ClCompile Include="CalcCsindex.cpp" />
+    <ClCompile Include="CalcCsiPeDailyDownload.cpp" />
+    <ClCompile Include="CalcDealDetailDaily.cpp" />
+    <ClCompile Include="CalcFinanceDownload.cpp" />
+    <ClCompile Include="CalcFinanceReport.cpp" />
+    <ClCompile Include="CalcForecastDownload.cpp" />
+    <ClCompile Include="CalcGrossProfit.cpp" />
+    <ClCompile Include="CalcHexunResearchPaperQuery.cpp" />
+    <ClCompile Include="CalcIncomestatementForecast.cpp" />
+    <ClCompile Include="CalcMacdListData.cpp" />
+    <ClCompile Include="CalcMacdQuery.cpp" />
+    <ClCompile Include="CalcMacdViewData.cpp" />
+    <ClCompile Include="CalcMainIncomeGrowth.cpp" />
+    <ClCompile Include="CalcMainIncomeYearGrowth.cpp" />
+    <ClCompile Include="CalcMainProfitYearGrowth.cpp" />
+    <ClCompile Include="CalcMarketExchangeFund.cpp" />
+    <ClCompile Include="CalcMarketMarginGuaranteeFund.cpp" />
+    <ClCompile Include="CalcMarketValue.cpp" />
+    <ClCompile Include="CalcMarketValueSimple.cpp" />
+    <ClCompile Include="CalcMarketValueSimpleDaily.cpp" />
+    <ClCompile Include="CalcMcstListData.cpp" />
+    <ClCompile Include="CalcMcstViewData.cpp" />
+    <ClCompile Include="CalcNewmat11Test.cpp" />
+    <ClCompile Include="CalcPeAndValueDaily.cpp" />
+    <ClCompile Include="CalcPeGrossStockList.cpp" />
+    <ClCompile Include="CalcPeStockList.cpp" />
+    <ClCompile Include="CalcRecentBonusCashSummary.cpp" />
+    <ClCompile Include="CalcRecentStockSummary.cpp" />
+    <ClCompile Include="CalcSimulatedAccountQuery.cpp" />
+    <ClCompile Include="CalcSipfSettlementFundDownload.cpp" />
+    <ClCompile Include="CalcSohuIndexDaily.cpp" />
+    <ClCompile Include="CalcSohuMainIncomeCompoDownload.cpp" />
+    <ClCompile Include="CalcSohuTradingDaily.cpp" />
+    <ClCompile Include="CalcSseMarginTradingDownload.cpp" />
+    <ClCompile Include="CalcStatsGovCn.cpp" />
+    <ClCompile Include="CalcSzseIndexDailyDownload.cpp" />
+    <ClCompile Include="CalcSzseMarginTradingDownload.cpp" />
+    <ClCompile Include="CalcTechnicalAnalysisRoadMap.cpp" />
+    <ClCompile Include="CalcThisYearBonusSummary.cpp" />
+    <ClCompile Include="CalculateStockInfoEx.cpp" />
+    <ClCompile Include="CalculateTask.cpp" />
+    <ClCompile Include="CalcUpdateStockInfo.cpp" />
+    <ClCompile Include="CandlesticksJapan.cpp" />
+    <ClCompile Include="CandlesticksJapanListView.cpp" />
+    <ClCompile Include="CapitalFlows163.cpp" />
+    <ClCompile Include="CapitalStructOf10jqka.cpp" />
+    <ClCompile Include="CapitalStructure.cpp" />
+    <ClCompile Include="CashFlows.cpp" />
+    <ClCompile Include="CashFlowsCsvFileShow.cpp" />
+    <ClCompile Include="CDMGraphCtrl.cpp" />
+    <ClCompile Include="CDyncDlg.cpp" />
+    <ClCompile Include="CffexFutureDaily.cpp" />
+    <ClCompile Include="CfiAddIssuance.cpp" />
+    <ClCompile Include="CfiBonus.cpp" />
+    <ClCompile Include="CfiPlacementOfShare.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxisLabel.cpp" />
+    <ClCompile Include="ChartCtrl\ChartBarSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCandlestickSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCrossHairCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCtrl.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDateTimeAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDragLineCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartFont.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGanttSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGradient.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGrid.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLegend.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLineSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLogarithmicAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartPointsSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartScrollBar.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartStandardAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSurfaceSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartTitle.cpp" />
+    <ClCompile Include="ChartCtrl\ChartXYSerie.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ChildSplitterFrm.cpp" />
+    <ClCompile Include="ClassView.cpp" />
+    <ClCompile Include="CninfoAnnouncement.cpp" />
+    <ClCompile Include="CninfoAnnouncementListView.cpp" />
+    <ClCompile Include="CninfoAnnouncePDFListView.cpp" />
+    <ClCompile Include="CninfoBonus.cpp" />
+    <ClCompile Include="CninfoCsv.cpp" />
+    <ClCompile Include="CninfoDelistingList.cpp" />
+    <ClCompile Include="CninfoGetLandListView.cpp" />
+    <ClCompile Include="CninfoIncentivePlanListView.cpp" />
+    <ClCompile Include="CninfoPlacementOfShare.cpp" />
+    <ClCompile Include="CninfoShareHoldingListView.cpp" />
+    <ClCompile Include="CninfoShareHoldingStatisticsView.cpp" />
+    <ClCompile Include="CninfoStockInfo.cpp" />
+    <ClCompile Include="CninfoSuspendList.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ColourPicker\ColourPicker.cpp" />
+    <ClCompile Include="ColourPicker\ColourPopup.cpp" />
+    <ClCompile Include="ComboBoxExt.cpp" />
+    <ClCompile Include="ComboBoxExtList.cpp" />
+    <ClCompile Include="compileUTF8range.cpp" />
+    <ClCompile Include="CsdcFundInSettlementStat.cpp" />
+    <ClCompile Include="CsdcInvestorStat.cpp" />
+    <ClCompile Include="CsdcSecurityIssueStat.cpp" />
+    <ClCompile Include="CsdcTransferBonusStat.cpp" />
+    <ClCompile Include="CsiCsrcPeDaily.cpp" />
+    <ClCompile Include="CsindexStockPlates.cpp" />
+    <ClCompile Include="CsiPeDaily.cpp" />
+    <ClCompile Include="CsvDocument.cpp" />
+    <ClCompile Include="CSVFile.cpp" />
+    <ClCompile Include="CsvView.cpp" />
+    <ClCompile Include="DatabaseDoc.cpp" />
+    <ClCompile Include="DatabaseView.cpp" />
+    <ClCompile Include="DealDetailDateDlg.cpp" />
+    <ClCompile Include="DirectionalMovement.cpp" />
+    <ClCompile Include="DyncItemEditDlg.cpp" />
+    <ClCompile Include="DyncItemFindDlg.cpp" />
+    <ClCompile Include="FileView.cpp" />
+    <ClCompile Include="FinanceReport.cpp" />
+    <ClCompile Include="FindStockByCode.cpp" />
+    <ClCompile Include="FindStockByPinyin.cpp" />
+    <ClCompile Include="FundInSettlement.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCell.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCellBase.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCtrl.cpp" />
+    <ClCompile Include="GridCtrl_src\GridDropTarget.cpp" />
+    <ClCompile Include="GridCtrl_src\InPlaceEdit.cpp" />
+    <ClCompile Include="GridCtrl_src\TitleTip.cpp" />
+    <ClCompile Include="GridCtrl_src\TreeCell.cpp" />
+    <ClCompile Include="GridCtrl_src\TreeGridCell.cpp" />
+    <ClCompile Include="GridCtrl_src\TreeGridCellCheck.cpp" />
+    <ClCompile Include="GridCtrl_src\TreeGridCtrl.cpp" />
+    <ClCompile Include="HexunResearchPaper.cpp" />
+    <ClCompile Include="HexunResearchPaperListView.cpp" />
+    <ClCompile Include="HtmlParser.cpp" />
+    <ClCompile Include="HushenStockIndex.cpp" />
+    <ClCompile Include="IncomeStatement.cpp" />
+    <ClCompile Include="IncomeStatementCsvFileShow.cpp" />
+    <ClCompile Include="Indi10jqkaBonusView.cpp" />
+    <ClCompile Include="IndiCashFlowSummaryView.cpp" />
+    <ClCompile Include="IndiCninfoAnnouncementRoadView.cpp" />
+    <ClCompile Include="IndiCsindexView.cpp" />
+    <ClCompile Include="IndiDmiView.cpp" />
+    <ClCompile Include="IndiFundHoldValueView.cpp" />
+    <ClCompile Include="IndiGrossProfitRateView.cpp" />
+    <ClCompile Include="IndiHexunResearchPapaerView.cpp" />
+    <ClCompile Include="IndiIncomestatementForecastView.cpp" />
+    <ClCompile Include="IndiMacdView.cpp" />
+    <ClCompile Include="IndiMainIncomeGrowthView.cpp" />
+    <ClCompile Include="IndiMarketIndexAnalysisView.cpp" />
+    <ClCompile Include="IndiMcstView.cpp" />
+    <ClCompile Include="IndiPeAndValueDailyView.cpp" />
+    <ClCompile Include="IndiTechnicalAnalysisRoadView.cpp" />
+    <ClCompile Include="IndividualCapitalFlowView.cpp" />
+    <ClCompile Include="IndividualCapitalStructView.cpp" />
+    <ClCompile Include="IndividualCostView.cpp" />
+    <ClCompile Include="IndividualCsvFileView.cpp" />
+    <ClCompile Include="IndividualCurrentAssetView.cpp" />
+    <ClCompile Include="IndividualDmGraphView.cpp" />
+    <ClCompile Include="IndividualNetProfitsView.cpp" />
+    <ClCompile Include="IndividualNonCurrentAssetView.cpp" />
+    <ClCompile Include="IndividualShareDoc.cpp" />
+    <ClCompile Include="IndividualShareView.cpp" />
+    <ClCompile Include="IndividualSummaryView.cpp" />
+    <ClCompile Include="IndividualSzsePeView.cpp" />
+    <ClCompile Include="IndividualVolumeView.cpp" />
+    <ClCompile Include="IndividualYahooPeView.cpp" />
+    <ClCompile Include="IndiZombieAnalysisView.cpp" />
+    <ClCompile Include="InputTextDlg.cpp" />
+    <ClCompile Include="jsoncpp\lib_json\json_reader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="jsoncpp\lib_json\json_value.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="jsoncpp\lib_json\json_writer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MacdListView.cpp" />
+    <ClCompile Include="MacdStockListView.cpp" />
+    <ClCompile Include="MAConvergenceDivergence.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MainProductQueryView.cpp" />
+    <ClCompile Include="MarketCffexHs300FutureView.cpp" />
+    <ClCompile Include="MarketCsdcInvestorStatView.cpp" />
+    <ClCompile Include="MarketExchageFundView.cpp" />
+    <ClCompile Include="MarketMarginGuaranteeFundView.cpp" />
+    <ClCompile Include="MarketSohuIndexView.cpp" />
+    <ClCompile Include="MatlabShanghaiIndex.cpp" />
+    <ClCompile Include="MatlabShanghaiSohuPlateIndex.cpp" />
+    <ClCompile Include="MessageString\jmutex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MessageString\MessageString.cpp" />
+    <ClCompile Include="MessageString\MessageStringManager.cpp" />
+    <ClCompile Include="MovingAverages.cpp" />
+    <ClCompile Include="MultiLineListBox.cpp" />
+    <ClCompile Include="MySplitterWndEx.cpp" />
+    <ClCompile Include="NetEaseTradeDaily.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellCheck.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellCombo.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellComposite.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellDateTime.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellNumeric.cpp" />
+    <ClCompile Include="NewCellTypes\GridObj.cpp" />
+    <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
+    <ClCompile Include="Newmat11TestView.cpp" />
+    <ClCompile Include="OnBalanceVolume.cpp" />
+    <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="PDFStructureDlg.cpp" />
+    <ClCompile Include="PeStockListView.cpp" />
+    <ClCompile Include="PlateChangeRateSummaryView.cpp" />
+    <ClCompile Include="PlateCorrectedMarketValueView.cpp" />
+    <ClCompile Include="PlateCsindexDynamicPeView.cpp" />
+    <ClCompile Include="PlateCurrentAssetsTurnoverRatioView.cpp" />
+    <ClCompile Include="PlateDealDetailDailyView.cpp" />
+    <ClCompile Include="PlateDebtToAssetsRatioView.cpp" />
+    <ClCompile Include="PlateDebtToCapitalRatioView.cpp" />
+    <ClCompile Include="PlateFixedAssetsTurnoverRatioView.cpp" />
+    <ClCompile Include="PlateFundHoldView.cpp" />
+    <ClCompile Include="PlateGrossProfitListView.cpp" />
+    <ClCompile Include="PlateGrossProfitRateGrowthView.cpp" />
+    <ClCompile Include="PlateInventoryTurnoverRatioView.cpp" />
+    <ClCompile Include="PlateLiquidityRatioView.cpp" />
+    <ClCompile Include="PlateMainIncomeGrowthView.cpp" />
+    <ClCompile Include="PlateNetFixedAssestsGrowthView.cpp" />
+    <ClCompile Include="PlateNetProfitsRatioView.cpp" />
+    <ClCompile Include="PlateSelectDlg.cpp" />
+    <ClCompile Include="PlateShanghaiIndexView.cpp" />
+    <ClCompile Include="PlateStockListView.cpp" />
+    <ClCompile Include="PlateTotalAssetsGrowthView.cpp" />
+    <ClCompile Include="PlateTotalAssetsTurnoverRatioView.cpp" />
+    <ClCompile Include="PlateTurnoverRateView.cpp" />
+    <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="READWRIT.cpp" />
+    <ClCompile Include="RelativeStrengthIndex.cpp" />
+    <ClCompile Include="SelfSelectPlateDlg.cpp" />
+    <ClCompile Include="SelfSelectStockPlates.cpp" />
+    <ClCompile Include="SendMail.cpp" />
+    <ClCompile Include="ShanghaiIndexView.cpp" />
+    <ClCompile Include="ShanghaiStockInfo.cpp" />
+    <ClCompile Include="ShenzhenIndexDaily.cpp" />
+    <ClCompile Include="ShenzhenIndexList.cpp" />
+    <ClCompile Include="ShenzhenIndexYangben.cpp" />
+    <ClCompile Include="ShenzhenMarketQuotation.cpp" />
+    <ClCompile Include="SimpleInputBox.cpp" />
+    <ClCompile Include="SimulatedAccount.cpp" />
+    <ClCompile Include="SimulatedAccountAnalysis.cpp" />
+    <ClCompile Include="SimulatedAccountListView.cpp" />
+    <ClCompile Include="SimulatedAccountMacd.cpp" />
+    <ClCompile Include="SinaDealDetail.cpp" />
+    <ClCompile Include="SohuFundHold.cpp" />
+    <ClCompile Include="SohuFundHoldCsvFileShow.cpp" />
+    <ClCompile Include="SohuIndexDaily.cpp" />
+    <ClCompile Include="SohuMainIncomeComposition.cpp" />
+    <ClCompile Include="SohuPerformanceForecast.cpp" />
+    <ClCompile Include="SouhuStockPlates.cpp" />
+    <ClCompile Include="SouhuTradingDaily.cpp" />
+    <ClCompile Include="SplashScreenEx.cpp" />
+    <ClCompile Include="splitChinese.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SseMarginTrading.cpp" />
+    <ClCompile Include="StatsGovCn.cpp" />
+    <ClCompile Include="StatsGovCnChartView.cpp" />
+    <ClCompile Include="StatsGovCnDoc.cpp" />
+    <ClCompile Include="StatsGovCnGridView.cpp" />
+    <ClCompile Include="StatsGovFsjd.cpp" />
+    <ClCompile Include="StatsGovFsnd.cpp" />
+    <ClCompile Include="StatsGovFsyd.cpp" />
+    <ClCompile Include="StatsGovHgjd.cpp" />
+    <ClCompile Include="StatsGovHgnd.cpp" />
+    <ClCompile Include="StatsGovHgyd.cpp" />
+    <ClCompile Include="StatsGovMenuDlg.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="StochasticsOscillatorKDJ.cpp" />
+    <ClCompile Include="Stock.cpp" />
+    <ClCompile Include="StockDataLog.cpp" />
+    <ClCompile Include="StockDataModel.cpp" />
+    <ClCompile Include="StockDoc.cpp" />
+    <ClCompile Include="StockGroupDlg.cpp" />
+    <ClCompile Include="StockHomePageView.cpp" />
+    <ClCompile Include="StockInfo.cpp" />
+    <ClCompile Include="StockInfoView.cpp" />
+    <ClCompile Include="StockPlatesView.cpp" />
+    <ClCompile Include="StockRangeSet.cpp" />
+    <ClCompile Include="StockView.cpp" />
+    <ClCompile Include="SzseMarginTrading.cpp" />
+    <ClCompile Include="TechAnalysisEvent.cpp" />
+    <ClCompile Include="TechnicalAnalysis.cpp" />
+    <ClCompile Include="TipDialog.cpp" />
+    <ClCompile Include="TradingDaily.cpp" />
+    <ClCompile Include="UrlUtils.cpp" />
+    <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="Volume.cpp" />
+    <ClCompile Include="XmlParser.cpp" />
+    <ClCompile Include="ZombieStockListView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbsoluteBreadthIndex.h" />
+    <ClInclude Include="AbstractIndex.h" />
+    <ClInclude Include="AccumulationDistributionLine.h" />
+    <ClInclude Include="AllAddIssuanceListView.h" />
+    <ClInclude Include="AllCsiDynamicPeStockListView.h" />
+    <ClInclude Include="AllMainIncomeYearGrowthStockListView.h" />
+    <ClInclude Include="AllMainProfitYearGrowthStockListView.h" />
+    <ClInclude Include="AllMcstStockListView.h" />
+    <ClInclude Include="AllRecentBonusCashStockListView.h" />
+    <ClInclude Include="AllStockListView.h" />
+    <ClInclude Include="AllThisYearBonusListView.h" />
+    <ClInclude Include="AutoDownloadDoc.h" />
+    <ClInclude Include="AutoDownloadView.h" />
+    <ClInclude Include="Balance.h" />
+    <ClInclude Include="BalanceCsvFileShow.h" />
+    <ClInclude Include="BaseChartCtlView.h" />
+    <ClInclude Include="BaseCsvFileShow.h" />
+    <ClInclude Include="BaseGridCtlView.h" />
+    <ClInclude Include="BaseHtmlView.h" />
+    <ClInclude Include="BaseMatlabView.h" />
+    <ClInclude Include="BaseMessageControl.h" />
+    <ClInclude Include="BaseMessageElementsParser.h" />
+    <ClInclude Include="BaseMessageFormView.h" />
+    <ClInclude Include="BaseMessageView.h" />
+    <ClInclude Include="BaseRichEditFormView.h" />
+    <ClInclude Include="BasicExcel.hpp" />
+    <ClInclude Include="BCMenu.h" />
+    <ClInclude Include="BollingerBands.h" />
+    <ClInclude Include="BollListView.h" />
+    <ClInclude Include="BonusOf10jqka.h" />
+    <ClInclude Include="BtnST.h" />
+    <ClInclude Include="BussinessUtils.h" />
+    <ClInclude Include="Calc10jqkaBonusViewData.h" />
+    <ClInclude Include="CalcAddIssuanceSummary.h" />
+    <ClInclude Include="CalcAssetsGrowth.h" />
+    <ClInclude Include="CalcBollQuery.h" />
+    <ClInclude Include="CalcCandlesticksJapanQuery.h" />
+    <ClInclude Include="CalcCapiStructDownload.h" />
+    <ClInclude Include="CalcCapitalFlow.h" />
+    <ClInclude Include="CalcCffexFutureHs300.h" />
+    <ClInclude Include="CalcCninfoAnnouceRoadMap.h" />
+    <ClInclude Include="CalcCninfoAnnouncementQuery.h" />
+    <ClInclude Include="CalcCninfoAnnouncePDFQuery.h" />
+    <ClInclude Include="CalcCninfoGetLandQuery.h" />
+    <ClInclude Include="CalcCninfoIncentivePlanQuery.h" />
+    <ClInclude Include="CalcCninfoShareHoldingQuery.h" />
+    <ClInclude Include="CalcCninfoShareHoldingStatistics.h" />
+    <ClInclude Include="CalcCsdcFundInSettlementStatDownload.h" />
+    <ClInclude Include="CalcCsdcInvestorStat.h" />
+    <ClInclude Include="CalcCsdcInvestorStatDownload.h" />
+    <ClInclude Include="CalcCsdcSecurityIssueStatDownload.h" />
+    <ClInclude Include="CalcCsdcTransferBonusStatDownload.h" />
+    <ClInclude Include="CalcCsiCsrcPeDailyDownload.h" />
+    <ClInclude Include="CalcCsiDynamicPeStockList.h" />
+    <ClInclude Include="CalcCsindex.h" />
+    <ClInclude Include="CalcCsiPeDailyDownload.h" />
+    <ClInclude Include="CalcDealDetailDaily.h" />
+    <ClInclude Include="CalcFinanceDownload.h" />
+    <ClInclude Include="CalcFinanceReport.h" />
+    <ClInclude Include="CalcForecastDownload.h" />
+    <ClInclude Include="CalcGrossProfit.h" />
+    <ClInclude Include="CalcHexunResearchPaperQuery.h" />
+    <ClInclude Include="CalcIncomestatementForecast.h" />
+    <ClInclude Include="CalcMacdListData.h" />
+    <ClInclude Include="CalcMacdQuery.h" />
+    <ClInclude Include="CalcMacdViewData.h" />
+    <ClInclude Include="CalcMainIncomeGrowth.h" />
+    <ClInclude Include="CalcMainIncomeYearGrowth.h" />
+    <ClInclude Include="CalcMainProfitYearGrowth.h" />
+    <ClInclude Include="CalcMarketExchangeFund.h" />
+    <ClInclude Include="CalcMarketMarginGuaranteeFund.h" />
+    <ClInclude Include="CalcMarketValue.h" />
+    <ClInclude Include="CalcMarketValueSimple.h" />
+    <ClInclude Include="CalcMarketValueSimpleDaily.h" />
+    <ClInclude Include="CalcMcstListData.h" />
+    <ClInclude Include="CalcMcstViewData.h" />
+    <ClInclude Include="CalcNewmat11Test.h" />
+    <ClInclude Include="CalcPeAndValueDaily.h" />
+    <ClInclude Include="CalcPeGrossStockList.h" />
+    <ClInclude Include="CalcPeStockList.h" />
+    <ClInclude Include="CalcRecentBonusCashSummary.h" />
+    <ClInclude Include="CalcRecentStockSummary.h" />
+    <ClInclude Include="CalcSimulatedAccountQuery.h" />
+    <ClInclude Include="CalcSipfSettlementFundDownload.h" />
+    <ClInclude Include="CalcSohuIndexDaily.h" />
+    <ClInclude Include="CalcSohuMainIncomeCompoDownload.h" />
+    <ClInclude Include="CalcSohuTradingDaily.h" />
+    <ClInclude Include="CalcSseMarginTradingDownload.h" />
+    <ClInclude Include="CalcStatsGovCn.h" />
+    <ClInclude Include="CalcSzseIndexDailyDownload.h" />
+    <ClInclude Include="CalcSzseMarginTradingDownload.h" />
+    <ClInclude Include="CalcTechnicalAnalysisRoadMap.h" />
+    <ClInclude Include="CalcThisYearBonusSummary.h" />
+    <ClInclude Include="CalculateStockInfoEx.h" />
+    <ClInclude Include="CalculateTask.h" />
+    <ClInclude Include="CalcUpdateStockInfo.h" />
+    <ClInclude Include="CandlesticksJapan.h" />
+    <ClInclude Include="CandlesticksJapanListView.h" />
+    <ClInclude Include="CapitalFlows163.h" />
+    <ClInclude Include="CapitalStructOf10jqka.h" />
+    <ClInclude Include="CapitalStructure.h" />
+    <ClInclude Include="CashFlows.h" />
+    <ClInclude Include="CashFlowsCsvFileShow.h" />
+    <ClInclude Include="CDMGraphAnnotation.h" />
+    <ClInclude Include="CDMGraphAxis.h" />
+    <ClInclude Include="CDMGraphCollection.h" />
+    <ClInclude Include="CDMGraphCtrl.h" />
+    <ClInclude Include="CDMGraphCursor.h" />
+    <ClInclude Include="CDMGraphElement.h" />
+    <ClInclude Include="CDyncDlg.h" />
+    <ClInclude Include="CffexFutureDaily.h" />
+    <ClInclude Include="CfiAddIssuance.h" />
+    <ClInclude Include="CfiBonus.h" />
+    <ClInclude Include="CfiPlacementOfShare.h" />
+    <ClInclude Include="ChartCtrl\ChartAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartAxisLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBalloonLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBarSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartCandlestickSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartCrossHairCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartCtrl.h" />
+    <ClInclude Include="ChartCtrl\ChartCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartDateTimeAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartDragLineCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartFont.h" />
+    <ClInclude Include="ChartCtrl\ChartGanttSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartGradient.h" />
+    <ClInclude Include="ChartCtrl\ChartGrid.h" />
+    <ClInclude Include="ChartCtrl\ChartLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartLegend.h" />
+    <ClInclude Include="ChartCtrl\ChartLineSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartLogarithmicAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsArray.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartScrollBar.h" />
+    <ClInclude Include="ChartCtrl\ChartSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartSerieBase.h" />
+    <ClInclude Include="ChartCtrl\ChartSeriesMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartStandardAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartString.h" />
+    <ClInclude Include="ChartCtrl\ChartSurfaceSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartTitle.h" />
+    <ClInclude Include="ChartCtrl\ChartXYSerie.h" />
+    <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ChildSplitterFrm.h" />
+    <ClInclude Include="CIDMGraphCtrlEvents.h" />
+    <ClInclude Include="ClassView.h" />
+    <ClInclude Include="CninfoAnnouncement.h" />
+    <ClInclude Include="CninfoAnnouncementListView.h" />
+    <ClInclude Include="CninfoAnnouncePDFListView.h" />
+    <ClInclude Include="CninfoBonus.h" />
+    <ClInclude Include="CninfoCsv.h" />
+    <ClInclude Include="CninfoDelistingList.h" />
+    <ClInclude Include="CninfoGetLandListView.h" />
+    <ClInclude Include="CninfoIncentivePlanListView.h" />
+    <ClInclude Include="CninfoPlacementOfShare.h" />
+    <ClInclude Include="CninfoShareHoldingListView.h" />
+    <ClInclude Include="CninfoShareHoldingStatisticsView.h" />
+    <ClInclude Include="CninfoStockInfo.h" />
+    <ClInclude Include="CninfoSuspendList.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="ColourPicker\ColourPicker.h" />
+    <ClInclude Include="ColourPicker\ColourPopup.h" />
+    <ClInclude Include="ComboBoxExt.h" />
+    <ClInclude Include="ComboBoxExtList.h" />
+    <ClInclude Include="CsdcFundInSettlementStat.h" />
+    <ClInclude Include="CsdcInvestorStat.h" />
+    <ClInclude Include="CsdcSecurityIssueStat.h" />
+    <ClInclude Include="CsdcTransferBonusStat.h" />
+    <ClInclude Include="CsiCsrcPeDaily.h" />
+    <ClInclude Include="CsindexStockPlates.h" />
+    <ClInclude Include="CsiPeDaily.h" />
+    <ClInclude Include="CsvDocument.h" />
+    <ClInclude Include="CSVFile.h" />
+    <ClInclude Include="CsvView.h" />
+    <ClInclude Include="DatabaseDoc.h" />
+    <ClInclude Include="DatabaseView.h" />
+    <ClInclude Include="DealDetailDateDlg.h" />
+    <ClInclude Include="DirectionalMovement.h" />
+    <ClInclude Include="DyncItemEditDlg.h" />
+    <ClInclude Include="DyncItemFindDlg.h" />
+    <ClInclude Include="FileView.h" />
+    <ClInclude Include="FinanceReport.h" />
+    <ClInclude Include="FindStockByCode.h" />
+    <ClInclude Include="FindStockByPinyin.h" />
+    <ClInclude Include="FundInSettlement.h" />
+    <ClInclude Include="GridCtrl_src\CellRange.h" />
+    <ClInclude Include="GridCtrl_src\GridCell.h" />
+    <ClInclude Include="GridCtrl_src\GridCellBase.h" />
+    <ClInclude Include="GridCtrl_src\GridCtrl.h" />
+    <ClInclude Include="GridCtrl_src\GridDropTarget.h" />
+    <ClInclude Include="GridCtrl_src\InPlaceEdit.h" />
+    <ClInclude Include="GridCtrl_src\MemDC.h" />
+    <ClInclude Include="GridCtrl_src\TitleTip.h" />
+    <ClInclude Include="GridCtrl_src\TreeCell.h" />
+    <ClInclude Include="GridCtrl_src\TreeGridCell.h" />
+    <ClInclude Include="GridCtrl_src\TreeGridCellCheck.h" />
+    <ClInclude Include="GridCtrl_src\TreeGridCtrl.h" />
+    <ClInclude Include="GridCtrl_src\TreeNode.h" />
+    <ClInclude Include="HexunResearchPaper.h" />
+    <ClInclude Include="HexunResearchPaperListView.h" />
+    <ClInclude Include="HtmlParser.h" />
+    <ClInclude Include="HushenStockIndex.h" />
+    <ClInclude Include="IncomeStatement.h" />
+    <ClInclude Include="IncomeStatementCsvFileShow.h" />
+    <ClInclude Include="Indi10jqkaBonusView.h" />
+    <ClInclude Include="IndiCashFlowSummaryView.h" />
+    <ClInclude Include="IndiCninfoAnnouncementRoadView.h" />
+    <ClInclude Include="IndiCsindexView.h" />
+    <ClInclude Include="IndiDmiView.h" />
+    <ClInclude Include="IndiFundHoldValueView.h" />
+    <ClInclude Include="IndiGrossProfitRateView.h" />
+    <ClInclude Include="IndiHexunResearchPapaerView.h" />
+    <ClInclude Include="IndiIncomestatementForecastView.h" />
+    <ClInclude Include="IndiMacdView.h" />
+    <ClInclude Include="IndiMainIncomeGrowthView.h" />
+    <ClInclude Include="IndiMarketIndexAnalysisView.h" />
+    <ClInclude Include="IndiMcstView.h" />
+    <ClInclude Include="IndiPeAndValueDailyView.h" />
+    <ClInclude Include="IndiTechnicalAnalysisRoadView.h" />
+    <ClInclude Include="IndividualCapitalFlowView.h" />
+    <ClInclude Include="IndividualCapitalStructView.h" />
+    <ClInclude Include="IndividualCostView.h" />
+    <ClInclude Include="IndividualCsvFileView.h" />
+    <ClInclude Include="IndividualCurrentAssetView.h" />
+    <ClInclude Include="IndividualDmGraphView.h" />
+    <ClInclude Include="IndividualNetProfitsView.h" />
+    <ClInclude Include="IndividualNonCurrentAssetView.h" />
+    <ClInclude Include="IndividualShareDoc.h" />
+    <ClInclude Include="IndividualShareView.h" />
+    <ClInclude Include="IndividualSummaryView.h" />
+    <ClInclude Include="IndividualSzsePeView.h" />
+    <ClInclude Include="IndividualVolumeView.h" />
+    <ClInclude Include="IndividualYahooPeView.h" />
+    <ClInclude Include="IndiZombieAnalysisView.h" />
+    <ClInclude Include="InputTextDlg.h" />
+    <ClInclude Include="MacdListView.h" />
+    <ClInclude Include="MacdStockListView.h" />
+    <ClInclude Include="MAConvergenceDivergence.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MainProductQueryView.h" />
+    <ClInclude Include="MarketCffexHs300FutureView.h" />
+    <ClInclude Include="MarketCsdcInvestorStatView.h" />
+    <ClInclude Include="MarketExchageFundView.h" />
+    <ClInclude Include="MarketMarginGuaranteeFundView.h" />
+    <ClInclude Include="MarketSohuIndexView.h" />
+    <ClInclude Include="MatlabShanghaiIndex.h" />
+    <ClInclude Include="MatlabShanghaiSohuPlateIndex.h" />
+    <ClInclude Include="MessageString\jmutex.h" />
+    <ClInclude Include="MessageString\jmutexautolock.h" />
+    <ClInclude Include="MessageString\MessageString.h" />
+    <ClInclude Include="MessageString\MessageStringManager.h" />
+    <ClInclude Include="MovingAverages.h" />
+    <ClInclude Include="MultiLineListBox.h" />
+    <ClInclude Include="MyBuffer.h" />
+    <ClInclude Include="MySplitterWndEx.h" />
+    <ClInclude Include="NetEaseTradeDaily.h" />
+    <ClInclude Include="NewCellTypes\GridCellCheck.h" />
+    <ClInclude Include="NewCellTypes\GridCellCombo.h" />
+    <ClInclude Include="NewCellTypes\GridCellComposite.h" />
+    <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
+    <ClInclude Include="NewCellTypes\GridCellNumeric.h" />
+    <ClInclude Include="NewCellTypes\GridObj.h" />
+    <ClInclude Include="NewCellTypes\GridURLCell.h" />
+    <ClInclude Include="Newmat11TestView.h" />
+    <ClInclude Include="OnBalanceVolume.h" />
+    <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="PDFStructureDlg.h" />
+    <ClInclude Include="PeStockListView.h" />
+    <ClInclude Include="PlateChangeRateSummaryView.h" />
+    <ClInclude Include="PlateCorrectedMarketValueView.h" />
+    <ClInclude Include="PlateCsindexDynamicPeView.h" />
+    <ClInclude Include="PlateCurrentAssetsTurnoverRatioView.h" />
+    <ClInclude Include="PlateDealDetailDailyView.h" />
+    <ClInclude Include="PlateDebtToAssetsRatioView.h" />
+    <ClInclude Include="PlateDebtToCapitalRatioView.h" />
+    <ClInclude Include="PlateFixedAssetsTurnoverRatioView.h" />
+    <ClInclude Include="PlateFundHoldView.h" />
+    <ClInclude Include="PlateGrossProfitListView.h" />
+    <ClInclude Include="PlateGrossProfitRateGrowthView.h" />
+    <ClInclude Include="PlateInventoryTurnoverRatioView.h" />
+    <ClInclude Include="PlateLiquidityRatioView.h" />
+    <ClInclude Include="PlateMainIncomeGrowthView.h" />
+    <ClInclude Include="PlateNetFixedAssestsGrowthView.h" />
+    <ClInclude Include="PlateNetProfitsRatioView.h" />
+    <ClInclude Include="PlateSelectDlg.h" />
+    <ClInclude Include="PlateShanghaiIndexView.h" />
+    <ClInclude Include="PlateStockListView.h" />
+    <ClInclude Include="PlateTotalAssetsGrowthView.h" />
+    <ClInclude Include="PlateTotalAssetsTurnoverRatioView.h" />
+    <ClInclude Include="PlateTurnoverRateView.h" />
+    <ClInclude Include="PropertiesWnd.h" />
+    <ClInclude Include="READWRIT.h" />
+    <ClInclude Include="RelativeStrengthIndex.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SelfSelectPlateDlg.h" />
+    <ClInclude Include="SelfSelectStockPlates.h" />
+    <ClInclude Include="SendMail.h" />
+    <ClInclude Include="ShanghaiIndexView.h" />
+    <ClInclude Include="ShanghaiStockInfo.h" />
+    <ClInclude Include="ShenzhenIndexDaily.h" />
+    <ClInclude Include="ShenzhenIndexList.h" />
+    <ClInclude Include="ShenzhenIndexYangben.h" />
+    <ClInclude Include="ShenzhenMarketQuotation.h" />
+    <ClInclude Include="SimpleInputBox.h" />
+    <ClInclude Include="SimulatedAccount.h" />
+    <ClInclude Include="SimulatedAccountAnalysis.h" />
+    <ClInclude Include="SimulatedAccountListView.h" />
+    <ClInclude Include="SimulatedAccountMacd.h" />
+    <ClInclude Include="SinaDealDetail.h" />
+    <ClInclude Include="SohuFundHold.h" />
+    <ClInclude Include="SohuFundHoldCsvFileShow.h" />
+    <ClInclude Include="SohuIndexDaily.h" />
+    <ClInclude Include="SohuMainIncomeComposition.h" />
+    <ClInclude Include="SohuPerformanceForecast.h" />
+    <ClInclude Include="SouhuStockPlates.h" />
+    <ClInclude Include="SouhuTradingDaily.h" />
+    <ClInclude Include="SplashScreenEx.h" />
+    <ClInclude Include="SseMarginTrading.h" />
+    <ClInclude Include="StatsGovCn.h" />
+    <ClInclude Include="StatsGovCnChartView.h" />
+    <ClInclude Include="StatsGovCnDoc.h" />
+    <ClInclude Include="StatsGovCnGridView.h" />
+    <ClInclude Include="StatsGovFsjd.h" />
+    <ClInclude Include="StatsGovFsnd.h" />
+    <ClInclude Include="StatsGovFsyd.h" />
+    <ClInclude Include="StatsGovHgjd.h" />
+    <ClInclude Include="StatsGovHgnd.h" />
+    <ClInclude Include="StatsGovHgyd.h" />
+    <ClInclude Include="StatsGovMenuDlg.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StochasticsOscillatorKDJ.h" />
+    <ClInclude Include="Stock.h" />
+    <ClInclude Include="StockDataLog.h" />
+    <ClInclude Include="StockDataModel.h" />
+    <ClInclude Include="StockDoc.h" />
+    <ClInclude Include="StockGroupDlg.h" />
+    <ClInclude Include="StockHomePageView.h" />
+    <ClInclude Include="StockInfo.h" />
+    <ClInclude Include="StockInfoView.h" />
+    <ClInclude Include="StockPlatesView.h" />
+    <ClInclude Include="StockRangeSet.h" />
+    <ClInclude Include="StockView.h" />
+    <ClInclude Include="SzseMarginTrading.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TechAnalysisEvent.h" />
+    <ClInclude Include="TechnicalAnalysis.h" />
+    <ClInclude Include="TipDialog.h" />
+    <ClInclude Include="TradingDaily.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="TreeContainer408\associative_tree.h" />
+    <ClInclude Include="TreeContainer408\basic_tree.h" />
+    <ClInclude Include="TreeContainer408\child_iterator.h" />
+    <ClInclude Include="TreeContainer408\child_node_iterator.h" />
+    <ClInclude Include="TreeContainer408\descendant_iterator.h" />
+    <ClInclude Include="TreeContainer408\descendant_node_iterator.h" />
+    <ClInclude Include="TreeContainer408\multitree.h" />
+    <ClInclude Include="TreeContainer408\ordered_iterator.h" />
+    <ClInclude Include="TreeContainer408\reverse_iterator.h" />
+    <ClInclude Include="TreeContainer408\reverse_node_iterator.h" />
+    <ClInclude Include="TreeContainer408\sequential_tree.h" />
+    <ClInclude Include="TreeContainer408\tree.h" />
+    <ClInclude Include="TreeContainer408\unique_tree.h" />
+    <ClInclude Include="UrlUtils.h" />
+    <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="Volume.h" />
+    <ClInclude Include="XmlParser.h" />
+    <ClInclude Include="ZombieStockListView.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ChartCtrl\ChartBalloonLabel.inl" />
+    <None Include="ChartCtrl\ChartLabel.inl" />
+    <None Include="ChartCtrl\ChartPointsArray.inl" />
+    <None Include="ChartCtrl\ChartSerieBase.inl" />
+    <None Include="FindStockByCodeDlg.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="procedure.sql" />
+    <None Include="ReadMe.txt" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\classview.bmp" />
+    <None Include="res\classview_hc.bmp" />
+    <None Include="res\class_view.ico" />
+    <None Include="res\class_view_hc.ico" />
+    <None Include="res\explorer.bmp" />
+    <None Include="res\explorer_hc.bmp" />
+    <None Include="res\fileview.bmp" />
+    <None Include="res\fileview_hc.bmp" />
+    <None Include="res\file_view.ico" />
+    <None Include="res\file_view_hc.ico" />
+    <None Include="res\ico00001.ico" />
+    <None Include="res\icon1.ico" />
+    <None Include="res\idr_stoc.ico" />
+    <None Include="res\menuimages.bmp" />
+    <None Include="res\menuimages_hc.bmp" />
+    <None Include="res\output_wnd.ico" />
+    <None Include="res\output_wnd_hc.ico" />
+    <None Include="res\properties.bmp" />
+    <None Include="res\properties_hc.bmp" />
+    <None Include="res\properties_wnd.ico" />
+    <None Include="res\properties_wnd_hc.ico" />
+    <None Include="res\sort.bmp" />
+    <None Include="res\sort1.bmp" />
+    <None Include="res\sort_hc.bmp" />
+    <None Include="res\splash.bmp" />
+    <None Include="res\Stock.ico" />
+    <None Include="res\Stock.rc2" />
+    <None Include="res\StockDoc.ico" />
+    <None Include="res\Toolbar.bmp" />
+    <None Include="res\toolbar1.bmp" />
+    <None Include="res\Toolbar256.bmp" />
+    <None Include="TreeContainer408\associative_tree.inl" />
+    <None Include="TreeContainer408\basic_tree.inl" />
+    <None Include="TreeContainer408\descendant_iterator.inl" />
+    <None Include="TreeContainer408\descendant_node_iterator.inl" />
+    <None Include="TreeContainer408\multitree.inl" />
+    <None Include="TreeContainer408\sequential_tree.inl" />
+    <None Include="TreeContainer408\TCL.chm" />
+    <None Include="TreeContainer408\tree.inl" />
+    <None Include="TreeContainer408\unique_tree.inl" />
+    <None Include="UserImages.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Stock.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties _x007B_AAF89A51-7FC0-43B0-9F81-FFEFF6A8DB43_x007D_="CDMGraphCtrl" RESOURCE_FILE="Stock.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

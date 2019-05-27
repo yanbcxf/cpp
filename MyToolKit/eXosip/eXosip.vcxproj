@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D77B06A8-6E8B-4782-965B-03EA1B52C3ED}</ProjectGuid>
+    <RootNamespace>eXosip</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXcall_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXconf.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXinsubscription_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXmessage_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXoptions_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXosip.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXpublish_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXrefer_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXregister_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXsubscription_api.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXtl_dtls.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXtl_tcp.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXtl_tls.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXtl_udp.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXtransport.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\eXutils.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\inet_ntop.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jauth.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jcall.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jcallback.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jdialog.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jevents.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jnotify.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jpipe.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jpublish.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jreg.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jrequest.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jresponse.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\jsubscribe.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\milenage.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\misc.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\rijndael.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\sdp_offans.c" />
+    <ClCompile Include="..\libeXosip2-4.1.0\src\udp.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eXosip.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_call.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_message.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_options.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_publish.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_refer.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_register.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_setup.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\include\eXosip2\eX_subscribe.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\eXosip2.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\eXtransport.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\inet_ntop.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\jpipe.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\milenage.h" />
+    <ClInclude Include="..\libeXosip2-4.1.0\src\rijndael.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

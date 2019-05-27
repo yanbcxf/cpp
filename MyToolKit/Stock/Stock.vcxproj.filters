@@ -1,0 +1,2347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="GridCtrl">
+      <UniqueIdentifier>{92a43162-050c-4aee-ba69-8442855cf0a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MessageString">
+      <UniqueIdentifier>{4852bf7b-9a08-40d2-902d-f5b8f5d12907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bussiness">
+      <UniqueIdentifier>{de38ecf5-2a87-4aa0-aee8-d44ab289164b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jsoncpp">
+      <UniqueIdentifier>{2c6311e6-a114-447a-8be4-7f643b3c5bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ChartCtrl">
+      <UniqueIdentifier>{216723a3-518a-4e74-8833-ab7168a6f422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColourCtrl">
+      <UniqueIdentifier>{8212b8e0-51e5-4fb5-9a48-d2da6c65bc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialog">
+      <UniqueIdentifier>{73f13473-4a8f-458d-bd77-386914eb7666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CsvFileShow">
+      <UniqueIdentifier>{0ab91f4d-9144-4798-b316-5b9343b25410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CalculateTask">
+      <UniqueIdentifier>{9f6ca3cf-675e-480c-941e-6f08d1b5da21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TreeContainer408">
+      <UniqueIdentifier>{5c69a152-0648-4625-8562-468a66c01e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StatsGovCn">
+      <UniqueIdentifier>{544a642d-bda6-4e4a-a761-e1009acbc603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StatsGovCn\podofo">
+      <UniqueIdentifier>{da74aa99-ec91-4ede-a59b-84d30baed31d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="matlab">
+      <UniqueIdentifier>{6ec0652d-2123-4783-b9be-3573196e4d49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TechnicalAnalysis">
+      <UniqueIdentifier>{cedfa8c3-e193-471b-bd05-6be9a08b9d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TechnicalAnalysisView">
+      <UniqueIdentifier>{329e59d7-5927-499f-9266-b27c1fca9d4e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AllAddIssuanceListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllCsiDynamicPeStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllMainIncomeYearGrowthStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllMainProfitYearGrowthStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllMcstStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllRecentBonusCashStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AllThisYearBonusListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoDownloadDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoDownloadThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoDownloadView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseChartCtlView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGridCtlView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseHtmlView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMatlabView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMessageControl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMessageElementsParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMessageFormView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMessageView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseRichEditFormView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicExcel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BCMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnST.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BussinessUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDMGraphCtrl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildSplitterFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoAnnouncementListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoAnnouncePDFListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoGetLandListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoIncentivePlanListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoShareHoldingListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoShareHoldingStatisticsView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBoxExt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBoxExtList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="compileUTF8range.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CsvDocument.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CsvView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HexunResearchPaperListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HtmlParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Indi10jqkaBonusView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiCashFlowSummaryView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiCninfoAnnouncementRoadView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiCsindexView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiFundHoldValueView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiGrossProfitRateView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiHexunResearchPapaerView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiIncomestatementForecastView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiMacdView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiMainIncomeGrowthView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiMarketIndexAnalysisView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiMcstView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiPeAndValueDailyView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualCapitalStructView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualCostView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualCsvFileView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualCurrentAssetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualDmGraphView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualNetProfitsView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualNonCurrentAssetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualShareDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualShareView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualSummaryView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualSzsePeView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualVolumeView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualYahooPeView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiZombieAnalysisView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InputTextDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MacdStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainProductQueryView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketCffexHs300FutureView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketCsdcInvestorStatView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketExchageFundView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketMarginGuaranteeFundView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketSohuIndexView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiLineListBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MySplitterWndEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Newmat11TestView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PeStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateChangeRateSummaryView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateCorrectedMarketValueView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateCsindexDynamicPeView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateCurrentAssetsTurnoverRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateDealDetailDailyView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateDebtToAssetsRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateDebtToCapitalRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateFixedAssetsTurnoverRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateFundHoldView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateGrossProfitListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateGrossProfitRateGrowthView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateInventoryTurnoverRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateLiquidityRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateMainIncomeGrowthView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateNetFixedAssestsGrowthView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateNetProfitsRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateSelectDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateShanghaiIndexView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateTotalAssetsGrowthView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateTotalAssetsTurnoverRatioView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateTurnoverRateView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="READWRIT.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ShanghaiIndexView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashScreenEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="splitChinese.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovCnChartView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovCnDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovCnGridView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Stock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockHomePageView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockInfoView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockPlatesView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockRangeSet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieStockListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\GridCell.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\GridCellBase.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellCheck.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellCombo.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellComposite.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellDateTime.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellNumeric.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\GridCtrl.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\GridDropTarget.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridObj.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridURLCell.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\InPlaceEdit.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\TitleTip.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\TreeCell.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\TreeGridCell.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\TreeGridCellCheck.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl_src\TreeGridCtrl.cpp">
+      <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageString\jmutex.cpp">
+      <Filter>MessageString</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageString\MessageString.cpp">
+      <Filter>MessageString</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageString\MessageStringManager.cpp">
+      <Filter>MessageString</Filter>
+    </ClCompile>
+    <ClCompile Include="Balance.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="BonusOf10jqka.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CapitalFlows163.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CapitalStructOf10jqka.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CapitalStructure.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CashFlows.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CffexFutureDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CfiAddIssuance.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CfiBonus.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CfiPlacementOfShare.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoAnnouncement.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoBonus.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoCsv.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoDelistingList.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoPlacementOfShare.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoStockInfo.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CninfoSuspendList.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsdcFundInSettlementStat.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsdcInvestorStat.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsdcSecurityIssueStat.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsdcTransferBonusStat.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsiCsrcPeDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsindexStockPlates.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="CsiPeDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="FinanceReport.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="FundInSettlement.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="HexunResearchPaper.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="IncomeStatement.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="NetEaseTradeDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfSelectStockPlates.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SendMail.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="ShanghaiStockInfo.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="ShenzhenIndexDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="ShenzhenIndexList.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="ShenzhenIndexYangben.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="ShenzhenMarketQuotation.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaDealDetail.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SohuFundHold.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SohuIndexDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SohuMainIncomeComposition.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SohuPerformanceForecast.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SouhuStockPlates.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SouhuTradingDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SseMarginTrading.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="StockDataLog.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="StockDataModel.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="StockInfo.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="SzseMarginTrading.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingDaily.cpp">
+      <Filter>Bussiness</Filter>
+    </ClCompile>
+    <ClCompile Include="jsoncpp\lib_json\json_reader.cpp">
+      <Filter>jsoncpp</Filter>
+    </ClCompile>
+    <ClCompile Include="jsoncpp\lib_json\json_value.cpp">
+      <Filter>jsoncpp</Filter>
+    </ClCompile>
+    <ClCompile Include="jsoncpp\lib_json\json_writer.cpp">
+      <Filter>jsoncpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartAxis.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartAxisLabel.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartBarSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartCandlestickSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartCrossHairCursor.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartCtrl.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartCursor.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartDateTimeAxis.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartDragLineCursor.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartFont.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartGanttSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartGradient.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartGrid.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartLegend.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartLineSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartLogarithmicAxis.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartPointsSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartScrollBar.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartStandardAxis.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartSurfaceSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartTitle.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartCtrl\ChartXYSerie.cpp">
+      <Filter>ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ColourPicker\ColourPicker.cpp">
+      <Filter>ColourCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="ColourPicker\ColourPopup.cpp">
+      <Filter>ColourCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="DealDetailDateDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DyncItemEditDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DyncItemFindDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="FindStockByCode.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="FindStockByPinyin.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="PDFStructureDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfSelectPlateDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleInputBox.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovMenuDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="StockGroupDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="TipDialog.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="BalanceCsvFileShow.cpp">
+      <Filter>CsvFileShow</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCsvFileShow.cpp">
+      <Filter>CsvFileShow</Filter>
+    </ClCompile>
+    <ClCompile Include="CashFlowsCsvFileShow.cpp">
+      <Filter>CsvFileShow</Filter>
+    </ClCompile>
+    <ClCompile Include="IncomeStatementCsvFileShow.cpp">
+      <Filter>CsvFileShow</Filter>
+    </ClCompile>
+    <ClCompile Include="SohuFundHoldCsvFileShow.cpp">
+      <Filter>CsvFileShow</Filter>
+    </ClCompile>
+    <ClCompile Include="Calc10jqkaBonusViewData.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcAddIssuanceSummary.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcAssetsGrowth.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCapiStructDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCapitalFlow.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCffexFutureHs300.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoAnnouceRoadMap.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoAnnouncementQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoAnnouncePDFQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoGetLandQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoIncentivePlanQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoShareHoldingQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCninfoShareHoldingStatistics.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsdcFundInSettlementStatDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsdcInvestorStat.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsdcInvestorStatDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsdcSecurityIssueStatDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsdcTransferBonusStatDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsiCsrcPeDailyDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsiDynamicPeStockList.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsindex.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCsiPeDailyDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcDealDetailDaily.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcFinanceDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcFinanceReport.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcForecastDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcGrossProfit.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcHexunResearchPaperQuery.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIncomestatementForecast.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMacdListData.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMacdViewData.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMainIncomeGrowth.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMainIncomeYearGrowth.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMainProfitYearGrowth.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMarketExchangeFund.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMarketMarginGuaranteeFund.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMarketValue.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMarketValueSimple.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMarketValueSimpleDaily.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMcstListData.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMcstViewData.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcNewmat11Test.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcPeAndValueDaily.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcPeGrossStockList.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcPeStockList.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcRecentBonusCashSummary.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcRecentStockSummary.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSipfSettlementFundDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSohuIndexDaily.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSohuMainIncomeCompoDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSohuTradingDaily.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSseMarginTradingDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcStatsGovCn.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSzseIndexDailyDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSzseMarginTradingDownload.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcThisYearBonusSummary.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateStockInfoEx.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateTask.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcUpdateStockInfo.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="MatlabShanghaiIndex.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="MatlabShanghaiSohuPlateIndex.cpp">
+      <Filter>CalculateTask</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovCn.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovFsjd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovFsnd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovFsyd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovHgjd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovHgnd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsGovHgyd.cpp">
+      <Filter>StatsGovCn</Filter>
+    </ClCompile>
+    <ClCompile Include="AbsoluteBreadthIndex.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractIndex.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="AccumulationDistributionLine.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="BollingerBands.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="CandlesticksJapan.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalMovement.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="HushenStockIndex.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="MAConvergenceDivergence.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingAverages.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="OnBalanceVolume.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="RelativeStrengthIndex.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatedAccount.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatedAccountAnalysis.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatedAccountMacd.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="StochasticsOscillatorKDJ.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="TechAnalysisEvent.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="TechnicalAnalysis.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="Volume.cpp">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="BollListView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcBollQuery.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcCandlesticksJapanQuery.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcMacdQuery.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcSimulatedAccountQuery.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcTechnicalAnalysisRoadMap.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CandlesticksJapanListView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiDmiView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="IndiTechnicalAnalysisRoadView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualCapitalFlowView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="MacdListView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatedAccountListView.cpp">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClCompile>
+    <ClCompile Include="CDyncDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AllAddIssuanceListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllCsiDynamicPeStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllMainIncomeYearGrowthStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllMainProfitYearGrowthStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllMcstStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllRecentBonusCashStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AllThisYearBonusListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoDownloadDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoDownloadView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseChartCtlView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGridCtlView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseHtmlView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMatlabView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMessageControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMessageElementsParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMessageFormView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMessageView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseRichEditFormView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicExcel.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BCMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnST.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BussinessUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphAnnotation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphAxis.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphCollection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphCtrl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphCursor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDMGraphElement.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildSplitterFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CIDMGraphCtrlEvents.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoAnnouncementListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoAnnouncePDFListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoGetLandListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoIncentivePlanListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoShareHoldingListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoShareHoldingStatisticsView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ComboBoxExt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ComboBoxExtList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CsvDocument.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVFile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CsvView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FileView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HexunResearchPaperListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HtmlParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Indi10jqkaBonusView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiCashFlowSummaryView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiCninfoAnnouncementRoadView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiCsindexView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiFundHoldValueView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiGrossProfitRateView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiHexunResearchPapaerView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiIncomestatementForecastView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiMacdView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiMainIncomeGrowthView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiMarketIndexAnalysisView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiMcstView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiPeAndValueDailyView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualCapitalStructView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualCostView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualCsvFileView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualCurrentAssetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualDmGraphView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualNetProfitsView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualNonCurrentAssetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualShareDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualShareView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualSummaryView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualSzsePeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualVolumeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualYahooPeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiZombieAnalysisView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InputTextDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MacdStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainProductQueryView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketCffexHs300FutureView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketCsdcInvestorStatView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketExchageFundView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketMarginGuaranteeFundView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketSohuIndexView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiLineListBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MySplitterWndEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Newmat11TestView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PeStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateChangeRateSummaryView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateCorrectedMarketValueView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateCsindexDynamicPeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateCurrentAssetsTurnoverRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateDealDetailDailyView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateDebtToAssetsRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateDebtToCapitalRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateFixedAssetsTurnoverRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateFundHoldView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateGrossProfitListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateGrossProfitRateGrowthView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateInventoryTurnoverRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateLiquidityRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateMainIncomeGrowthView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateNetFixedAssestsGrowthView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateNetProfitsRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateSelectDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateShanghaiIndexView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateTotalAssetsGrowthView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateTotalAssetsTurnoverRatioView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateTurnoverRateView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="READWRIT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ShanghaiIndexView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashScreenEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovCnChartView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovCnDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovCnGridView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockHomePageView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockInfoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockPlatesView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockRangeSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieStockListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\CellRange.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\GridCell.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\GridCellBase.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellCheck.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellCombo.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellComposite.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellDateTime.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellNumeric.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\GridCtrl.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\GridDropTarget.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridObj.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridURLCell.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\InPlaceEdit.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\MemDC.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TitleTip.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TreeCell.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TreeGridCell.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TreeGridCellCheck.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TreeGridCtrl.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl_src\TreeNode.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageString\jmutex.h">
+      <Filter>MessageString</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageString\jmutexautolock.h">
+      <Filter>MessageString</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageString\MessageString.h">
+      <Filter>MessageString</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageString\MessageStringManager.h">
+      <Filter>MessageString</Filter>
+    </ClInclude>
+    <ClInclude Include="Balance.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="BonusOf10jqka.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CapitalFlows163.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CapitalStructOf10jqka.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CapitalStructure.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CashFlows.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CffexFutureDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CfiAddIssuance.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CfiBonus.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CfiPlacementOfShare.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoAnnouncement.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoBonus.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoCsv.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoDelistingList.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoPlacementOfShare.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoStockInfo.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CninfoSuspendList.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsdcFundInSettlementStat.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsdcInvestorStat.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsdcSecurityIssueStat.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsdcTransferBonusStat.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsiCsrcPeDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsindexStockPlates.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="CsiPeDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="FinanceReport.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="FundInSettlement.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="HexunResearchPaper.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomeStatement.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="NetEaseTradeDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfSelectStockPlates.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SendMail.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ShanghaiStockInfo.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ShenzhenIndexDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ShenzhenIndexList.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ShenzhenIndexYangben.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ShenzhenMarketQuotation.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SinaDealDetail.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SohuFundHold.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SohuIndexDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SohuMainIncomeComposition.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SohuPerformanceForecast.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SouhuStockPlates.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SouhuTradingDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SseMarginTrading.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="StockDataLog.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="StockDataModel.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="StockInfo.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="SzseMarginTrading.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingDaily.h">
+      <Filter>Bussiness</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartAxis.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartAxisLabel.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartBalloonLabel.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartBarSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartCandlestickSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartCrossHairCursor.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartCtrl.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartCursor.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartDateTimeAxis.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartDragLineCursor.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartFont.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartGanttSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartGradient.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartGrid.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartLabel.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartLegend.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartLineSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartLogarithmicAxis.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartMouseListener.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartPointsArray.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartPointsSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartScrollBar.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartSerieBase.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartSeriesMouseListener.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartStandardAxis.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartString.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartSurfaceSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartTitle.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\ChartXYSerie.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartCtrl\PointsOrdering.h">
+      <Filter>ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourPicker\ColourPicker.h">
+      <Filter>ColourCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourPicker\ColourPopup.h">
+      <Filter>ColourCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="CDyncDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DealDetailDateDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DyncItemEditDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DyncItemFindDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="FindStockByCode.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="FindStockByPinyin.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="PDFStructureDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfSelectPlateDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleInputBox.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovMenuDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="StockGroupDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="TipDialog.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="BalanceCsvFileShow.h">
+      <Filter>CsvFileShow</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCsvFileShow.h">
+      <Filter>CsvFileShow</Filter>
+    </ClInclude>
+    <ClInclude Include="CashFlowsCsvFileShow.h">
+      <Filter>CsvFileShow</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomeStatementCsvFileShow.h">
+      <Filter>CsvFileShow</Filter>
+    </ClInclude>
+    <ClInclude Include="SohuFundHoldCsvFileShow.h">
+      <Filter>CsvFileShow</Filter>
+    </ClInclude>
+    <ClInclude Include="Calc10jqkaBonusViewData.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcAddIssuanceSummary.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcAssetsGrowth.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCapiStructDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCapitalFlow.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCffexFutureHs300.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoAnnouceRoadMap.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoAnnouncementQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoAnnouncePDFQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoGetLandQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoIncentivePlanQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoShareHoldingQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCninfoShareHoldingStatistics.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsdcFundInSettlementStatDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsdcInvestorStat.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsdcInvestorStatDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsdcSecurityIssueStatDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsdcTransferBonusStatDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsiCsrcPeDailyDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsiDynamicPeStockList.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsindex.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCsiPeDailyDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDealDetailDaily.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcFinanceDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcFinanceReport.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcForecastDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcGrossProfit.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcHexunResearchPaperQuery.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcIncomestatementForecast.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMacdListData.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMacdViewData.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMainIncomeGrowth.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMainIncomeYearGrowth.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMainProfitYearGrowth.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMarketExchangeFund.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMarketMarginGuaranteeFund.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMarketValue.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMarketValueSimple.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMarketValueSimpleDaily.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMcstListData.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMcstViewData.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcNewmat11Test.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcPeAndValueDaily.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcPeGrossStockList.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcPeStockList.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcRecentBonusCashSummary.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcRecentStockSummary.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSipfSettlementFundDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSohuIndexDaily.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSohuMainIncomeCompoDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSohuTradingDaily.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSseMarginTradingDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcStatsGovCn.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSzseIndexDailyDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSzseMarginTradingDownload.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcThisYearBonusSummary.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateStockInfoEx.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateTask.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcUpdateStockInfo.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="MatlabShanghaiIndex.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="MatlabShanghaiSohuPlateIndex.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="StockView.h">
+      <Filter>CalculateTask</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\associative_tree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\basic_tree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\child_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\child_node_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\descendant_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\descendant_node_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\multitree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\ordered_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\reverse_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\reverse_node_iterator.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\sequential_tree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\tree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeContainer408\unique_tree.h">
+      <Filter>TreeContainer408</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovCn.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovFsjd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovFsnd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovFsyd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovHgjd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovHgnd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsGovHgyd.h">
+      <Filter>StatsGovCn</Filter>
+    </ClInclude>
+    <ClInclude Include="AbsoluteBreadthIndex.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractIndex.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="AccumulationDistributionLine.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="BollingerBands.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="CandlesticksJapan.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalMovement.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="HushenStockIndex.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="MAConvergenceDivergence.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingAverages.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="OnBalanceVolume.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="RelativeStrengthIndex.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatedAccount.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatedAccountAnalysis.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatedAccountMacd.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="StochasticsOscillatorKDJ.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="TechAnalysisEvent.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="TechnicalAnalysis.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="Volume.h">
+      <Filter>TechnicalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="BollListView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBollQuery.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcCandlesticksJapanQuery.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcMacdQuery.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcSimulatedAccountQuery.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcTechnicalAnalysisRoadMap.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="CandlesticksJapanListView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiDmiView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="IndiTechnicalAnalysisRoadView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualCapitalFlowView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="MacdListView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatedAccountListView.h">
+      <Filter>TechnicalAnalysisView</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\class_view.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\class_view_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\classview.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\classview_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\explorer.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\explorer_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\file_view.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\file_view_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\fileview.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\fileview_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\ico00001.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\icon1.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\idr_stoc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\menuimages.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\menuimages_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\output_wnd.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\output_wnd_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\properties.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\properties_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\properties_wnd.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\properties_wnd_hc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\sort.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\sort1.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\sort_hc.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\splash.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Stock.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Stock.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\StockDoc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\toolbar1.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="UserImages.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="ChartCtrl\ChartBalloonLabel.inl">
+      <Filter>ChartCtrl</Filter>
+    </None>
+    <None Include="ChartCtrl\ChartLabel.inl">
+      <Filter>ChartCtrl</Filter>
+    </None>
+    <None Include="ChartCtrl\ChartPointsArray.inl">
+      <Filter>ChartCtrl</Filter>
+    </None>
+    <None Include="ChartCtrl\ChartSerieBase.inl">
+      <Filter>ChartCtrl</Filter>
+    </None>
+    <None Include="TreeContainer408\associative_tree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\basic_tree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\descendant_iterator.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\descendant_node_iterator.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\multitree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\sequential_tree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\TCL.chm">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\tree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="TreeContainer408\unique_tree.inl">
+      <Filter>TreeContainer408</Filter>
+    </None>
+    <None Include="FindStockByCodeDlg.htm" />
+    <None Include="procedure.sql" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Stock.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

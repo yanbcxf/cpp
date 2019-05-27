@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C8B42435-77C9-4B7E-8394-AFBCC80D310E}</ProjectGuid>
+    <RootNamespace>GWInterface</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;G:\VCProject\activemq\activemq-cpp-library-3.8.2\src\main;$(SNMS_BASELINE2_0)\开发库\trunk\PUBLIC\sokcet_dll_code\client\include;$(pubclib)\opsource\include\boost1.47.0;$(pubclib)\opsource\lib\boost1.47.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>log4cplus.lib;libxml2.lib;curlExtlib.lib;libapr-1.lib;libapriconv-1.lib;libaprutil-1.lib;socket_client.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\commlib\curlExtlib\Release;./lib;$(SNMS_BASELINE2_0)\开发库\trunk\PUBLIC\sokcet_dll_code\client\DLL;$(pubclib)\opsource\lib\boost1.47.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GWInterface.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\include\activemq;$(pubclib)\opsource\include\boost1.47.0;$(pubclib)\opsource\lib\boost1.47.0;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\include\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>log4cplus.lib;libxml2.lib;curlExtlib.lib;libapr-1.lib;libapriconv-1.lib;libaprutil-1.lib;activemq-cpp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\commlib\curlExtlib\Release;./lib;$(pubclib)\opsource\lib\boost1.47.0;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GWInterface.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;G:\VCProject\activemq\activemq-cpp-library-3.8.2\src\main;$(SNMS_BASELINE2_0)\开发库\trunk\PUBLIC\sokcet_dll_code\client\include;$(pubclib)\opsource\include\boost1.47.0;$(pubclib)\opsource\lib\boost1.47.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>log4cplus.lib;libxml2.lib;curlExtlib.lib;libapr-1.lib;libapriconv-1.lib;libaprutil-1.lib;socket_client.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\commlib\curlExtlib\Release;./lib;$(SNMS_BASELINE2_0)\开发库\trunk\PUBLIC\sokcet_dll_code\client\DLL;$(pubclib)\opsource\lib\boost1.47.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GWInterface.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\include\activemq;$(pubclib)\opsource\include\boost1.47.0;$(pubclib)\opsource\lib\boost1.47.0;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\include\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>log4cplus.lib;libxml2.lib;curlExtlib.lib;libapr-1.lib;libapriconv-1.lib;libaprutil-1.lib;activemq-cpp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\commlib\curlExtlib\Release;./lib;$(pubclib)\opsource\lib\boost1.47.0;$(SNMS_BASELINE2_0)\开发库\branches\PUBLIC\OpenSourceDll\activemq\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GWInterface.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="db\DBOperator.cpp" />
+    <ClCompile Include="GWInterface.cpp" />
+    <ClCompile Include="InterfaceGlobal.cpp" />
+    <ClCompile Include="InterfaceImp.cpp" />
+    <ClCompile Include="JMS\JMSNotify.cpp" />
+    <ClCompile Include="ThreadPool\tasks.cpp" />
+    <ClCompile Include="thread\win32\jmutex.cpp" />
+    <ClCompile Include="thread\win32\jthread.cpp" />
+    <ClCompile Include="xml\MD5.cpp" />
+    <ClCompile Include="xml\ParseXml.cpp" />
+    <ClCompile Include="xml\xmlClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GWInterface.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="db\DBOperator.h" />
+    <ClInclude Include="GWInterface.h" />
+    <ClInclude Include="GWInterfaceDef.h" />
+    <ClInclude Include="InterfaceGlobal.h" />
+    <ClInclude Include="InterfaceImp.h" />
+    <ClInclude Include="JMS\JMSNotify.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="StandardInc.hpp" />
+    <ClInclude Include="ThreadPool\tasks.h" />
+    <ClInclude Include="ThreadPool\Worker.h" />
+    <ClInclude Include="thread\jmutex.h" />
+    <ClInclude Include="thread\jmutexautolock.h" />
+    <ClInclude Include="thread\jthread.h" />
+    <ClInclude Include="xml\MD5.h" />
+    <ClInclude Include="xml\ParseXml.hpp" />
+    <ClInclude Include="xml\UrlUtils.hpp" />
+    <ClInclude Include="xml\xmlClient.hpp" />
+    <ClInclude Include="xml\XmlUtils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GWInterface.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

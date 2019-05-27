@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7B12D676-39E4-43E0-BF1E-DB724EC311D4}</ProjectGuid>
+    <RootNamespace>soci_core_static</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;SOCI_LIB_PREFIX="soci_";SOCI_LIB_SUFFIX=".dll";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;SOCI_LIB_PREFIX="soci_";SOCI_LIB_SUFFIX=".dll";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;SOCI_LIB_PREFIX="soci_";SOCI_LIB_SUFFIX=".dll";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;SOCI_LIB_PREFIX="soci_";SOCI_LIB_SUFFIX=".dll";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\soci-3.2.2\core\backend-loader.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\blob.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\connection-parameters.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\connection-pool.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\error.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\into-type.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\once-temp-type.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\prepare-temp-type.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\procedure.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\ref-counted-prepare-info.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\ref-counted-statement.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\row.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\rowid.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\session.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\soci-simple.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\statement.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\transaction.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\use-type.cpp" />
+    <ClCompile Include="..\soci-3.2.2\core\values.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\soci-3.2.2\core\backend-loader.h" />
+    <ClInclude Include="..\soci-3.2.2\core\blob-exchange.h" />
+    <ClInclude Include="..\soci-3.2.2\core\blob.h" />
+    <ClInclude Include="..\soci-3.2.2\core\boost-fusion.h" />
+    <ClInclude Include="..\soci-3.2.2\core\boost-gregorian-date.h" />
+    <ClInclude Include="..\soci-3.2.2\core\boost-optional.h" />
+    <ClInclude Include="..\soci-3.2.2\core\boost-tuple.h" />
+    <ClInclude Include="..\soci-3.2.2\core\connection-parameters.h" />
+    <ClInclude Include="..\soci-3.2.2\core\connection-pool.h" />
+    <ClInclude Include="..\soci-3.2.2\core\error.h" />
+    <ClInclude Include="..\soci-3.2.2\core\exchange-traits.h" />
+    <ClInclude Include="..\soci-3.2.2\core\into-type.h" />
+    <ClInclude Include="..\soci-3.2.2\core\into.h" />
+    <ClInclude Include="..\soci-3.2.2\core\once-temp-type.h" />
+    <ClInclude Include="..\soci-3.2.2\core\prepare-temp-type.h" />
+    <ClInclude Include="..\soci-3.2.2\core\procedure.h" />
+    <ClInclude Include="..\soci-3.2.2\core\query_transformation.h" />
+    <ClInclude Include="..\soci-3.2.2\core\ref-counted-prepare-info.h" />
+    <ClInclude Include="..\soci-3.2.2\core\ref-counted-statement.h" />
+    <ClInclude Include="..\soci-3.2.2\core\row-exchange.h" />
+    <ClInclude Include="..\soci-3.2.2\core\row.h" />
+    <ClInclude Include="..\soci-3.2.2\core\rowid-exchange.h" />
+    <ClInclude Include="..\soci-3.2.2\core\rowid.h" />
+    <ClInclude Include="..\soci-3.2.2\core\rowset.h" />
+    <ClInclude Include="..\soci-3.2.2\core\session.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci-backend.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci-config.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci-platform.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci-simple.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci.h" />
+    <ClInclude Include="..\soci-3.2.2\core\soci_backends_config.h" />
+    <ClInclude Include="..\soci-3.2.2\core\statement.h" />
+    <ClInclude Include="..\soci-3.2.2\core\transaction.h" />
+    <ClInclude Include="..\soci-3.2.2\core\type-conversion-traits.h" />
+    <ClInclude Include="..\soci-3.2.2\core\type-conversion.h" />
+    <ClInclude Include="..\soci-3.2.2\core\type-holder.h" />
+    <ClInclude Include="..\soci-3.2.2\core\type-ptr.h" />
+    <ClInclude Include="..\soci-3.2.2\core\unsigned-types.h" />
+    <ClInclude Include="..\soci-3.2.2\core\use-type.h" />
+    <ClInclude Include="..\soci-3.2.2\core\use.h" />
+    <ClInclude Include="..\soci-3.2.2\core\values-exchange.h" />
+    <ClInclude Include="..\soci-3.2.2\core\values.h" />
+    <ClInclude Include="..\soci-3.2.2\core\version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

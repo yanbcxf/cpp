@@ -1,0 +1,21 @@
+﻿  xmltok_ns.c
+  xmltok_impl.c
+  xmltok.c
+  xmlrole.c
+  xmlparse.c
+..\expat-2.0.1\lib\xmlparse.c(1764): warning C4244: “return”: 从“__int64”转换到“XML_Index”，可能丢失数据
+  正在生成代码...
+  Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+  
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  
+     正在创建库 D:\workspace_c3\MyToolKit\x64\Debug\expat.lib 和对象 D:\workspace_c3\MyToolKit\x64\Debug\expat.exp
+  expat.vcxproj -> D:\workspace_c3\MyToolKit\x64\Debug\expat.dll
+  Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+  
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  
+     正在创建库 D:\workspace_c3\MyToolKit\x64\Debug\expat.lib 和对象 D:\workspace_c3\MyToolKit\x64\Debug\expat.exp
+  expat.vcxproj -> D:\workspace_c3\MyToolKit\x64\Debug\expat.dll

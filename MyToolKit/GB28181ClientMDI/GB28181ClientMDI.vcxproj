@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1CE2FDC5-E8D7-44CC-8794-E64ACF717C22}</ProjectGuid>
+    <RootNamespace>GB28181ClientMDI</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>./ui/;../FfplaySdl2Pure/;../GB28181Client/;$(pubclib)\opsource\include\boost1.55.0;$(pubclib)\opsource\include;..\mxml-2.9\;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GB28181Client.lib;mxml1.lib;iconv.lib;FfplaySdl2Pure.lib;log4cplusD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(pubclib)\opsource\lib\boost1.55.0;$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./ui/;../FfplaySdl2Pure/;../GB28181Client/;$(pubclib)\opsource\include\boost1.55.0;$(pubclib)\opsource\include;..\mxml-2.9\;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GB28181Client.lib;mxml1.lib;iconv.lib;FfplaySdl2Pure.lib;log4cplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(pubclib)\opsource\lib\boost1.55.0;$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences />
+      <EnableCOMDATFolding />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CatalogQueryDlg.cpp" />
+    <ClCompile Include="CatalogTreeView.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ClassView.cpp" />
+    <ClCompile Include="FileView.cpp" />
+    <ClCompile Include="GB28181ClientMDI.cpp" />
+    <ClCompile Include="GB28181ClientMDIDoc.cpp" />
+    <ClCompile Include="GB28181ClientMDIView.cpp" />
+    <ClCompile Include="jmutex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="PlaybackPannel.cpp" />
+    <ClCompile Include="PlaybackView.cpp" />
+    <ClCompile Include="PlaybackWnd.cpp" />
+    <ClCompile Include="RealplayPannel.cpp" />
+    <ClCompile Include="RealplayView.cpp" />
+    <ClCompile Include="RealplayWnd.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ToolPic.cpp" />
+    <ClCompile Include="ui\BitmapSlider.cpp" />
+    <ClCompile Include="ui\Hyperlink.cpp" />
+    <ClCompile Include="ui\PlayTimeCtrl.cpp" />
+    <ClCompile Include="ui\SkinButton.cpp" />
+    <ClCompile Include="ui\SkinWnd.cpp" />
+    <ClCompile Include="ViewTree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CatalogQueryDlg.h" />
+    <ClInclude Include="CatalogTreeView.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ClassView.h" />
+    <ClInclude Include="FileView.h" />
+    <ClInclude Include="GB28181ClientMDI.h" />
+    <ClInclude Include="GB28181ClientMDIDoc.h" />
+    <ClInclude Include="GB28181ClientMDIView.h" />
+    <ClInclude Include="jmutex.h" />
+    <ClInclude Include="jmutexautolock.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="PlaybackPannel.h" />
+    <ClInclude Include="PlaybackView.h" />
+    <ClInclude Include="PlaybackWnd.h" />
+    <ClInclude Include="RealplayPannel.h" />
+    <ClInclude Include="RealplayView.h" />
+    <ClInclude Include="RealplayWnd.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ToolPic.h" />
+    <ClInclude Include="ui\BitmapSlider.h" />
+    <ClInclude Include="ui\Hyperlink.h" />
+    <ClInclude Include="ui\memdc.h" />
+    <ClInclude Include="ui\PlayTimeCtrl.h" />
+    <ClInclude Include="ui\SkinButton.h" />
+    <ClInclude Include="ui\SkinWnd.h" />
+    <ClInclude Include="ViewTree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="11\Down_Down.bmp" />
+    <None Include="11\Down_Up.bmp" />
+    <None Include="11\Left_down.bmp" />
+    <None Include="11\Left_Up.bmp" />
+    <None Include="11\Right_down.bmp" />
+    <None Include="11\Right_Up.bmp" />
+    <None Include="11\Up_down.bmp" />
+    <None Include="11\Up_Up.bmp" />
+    <None Include="11\ZoomIn_Down.BMP" />
+    <None Include="11\ZoomIn_Normal.BMP" />
+    <None Include="11\ZoomOut_down.BMP" />
+    <None Include="11\ZoomOut_Normal.BMP" />
+    <None Include="11\亮度减.ico" />
+    <None Include="11\亮度加.ico" />
+    <None Include="11\停止录像.ico" />
+    <None Include="11\停止录像C.ico" />
+    <None Include="11\停止预览.ico" />
+    <None Include="11\停止预览C.ico" />
+    <None Include="11\关闭.bmp" />
+    <None Include="11\参数设置.bmp" />
+    <None Include="11\声音.bmp" />
+    <None Include="11\声音.ico" />
+    <None Include="11\声音C.ico" />
+    <None Include="11\声音关.ico" />
+    <None Include="11\声音关C.ico" />
+    <None Include="11\对比度减.ico" />
+    <None Include="11\对比度加.ico" />
+    <None Include="11\录像.bmp" />
+    <None Include="11\录像.ico" />
+    <None Include="11\录像C.ico" />
+    <None Include="11\抓图.bmp" />
+    <None Include="11\抓图.ico" />
+    <None Include="11\抓图C.ico" />
+    <None Include="11\视频参数.ico" />
+    <None Include="11\视频参数C.ico" />
+    <None Include="11\音量+.ico" />
+    <None Include="11\音量-.ico" />
+    <None Include="11\颜色减.ico" />
+    <None Include="11\颜色加.ico" />
+    <None Include="11\饱和度减.ico" />
+    <None Include="11\饱和度加.ico" />
+    <None Include="MultiVariateStatistics\T1_1_scatter.m" />
+    <None Include="MultiVariateStatistics\T1_2_scatter.m" />
+    <None Include="MultiVariateStatistics\T1_3_std.m" />
+    <None Include="MultiVariateStatistics\T1_8_3d.m" />
+    <None Include="MultiVariateStatistics\T2_Matrix.m" />
+    <None Include="MultiVariateStatistics\T2_probability.m" />
+    <None Include="playbackbmp\BMP\btns_background.bmp" />
+    <None Include="playbackbmp\BMP\btns_sepBmp.bmp" />
+    <None Include="playbackbmp\BMP\capture_d.bmp" />
+    <None Include="playbackbmp\BMP\capture_m.bmp" />
+    <None Include="playbackbmp\BMP\capture_n.bmp" />
+    <None Include="playbackbmp\BMP\down_d.bmp" />
+    <None Include="playbackbmp\BMP\down_m.bmp" />
+    <None Include="playbackbmp\BMP\down_n.bmp" />
+    <None Include="playbackbmp\BMP\find_d.bmp" />
+    <None Include="playbackbmp\BMP\find_n.bmp" />
+    <None Include="playbackbmp\BMP\four_d.bmp" />
+    <None Include="playbackbmp\BMP\four_m.bmp" />
+    <None Include="playbackbmp\BMP\four_n.bmp" />
+    <None Include="playbackbmp\BMP\fullscreen_d.bmp" />
+    <None Include="playbackbmp\BMP\fullscreen_m.bmp" />
+    <None Include="playbackbmp\BMP\fullscreen_n.bmp" />
+    <None Include="playbackbmp\BMP\hide_d.bmp" />
+    <None Include="playbackbmp\BMP\hide_m.bmp" />
+    <None Include="playbackbmp\BMP\hide_n.bmp" />
+    <None Include="playbackbmp\BMP\onebyone_d.bmp" />
+    <None Include="playbackbmp\BMP\onebyone_m.bmp" />
+    <None Include="playbackbmp\BMP\onebyone_n.bmp" />
+    <None Include="playbackbmp\BMP\one_d.bmp" />
+    <None Include="playbackbmp\BMP\one_m.bmp" />
+    <None Include="playbackbmp\BMP\one_n.bmp" />
+    <None Include="playbackbmp\BMP\pause_d.bmp" />
+    <None Include="playbackbmp\BMP\pause_m.bmp" />
+    <None Include="playbackbmp\BMP\pause_n.bmp" />
+    <None Include="playbackbmp\BMP\PlayBackCtl.bmp" />
+    <None Include="playbackbmp\BMP\play_d.bmp" />
+    <None Include="playbackbmp\BMP\play_m.bmp" />
+    <None Include="playbackbmp\BMP\play_n.bmp" />
+    <None Include="playbackbmp\BMP\record_d.bmp" />
+    <None Include="playbackbmp\BMP\record_m.bmp" />
+    <None Include="playbackbmp\BMP\record_n.bmp" />
+    <None Include="playbackbmp\BMP\show_d.bmp" />
+    <None Include="playbackbmp\BMP\show_m.bmp" />
+    <None Include="playbackbmp\BMP\show_n.bmp" />
+    <None Include="playbackbmp\BMP\SpeedSliderThumb_n.bmp" />
+    <None Include="playbackbmp\BMP\SpeedSlider_bk_n.bmp" />
+    <None Include="playbackbmp\BMP\SpeedSlider_text.bmp" />
+    <None Include="playbackbmp\BMP\stopRecord_d.bmp" />
+    <None Include="playbackbmp\BMP\stopRecord_m.bmp" />
+    <None Include="playbackbmp\BMP\stopRecord_n.bmp" />
+    <None Include="playbackbmp\BMP\stop_d.bmp" />
+    <None Include="playbackbmp\BMP\stop_m.bmp" />
+    <None Include="playbackbmp\BMP\stop_n.bmp" />
+    <None Include="playbackbmp\BMP\voiceclose_m.bmp" />
+    <None Include="playbackbmp\BMP\voiceclose_n.bmp" />
+    <None Include="playbackbmp\BMP\voice_m.bmp" />
+    <None Include="playbackbmp\BMP\voice_n.bmp" />
+    <None Include="ReadMe.txt" />
+    <None Include="res\classview.bmp" />
+    <None Include="res\classview_hc.bmp" />
+    <None Include="res\class_view.ico" />
+    <None Include="res\class_view_hc.ico" />
+    <None Include="res\explorer.bmp" />
+    <None Include="res\explorer_hc.bmp" />
+    <None Include="res\fileview.bmp" />
+    <None Include="res\fileview_hc.bmp" />
+    <None Include="res\file_view.ico" />
+    <None Include="res\file_view_hc.ico" />
+    <None Include="res\GB28181ClientMDI.ico" />
+    <None Include="res\GB28181ClientMDI.rc2" />
+    <None Include="res\GB28181ClientMDIDoc.ico" />
+    <None Include="res\menuimages.bmp" />
+    <None Include="res\menuimages_hc.bmp" />
+    <None Include="res\output_wnd.ico" />
+    <None Include="res\output_wnd_hc.ico" />
+    <None Include="res\sort.bmp" />
+    <None Include="res\sort_hc.bmp" />
+    <None Include="res\Toolbar.bmp" />
+    <None Include="res\Toolbar256.bmp" />
+    <None Include="UserImages.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GB28181ClientMDI.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="GB28181ClientMDI.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

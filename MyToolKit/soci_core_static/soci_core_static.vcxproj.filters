@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\soci-3.2.2\core\backend-loader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\blob.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\connection-parameters.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\connection-pool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\error.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\into-type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\once-temp-type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\prepare-temp-type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\procedure.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\ref-counted-prepare-info.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\ref-counted-statement.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\row.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\rowid.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\session.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\soci-simple.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\statement.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\transaction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\use-type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\soci-3.2.2\core\values.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\soci-3.2.2\core\backend-loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\blob-exchange.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\blob.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\boost-fusion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\boost-gregorian-date.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\boost-optional.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\boost-tuple.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\connection-parameters.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\connection-pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\error.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\exchange-traits.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\into-type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\into.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\once-temp-type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\prepare-temp-type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\procedure.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\query_transformation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\ref-counted-prepare-info.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\ref-counted-statement.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\row-exchange.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\row.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\rowid-exchange.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\rowid.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\rowset.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\session.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci-backend.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci-config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci-platform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci-simple.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\soci_backends_config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\statement.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\transaction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\type-conversion-traits.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\type-conversion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\type-holder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\type-ptr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\unsigned-types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\use-type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\use.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\values-exchange.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\values.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soci-3.2.2\core\version.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

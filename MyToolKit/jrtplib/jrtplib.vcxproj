@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B07F5ABC-E1FE-46AC-A4DC-F2C620BA3798}</ProjectGuid>
+    <RootNamespace>jrtplib</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;JRTPLIB_COMPILING;JTHREAD_COMPILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;JRTPLIB_COMPILING;JTHREAD_COMPILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;JRTPLIB_COMPILING;JTHREAD_COMPILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;JRTPLIB_COMPILING;JTHREAD_COMPILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="jthread\win32\jmutex.cpp" />
+    <ClCompile Include="jthread\win32\jthread.cpp" />
+    <ClCompile Include="rtcpapppacket.cpp" />
+    <ClCompile Include="rtcpbyepacket.cpp" />
+    <ClCompile Include="rtcpcompoundpacket.cpp" />
+    <ClCompile Include="rtcpcompoundpacketbuilder.cpp" />
+    <ClCompile Include="rtcppacket.cpp" />
+    <ClCompile Include="rtcppacketbuilder.cpp" />
+    <ClCompile Include="rtcprrpacket.cpp" />
+    <ClCompile Include="rtcpscheduler.cpp" />
+    <ClCompile Include="rtcpsdesinfo.cpp" />
+    <ClCompile Include="rtcpsdespacket.cpp" />
+    <ClCompile Include="rtcpsrpacket.cpp" />
+    <ClCompile Include="rtpbyteaddress.cpp" />
+    <ClCompile Include="rtpcollisionlist.cpp" />
+    <ClCompile Include="rtpdebug.cpp" />
+    <ClCompile Include="rtperrors.cpp" />
+    <ClCompile Include="rtpexternaltransmitter.cpp" />
+    <ClCompile Include="rtpinternalsourcedata.cpp" />
+    <ClCompile Include="rtpipv4address.cpp" />
+    <ClCompile Include="rtpipv6address.cpp" />
+    <ClCompile Include="rtplibraryversion.cpp" />
+    <ClCompile Include="rtppacket.cpp" />
+    <ClCompile Include="rtppacketbuilder.cpp" />
+    <ClCompile Include="rtppollthread.cpp" />
+    <ClCompile Include="rtprandom.cpp" />
+    <ClCompile Include="rtprandomrand48.cpp" />
+    <ClCompile Include="rtprandomrands.cpp" />
+    <ClCompile Include="rtprandomurandom.cpp" />
+    <ClCompile Include="rtpsession.cpp" />
+    <ClCompile Include="rtpsessionparams.cpp" />
+    <ClCompile Include="rtpsessionsources.cpp" />
+    <ClCompile Include="rtpsourcedata.cpp" />
+    <ClCompile Include="rtpsources.cpp" />
+    <ClCompile Include="rtptimeutilities.cpp" />
+    <ClCompile Include="rtpudpv4transmitter.cpp" />
+    <ClCompile Include="rtpudpv6transmitter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="jthread\jmutex.h" />
+    <ClInclude Include="jthread\jmutexautolock.h" />
+    <ClInclude Include="jthread\jthread.h" />
+    <ClInclude Include="jthread\jthreadconfig.h" />
+    <ClInclude Include="rtcpapppacket.h" />
+    <ClInclude Include="rtcpbyepacket.h" />
+    <ClInclude Include="rtcpcompoundpacket.h" />
+    <ClInclude Include="rtcpcompoundpacketbuilder.h" />
+    <ClInclude Include="rtcppacket.h" />
+    <ClInclude Include="rtcppacketbuilder.h" />
+    <ClInclude Include="rtcprrpacket.h" />
+    <ClInclude Include="rtcpscheduler.h" />
+    <ClInclude Include="rtcpsdesinfo.h" />
+    <ClInclude Include="rtcpsdespacket.h" />
+    <ClInclude Include="rtcpsrpacket.h" />
+    <ClInclude Include="rtcpunknownpacket.h" />
+    <ClInclude Include="rtpaddress.h" />
+    <ClInclude Include="rtpbyteaddress.h" />
+    <ClInclude Include="rtpcollisionlist.h" />
+    <ClInclude Include="rtpdebug.h" />
+    <ClInclude Include="rtpdefines.h" />
+    <ClInclude Include="rtperrors.h" />
+    <ClInclude Include="rtpexternaltransmitter.h" />
+    <ClInclude Include="rtphashtable.h" />
+    <ClInclude Include="rtpinternalsourcedata.h" />
+    <ClInclude Include="rtpipv4address.h" />
+    <ClInclude Include="rtpipv4destination.h" />
+    <ClInclude Include="rtpipv6address.h" />
+    <ClInclude Include="rtpipv6destination.h" />
+    <ClInclude Include="rtpkeyhashtable.h" />
+    <ClInclude Include="rtplibraryversion.h" />
+    <ClInclude Include="rtpmemorymanager.h" />
+    <ClInclude Include="rtpmemoryobject.h" />
+    <ClInclude Include="rtppacket.h" />
+    <ClInclude Include="rtppacketbuilder.h" />
+    <ClInclude Include="rtppollthread.h" />
+    <ClInclude Include="rtprandom.h" />
+    <ClInclude Include="rtprandomrand48.h" />
+    <ClInclude Include="rtprandomrands.h" />
+    <ClInclude Include="rtprandomurandom.h" />
+    <ClInclude Include="rtprawpacket.h" />
+    <ClInclude Include="rtpsession.h" />
+    <ClInclude Include="rtpsessionparams.h" />
+    <ClInclude Include="rtpsessionsources.h" />
+    <ClInclude Include="rtpsourcedata.h" />
+    <ClInclude Include="rtpsources.h" />
+    <ClInclude Include="rtpstructs.h" />
+    <ClInclude Include="rtptimeutilities.h" />
+    <ClInclude Include="rtptransmitter.h" />
+    <ClInclude Include="rtptypes_win.h" />
+    <ClInclude Include="rtpudpv4transmitter.h" />
+    <ClInclude Include="rtpudpv6transmitter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

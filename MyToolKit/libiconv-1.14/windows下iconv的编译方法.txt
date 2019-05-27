@@ -1,0 +1,120 @@
+1、下载libiconv-1.14.tar.gz版本
+http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz
+
+2、新建一个WIN32 project 如libiconv作为项目名称 application type: DLL
+additional options: Empty project 
+
+3、从...\libiconv-1.14\lib\里拷贝 "relocatable.h", "relocatable.c" and "iconv.c"三个文件到
+"...\libiconv\libiconv\"目录下
+
+4、拷贝...\libiconv-1.14\libcharset\lib\localcharset.c到"...\libiconv\libiconv\"目录下
+
+5、拷贝...\libiconv-1.14\libcharset\include\localcharset.h.build.in到"...\libiconv\libiconv\"目录下
+并重命名为localcharset.h
+
+6、拷贝...\libiconv-1.14\windows\libiconv.rc到"...\libiconv\"目录下然后在上级目录中
+新建一个文件夹 include    ：.\include
+
+7、拷贝...\libiconv-1.14\include\iconv.h.build.in到libiconv\include中并重命名为iconv.h
+ 
+8、拷贝...\libiconv-1.14\config.h.in到libiconv\include中并重命名为config.h
+
+9、将...\libiconv-1.14\lib目录下的所有*.h and *.def文件拷贝到libiconv\include中
+
+10、将这几个文件通过project > Add Existing items...添加到项目中：
+localcharset.h
+relocatable.h
+relocatable.c
+localcharset.c
+iconv.c
+libiconv.rc
+
+11、设置项目属性  附加包涵目录为：../include
+
+12、分别编译以下文件(重要步骤)
+localcharset.c
+relocatable.c
+iconv.c
+
+13、修改编译时出错的地方
+
+libiconv.rc文件中：
+insert some code at line 4 as follows:
+
+#define PACKAGE_VERSION_MAJOR       1
+#define PACKAGE_VERSION_MINOR       14
+#define PACKAGE_VERSION_SUBMINOR    0
+#define PACKAGE_VERSION_STRING      "1.14"
+
+localcharset.c文件中
+delete or comment the lines 76 - 79 as follows：
+//
+//#ifndef LIBDIR
+//# include "configmake.h"
+//#endif
+
+iconv.c文件中
+
+delete or comment the lines 246 - 248 and add three lines there as follows：
+//size_t iconv (iconv_t icd,ICONV_CONST char* * inbuf, size_t *inbytesleft,char* * outbuf, size_t *outbytesleft)
+/////////////////////////ADD///////////////////////
+size_t iconv (iconv_t icd,const char* * inbuf, size_t *inbytesleft,char* * outbuf, size_t *outbytesleft)
+
+localcharset.h文件中
+delete or comment the lines 23 - 27 and add 7 lines there as follows:
+//#if @HAVE_VISIBILITY@ && BUILDING_LIBCHARSET
+//#define LIBCHARSET_DLL_EXPORTED __attribute__((__visibility__("default")))
+//#else
+//#define LIBCHARSET_DLL_EXPORTED
+//#endif
+
+////////////////////////// ADD ///////////////////////
+#ifdef BUILDING_LIBCHARSET
+#define LIBCHARSET_DLL_EXPORTED __declspec(dllexport)
+#elif USING_STATIC_LIBICONV
+#define LIBCHARSET_DLL_EXPORTED
+#else
+#define LIBCHARSET_DLL_EXPORTED __declspec(dllimport)
+#endif
+
+config.h文件中
+delete or comment the lines 29 - 30 as follows:
+//
+//#undef EILSEQ
+
+iconv.h文件中
+delete or comment the line 175 and add 1 line as follows:
+//#if @HAVE_WCHAR_T@
+#if HAVE_WCHAR_T
+
+Delete or comment the line 128 and add 1 line as follows:
+//#if @USE_MBSTATE_T@
+#if USE_MBSTATE_T
+
+Delete or comment the lines 107-108 and add 2 lines as follows:
+//#if @USE_MBSTATE_T@
+//#if @BROKEN_WCHAR_H@
+#if USE_MBSTATE_T
+#if BROKEN_WCHAR_H
+
+Delete or comment the line 89 and add 2 lines as follows:
+//extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd, @ICONV_CONST@ char* * inbuf,size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
+extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd, const char* * inbuf,size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
+
+Delete or comment the lines 26 - 31 and add 8 lines as follows:
+
+//#if @HAVE_VISIBILITY@ && BUILDING_LIBICONV
+//#define LIBICONV_DLL_EXPORTED __attribute__((__visibility__("default")))
+//#else
+//#define LIBICONV_DLL_EXPORTED
+//#endif
+//extern LIBICONV_DLL_EXPORTED @DLL_VARIABLE@ int _libiconv_version;
+
+#if BUILDING_LIBICONV
+#define LIBICONV_DLL_EXPORTED __declspec(dllexport)
+#elif USING_STATIC_LIBICONV
+#define LIBICONV_DLL_EXPORTED
+#else
+#define LIBICONV_DLL_EXPORTED __declspec(dllimport)
+#endif
+extern LIBICONV_DLL_EXPORTED int _libiconv_version;

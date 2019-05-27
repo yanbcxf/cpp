@@ -1,0 +1,47 @@
+﻿Build started 2015/11/9 15:54:19.
+     1>Project "D:\workspace_c3\libosip2-4.1.0\platform\vsnet\osip2.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets(1492,5): warning : The referenced project '..\..\..\osip\platform\vsnet\osipparser2.vcxproj' does not exist.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\osip\include /Zi /nologo /W3 /WX- /Od /Oy- /D ENABLE_TRACE /D SYSTEM_LOGGER_ENABLED /D _CRT_SECURE_NO_DEPRECATE /D WIN32 /D _DEBUG /D _LIB /D _VC80_UPGRADE=0x0710 /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"osip2\Win32\Debug\\" /Fd"osip2\Win32\Debug\osip2-vc80.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\..\osip\src\osip2\fsm_misc.c ..\..\..\osip\src\osip2\ict.c ..\..\..\osip\src\osip2\ict_fsm.c ..\..\..\osip\src\osip2\ist.c ..\..\..\osip\src\osip2\ist_fsm.c ..\..\..\osip\src\osip2\nict.c ..\..\..\osip\src\osip2\nict_fsm.c ..\..\..\osip\src\osip2\nist.c ..\..\..\osip\src\osip2\nist_fsm.c ..\..\..\osip\src\osip2\osip.c ..\..\..\osip\src\osip2\osip_dialog.c ..\..\..\osip\src\osip2\osip_event.c ..\..\..\osip\src\osip2\osip_time.c ..\..\..\osip\src\osip2\osip_transaction.c ..\..\..\osip\src\osip2\port_condv.c ..\..\..\osip\src\osip2\port_fifo.c ..\..\..\osip\src\osip2\port_sema.c ..\..\..\osip\src\osip2\port_thread.c
+         port_thread.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\port_thread.c': No such file or directory
+         port_sema.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\port_sema.c': No such file or directory
+         port_fifo.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\port_fifo.c': No such file or directory
+         port_condv.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\port_condv.c': No such file or directory
+         osip_transaction.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\osip_transaction.c': No such file or directory
+         osip_time.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\osip_time.c': No such file or directory
+         osip_event.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\osip_event.c': No such file or directory
+         osip_dialog.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\osip_dialog.c': No such file or directory
+         osip.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\osip.c': No such file or directory
+         nist_fsm.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\nist_fsm.c': No such file or directory
+         nist.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\nist.c': No such file or directory
+         nict_fsm.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\nict_fsm.c': No such file or directory
+         nict.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\nict.c': No such file or directory
+         ist_fsm.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\ist_fsm.c': No such file or directory
+         ist.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\ist.c': No such file or directory
+         ict_fsm.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\ict_fsm.c': No such file or directory
+         ict.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\ict.c': No such file or directory
+         fsm_misc.c
+     1>c1 : fatal error C1083: Cannot open source file: '..\..\..\osip\src\osip2\fsm_misc.c': No such file or directory
+         Generating Code...
+     1>Done Building Project "D:\workspace_c3\libosip2-4.1.0\platform\vsnet\osip2.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.18

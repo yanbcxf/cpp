@@ -1,0 +1,433 @@
+﻿  stdafx.cpp
+D:\workspace_c3\MyToolKit\soci-3.2.2\core\test/common-tests.h(3852): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+d:\workspace_c3\mytoolkit\stock\treecontainer408\basic_tree.h(70): warning C4003: “max”宏的实参不足
+d:\workspace_c3\mytoolkit\pcre2-8\stdint.h(120): warning C4005: “WCHAR_MIN”: 宏重定义
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\wchar.h(43) : 参见“WCHAR_MIN”的前一个定义
+stdafx.cpp(189): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+stdafx.cpp(281): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(282): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(317): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(354): warning C4244: “初始化”: 从“double”转换到“__int64”，可能丢失数据
+stdafx.cpp(469): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(480): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(506): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(525): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(555): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(574): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(766): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(863): warning C4267: “参数”: 从“size_t”转换到“const int”，可能丢失数据
+stdafx.cpp(864): warning C4267: “参数”: 从“size_t”转换到“const int”，可能丢失数据
+stdafx.cpp(942): warning C4267: “参数”: 从“size_t”转换到“const int”，可能丢失数据
+stdafx.cpp(943): warning C4267: “参数”: 从“size_t”转换到“const int”，可能丢失数据
+stdafx.cpp(953): warning C4390: “;”: 找到空的受控语句；这是否是有意的?
+stdafx.cpp(975): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(987): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+stdafx.cpp(1002): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(324) : 参见“sscanf”的声明
+stdafx.cpp(1065): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+stdafx.cpp(1165): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+stdafx.cpp(1207): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+d:\workspace_c3\mytoolkit\stock\stdafx.cpp(720): warning C4700: 使用了未初始化的局部变量“crlf_is_newline”
+d:\workspace_c3\mytoolkit\stock\stdafx.cpp(722): warning C4700: 使用了未初始化的局部变量“utf8”
+d:\workspace_c3\mytoolkit\stock\stdafx.cpp(902): warning C4700: 使用了未初始化的局部变量“crlf_is_newline”
+d:\workspace_c3\mytoolkit\stock\stdafx.cpp(904): warning C4700: 使用了未初始化的局部变量“utf8”
+  SzseMarginTrading.cpp
+SzseMarginTrading.cpp(102): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+SzseMarginTrading.cpp(140): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+SzseMarginTrading.cpp(142): warning C4244: “参数”: 从“double”转换到“unsigned __int64”，可能丢失数据
+SzseMarginTrading.cpp(149): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+SzseMarginTrading.cpp(165): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  SseMarginTrading.cpp
+SseMarginTrading.cpp(102): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+SseMarginTrading.cpp(139): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+SseMarginTrading.cpp(146): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+SseMarginTrading.cpp(162): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  SohuMainIncomeComposition.cpp
+SohuMainIncomeComposition.cpp(89): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+SohuMainIncomeComposition.cpp(220): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+SohuMainIncomeComposition.cpp(355): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+  ShenzhenIndexYangben.cpp
+ShenzhenIndexYangben.cpp(57): warning C4244: “参数”: 从“double”转换到“const __int64”，可能丢失数据
+ShenzhenIndexYangben.cpp(58): warning C4244: “参数”: 从“double”转换到“const __int64”，可能丢失数据
+ShenzhenIndexYangben.cpp(74): warning C4244: “参数”: 从“double”转换到“const __int64”，可能丢失数据
+ShenzhenIndexYangben.cpp(75): warning C4244: “参数”: 从“double”转换到“const __int64”，可能丢失数据
+ShenzhenIndexYangben.cpp(107): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+ShenzhenIndexYangben.cpp(121): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  ShenzhenIndexList.cpp
+ShenzhenIndexList.cpp(108): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+ShenzhenIndexList.cpp(118): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  ShenzhenIndexDaily.cpp
+ShenzhenIndexDaily.cpp(112): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+ShenzhenIndexDaily.cpp(123): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+ShenzhenIndexDaily.cpp(131): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+ShenzhenIndexDaily.cpp(187): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  CsiPeDaily.cpp
+CsiPeDaily.cpp(53): warning C4018: “<”: 有符号/无符号不匹配
+CsiPeDaily.cpp(403): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+CsiPeDaily.cpp(443): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+CsiPeDaily.cpp(450): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+CsiPeDaily.cpp(466): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  CsiCsrcPeDaily.cpp
+CsiCsrcPeDaily.cpp(53): warning C4018: “<”: 有符号/无符号不匹配
+CsiCsrcPeDaily.cpp(400): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+CsiCsrcPeDaily.cpp(440): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(358) : 参见“_snprintf”的声明
+CsiCsrcPeDaily.cpp(447): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(366) : 参见“sprintf”的声明
+CsiCsrcPeDaily.cpp(463): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\stdio.h(237) : 参见“fopen”的声明
+  BaseGridCtlView.cpp
+BaseGridCtlView.cpp(614): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+BaseGridCtlView.cpp(615): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+BaseGridCtlView.cpp(743): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include\string.h(74) : 参见“strcpy”的声明
+BaseGridCtlView.cpp(806): warning C4101: “cell”: 未引用的局部变量
+  正在生成代码...
+  正在跳过...(未检测到相关更改)
+  compileUTF8range.cpp
+  ZombieStockListView.cpp
+  XmlParser.cpp
+  Volume.cpp
+  ViewTree.cpp
+  UrlUtils.cpp
+  TradingDaily.cpp
+  TipDialog.cpp
+  TechnicalAnalysis.cpp
+  TechAnalysisEvent.cpp
+  StockView.cpp
+  StockRangeSet.cpp
+  StockPlatesView.cpp
+  StockInfoView.cpp
+  StockInfo.cpp
+  StockHomePageView.cpp
+  StockGroupDlg.cpp
+  StockDoc.cpp
+  StockDataModel.cpp
+  StockDataLog.cpp
+  Stock.cpp
+  StochasticsOscillatorKDJ.cpp
+  StatsGovMenuDlg.cpp
+  StatsGovHgyd.cpp
+  StatsGovHgnd.cpp
+  StatsGovHgjd.cpp
+  StatsGovFsyd.cpp
+  StatsGovFsnd.cpp
+  StatsGovFsjd.cpp
+  StatsGovCnGridView.cpp
+  StatsGovCnDoc.cpp
+  StatsGovCnChartView.cpp
+  StatsGovCn.cpp
+  SplashScreenEx.cpp
+  SouhuTradingDaily.cpp
+  SouhuStockPlates.cpp
+  SohuPerformanceForecast.cpp
+  SohuIndexDaily.cpp
+  SohuFundHoldCsvFileShow.cpp
+  SohuFundHold.cpp
+  SinaDealDetail.cpp
+  SimulatedAccountMacd.cpp
+  SimulatedAccountListView.cpp
+  SimulatedAccountAnalysis.cpp
+  SimulatedAccount.cpp
+  SimpleInputBox.cpp
+  ShenzhenMarketQuotation.cpp
+  ShanghaiStockInfo.cpp
+  ShanghaiIndexView.cpp
+  SendMail.cpp
+  SelfSelectStockPlates.cpp
+  SelfSelectPlateDlg.cpp
+  RelativeStrengthIndex.cpp
+  READWRIT.cpp
+  PropertiesWnd.cpp
+  PlateTurnoverRateView.cpp
+  PlateTotalAssetsTurnoverRatioView.cpp
+  PlateTotalAssetsGrowthView.cpp
+  PlateStockListView.cpp
+  PlateShanghaiIndexView.cpp
+  PlateSelectDlg.cpp
+  PlateNetProfitsRatioView.cpp
+  PlateNetFixedAssestsGrowthView.cpp
+  PlateMainIncomeGrowthView.cpp
+  PlateLiquidityRatioView.cpp
+  PlateInventoryTurnoverRatioView.cpp
+  PlateGrossProfitRateGrowthView.cpp
+  PlateGrossProfitListView.cpp
+  PlateFundHoldView.cpp
+  PlateFixedAssetsTurnoverRatioView.cpp
+  PlateDebtToCapitalRatioView.cpp
+  PlateDebtToAssetsRatioView.cpp
+  PlateDealDetailDailyView.cpp
+  PlateCurrentAssetsTurnoverRatioView.cpp
+  PlateCsindexDynamicPeView.cpp
+  PlateCorrectedMarketValueView.cpp
+  PlateChangeRateSummaryView.cpp
+  PeStockListView.cpp
+  PDFStructureDlg.cpp
+  OutputWnd.cpp
+  OnBalanceVolume.cpp
+  Newmat11TestView.cpp
+  GridURLCell.cpp
+  GridObj.cpp
+  GridCellNumeric.cpp
+  GridCellDateTime.cpp
+  GridCellComposite.cpp
+  GridCellCombo.cpp
+  GridCellCheck.cpp
+  NetEaseTradeDaily.cpp
+  MySplitterWndEx.cpp
+  MultiLineListBox.cpp
+  MovingAverages.cpp
+  MessageStringManager.cpp
+  MessageString.cpp
+  MatlabShanghaiSohuPlateIndex.cpp
+  MatlabShanghaiIndex.cpp
+  MarketSohuIndexView.cpp
+  MarketMarginGuaranteeFundView.cpp
+  MarketExchageFundView.cpp
+  MarketCsdcInvestorStatView.cpp
+  MarketCffexHs300FutureView.cpp
+  MainProductQueryView.cpp
+  MainFrm.cpp
+  MacdStockListView.cpp
+  MacdListView.cpp
+  MAConvergenceDivergence.cpp
+  InputTextDlg.cpp
+  IndividualYahooPeView.cpp
+  IndividualVolumeView.cpp
+  IndividualSzsePeView.cpp
+  IndividualSummaryView.cpp
+  IndividualShareView.cpp
+  IndividualShareDoc.cpp
+  IndividualNonCurrentAssetView.cpp
+  IndividualNetProfitsView.cpp
+  IndividualDmGraphView.cpp
+  IndividualCurrentAssetView.cpp
+  IndividualCsvFileView.cpp
+  IndividualCostView.cpp
+  IndividualCapitalStructView.cpp
+  IndividualCapitalFlowView.cpp
+  IndiZombieAnalysisView.cpp
+  IndiTechnicalAnalysisRoadView.cpp
+  IndiPeAndValueDailyView.cpp
+  IndiMcstView.cpp
+  IndiMarketIndexAnalysisView.cpp
+  IndiMainIncomeGrowthView.cpp
+  IndiMacdView.cpp
+  IndiIncomestatementForecastView.cpp
+  IndiHexunResearchPapaerView.cpp
+  IndiGrossProfitRateView.cpp
+  IndiFundHoldValueView.cpp
+  IndiDmiView.cpp
+  IndiCsindexView.cpp
+  IndiCninfoAnnouncementRoadView.cpp
+  IndiCashFlowSummaryView.cpp
+  Indi10jqkaBonusView.cpp
+  IncomeStatementCsvFileShow.cpp
+  IncomeStatement.cpp
+  HushenStockIndex.cpp
+  HtmlParser.cpp
+  HexunResearchPaperListView.cpp
+  HexunResearchPaper.cpp
+  TreeGridCtrl.cpp
+  TreeGridCellCheck.cpp
+  TreeGridCell.cpp
+  TreeCell.cpp
+  TitleTip.cpp
+  InPlaceEdit.cpp
+  GridDropTarget.cpp
+  GridCtrl.cpp
+  GridCellBase.cpp
+  GridCell.cpp
+  FundInSettlement.cpp
+  FindStockByPinyin.cpp
+  FindStockByCode.cpp
+  FinanceReport.cpp
+  FileView.cpp
+  DyncItemFindDlg.cpp
+  DyncItemEditDlg.cpp
+  DirectionalMovement.cpp
+  DealDetailDateDlg.cpp
+  DatabaseView.cpp
+  DatabaseDoc.cpp
+  CsvView.cpp
+  CsvDocument.cpp
+  CsindexStockPlates.cpp
+  CsdcTransferBonusStat.cpp
+  CsdcSecurityIssueStat.cpp
+  CsdcInvestorStat.cpp
+  CsdcFundInSettlementStat.cpp
+  ComboBoxExtList.cpp
+  ComboBoxExt.cpp
+  ColourPopup.cpp
+  ColourPicker.cpp
+  Color.cpp
+  CninfoSuspendList.cpp
+  CninfoStockInfo.cpp
+  CninfoShareHoldingStatisticsView.cpp
+  CninfoShareHoldingListView.cpp
+  CninfoPlacementOfShare.cpp
+  CninfoIncentivePlanListView.cpp
+  CninfoGetLandListView.cpp
+  CninfoDelistingList.cpp
+  CninfoCsv.cpp
+  CninfoBonus.cpp
+  CninfoAnnouncementListView.cpp
+  CninfoAnnouncement.cpp
+  CninfoAnnouncePDFListView.cpp
+  ClassView.cpp
+  ChildSplitterFrm.cpp
+  ChildFrm.cpp
+  ChartXYSerie.cpp
+  ChartTitle.cpp
+  ChartSurfaceSerie.cpp
+  ChartStandardAxis.cpp
+  ChartSerie.cpp
+  ChartScrollBar.cpp
+  ChartPointsSerie.cpp
+  ChartLogarithmicAxis.cpp
+  ChartLineSerie.cpp
+  ChartLegend.cpp
+  ChartGrid.cpp
+  ChartGradient.cpp
+  ChartGanttSerie.cpp
+  ChartFont.cpp
+  ChartDragLineCursor.cpp
+  ChartDateTimeAxis.cpp
+  ChartCursor.cpp
+  ChartCtrl.cpp
+  ChartCrossHairCursor.cpp
+  ChartCandlestickSerie.cpp
+  ChartBarSerie.cpp
+  ChartAxisLabel.cpp
+  ChartAxis.cpp
+  CfiPlacementOfShare.cpp
+  CfiBonus.cpp
+  CfiAddIssuance.cpp
+  CffexFutureDaily.cpp
+  CashFlowsCsvFileShow.cpp
+  CashFlows.cpp
+  CapitalStructure.cpp
+  CapitalStructOf10jqka.cpp
+  CapitalFlows163.cpp
+  CandlesticksJapanListView.cpp
+  CandlesticksJapan.cpp
+  CalculateTask.cpp
+  CalculateStockInfoEx.cpp
+  CalcUpdateStockInfo.cpp
+  CalcThisYearBonusSummary.cpp
+  CalcTechnicalAnalysisRoadMap.cpp
+  CalcSzseMarginTradingDownload.cpp
+  CalcSzseIndexDailyDownload.cpp
+  CalcStatsGovCn.cpp
+  CalcSseMarginTradingDownload.cpp
+  CalcSohuTradingDaily.cpp
+  CalcSohuMainIncomeCompoDownload.cpp
+  CalcSohuIndexDaily.cpp
+  CalcSipfSettlementFundDownload.cpp
+  CalcSimulatedAccountQuery.cpp
+  CalcRecentStockSummary.cpp
+  CalcRecentBonusCashSummary.cpp
+  CalcPeStockList.cpp
+  CalcPeGrossStockList.cpp
+  CalcPeAndValueDaily.cpp
+  CalcNewmat11Test.cpp
+  CalcMcstViewData.cpp
+  CalcMcstListData.cpp
+  CalcMarketValueSimpleDaily.cpp
+  CalcMarketValueSimple.cpp
+  CalcMarketValue.cpp
+  CalcMarketMarginGuaranteeFund.cpp
+  CalcMarketExchangeFund.cpp
+  CalcMainProfitYearGrowth.cpp
+  CalcMainIncomeYearGrowth.cpp
+  CalcMainIncomeGrowth.cpp
+  CalcMacdViewData.cpp
+  CalcMacdQuery.cpp
+  CalcMacdListData.cpp
+  CalcIncomestatementForecast.cpp
+  CalcHexunResearchPaperQuery.cpp
+  CalcGrossProfit.cpp
+  CalcForecastDownload.cpp
+  CalcFinanceReport.cpp
+  CalcFinanceDownload.cpp
+  CalcDealDetailDaily.cpp
+  CalcCsindex.cpp
+  CalcCsiPeDailyDownload.cpp
+  CalcCsiDynamicPeStockList.cpp
+  CalcCsiCsrcPeDailyDownload.cpp
+  CalcCsdcTransferBonusStatDownload.cpp
+  CalcCsdcSecurityIssueStatDownload.cpp
+  CalcCsdcInvestorStatDownload.cpp
+  CalcCsdcInvestorStat.cpp
+  CalcCsdcFundInSettlementStatDownload.cpp
+  CalcCninfoShareHoldingStatistics.cpp
+  CalcCninfoShareHoldingQuery.cpp
+  CalcCninfoIncentivePlanQuery.cpp
+  CalcCninfoGetLandQuery.cpp
+  CalcCninfoAnnouncementQuery.cpp
+  CalcCninfoAnnouncePDFQuery.cpp
+  CalcCninfoAnnouceRoadMap.cpp
+  CalcCffexFutureHs300.cpp
+  CalcCapitalFlow.cpp
+  CalcCapiStructDownload.cpp
+  CalcCandlesticksJapanQuery.cpp
+  CalcBollQuery.cpp
+  CalcAssetsGrowth.cpp
+  CalcAddIssuanceSummary.cpp
+  Calc10jqkaBonusViewData.cpp
+  CSVFile.cpp
+  CDyncDlg.cpp
+  CDMGraphCtrl.cpp
+  BussinessUtils.cpp
+  BtnST.cpp
+  BonusOf10jqka.cpp
+  BollingerBands.cpp
+  BollListView.cpp
+  BaseRichEditFormView.cpp
+  BaseMessageView.cpp
+  BaseMessageFormView.cpp
+  BaseMessageElementsParser.cpp
+  BaseMessageControl.cpp
+  BaseMatlabView.cpp
+  BaseHtmlView.cpp
+  BaseCsvFileShow.cpp
+  BaseChartCtlView.cpp
+  BalanceCsvFileShow.cpp
+  Balance.cpp
+  BCMenu.cpp
+  AutoDownloadView.cpp
+  AutoDownloadThread.cpp
+  AutoDownloadDoc.cpp
+  AllThisYearBonusListView.cpp
+  AllStockListView.cpp
+  AllRecentBonusCashStockListView.cpp
+  AllMcstStockListView.cpp
+  AllMainProfitYearGrowthStockListView.cpp
+  AllMainIncomeYearGrowthStockListView.cpp
+  AllCsiDynamicPeStockListView.cpp
+  AllAddIssuanceListView.cpp
+  AccumulationDistributionLine.cpp
+  AbstractIndex.cpp
+  AbsoluteBreadthIndex.cpp
+  正在跳过...(未检测到相关更改)
+  splitChinese.cpp
+  Stock.vcxproj -> D:\workspace_c3\MyToolKit\x64\Debug\Stock.exe
+  Stock.vcxproj -> D:\workspace_c3\MyToolKit\x64\Debug\Stock.exe

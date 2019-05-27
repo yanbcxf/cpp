@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4B11A173-12DD-47D5-8BA5-4FF8F548D75C}</ProjectGuid>
+    <RootNamespace>GB28181Client</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\include;.\include\openssl;$(pubclib)\opsource\include\libxml2-7.8;../jrtplib/;..\mxml-2.9\;..\libeXosip2-4.1.0\include\eXosip2;..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include\osip2;..\libosip2-4.1.0\include\osipparser2;..\libosip2-4.1.0\include\;$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include;$(pubclib)\opsource\include\ffmpeg-1.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GB28181CLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>avformat.lib;avutil.lib;avcodec.lib;jrtplib.lib;Ws2_32.lib;log4cplusD.lib;eXosip.lib;osip2.lib;mxml1.lib;osipparser2.lib;iconv.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\opsource\lib\ffmpeg-1.2;$(pubclib)\opsource\lib\log4cplus-1.0.4;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GB28181Client.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(pubclib)\opsource\include\libxml2-7.8;../jrtplib/;$(pubclib)\opsource\include\log4cplus-1.04;$(pubclib)\opsource\include;..\libeXosip2-4.1.0\include\eXosip2;..\libeXosip2-4.1.0\include;..\libosip2-4.1.0\include\osip2;..\libosip2-4.1.0\include\osipparser2;..\libosip2-4.1.0\include\;..\mxml-2.9\;$(pubclib)\opsource\include\ffmpeg-1.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GB28181CLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>iconv.lib;avformat.lib;avutil.lib;avcodec.lib;jrtplib.lib;Ws2_32.lib;log4cplus.lib;eXosip.lib;osip2.lib;mxml1.lib;osipparser2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\opsource\lib\ffmpeg-1.2;$(pubclib)\opsource\lib\log4cplus-1.0.4;$(OutDir);.\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>GB28181Client.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>false</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AbstractCommand.cpp" />
+    <ClCompile Include="AbstractObject.cpp" />
+    <ClCompile Include="ActivePsParser.cpp" />
+    <ClCompile Include="BasicHashTable.cpp" />
+    <ClCompile Include="CallBackAlarmNotify.cpp" />
+    <ClCompile Include="CallBackDllAlarmSubscribeResponse.cpp" />
+    <ClCompile Include="CallBackDllCallDataResponse.cpp" />
+    <ClCompile Include="CallBackDllCallResponse.cpp" />
+    <ClCompile Include="CallBackDllCataloginfoResponse.cpp" />
+    <ClCompile Include="CallBackDllDeviceinfoResponse.cpp" />
+    <ClCompile Include="CallBackDllPtzResponse.cpp" />
+    <ClCompile Include="CallBackDllRegisterRequest.cpp" />
+    <ClCompile Include="CallBackDllSearchRecordfileResponse.cpp" />
+    <ClCompile Include="CallBackDllStateinfoResponse.cpp" />
+    <ClCompile Include="CallBackDllUnregisterRequest.cpp" />
+    <ClCompile Include="CommandCallback.cpp" />
+    <ClCompile Include="Dll28181_Layer.cpp" />
+    <ClCompile Include="DllAlarmControl.cpp" />
+    <ClCompile Include="DllAlarmSubscribeRequest.cpp" />
+    <ClCompile Include="DllAlarmSubscribeSession.cpp" />
+    <ClCompile Include="DllCallBye.cpp" />
+    <ClCompile Include="DllCallMediaControl.cpp" />
+    <ClCompile Include="DllCallPlayPlaybackDownload.cpp" />
+    <ClCompile Include="DllCataloginfoRequest.cpp" />
+    <ClCompile Include="DllCataloginfoSession.cpp" />
+    <ClCompile Include="DllDeviceControlSession.cpp" />
+    <ClCompile Include="DllDeviceinfoRequest.cpp" />
+    <ClCompile Include="DllDeviceinfoSession.cpp" />
+    <ClCompile Include="DllEnvironment.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DllMediaSession.cpp" />
+    <ClCompile Include="DllPtzAutoScan.cpp" />
+    <ClCompile Include="DllPtzMove.cpp" />
+    <ClCompile Include="DllPtzPreset.cpp" />
+    <ClCompile Include="DllPtzTour.cpp" />
+    <ClCompile Include="DllRecordControl.cpp" />
+    <ClCompile Include="DllRegisterResponse.cpp" />
+    <ClCompile Include="DllRegisterSession.cpp" />
+    <ClCompile Include="DllSearchRecordfileRequest.cpp" />
+    <ClCompile Include="DllSearchRecordfileSession.cpp" />
+    <ClCompile Include="DllStateinfoRequest.cpp" />
+    <ClCompile Include="DllStateinfoSession.cpp" />
+    <ClCompile Include="GB28181Client.cpp" />
+    <ClCompile Include="Gb28181_Layer.cpp" />
+    <ClCompile Include="HashTable.cpp" />
+    <ClCompile Include="jmutex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="jthread.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Medium.cpp" />
+    <ClCompile Include="PS_test.cpp" />
+    <ClCompile Include="SipdAlarmNotify.cpp" />
+    <ClCompile Include="SipdCall200ok.cpp" />
+    <ClCompile Include="SipdCallFileToEnd.cpp" />
+    <ClCompile Include="SipdCallNoAnswer.cpp" />
+    <ClCompile Include="SipdCataloginfoRequest.cpp" />
+    <ClCompile Include="SipdCataloginfoResponse.cpp" />
+    <ClCompile Include="SipdCataloginfoSession.cpp" />
+    <ClCompile Include="SipdDeviceinfoResponse.cpp" />
+    <ClCompile Include="SipdKeepaliveRequest.cpp" />
+    <ClCompile Include="SipdMessage200ok.cpp" />
+    <ClCompile Include="SipdMessageFailure.cpp" />
+    <ClCompile Include="SipdRegisterRequest.cpp" />
+    <ClCompile Include="SipdSearchRecordfileResponse.cpp" />
+    <ClCompile Include="SipdStateinfoResponse.cpp" />
+    <ClCompile Include="SipdSubscribe200ok.cpp" />
+    <ClCompile Include="Sip_Junior_Alarm.cpp" />
+    <ClCompile Include="Sip_Junior_Catalog.cpp" />
+    <ClCompile Include="Sip_Junior_DeviceControl.cpp" />
+    <ClCompile Include="Sip_Junior_DeviceInfo.cpp" />
+    <ClCompile Include="Sip_Junior_Invite.cpp" />
+    <ClCompile Include="Sip_Junior_Recordfile.cpp" />
+    <ClCompile Include="Sip_Junior_Register.cpp" />
+    <ClCompile Include="Sip_Junior_Stateinfo.cpp" />
+    <ClCompile Include="Sip_Junior_Subscribe.cpp" />
+    <ClCompile Include="Sip_Superior_Alarm.cpp" />
+    <ClCompile Include="Sip_Superior_Catalog.cpp" />
+    <ClCompile Include="Sip_Superior_DeviceControl.cpp" />
+    <ClCompile Include="Sip_Superior_DeviceInfo.cpp" />
+    <ClCompile Include="Sip_Superior_Invite.cpp" />
+    <ClCompile Include="Sip_Superior_Recordfile.cpp" />
+    <ClCompile Include="Sip_Superior_Register.cpp" />
+    <ClCompile Include="Sip_Superior_Stateinfo.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UsageEnvironment.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GB28181Client.def" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractCommand.h" />
+    <ClInclude Include="AbstractObject.h" />
+    <ClInclude Include="ActivePsParser.h" />
+    <ClInclude Include="BasicHashTable.h" />
+    <ClInclude Include="CallbackAlarmNotify.h" />
+    <ClInclude Include="CallbackDllAlarmSubscribeResponse.h" />
+    <ClInclude Include="CallbackDllCallDataResponse.h" />
+    <ClInclude Include="CallbackDllCallResponse.h" />
+    <ClInclude Include="CallbackDllCataloginfoResponse.h" />
+    <ClInclude Include="CallbackDllDeviceinfoResponse.h" />
+    <ClInclude Include="CallbackDllPtzResponse.h" />
+    <ClInclude Include="CallbackDllRegisterRequest.h" />
+    <ClInclude Include="CallbackDllSearchRecordfileResponse.h" />
+    <ClInclude Include="CallbackDllStateinfoResponse.h" />
+    <ClInclude Include="CallbackDllUnregisterRequest.h" />
+    <ClInclude Include="CommandCallback.h" />
+    <ClInclude Include="Dll28181_Layer.h" />
+    <ClInclude Include="DllAlarmControl.h" />
+    <ClInclude Include="DllAlarmSubscribeRequest.h" />
+    <ClInclude Include="DllAlarmSubscribeSession.h" />
+    <ClInclude Include="DllCallBye.h" />
+    <ClInclude Include="DllCallMediaControl.h" />
+    <ClInclude Include="DllCallPlayPlaybackDownload.h" />
+    <ClInclude Include="DllCataloginfoRequest.h" />
+    <ClInclude Include="DllCataloginfoSession.h" />
+    <ClInclude Include="DllDeviceControlSession.h" />
+    <ClInclude Include="DllDeviceinfoRequest.h" />
+    <ClInclude Include="DllDeviceinfoSession.h" />
+    <ClInclude Include="DllEnvironment.h" />
+    <ClInclude Include="DllMediaSession.h" />
+    <ClInclude Include="DllPtzAutoScan.h" />
+    <ClInclude Include="DllPtzMove.h" />
+    <ClInclude Include="DllPtzPreset.h" />
+    <ClInclude Include="DllPtzTour.h" />
+    <ClInclude Include="DllRecordControl.h" />
+    <ClInclude Include="DllRegisterResponse.h" />
+    <ClInclude Include="DllRegisterSession.h" />
+    <ClInclude Include="DllSearchRecordfileRequest.h" />
+    <ClInclude Include="DllSearchRecordfileSession.h" />
+    <ClInclude Include="DllStateinfoRequest.h" />
+    <ClInclude Include="DllStateinfoSession.h" />
+    <ClInclude Include="Gb28181_Layer.h" />
+    <ClInclude Include="HashTable.h" />
+    <ClInclude Include="jmutex.h" />
+    <ClInclude Include="jmutexautolock.h" />
+    <ClInclude Include="jthread.h" />
+    <ClInclude Include="Medium.h" />
+    <ClInclude Include="SipdAlarmNotify.h" />
+    <ClInclude Include="SipdCall200ok.h" />
+    <ClInclude Include="SipdCallFileToEnd.h" />
+    <ClInclude Include="SipdCallNoAnswer.h" />
+    <ClInclude Include="SipdCataloginfoRequest.h" />
+    <ClInclude Include="SipdCataloginfoResponse.h" />
+    <ClInclude Include="SipdCataloginfoSession.h" />
+    <ClInclude Include="SipdDeviceinfoResponse.h" />
+    <ClInclude Include="SipdKeepaliveRequest.h" />
+    <ClInclude Include="SipdMessage200ok.h" />
+    <ClInclude Include="SipdMessageFailure.h" />
+    <ClInclude Include="SipdRegisterRequest.h" />
+    <ClInclude Include="SipdSearchRecordfileResponse.h" />
+    <ClInclude Include="SipdStateinfoResponse.h" />
+    <ClInclude Include="SipdSubscribe200ok.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="UsageEnvironment.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

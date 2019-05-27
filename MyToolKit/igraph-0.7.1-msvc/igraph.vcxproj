@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{54FFF7B3-3249-4BBE-93D2-71C11ABF0A6C}</ProjectGuid>
+    <RootNamespace>igraph</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)winclude;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>Win32;WIN32;_WINDOWS;_USRDLL;NCOMPLEX;IGRAPH_EXPORTS;USE_CLOCK;PRPACK_IGRAPH_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat />
+      <Optimization>MaxSpeed</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)winclude;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>Win64;WIN64;_WINDOWS;_USRDLL;NCOMPLEX;IGRAPH_EXPORTS;USE_CLOCK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat />
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)winclude;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>Win32;WIN32;_DEBUG;_WINDOWS;_USRDLL;NCOMPLEX;IGRAPH_EXPORTS;USE_CLOCK;PRPACK_IGRAPH_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)winclude;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>Win64;WIN64;_DEBUG;_WINDOWS;_USRDLL;NCOMPLEX;IGRAPH_EXPORTS;USE_CLOCK;PRPACK_IGRAPH_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\adjlist.c" />
+    <ClCompile Include="src\arpack.c" />
+    <ClCompile Include="src\array.c" />
+    <ClCompile Include="src\atlas.c" />
+    <ClCompile Include="src\attributes.c" />
+    <ClCompile Include="src\basic_query.c" />
+    <ClCompile Include="src\bfgs.c" />
+    <ClCompile Include="src\bigint.c" />
+    <ClCompile Include="src\bignum.c" />
+    <ClCompile Include="src\bipartite.c" />
+    <ClCompile Include="src\blas.c" />
+    <ClCompile Include="src\bliss.cc" />
+    <ClCompile Include="src\bliss_eqrefhash.cc" />
+    <ClCompile Include="src\bliss_graph.cc" />
+    <ClCompile Include="src\bliss_heap.cc" />
+    <ClCompile Include="src\bliss_orbit.cc" />
+    <ClCompile Include="src\bliss_partition.cc" />
+    <ClCompile Include="src\bliss_timer.cc" />
+    <ClCompile Include="src\bliss_utils.cc" />
+    <ClCompile Include="src\cattributes.c" />
+    <ClCompile Include="src\centrality.c" />
+    <ClCompile Include="src\cliques.c" />
+    <ClCompile Include="src\clustertool.cpp" />
+    <ClCompile Include="src\cocitation.c" />
+    <ClCompile Include="src\cohesive_blocks.c" />
+    <ClCompile Include="src\community.c" />
+    <ClCompile Include="src\complex.c" />
+    <ClCompile Include="src\components.c" />
+    <ClCompile Include="src\conversion.c" />
+    <ClCompile Include="src\cores.c" />
+    <ClCompile Include="src\cs\cs_add.c" />
+    <ClCompile Include="src\cs\cs_amd.c" />
+    <ClCompile Include="src\cs\cs_chol.c" />
+    <ClCompile Include="src\cs\cs_cholsol.c" />
+    <ClCompile Include="src\cs\cs_compress.c" />
+    <ClCompile Include="src\cs\cs_counts.c" />
+    <ClCompile Include="src\cs\cs_cumsum.c" />
+    <ClCompile Include="src\cs\cs_dfs.c" />
+    <ClCompile Include="src\cs\cs_dmperm.c" />
+    <ClCompile Include="src\cs\cs_droptol.c" />
+    <ClCompile Include="src\cs\cs_dropzeros.c" />
+    <ClCompile Include="src\cs\cs_dupl.c" />
+    <ClCompile Include="src\cs\cs_entry.c" />
+    <ClCompile Include="src\cs\cs_ereach.c" />
+    <ClCompile Include="src\cs\cs_etree.c" />
+    <ClCompile Include="src\cs\cs_fkeep.c" />
+    <ClCompile Include="src\cs\cs_gaxpy.c" />
+    <ClCompile Include="src\cs\cs_happly.c" />
+    <ClCompile Include="src\cs\cs_house.c" />
+    <ClCompile Include="src\cs\cs_ipvec.c" />
+    <ClCompile Include="src\cs\cs_leaf.c" />
+    <ClCompile Include="src\cs\cs_load.c" />
+    <ClCompile Include="src\cs\cs_lsolve.c" />
+    <ClCompile Include="src\cs\cs_ltsolve.c" />
+    <ClCompile Include="src\cs\cs_lu.c" />
+    <ClCompile Include="src\cs\cs_lusol.c" />
+    <ClCompile Include="src\cs\cs_malloc.c" />
+    <ClCompile Include="src\cs\cs_maxtrans.c" />
+    <ClCompile Include="src\cs\cs_multiply.c" />
+    <ClCompile Include="src\cs\cs_norm.c" />
+    <ClCompile Include="src\cs\cs_permute.c" />
+    <ClCompile Include="src\cs\cs_pinv.c" />
+    <ClCompile Include="src\cs\cs_post.c" />
+    <ClCompile Include="src\cs\cs_print.c" />
+    <ClCompile Include="src\cs\cs_pvec.c" />
+    <ClCompile Include="src\cs\cs_qr.c" />
+    <ClCompile Include="src\cs\cs_qrsol.c" />
+    <ClCompile Include="src\cs\cs_randperm.c" />
+    <ClCompile Include="src\cs\cs_reach.c" />
+    <ClCompile Include="src\cs\cs_scatter.c" />
+    <ClCompile Include="src\cs\cs_scc.c" />
+    <ClCompile Include="src\cs\cs_schol.c" />
+    <ClCompile Include="src\cs\cs_spsolve.c" />
+    <ClCompile Include="src\cs\cs_sqr.c" />
+    <ClCompile Include="src\cs\cs_symperm.c" />
+    <ClCompile Include="src\cs\cs_tdfs.c" />
+    <ClCompile Include="src\cs\cs_transpose.c" />
+    <ClCompile Include="src\cs\cs_updown.c" />
+    <ClCompile Include="src\cs\cs_usolve.c" />
+    <ClCompile Include="src\cs\cs_util.c" />
+    <ClCompile Include="src\cs\cs_utsolve.c" />
+    <ClCompile Include="src\decomposition.c" />
+    <ClCompile Include="src\DensityGrid.cpp" />
+    <ClCompile Include="src\DensityGrid_3d.cpp" />
+    <ClCompile Include="src\distances.c" />
+    <ClCompile Include="src\dqueue.c" />
+    <ClCompile Include="src\drl_graph.cpp" />
+    <ClCompile Include="src\drl_graph_3d.cpp" />
+    <ClCompile Include="src\drl_layout.cpp" />
+    <ClCompile Include="src\drl_layout_3d.cpp" />
+    <ClCompile Include="src\drl_parse.cpp" />
+    <ClCompile Include="src\eigen.c" />
+    <ClCompile Include="src\evolver_cit.c" />
+    <ClCompile Include="src\f2c\abort_.c" />
+    <ClCompile Include="src\f2c\backspac.c" />
+    <ClCompile Include="src\f2c\cabs.c" />
+    <ClCompile Include="src\f2c\close.c" />
+    <ClCompile Include="src\f2c\ctype.c" />
+    <ClCompile Include="src\f2c\c_abs.c" />
+    <ClCompile Include="src\f2c\c_cos.c" />
+    <ClCompile Include="src\f2c\c_div.c" />
+    <ClCompile Include="src\f2c\c_exp.c" />
+    <ClCompile Include="src\f2c\c_log.c" />
+    <ClCompile Include="src\f2c\c_sin.c" />
+    <ClCompile Include="src\f2c\c_sqrt.c" />
+    <ClCompile Include="src\f2c\derfc_.c" />
+    <ClCompile Include="src\f2c\derf_.c" />
+    <ClCompile Include="src\f2c\dfe.c" />
+    <ClCompile Include="src\f2c\dolio.c" />
+    <ClCompile Include="src\f2c\dtime_.c" />
+    <ClCompile Include="src\f2c\due.c" />
+    <ClCompile Include="src\f2c\dummy.c" />
+    <ClCompile Include="src\f2c\d_abs.c" />
+    <ClCompile Include="src\f2c\d_acos.c" />
+    <ClCompile Include="src\f2c\d_asin.c" />
+    <ClCompile Include="src\f2c\d_atan.c" />
+    <ClCompile Include="src\f2c\d_atn2.c" />
+    <ClCompile Include="src\f2c\d_cnjg.c" />
+    <ClCompile Include="src\f2c\d_cos.c" />
+    <ClCompile Include="src\f2c\d_cosh.c" />
+    <ClCompile Include="src\f2c\d_dim.c" />
+    <ClCompile Include="src\f2c\d_exp.c" />
+    <ClCompile Include="src\f2c\d_imag.c" />
+    <ClCompile Include="src\f2c\d_int.c" />
+    <ClCompile Include="src\f2c\d_lg10.c" />
+    <ClCompile Include="src\f2c\d_log.c" />
+    <ClCompile Include="src\f2c\d_mod.c" />
+    <ClCompile Include="src\f2c\d_nint.c" />
+    <ClCompile Include="src\f2c\d_prod.c" />
+    <ClCompile Include="src\f2c\d_sign.c" />
+    <ClCompile Include="src\f2c\d_sin.c" />
+    <ClCompile Include="src\f2c\d_sinh.c" />
+    <ClCompile Include="src\f2c\d_sqrt.c" />
+    <ClCompile Include="src\f2c\d_tan.c" />
+    <ClCompile Include="src\f2c\d_tanh.c" />
+    <ClCompile Include="src\f2c\ef1asc_.c" />
+    <ClCompile Include="src\f2c\ef1cmc_.c" />
+    <ClCompile Include="src\f2c\endfile.c" />
+    <ClCompile Include="src\f2c\erfc_.c" />
+    <ClCompile Include="src\f2c\erf_.c" />
+    <ClCompile Include="src\f2c\err.c" />
+    <ClCompile Include="src\f2c\etime_.c" />
+    <ClCompile Include="src\f2c\exit_.c" />
+    <ClCompile Include="src\f2c\f77vers.c" />
+    <ClCompile Include="src\f2c\f77_aloc.c" />
+    <ClCompile Include="src\f2c\fmt.c" />
+    <ClCompile Include="src\f2c\fmtlib.c" />
+    <ClCompile Include="src\f2c\ftell_.c" />
+    <ClCompile Include="src\f2c\getenv_.c" />
+    <ClCompile Include="src\f2c\hl_ge.c" />
+    <ClCompile Include="src\f2c\hl_gt.c" />
+    <ClCompile Include="src\f2c\hl_le.c" />
+    <ClCompile Include="src\f2c\hl_lt.c" />
+    <ClCompile Include="src\f2c\h_abs.c" />
+    <ClCompile Include="src\f2c\h_dim.c" />
+    <ClCompile Include="src\f2c\h_dnnt.c" />
+    <ClCompile Include="src\f2c\h_indx.c" />
+    <ClCompile Include="src\f2c\h_len.c" />
+    <ClCompile Include="src\f2c\h_mod.c" />
+    <ClCompile Include="src\f2c\h_nint.c" />
+    <ClCompile Include="src\f2c\h_sign.c" />
+    <ClCompile Include="src\f2c\i77vers.c" />
+    <ClCompile Include="src\f2c\iio.c" />
+    <ClCompile Include="src\f2c\ilnw.c" />
+    <ClCompile Include="src\f2c\inquire.c" />
+    <ClCompile Include="src\f2c\i_abs.c" />
+    <ClCompile Include="src\f2c\i_dim.c" />
+    <ClCompile Include="src\f2c\i_dnnt.c" />
+    <ClCompile Include="src\f2c\i_indx.c" />
+    <ClCompile Include="src\f2c\i_len.c" />
+    <ClCompile Include="src\f2c\i_mod.c" />
+    <ClCompile Include="src\f2c\i_nint.c" />
+    <ClCompile Include="src\f2c\i_sign.c" />
+    <ClCompile Include="src\f2c\lbitbits.c" />
+    <ClCompile Include="src\f2c\lbitshft.c" />
+    <ClCompile Include="src\f2c\lread.c" />
+    <ClCompile Include="src\f2c\lwrite.c" />
+    <ClCompile Include="src\f2c\l_ge.c" />
+    <ClCompile Include="src\f2c\l_gt.c" />
+    <ClCompile Include="src\f2c\l_le.c" />
+    <ClCompile Include="src\f2c\l_lt.c" />
+    <ClCompile Include="src\f2c\open.c" />
+    <ClCompile Include="src\f2c\pow_ci.c" />
+    <ClCompile Include="src\f2c\pow_dd.c" />
+    <ClCompile Include="src\f2c\pow_di.c" />
+    <ClCompile Include="src\f2c\pow_hh.c" />
+    <ClCompile Include="src\f2c\pow_ii.c" />
+    <ClCompile Include="src\f2c\pow_ri.c" />
+    <ClCompile Include="src\f2c\pow_zi.c" />
+    <ClCompile Include="src\f2c\pow_zz.c" />
+    <ClCompile Include="src\f2c\rdfmt.c" />
+    <ClCompile Include="src\f2c\rewind.c" />
+    <ClCompile Include="src\f2c\rsfe.c" />
+    <ClCompile Include="src\f2c\rsli.c" />
+    <ClCompile Include="src\f2c\rsne.c" />
+    <ClCompile Include="src\f2c\r_abs.c" />
+    <ClCompile Include="src\f2c\r_acos.c" />
+    <ClCompile Include="src\f2c\r_asin.c" />
+    <ClCompile Include="src\f2c\r_atan.c" />
+    <ClCompile Include="src\f2c\r_atn2.c" />
+    <ClCompile Include="src\f2c\r_cnjg.c" />
+    <ClCompile Include="src\f2c\r_cos.c" />
+    <ClCompile Include="src\f2c\r_cosh.c" />
+    <ClCompile Include="src\f2c\r_dim.c" />
+    <ClCompile Include="src\f2c\r_exp.c" />
+    <ClCompile Include="src\f2c\r_imag.c" />
+    <ClCompile Include="src\f2c\r_int.c" />
+    <ClCompile Include="src\f2c\r_lg10.c" />
+    <ClCompile Include="src\f2c\r_log.c" />
+    <ClCompile Include="src\f2c\r_mod.c" />
+    <ClCompile Include="src\f2c\r_nint.c" />
+    <ClCompile Include="src\f2c\r_sign.c" />
+    <ClCompile Include="src\f2c\r_sin.c" />
+    <ClCompile Include="src\f2c\r_sinh.c" />
+    <ClCompile Include="src\f2c\r_sqrt.c" />
+    <ClCompile Include="src\f2c\r_tan.c" />
+    <ClCompile Include="src\f2c\r_tanh.c" />
+    <ClCompile Include="src\f2c\sfe.c" />
+    <ClCompile Include="src\f2c\signal_.c" />
+    <ClCompile Include="src\f2c\signbit.c" />
+    <ClCompile Include="src\f2c\sig_die.c" />
+    <ClCompile Include="src\f2c\sue.c" />
+    <ClCompile Include="src\f2c\system_.c" />
+    <ClCompile Include="src\f2c\s_cat.c" />
+    <ClCompile Include="src\f2c\s_cmp.c" />
+    <ClCompile Include="src\f2c\s_copy.c" />
+    <ClCompile Include="src\f2c\s_paus.c" />
+    <ClCompile Include="src\f2c\s_rnge.c" />
+    <ClCompile Include="src\f2c\s_stop.c" />
+    <ClCompile Include="src\f2c\typesize.c" />
+    <ClCompile Include="src\f2c\uio.c" />
+    <ClCompile Include="src\f2c\uninit.c" />
+    <ClCompile Include="src\f2c\util.c" />
+    <ClCompile Include="src\f2c\wref.c" />
+    <ClCompile Include="src\f2c\wrtfmt.c" />
+    <ClCompile Include="src\f2c\wsfe.c" />
+    <ClCompile Include="src\f2c\wsle.c" />
+    <ClCompile Include="src\f2c\wsne.c" />
+    <ClCompile Include="src\f2c\xwsne.c" />
+    <ClCompile Include="src\f2c\z_abs.c" />
+    <ClCompile Include="src\f2c\z_cos.c" />
+    <ClCompile Include="src\f2c\z_div.c" />
+    <ClCompile Include="src\f2c\z_exp.c" />
+    <ClCompile Include="src\f2c\z_log.c" />
+    <ClCompile Include="src\f2c\z_sin.c" />
+    <ClCompile Include="src\f2c\z_sqrt.c" />
+    <ClCompile Include="src\fast_community.c" />
+    <ClCompile Include="src\feedback_arc_set.c" />
+    <ClCompile Include="src\flow.c" />
+    <ClCompile Include="src\foreign-dl-lexer.c" />
+    <ClCompile Include="src\foreign-dl-parser.c" />
+    <ClCompile Include="src\foreign-gml-lexer.c" />
+    <ClCompile Include="src\foreign-gml-parser.c" />
+    <ClCompile Include="src\foreign-graphml.c" />
+    <ClCompile Include="src\foreign-lgl-lexer.c" />
+    <ClCompile Include="src\foreign-lgl-parser.c" />
+    <ClCompile Include="src\foreign-ncol-lexer.c" />
+    <ClCompile Include="src\foreign-ncol-parser.c" />
+    <ClCompile Include="src\foreign-pajek-lexer.c" />
+    <ClCompile Include="src\foreign-pajek-parser.c" />
+    <ClCompile Include="src\foreign.c" />
+    <ClCompile Include="src\forestfire.c" />
+    <ClCompile Include="src\fortran_intrinsics.c" />
+    <ClCompile Include="src\games.c" />
+    <ClCompile Include="src\gengraph_box_list.cpp" />
+    <ClCompile Include="src\gengraph_degree_sequence.cpp" />
+    <ClCompile Include="src\gengraph_graph_molloy_hash.cpp" />
+    <ClCompile Include="src\gengraph_graph_molloy_optimized.cpp" />
+    <ClCompile Include="src\gengraph_mr-connected.cpp" />
+    <ClCompile Include="src\gengraph_powerlaw.cpp" />
+    <ClCompile Include="src\gengraph_random.cpp" />
+    <ClCompile Include="src\glet.c" />
+    <ClCompile Include="src\glpk_support.c" />
+    <ClCompile Include="src\gml_tree.c" />
+    <ClCompile Include="src\hacks.c" />
+    <ClCompile Include="src\heap.c" />
+    <ClCompile Include="src\igraph_buckets.c" />
+    <ClCompile Include="src\igraph_error.c" />
+    <ClCompile Include="src\igraph_estack.c" />
+    <ClCompile Include="src\igraph_fixed_vectorlist.c" />
+    <ClCompile Include="src\igraph_grid.c" />
+    <ClCompile Include="src\igraph_hashtable.c" />
+    <ClCompile Include="src\igraph_heap.c" />
+    <ClCompile Include="src\igraph_hrg.cc" />
+    <ClCompile Include="src\igraph_hrg_types.cc" />
+    <ClCompile Include="src\igraph_marked_queue.c" />
+    <ClCompile Include="src\igraph_psumtree.c" />
+    <ClCompile Include="src\igraph_set.c" />
+    <ClCompile Include="src\igraph_stack.c" />
+    <ClCompile Include="src\igraph_strvector.c" />
+    <ClCompile Include="src\igraph_trie.c" />
+    <ClCompile Include="src\infomap.cc" />
+    <ClCompile Include="src\infomap_FlowGraph.cc" />
+    <ClCompile Include="src\infomap_Greedy.cc" />
+    <ClCompile Include="src\infomap_Node.cc" />
+    <ClCompile Include="src\interrupt.c" />
+    <ClCompile Include="src\iterators.c" />
+    <ClCompile Include="src\lad.c" />
+    <ClCompile Include="src\lapack.c" />
+    <ClCompile Include="src\lapack\dasum.c" />
+    <ClCompile Include="src\lapack\daxpy.c" />
+    <ClCompile Include="src\lapack\dcopy.c" />
+    <ClCompile Include="src\lapack\ddot.c" />
+    <ClCompile Include="src\lapack\dgebak.c" />
+    <ClCompile Include="src\lapack\dgebal.c" />
+    <ClCompile Include="src\lapack\dgeev.c" />
+    <ClCompile Include="src\lapack\dgeevx.c" />
+    <ClCompile Include="src\lapack\dgehd2.c" />
+    <ClCompile Include="src\lapack\dgehrd.c" />
+    <ClCompile Include="src\lapack\dgemm.c" />
+    <ClCompile Include="src\lapack\dgemv.c" />
+    <ClCompile Include="src\lapack\dgeqr2.c" />
+    <ClCompile Include="src\lapack\dger.c" />
+    <ClCompile Include="src\lapack\dgesv.c" />
+    <ClCompile Include="src\lapack\dgetf2.c" />
+    <ClCompile Include="src\lapack\dgetrf.c" />
+    <ClCompile Include="src\lapack\dgetrs.c" />
+    <ClCompile Include="src\lapack\dgetv0.c" />
+    <ClCompile Include="src\lapack\dhseqr.c" />
+    <ClCompile Include="src\lapack\disnan.c" />
+    <ClCompile Include="src\lapack\dlabad.c" />
+    <ClCompile Include="src\lapack\dlacn2.c" />
+    <ClCompile Include="src\lapack\dlacpy.c" />
+    <ClCompile Include="src\lapack\dladiv.c" />
+    <ClCompile Include="src\lapack\dlae2.c" />
+    <ClCompile Include="src\lapack\dlaebz.c" />
+    <ClCompile Include="src\lapack\dlaev2.c" />
+    <ClCompile Include="src\lapack\dlaexc.c" />
+    <ClCompile Include="src\lapack\dlagtf.c" />
+    <ClCompile Include="src\lapack\dlagts.c" />
+    <ClCompile Include="src\lapack\dlahqr.c" />
+    <ClCompile Include="src\lapack\dlahr2.c" />
+    <ClCompile Include="src\lapack\dlaisnan.c" />
+    <ClCompile Include="src\lapack\dlaln2.c" />
+    <ClCompile Include="src\lapack\dlamch.c" />
+    <ClCompile Include="src\lapack\dlaneg.c" />
+    <ClCompile Include="src\lapack\dlange.c" />
+    <ClCompile Include="src\lapack\dlanhs.c" />
+    <ClCompile Include="src\lapack\dlanst.c" />
+    <ClCompile Include="src\lapack\dlansy.c" />
+    <ClCompile Include="src\lapack\dlanv2.c" />
+    <ClCompile Include="src\lapack\dlapy2.c" />
+    <ClCompile Include="src\lapack\dlaqr0.c" />
+    <ClCompile Include="src\lapack\dlaqr1.c" />
+    <ClCompile Include="src\lapack\dlaqr2.c" />
+    <ClCompile Include="src\lapack\dlaqr3.c" />
+    <ClCompile Include="src\lapack\dlaqr4.c" />
+    <ClCompile Include="src\lapack\dlaqr5.c" />
+    <ClCompile Include="src\lapack\dlaqrb.c" />
+    <ClCompile Include="src\lapack\dlaqtr.c" />
+    <ClCompile Include="src\lapack\dlar1v.c" />
+    <ClCompile Include="src\lapack\dlarf.c" />
+    <ClCompile Include="src\lapack\dlarfb.c" />
+    <ClCompile Include="src\lapack\dlarfg.c" />
+    <ClCompile Include="src\lapack\dlarft.c" />
+    <ClCompile Include="src\lapack\dlarfx.c" />
+    <ClCompile Include="src\lapack\dlarnv.c" />
+    <ClCompile Include="src\lapack\dlarra.c" />
+    <ClCompile Include="src\lapack\dlarrb.c" />
+    <ClCompile Include="src\lapack\dlarrc.c" />
+    <ClCompile Include="src\lapack\dlarrd.c" />
+    <ClCompile Include="src\lapack\dlarre.c" />
+    <ClCompile Include="src\lapack\dlarrf.c" />
+    <ClCompile Include="src\lapack\dlarrj.c" />
+    <ClCompile Include="src\lapack\dlarrk.c" />
+    <ClCompile Include="src\lapack\dlarrr.c" />
+    <ClCompile Include="src\lapack\dlarrv.c" />
+    <ClCompile Include="src\lapack\dlartg.c" />
+    <ClCompile Include="src\lapack\dlaruv.c" />
+    <ClCompile Include="src\lapack\dlascl.c" />
+    <ClCompile Include="src\lapack\dlaset.c" />
+    <ClCompile Include="src\lapack\dlasq2.c" />
+    <ClCompile Include="src\lapack\dlasq3.c" />
+    <ClCompile Include="src\lapack\dlasq4.c" />
+    <ClCompile Include="src\lapack\dlasq5.c" />
+    <ClCompile Include="src\lapack\dlasq6.c" />
+    <ClCompile Include="src\lapack\dlasr.c" />
+    <ClCompile Include="src\lapack\dlasrt.c" />
+    <ClCompile Include="src\lapack\dlassq.c" />
+    <ClCompile Include="src\lapack\dlaswp.c" />
+    <ClCompile Include="src\lapack\dlasy2.c" />
+    <ClCompile Include="src\lapack\dlatrd.c" />
+    <ClCompile Include="src\lapack\dmout.c" />
+    <ClCompile Include="src\lapack\dnaitr.c" />
+    <ClCompile Include="src\lapack\dnapps.c" />
+    <ClCompile Include="src\lapack\dnaup2.c" />
+    <ClCompile Include="src\lapack\dnaupd.c" />
+    <ClCompile Include="src\lapack\dnconv.c" />
+    <ClCompile Include="src\lapack\dneigh.c" />
+    <ClCompile Include="src\lapack\dneupd.c" />
+    <ClCompile Include="src\lapack\dngets.c" />
+    <ClCompile Include="src\lapack\dnrm2.c" />
+    <ClCompile Include="src\lapack\dorg2r.c" />
+    <ClCompile Include="src\lapack\dorghr.c" />
+    <ClCompile Include="src\lapack\dorgqr.c" />
+    <ClCompile Include="src\lapack\dorm2l.c" />
+    <ClCompile Include="src\lapack\dorm2r.c" />
+    <ClCompile Include="src\lapack\dormhr.c" />
+    <ClCompile Include="src\lapack\dormql.c" />
+    <ClCompile Include="src\lapack\dormqr.c" />
+    <ClCompile Include="src\lapack\dormtr.c" />
+    <ClCompile Include="src\lapack\drot.c" />
+    <ClCompile Include="src\lapack\dsaitr.c" />
+    <ClCompile Include="src\lapack\dsapps.c" />
+    <ClCompile Include="src\lapack\dsaup2.c" />
+    <ClCompile Include="src\lapack\dsaupd.c" />
+    <ClCompile Include="src\lapack\dscal.c" />
+    <ClCompile Include="src\lapack\dsconv.c" />
+    <ClCompile Include="src\lapack\dseigt.c" />
+    <ClCompile Include="src\lapack\dsesrt.c" />
+    <ClCompile Include="src\lapack\dseupd.c" />
+    <ClCompile Include="src\lapack\dsgets.c" />
+    <ClCompile Include="src\lapack\dsortc.c" />
+    <ClCompile Include="src\lapack\dsortr.c" />
+    <ClCompile Include="src\lapack\dstatn.c" />
+    <ClCompile Include="src\lapack\dstats.c" />
+    <ClCompile Include="src\lapack\dstebz.c" />
+    <ClCompile Include="src\lapack\dstein.c" />
+    <ClCompile Include="src\lapack\dstemr.c" />
+    <ClCompile Include="src\lapack\dsteqr.c" />
+    <ClCompile Include="src\lapack\dsterf.c" />
+    <ClCompile Include="src\lapack\dstqrb.c" />
+    <ClCompile Include="src\lapack\dswap.c" />
+    <ClCompile Include="src\lapack\dsyevr.c" />
+    <ClCompile Include="src\lapack\dsymv.c" />
+    <ClCompile Include="src\lapack\dsyr2.c" />
+    <ClCompile Include="src\lapack\dsyr2k.c" />
+    <ClCompile Include="src\lapack\dsytd2.c" />
+    <ClCompile Include="src\lapack\dsytrd.c" />
+    <ClCompile Include="src\lapack\dtrevc.c" />
+    <ClCompile Include="src\lapack\dtrexc.c" />
+    <ClCompile Include="src\lapack\dtrmm.c" />
+    <ClCompile Include="src\lapack\dtrmv.c" />
+    <ClCompile Include="src\lapack\dtrsen.c" />
+    <ClCompile Include="src\lapack\dtrsm.c" />
+    <ClCompile Include="src\lapack\dtrsna.c" />
+    <ClCompile Include="src\lapack\dtrsyl.c" />
+    <ClCompile Include="src\lapack\dvout.c" />
+    <ClCompile Include="src\lapack\idamax.c" />
+    <ClCompile Include="src\lapack\ieeeck.c" />
+    <ClCompile Include="src\lapack\iladlc.c" />
+    <ClCompile Include="src\lapack\iladlr.c" />
+    <ClCompile Include="src\lapack\ilaenv.c" />
+    <ClCompile Include="src\lapack\iparmq.c" />
+    <ClCompile Include="src\lapack\ivout.c" />
+    <ClCompile Include="src\lapack\len_trim.c" />
+    <ClCompile Include="src\lapack\lsame.c" />
+    <ClCompile Include="src\lapack\second.c" />
+    <ClCompile Include="src\lapack\xerbla.c" />
+    <ClCompile Include="src\layout.c" />
+    <ClCompile Include="src\matching.c" />
+    <ClCompile Include="src\math.c" />
+    <ClCompile Include="src\matrix.c" />
+    <ClCompile Include="src\maximal_cliques.c" />
+    <ClCompile Include="src\memory.c" />
+    <ClCompile Include="src\microscopic_update.c" />
+    <ClCompile Include="src\mixing.c" />
+    <ClCompile Include="src\motifs.c" />
+    <ClCompile Include="src\NetDataTypes.cpp" />
+    <ClCompile Include="src\NetRoutines.cpp" />
+    <ClCompile Include="src\operators.c" />
+    <ClCompile Include="src\optimal_modularity.c" />
+    <ClCompile Include="src\other.c" />
+    <ClCompile Include="src\plfit\error.c" />
+    <ClCompile Include="src\plfit\gss.c" />
+    <ClCompile Include="src\plfit\kolmogorov.c" />
+    <ClCompile Include="src\plfit\lbfgs.c" />
+    <ClCompile Include="src\plfit\options.c" />
+    <ClCompile Include="src\plfit\plfit.c" />
+    <ClCompile Include="src\plfit\zeta.c" />
+    <ClCompile Include="src\pottsmodel_2.cpp" />
+    <ClCompile Include="src\progress.c" />
+    <ClCompile Include="src\prpack.cpp" />
+    <ClCompile Include="src\qsort.c" />
+    <ClCompile Include="src\qsort_r.c" />
+    <ClCompile Include="src\random.c" />
+    <ClCompile Include="src\revolver_cit.c" />
+    <ClCompile Include="src\revolver_grow.c" />
+    <ClCompile Include="src\revolver_ml_cit.c" />
+    <ClCompile Include="src\sbm.c" />
+    <ClCompile Include="src\scg.c" />
+    <ClCompile Include="src\scg_approximate_methods.c" />
+    <ClCompile Include="src\scg_exact_scg.c" />
+    <ClCompile Include="src\scg_kmeans.c" />
+    <ClCompile Include="src\scg_optimal_method.c" />
+    <ClCompile Include="src\scg_utils.c" />
+    <ClCompile Include="src\separators.c" />
+    <ClCompile Include="src\sir.c" />
+    <ClCompile Include="src\spanning_trees.c" />
+    <ClCompile Include="src\sparsemat.c" />
+    <ClCompile Include="src\spectral_properties.c" />
+    <ClCompile Include="src\spmatrix.c" />
+    <ClCompile Include="src\st-cuts.c" />
+    <ClCompile Include="src\statusbar.c" />
+    <ClCompile Include="src\structural_properties.c" />
+    <ClCompile Include="src\structure_generators.c" />
+    <ClCompile Include="src\sugiyama.c" />
+    <ClCompile Include="src\topology.c" />
+    <ClCompile Include="src\triangles.c" />
+    <ClCompile Include="src\types.c" />
+    <ClCompile Include="src\type_indexededgelist.c" />
+    <ClCompile Include="src\vector.c" />
+    <ClCompile Include="src\vector_ptr.c" />
+    <ClCompile Include="src\version.c" />
+    <ClCompile Include="src\visitors.c" />
+    <ClCompile Include="src\walktrap.cpp" />
+    <ClCompile Include="src\walktrap_communities.cpp" />
+    <ClCompile Include="src\walktrap_graph.cpp" />
+    <ClCompile Include="src\walktrap_heap.cpp" />
+    <ClCompile Include="src\zeroin.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\igraph.h" />
+    <ClInclude Include="include\igraph_adjlist.h" />
+    <ClInclude Include="include\igraph_arpack.h" />
+    <ClInclude Include="include\igraph_array.h" />
+    <ClInclude Include="include\igraph_array_pmt.h" />
+    <ClInclude Include="include\igraph_attributes.h" />
+    <ClInclude Include="include\igraph_bipartite.h" />
+    <ClInclude Include="include\igraph_blas.h" />
+    <ClInclude Include="include\igraph_centrality.h" />
+    <ClInclude Include="include\igraph_cliques.h" />
+    <ClInclude Include="include\igraph_cocitation.h" />
+    <ClInclude Include="include\igraph_cohesive_blocks.h" />
+    <ClInclude Include="include\igraph_community.h" />
+    <ClInclude Include="include\igraph_complex.h" />
+    <ClInclude Include="include\igraph_components.h" />
+    <ClInclude Include="include\igraph_constants.h" />
+    <ClInclude Include="include\igraph_constructors.h" />
+    <ClInclude Include="include\igraph_conversion.h" />
+    <ClInclude Include="include\igraph_datatype.h" />
+    <ClInclude Include="include\igraph_dqueue.h" />
+    <ClInclude Include="include\igraph_dqueue_pmt.h" />
+    <ClInclude Include="include\igraph_eigen.h" />
+    <ClInclude Include="include\igraph_epidemics.h" />
+    <ClInclude Include="include\igraph_error.h" />
+    <ClInclude Include="include\igraph_flow.h" />
+    <ClInclude Include="include\igraph_foreign.h" />
+    <ClInclude Include="include\igraph_games.h" />
+    <ClInclude Include="include\igraph_graphlets.h" />
+    <ClInclude Include="include\igraph_heap.h" />
+    <ClInclude Include="include\igraph_heap_pmt.h" />
+    <ClInclude Include="include\igraph_hrg.h" />
+    <ClInclude Include="include\igraph_interface.h" />
+    <ClInclude Include="include\igraph_interrupt.h" />
+    <ClInclude Include="include\igraph_iterators.h" />
+    <ClInclude Include="include\igraph_lapack.h" />
+    <ClInclude Include="include\igraph_layout.h" />
+    <ClInclude Include="include\igraph_matching.h" />
+    <ClInclude Include="include\igraph_matrix.h" />
+    <ClInclude Include="include\igraph_matrix_pmt.h" />
+    <ClInclude Include="include\igraph_memory.h" />
+    <ClInclude Include="include\igraph_microscopic_update.h" />
+    <ClInclude Include="include\igraph_mixing.h" />
+    <ClInclude Include="include\igraph_motifs.h" />
+    <ClInclude Include="include\igraph_neighborhood.h" />
+    <ClInclude Include="include\igraph_nongraph.h" />
+    <ClInclude Include="include\igraph_operators.h" />
+    <ClInclude Include="include\igraph_paths.h" />
+    <ClInclude Include="include\igraph_pmt.h" />
+    <ClInclude Include="include\igraph_pmt_off.h" />
+    <ClInclude Include="include\igraph_progress.h" />
+    <ClInclude Include="include\igraph_psumtree.h" />
+    <ClInclude Include="include\igraph_qsort.h" />
+    <ClInclude Include="include\igraph_random.h" />
+    <ClInclude Include="include\igraph_revolver.h" />
+    <ClInclude Include="include\igraph_scg.h" />
+    <ClInclude Include="include\igraph_separators.h" />
+    <ClInclude Include="include\igraph_sparsemat.h" />
+    <ClInclude Include="include\igraph_spmatrix.h" />
+    <ClInclude Include="include\igraph_stack.h" />
+    <ClInclude Include="include\igraph_stack_pmt.h" />
+    <ClInclude Include="include\igraph_statusbar.h" />
+    <ClInclude Include="include\igraph_structural.h" />
+    <ClInclude Include="include\igraph_strvector.h" />
+    <ClInclude Include="include\igraph_threading.h" />
+    <ClInclude Include="include\igraph_topology.h" />
+    <ClInclude Include="include\igraph_transitivity.h" />
+    <ClInclude Include="include\igraph_types.h" />
+    <ClInclude Include="include\igraph_vector.h" />
+    <ClInclude Include="include\igraph_vector_pmt.h" />
+    <ClInclude Include="include\igraph_vector_ptr.h" />
+    <ClInclude Include="include\igraph_vector_type.h" />
+    <ClInclude Include="include\igraph_version.h" />
+    <ClInclude Include="include\igraph_visitor.h" />
+    <ClInclude Include="src\atlas-edges.h" />
+    <ClInclude Include="src\bigint.h" />
+    <ClInclude Include="src\bignum.h" />
+    <ClInclude Include="src\cs\cs.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\cs\UFconfig.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\DensityGrid.h" />
+    <ClInclude Include="src\DensityGrid_3d.h" />
+    <ClInclude Include="src\drl_graph.h" />
+    <ClInclude Include="src\drl_graph_3d.h" />
+    <ClInclude Include="src\drl_layout.h" />
+    <ClInclude Include="src\drl_layout_3d.h" />
+    <ClInclude Include="src\drl_Node.h" />
+    <ClInclude Include="src\drl_Node_3d.h" />
+    <ClInclude Include="src\drl_parse.h" />
+    <ClInclude Include="src\f2c.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\fio.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\fmt.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\fp.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\lio.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\signal1.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\f2c\sysdep1.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\foreign-dl-header.h" />
+    <ClInclude Include="src\foreign-dl-parser.h" />
+    <ClInclude Include="src\foreign-gml-header.h" />
+    <ClInclude Include="src\foreign-gml-parser.h" />
+    <ClInclude Include="src\foreign-lgl-header.h" />
+    <ClInclude Include="src\foreign-lgl-parser.h" />
+    <ClInclude Include="src\foreign-ncol-header.h" />
+    <ClInclude Include="src\foreign-ncol-parser.h" />
+    <ClInclude Include="src\foreign-pajek-header.h" />
+    <ClInclude Include="src\foreign-pajek-parser.h" />
+    <ClInclude Include="src\gengraph_box_list.h" />
+    <ClInclude Include="src\gengraph_definitions.h" />
+    <ClInclude Include="src\gengraph_degree_sequence.h" />
+    <ClInclude Include="src\gengraph_graph_molloy_hash.h" />
+    <ClInclude Include="src\gengraph_graph_molloy_optimized.h" />
+    <ClInclude Include="src\gengraph_hash.h" />
+    <ClInclude Include="src\gengraph_header.h" />
+    <ClInclude Include="src\gengraph_powerlaw.h" />
+    <ClInclude Include="src\gengraph_qsort.h" />
+    <ClInclude Include="src\gengraph_random.h" />
+    <ClInclude Include="src\gengraph_vertex_cover.h" />
+    <ClInclude Include="src\hrg_dendro.h" />
+    <ClInclude Include="src\hrg_graph.h" />
+    <ClInclude Include="src\hrg_graph_simp.h" />
+    <ClInclude Include="src\hrg_rbtree.h" />
+    <ClInclude Include="src\hrg_splittree_eq.h" />
+    <ClInclude Include="src\igraph_arpack_internal.h" />
+    <ClInclude Include="src\igraph_blas_internal.h" />
+    <ClInclude Include="src\igraph_estack.h" />
+    <ClInclude Include="src\igraph_flow_internal.h" />
+    <ClInclude Include="src\igraph_glpk_support.h" />
+    <ClInclude Include="src\igraph_gml_tree.h" />
+    <ClInclude Include="src\igraph_hacks_internal.h" />
+    <ClInclude Include="src\igraph_interrupt_internal.h" />
+    <ClInclude Include="src\igraph_lapack_internal.h" />
+    <ClInclude Include="src\igraph_marked_queue.h" />
+    <ClInclude Include="src\igraph_math.h" />
+    <ClInclude Include="src\igraph_types_internal.h" />
+    <ClInclude Include="src\infomap_FlowGraph.h" />
+    <ClInclude Include="src\infomap_Greedy.h" />
+    <ClInclude Include="src\infomap_Node.h" />
+    <ClInclude Include="src\maximal_cliques_template.h" />
+    <ClInclude Include="src\NetDataTypes.h" />
+    <ClInclude Include="src\NetRoutines.h" />
+    <ClInclude Include="src\plfit\arithmetic_ansi.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\arithmetic_sse_double.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\arithmetic_sse_float.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\error.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\gss.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\kolmogorov.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\lbfgs.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\platform.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\plfit.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\plfit\zeta.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\pottsmodel_2.h" />
+    <ClInclude Include="src\prpack.h" />
+    <ClInclude Include="src\scg_headers.h" />
+    <ClInclude Include="src\triangles_template.h" />
+    <ClInclude Include="src\triangles_template1.h" />
+    <ClInclude Include="src\walktrap_communities.h" />
+    <ClInclude Include="src\walktrap_graph.h" />
+    <ClInclude Include="src\walktrap_heap.h" />
+    <ClInclude Include="winclude\config.h" />
+    <ClInclude Include="winclude\unistd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\array.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_bignum.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_defs.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_eqrefhash.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_graph.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_heap.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_kqueue.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_kstack.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_orbit.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_partition.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_timer.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\bliss_utils.hh">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\dqueue.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\f2c\signal1.h0">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="src\f2c\sysdep1.h0">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="src\heap.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\matrix.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\stack.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+    <None Include="src\vector.pmt">
+      <FileType>CppHeader</FileType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

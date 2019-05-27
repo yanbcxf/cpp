@@ -1,0 +1,52 @@
+http://blog.csdn.net/rankun1/article/details/51026117
+
+项目开发过程中遇到MSVCRTD.LIB和LIBCMTD.LIB的冲突，后来找到原因是代码编译时选择c/c++的运行库版本不一样。于是搞明白了MT,MTd,MD,MDd的区别，问题出现的根源算是明白了。（libc.lib找不到也可以在这里找到答案）
+先用简单的方式概括一下原因：
+项目-属性-c/c++-代码生成-运行库的选择
+选择 MT会用到LIBCMT.LIB   MTD会用到LIBCMTD.LIB
+选择 MD会用到MSVCRT.LIB   MDD会用到MSVCRTD.LIB
+如果你使用的库用的MT,你自己的程序为MD，则会发生MSVCRTD.LIB和LIBCMTD.LIB的冲突（debug）或者MSVCRT.LIB和LIBCMT.LIB的冲突（release）
+解决方法可以保持库编译版本的一致，如果无法保证，就使用终极大招
+项目-属性-链接器-命令行-附加参数加入   /FORCE:MULTIPLE
+这个参数会自动忽略重复定义
+
+ 注意：项目-属性-配置属性-常规-MFC的使用，这一选项，
+如果选择了在静态库中使用MFC，则代码生成时只能选择MT（Release）或者MTd（Debug）
+如果选择了在共享的DLL中使用MFC则，代码生成时只能选择MD（Release）或者MDd（Debug）
+
+这里总结下他们的区别,后面的那个'd'是代表DEBUG版本，没有'd'的就是RELEASE版本了。
+为了防止不同运行库导致的库冲突，需要就行忽略
+
+ 版　本		类　型	使用的library	被忽略的library
+R  Release	单线程	libc.lib	libcmt.lib, msvcrt.lib, libcd.lib, libcmtd.lib, msvcrtd.lib
+多线程	libcmt.lib	libc.lib, msvcrt.lib, libcd.lib, libcmtd.lib, msvcrtd.lib
+使用DLL的多线程	msvcrt.lib	libc.lib, libcmt.lib, libcd.lib, libcmtd.lib, msvcrtd.lib
+D   Debug	单线程	libcd.lib	libc.lib, libcmt.lib, msvcrt.lib, libcmtd.lib, msvcrtd.lib
+多线程	libcmtd.lib	libc.lib, libcmt.lib, msvcrt.lib, libcmtd.lib, msvcrtd.lib
+使用DLL的多线程	msvcrtd.lib	libc.lib, libcmt.lib, msvcrt.lib, libcd.lib, libcmtd.lib
+
+遇到libc.lib找不到是因为它是单线程用到的库，而单线程在VS2003以后就被微软取消了，所以老版本的用单线程编译的库就提示libc.lib找不到错误，
+你可以在忽略特定库中忽略它，或者去vc6找一个包含进来，
+
+
+
+http://blog.monkeypotion.net/gameprog/beginner/love-and-hate-between-msvc-and-crt
+
+多執行緒偵錯 (/MTd)：對應 LIBCMTD.lib
+多執行緒 (/MT)：對應 LIBCMT.lib
+多執行緒偵錯 DLL (/MDd)：對應 MSVCRTD.lib
+多執行緒 DLL (/MD)：對應 MSVCRT.lib
+
+請注意，以上只是單純 C 語言的程式庫而沒有包含 C++ 語言在內。如果你的程式系統中，有包含 C++ 語言的程式碼的話，那又是另外一回事了。
+但是在專案屬性的頁面中，為什麼找不到相關的設定選項呢？因為 MSVC 悄悄地幫程式設計者代勞處理掉了。
+只要在程式碼中使用 #include 語法納入任何一個 C++ 的標頭檔，例如 iostream 或 fstream，MSVC 就會在連結器的運作階段中，
+自動幫我們連結 C++ 的執行階段程式庫。而 C++ 的執行階段程式庫，同樣可分為四個版本：
+
+靜態連結：
+
+LIBCPMTD.lib（除錯版本）
+LIBCPMT.lib
+動態連結：
+
+MSVCPRTD.lib（除錯版本）：執行檔相依於 MSVCP90D.dll
+MSVCPRT.lib：執行檔相依於 MSVCP90.dll

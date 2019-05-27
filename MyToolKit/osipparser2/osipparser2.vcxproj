@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B1ABCDBA-15EF-4EA2-81D6-B893AB6CA978}</ProjectGuid>
+    <RootNamespace>osipparser2</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\libosip2-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_accept.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_accept_encoding.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_accept_language.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_alert_info.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_allow.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_authentication_info.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_authorization.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_body.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_call_id.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_call_info.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_contact.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_content_disposition.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_content_encoding.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_content_length.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_content_type.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_cseq.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_error_info.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_from.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_header.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_list.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_md5c.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_message.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_message_parse.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_message_to_str.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_mime_version.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_parser_cfg.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_port.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_proxy_authenticate.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_proxy_authentication_info.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_proxy_authorization.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_record_route.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_route.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_to.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_uri.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_via.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\osip_www_authenticate.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\sdp_accessor.c" />
+    <ClCompile Include="..\libosip2-4.1.0\src\osipparser2\sdp_message.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\internal.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_body.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_const.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_headers.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_list.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_md5.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_message.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_parser.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_port.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\osip_uri.h" />
+    <ClInclude Include="..\libosip2-4.1.0\include\osipparser2\sdp_message.h" />
+    <ClInclude Include="..\libosip2-4.1.0\src\osipparser2\parser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
