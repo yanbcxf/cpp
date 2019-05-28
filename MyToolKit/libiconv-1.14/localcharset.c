@@ -465,7 +465,7 @@ locale_charset (void)
      GetConsoleOutputCP() encoding if it is using a TrueType font.
      But in GUI programs and for output sent to files and pipes, GetACP()
      encoding is the best bet.  */
-  sprintf (buf, "CP%u", GetACP ());
+  sprintf_s (buf, 13, "CP%u", GetACP ());
   codeset = buf;
 
 #elif defined OS2
