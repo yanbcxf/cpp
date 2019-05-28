@@ -4,7 +4,7 @@
 // stdafx.obj 将包含预编译类型信息
 
 #include "stdafx.h"
-// #include <iconv.h>
+#include <iconv.h>
 
 
 BOOL sendToOutput(LPCTSTR lpch, HWND hwnd, int logType)
@@ -323,7 +323,7 @@ string Gbk2Utf8(string strGBK)
 	bufout = (char *)calloc(lenout, sizeof(char));
 	sout = bufout;
 
-	/*iconv_t c_pt = iconv_open("utf-8", "gbk");
+	iconv_t c_pt = iconv_open("utf-8", "gbk");
 	if (c_pt == (iconv_t)-1) return ("ConvertEnc iconv_open error");
 
 
@@ -332,7 +332,7 @@ string Gbk2Utf8(string strGBK)
 
 	if (ret == -1) return ("ConvertEnc Convert Failed");
 
-	iconv_close(c_pt);*/
+	iconv_close(c_pt);
 
 	target = string(bufout);
 	free(bufout);
@@ -359,7 +359,7 @@ string Utf8_GBK(string strUtf8)
 		}
 		sout = bufout;
 
-		/*iconv_t c_pt = iconv_open("gbk//IGNORE", "utf-8");
+		iconv_t c_pt = iconv_open("gbk//IGNORE", "utf-8");
 		if (c_pt == (iconv_t)-1)
 		{
 			target = "ConvertEnc iconv_open error";
@@ -369,7 +369,7 @@ string Utf8_GBK(string strUtf8)
 		iconv(c_pt, NULL, NULL, NULL, NULL);
 		ret = iconv(c_pt, (const char **)&sin, (size_t *)&lenin, &sout, (size_t *)&lenout);
 
-		iconv_close(c_pt);*/
+		iconv_close(c_pt);
 
 		if (ret == -1)
 			target = "ConvertEnc Convert Failed";

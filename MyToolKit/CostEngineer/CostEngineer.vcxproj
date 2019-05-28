@@ -90,18 +90,19 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;../libiconv-1.14/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>expat.lib</AdditionalDependencies>
+      <AdditionalDependencies>expat.lib;libiconv-1.14.lib;mxml1.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -233,7 +234,6 @@
     <ClInclude Include="DyncItemEditDlg.h" />
     <ClInclude Include="DyncItemFindDlg.h" />
     <ClInclude Include="DyncItemGroupDlg.h" />
-    <ClInclude Include="FileView.h" />
     <ClInclude Include="GridCtrl_src\CellRange.h" />
     <ClInclude Include="GridCtrl_src\GridCell.h" />
     <ClInclude Include="GridCtrl_src\GridCellBase.h" />
@@ -249,6 +249,7 @@
     <ClInclude Include="GridCtrl_src\TreeNode.h" />
     <ClInclude Include="GridDlg.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MenuTreeView.h" />
     <ClInclude Include="MessageString\jmutex.h" />
     <ClInclude Include="MessageString\jmutexautolock.h" />
     <ClInclude Include="MessageString\MessageString.h" />
@@ -313,7 +314,6 @@
     <ClCompile Include="DyncItemEditDlg.cpp" />
     <ClCompile Include="DyncItemFindDlg.cpp" />
     <ClCompile Include="DyncItemGroupDlg.cpp" />
-    <ClCompile Include="FileView.cpp" />
     <ClCompile Include="GridCtrl_src\GridCell.cpp" />
     <ClCompile Include="GridCtrl_src\GridCellBase.cpp" />
     <ClCompile Include="GridCtrl_src\GridCtrl.cpp" />
@@ -326,6 +326,7 @@
     <ClCompile Include="GridCtrl_src\TreeGridCtrl.cpp" />
     <ClCompile Include="GridDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MenuTreeView.cpp" />
     <ClCompile Include="MessageString\jmutex.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

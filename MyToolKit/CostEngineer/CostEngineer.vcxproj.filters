@@ -54,9 +54,6 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FileView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ClassView.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -282,6 +279,9 @@
     <ClInclude Include="BasicExcel.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MenuTreeView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -303,9 +303,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CntrItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FileView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ClassView.cpp">
@@ -492,6 +489,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BasicExcel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuTreeView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

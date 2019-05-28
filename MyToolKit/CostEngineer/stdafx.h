@@ -57,6 +57,8 @@ using namespace std;
 
 #include "./MessageString/MessageString.h"
 
+#include "mxml.h"
+
 // xml 解析
 #include "expat.h"
 #include "XmlParser.h"
@@ -105,6 +107,18 @@ typedef struct _item_info
 #include "BaseChartCtlView.h"
 
 #define WM_USER_XML		WM_USER + 1
+
+typedef struct _CostEngineerInfo {
+	string code;
+	string name;
+	vector<struct _CostEngineerInfo> list;
+
+	_CostEngineerInfo()
+	{
+		code = "";
+		name = "";
+	}
+}CostEngineerInfo;
 
 extern string Gbk2Utf8(string strGBK);
 extern string Utf8_GBK(string strUtf8);

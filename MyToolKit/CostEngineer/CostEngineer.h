@@ -57,6 +57,7 @@ public:
 public:
 	HANDLE	m_bAppExit;
 
+	CostEngineerInfo	m_cost_engineer_info;
 	BOOL m_bRunning;
 };
 

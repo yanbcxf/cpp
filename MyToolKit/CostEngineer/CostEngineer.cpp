@@ -55,6 +55,40 @@ CCostEngineerApp theApp;
 
 // CCostEngineerApp 初始化
 
+void readCostEngnieerXml(mxml_node_t * tree, CostEngineerInfo & father) {
+	mxml_node_t * node, *item_node;
+	node = mxmlFindElement(tree, tree, "list", NULL, NULL, MXML_DESCEND);
+
+	if (node) {
+		for (item_node = mxmlFindElement(node, tree, "element", NULL, NULL, MXML_DESCEND);
+			item_node != NULL;
+			item_node = mxmlFindElement(item_node, tree, "element", NULL, NULL, MXML_NO_DESCEND)) {
+
+			CostEngineerInfo info;
+			char name[MAX_PATH] = { 0 };
+			char code[MAX_PATH] = { 0 };
+
+			node = mxmlFindElement(item_node, tree, "code", NULL, NULL, MXML_DESCEND);
+			if (node && mxmlGetText(node, NULL))
+			{
+				strncpy(code, (const char *)mxmlGetText(node, NULL), MAX_PATH);
+				info.code = code;
+			}
+
+			node = mxmlFindElement(item_node, tree, "name", NULL, NULL, MXML_DESCEND);
+			if (node && mxmlGetText(node, NULL))
+			{
+				strncpy(name, (const char *)mxmlGetText(node, NULL), MAX_PATH);
+				info.name = Utf8_GBK(name);
+			}
+
+			readCostEngnieerXml(item_node, info);
+			father.list.push_back(info);
+		}
+	}
+}
+
+
 BOOL CCostEngineerApp::InitInstance()
 {
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
@@ -77,6 +111,26 @@ BOOL CCostEngineerApp::InitInstance()
 		return FALSE;
 	}
 
+	///////////////////////////////////////////////////////////////
+	//	读入xml 文件进行 菜单 配置
+
+	mxml_node_t * tree, *node, *item_node;
+	FILE *fp = NULL;
+	errno_t err = fopen_s(&fp, "CostEngineer.xml", "rb");
+	if (fp != NULL)
+	{
+		tree = mxmlLoadFile(NULL, fp, /*MXML_OPAQUE_CALLBACK*/ /*MXML_TEXT_CALLBACK*/  MXML_TEXT_CALLBACK);
+		if (tree)
+		{
+			readCostEngnieerXml(tree, m_cost_engineer_info);
+			mxmlDelete(tree);
+		}
+
+		fclose(fp);
+	}
+
+
+	/////////////////////////////////////////////////////
 	AfxEnableControlContainer();
 
 	EnableTaskbarInteraction();
