@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "basegridctlview.h"
 
 class CCostEngineerDoc;
 class CCostEngineerView;

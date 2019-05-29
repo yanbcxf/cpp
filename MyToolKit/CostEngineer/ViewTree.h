@@ -17,7 +17,7 @@ protected:
 // 实现
 public:
 	virtual ~CViewTree();
-
+	afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
 protected:
 	DECLARE_MESSAGE_MAP()
 };

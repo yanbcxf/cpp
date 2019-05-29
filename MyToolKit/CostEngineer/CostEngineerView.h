@@ -6,7 +6,7 @@
 
 class CCostEngineerCntrItem;
 
-class CCostEngineerView : public CView
+class CCostEngineerView : public CBaseGridCtlView
 {
 protected: // 仅从序列化创建
 	CCostEngineerView() noexcept;
@@ -60,6 +60,7 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 };
 
 #ifndef _DEBUG  // CostEngineerView.cpp 中的调试版本

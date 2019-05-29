@@ -21,12 +21,11 @@
 
 // CCostEngineerView
 
-IMPLEMENT_DYNCREATE(CCostEngineerView, CView)
+IMPLEMENT_DYNCREATE(CCostEngineerView, CBaseGridCtlView)
 
-BEGIN_MESSAGE_MAP(CCostEngineerView, CView)
+BEGIN_MESSAGE_MAP(CCostEngineerView, CBaseGridCtlView)
 	ON_WM_DESTROY()
 	ON_WM_SETFOCUS()
-	ON_WM_SIZE()
 	ON_COMMAND(ID_OLE_INSERT_NEW, &CCostEngineerView::OnInsertObject)
 	ON_COMMAND(ID_CANCEL_EDIT_CNTR, &CCostEngineerView::OnCancelEditCntr)
 	ON_COMMAND(ID_FILE_PRINT, &CCostEngineerView::OnFilePrint)
@@ -95,7 +94,7 @@ void CCostEngineerView::OnDraw(CDC* pDC)
 
 void CCostEngineerView::OnInitialUpdate()
 {
-	CView::OnInitialUpdate();
+	CBaseGridCtlView::OnInitialUpdate();
 
 
 	// TODO: 写入最终选择模式代码之后移除此代码
@@ -241,13 +240,6 @@ void CCostEngineerView::OnSetFocus(CWnd* pOldWnd)
 	CView::OnSetFocus(pOldWnd);
 }
 
-void CCostEngineerView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-	COleClientItem* pActiveItem = GetDocument()->GetInPlaceActiveItem(this);
-	if (pActiveItem != nullptr)
-		pActiveItem->SetItemRects();
-}
 
 void CCostEngineerView::OnFilePrint()
 {
@@ -302,3 +294,9 @@ CCostEngineerDoc* CCostEngineerView::GetDocument() const // 非调试版本是�
 
 
 // CCostEngineerView 消息处理程序
+
+
+void CCostEngineerView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+}

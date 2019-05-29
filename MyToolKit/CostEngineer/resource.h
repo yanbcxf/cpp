@@ -87,6 +87,7 @@
 #define IDS_EXPLORER                    305
 #define IDS_EDIT_MENU                   306
 #define IDC_BTN_PAGE_FIRST              310
+#define IDR_POPUP_COMPONENT             310
 #define IDC_BTN_PAGEUP                  311
 #define IDC_BTN_PAGEDOWN                312
 #define IDC_BTN_PAGE_LAST               313
@@ -94,18 +95,23 @@
 #define IDC_GRID                        315
 #define IDC_STATIC_PAGE_SHOW            315
 #define IDC_STATIC_PAGE_TIP             316
+#define ID_VIEW_MENUTREE                317
 #define IDD_GRID                        334
 #define IDD_CHART                       335
 #define IDC_CHART                       1011
 #define ID_CANCEL_EDIT_CNTR             32768
+#define ID_32771                        32771
+#define ID_32772                        32772
+#define ID_CONCRETE_QUANTITY            32773
+#define ID_STEEL_QUANTITY               32774
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_RESOURCE_VALUE        311
+#define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1000
-#define _APS_NEXT_SYMED_VALUE           317
+#define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

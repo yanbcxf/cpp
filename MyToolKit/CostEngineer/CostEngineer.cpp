@@ -260,6 +260,8 @@ void CCostEngineerApp::PreLoadState()
 	bNameValid = strName.LoadString(IDS_EXPLORER);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
+
+	GetContextMenuManager()->AddMenu("Component", IDR_POPUP_COMPONENT);
 }
 
 void CCostEngineerApp::LoadCustomState()
