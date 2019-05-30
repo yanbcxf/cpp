@@ -98,6 +98,7 @@ typedef struct _item_info
 
 #include "DyncItemEditDlg.h"
 #include "DyncItemFindDlg.h"
+#include "DyncItemGroupDlg.h"
 
 //	计算任务执行模块
 #include "CalculateTask.h"

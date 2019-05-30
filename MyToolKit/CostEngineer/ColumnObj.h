@@ -8,6 +8,8 @@ public:
 
 	void Serialize(CArchive& ar);
 
+	void Create();
+
 	CString name;
 	double	height;
 	double	length;
