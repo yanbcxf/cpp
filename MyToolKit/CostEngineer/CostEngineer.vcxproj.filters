@@ -25,6 +25,9 @@
     <Filter Include="ChartCtrl">
       <UniqueIdentifier>{234e7fa4-9693-4527-9c3c-fbfb892b2722}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BusinessObject">
+      <UniqueIdentifier>{cd654b36-45e2-40a5-9e25-cdc79f904efe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CostEngineer.h">
@@ -282,6 +285,12 @@
     <ClInclude Include="MenuTreeView.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ColumnObj.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BeamObj.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -493,6 +502,12 @@
     </ClCompile>
     <ClCompile Include="MenuTreeView.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ColumnObj.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BeamObj.cpp">
+      <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

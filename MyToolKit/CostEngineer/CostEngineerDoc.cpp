@@ -68,13 +68,43 @@ BOOL CCostEngineerDoc::OnNewDocument()
 
 void CCostEngineerDoc::Serialize(CArchive& ar)
 {
+	CString str;
+	int num;
+	double db;
 	if (ar.IsStoring())
 	{
 		// TODO: 在此添加存储代码
+
+		// 梁
+		ar << beams.size();
+		for (int i = 0; i < beams.size(); i++) {
+			beams[i].Serialize(ar);
+		}
+
+		// 柱
+		ar << columns.size();
+		for (int i = 0; i < columns.size(); i++) {
+			columns[i].Serialize(ar);
+		}
 	}
 	else
 	{
 		// TODO: 在此添加加载代码
+		// 梁
+		ar >> num;
+		for (int i = 0; i < num; i++) {
+			CBeamObj b;
+			b.Serialize(ar);
+			beams.push_back(b);
+		}
+
+		// 柱
+		ar >> num;
+		for (int i = 0; i < num; i++) {
+			CColumnObj b;
+			b.Serialize(ar);
+			columns.push_back(b);
+		}
 	}
 
 	// 调用基类 COleDocument 会启用序列化

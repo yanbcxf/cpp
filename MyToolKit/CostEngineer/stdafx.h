@@ -106,6 +106,9 @@ typedef struct _item_info
 #include "BaseGridCtlView.h"
 #include "BaseChartCtlView.h"
 
+#include "ColumnObj.h"
+#include "BeamObj.h"
+
 #define WM_USER_XML		WM_USER + 1
 
 typedef struct _CostEngineerInfo {
@@ -120,6 +123,8 @@ typedef struct _CostEngineerInfo {
 	}
 }CostEngineerInfo;
 
+
+
 extern string Gbk2Utf8(string strGBK);
 extern string Utf8_GBK(string strUtf8);
 extern BOOL sendToOutput(LPCTSTR lpch, HWND hwnd, int logType = WM_USER_XML);
@@ -131,6 +136,8 @@ extern BOOL ModifyControlStyle(CWnd* pWnd, LPCTSTR lpszClassName, DWORD dwRemove
 extern double String2Double(string str);
 extern void splitString(string s, string dim, vector<string>& resultVector);
 extern int MbcsToUnicode(const char * lpMbcsStr, wchar_t * lpUnicodeStr, int nUnicodeStrLen);
+extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit);
+extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
 
 #ifdef _UNICODE
 #if defined _M_IX86

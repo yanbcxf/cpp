@@ -1,9 +1,8 @@
 ﻿
 // CostEngineerDoc.h: CCostEngineerDoc 类的接口
 //
-
-
 #pragma once
+
 
 
 class CCostEngineerDoc : public COleDocument
@@ -14,6 +13,8 @@ protected: // 仅从序列化创建
 
 // 特性
 public:
+	vector<CBeamObj>	beams;
+	vector<CColumnObj>	columns;
 
 // 操作
 public:

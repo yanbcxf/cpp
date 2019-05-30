@@ -100,7 +100,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>expat.lib;libiconv-1.14.lib;mxml1.lib</AdditionalDependencies>
+      <AdditionalDependencies>expat.lib;libiconv-1.14.lib;mxml1.lib;pcre2-8.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -189,6 +189,7 @@
     <ClInclude Include="BaseMessageView.h" />
     <ClInclude Include="BasicExcel.hpp" />
     <ClInclude Include="BCMenu.h" />
+    <ClInclude Include="BeamObj.h" />
     <ClInclude Include="BtnST.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
@@ -228,6 +229,7 @@
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="CntrItem.h" />
+    <ClInclude Include="ColumnObj.h" />
     <ClInclude Include="CostEngineer.h" />
     <ClInclude Include="CostEngineerDoc.h" />
     <ClInclude Include="CostEngineerView.h" />
@@ -278,6 +280,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BCMenu.cpp" />
+    <ClCompile Include="BeamObj.cpp" />
     <ClCompile Include="BtnST.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />
@@ -308,6 +311,7 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="CntrItem.cpp" />
+    <ClCompile Include="ColumnObj.cpp" />
     <ClCompile Include="CostEngineer.cpp" />
     <ClCompile Include="CostEngineerDoc.cpp" />
     <ClCompile Include="CostEngineerView.cpp" />
