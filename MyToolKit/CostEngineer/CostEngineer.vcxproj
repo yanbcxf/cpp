@@ -256,6 +256,7 @@
     <ClInclude Include="MessageString\jmutexautolock.h" />
     <ClInclude Include="MessageString\MessageString.h" />
     <ClInclude Include="MessageString\MessageStringManager.h" />
+    <ClInclude Include="NewCellTypes\GridCellButton.h" />
     <ClInclude Include="NewCellTypes\GridCellCheck.h" />
     <ClInclude Include="NewCellTypes\GridCellCombo.h" />
     <ClInclude Include="NewCellTypes\GridCellComposite.h" />
@@ -336,6 +337,7 @@
     </ClCompile>
     <ClCompile Include="MessageString\MessageString.cpp" />
     <ClCompile Include="MessageString\MessageStringManager.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellButton.cpp" />
     <ClCompile Include="NewCellTypes\GridCellCheck.cpp" />
     <ClCompile Include="NewCellTypes\GridCellCombo.cpp" />
     <ClCompile Include="NewCellTypes\GridCellComposite.cpp" />

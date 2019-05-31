@@ -77,18 +77,24 @@ void CCostEngineerView::OnDraw(CDC* pDC)
 	//  从而产生就地编辑的效果。
 
 	// TODO: 最终绘制代码完成后移除此代码。
-	if (m_pSelection != nullptr)
-	{
-		CSize size;
-		CRect rect(10, 10, 210, 210);
+	
 
-		if (m_pSelection->GetExtent(&size, m_pSelection->m_nDrawAspect))
-		{
-			pDC->HIMETRICtoLP(&size);
-			rect.right = size.cx + 10;
-			rect.bottom = size.cy + 10;
-		}
-		m_pSelection->Draw(pDC, rect);
+	if(CColumnObj::Draw(m_strMenuCode, m_pGridCtrl, pDoc->columns)) 
+		return;
+
+	try {
+		m_pGridCtrl->SetRowCount(1);
+		m_pGridCtrl->SetColumnCount(5 + 3);		
+		m_pGridCtrl->SetFixedRowCount(1);
+		m_pGridCtrl->SetFixedColumnCount(1);
+		m_pGridCtrl->SetHeaderSort(TRUE);
+		m_pGridCtrl->DeleteRow(0);
+	}
+	catch (CMemoryException* e)
+	{
+		e->ReportError();
+		e->Delete();
+		return ;
 	}
 }
 
@@ -299,4 +305,22 @@ CCostEngineerDoc* CCostEngineerView::GetDocument() const // 非调试版本是�
 void CCostEngineerView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
 {
 	// TODO: 在此添加专用代码和/或调用基类
+}
+
+
+void CCostEngineerView::PostGridClick(int nRow, int nCol) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	if (nCol == 6) {
+		if (CColumnObj::Update(m_strMenuCode, nRow, pDoc->columns)) {
+			pDoc->SetModifiedFlag();
+			Invalidate();
+		}
+	}
+	if (nCol == 7) {
+
+	}
 }

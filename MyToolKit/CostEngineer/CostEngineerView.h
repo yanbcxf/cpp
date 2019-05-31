@@ -24,6 +24,8 @@ public:
 	// TODO: 用适合应用程序的选择机制替换此选择机制
 	CCostEngineerCntrItem* m_pSelection;
 
+	string m_strMenuCode;
+
 // 操作
 public:
 
@@ -61,6 +63,8 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+
+	virtual void PostGridClick(int nRow, int nCol);
 };
 
 #ifndef _DEBUG  // CostEngineerView.cpp 中的调试版本

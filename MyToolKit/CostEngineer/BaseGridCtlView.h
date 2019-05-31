@@ -9,6 +9,7 @@
 #include "./NewCellTypes/GridCellCheck.h"
 #include "./NewCellTypes/GridCellNumeric.h"
 #include "./NewCellTypes/GridCellDateTime.h"
+#include "./NewCellTypes/GridCellButton.h"
 
 
 // CBaseGridCtlView йсм╪
@@ -81,10 +82,15 @@ protected:
 	virtual void ProcessXmlWParam(string msgType,string code,string model, string param1,string param2,string param3);
 
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+	afx_msg void OnGridClick(NMHDR *pNMHDR, LRESULT *pResult);
 
 	virtual void PostGridDblClick(int nRow)
 	{
 		
+	}
+
+	virtual void PostGridClick(int nRow, int nCol) {
+
 	}
 
 	static int CALLBACK pfnCellCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);

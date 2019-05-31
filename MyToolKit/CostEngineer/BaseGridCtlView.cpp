@@ -78,6 +78,7 @@ BEGIN_MESSAGE_MAP(CBaseGridCtlView, CBaseMessageView)
 	ON_BN_CLICKED(IDC_BTN_PAGE_LAST, OnBtnLast)
 	ON_BN_CLICKED(IDC_BTN_SAVE_AS_EXCEL, OnBtnSaveAsExcel)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRID, OnGridDblClick)
+	ON_NOTIFY(NM_CLICK, IDC_GRID, OnGridClick)
 END_MESSAGE_MAP()
 
 
@@ -719,11 +720,21 @@ void CBaseGridCtlView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/
 		PostGridDblClick(pItem->iRow);
 }
 
+//这是当CTREECTRL控件点击时NM_CLICK的处理函数
+void CBaseGridCtlView::OnGridClick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNMHDR;
+	//Trace(_T("Double Clicked on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
 
+	CString str;
+	str.Format(_T("Context menu called on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
 
+	// TODO:  在此添加控件通知处理程序代码
+	if (pItem->iRow > 0 && pItem->iColumn > 0)
+		PostGridClick(pItem->iRow, pItem->iColumn);
 
-
-
+	*pResult = 0;
+}
 
 
 void CBaseGridCtlView::OnBtnSaveAsExcel() // 表格内容保存为 excel 

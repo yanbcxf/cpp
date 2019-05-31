@@ -45,6 +45,8 @@
 #include <sstream>
 using namespace std;
 
+#include "Resource.h"
+
 #include "jmutex.h"
 #include "jmutexautolock.h"
 

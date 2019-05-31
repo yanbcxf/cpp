@@ -291,6 +291,9 @@
     <ClInclude Include="BeamObj.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellButton.h">
+      <Filter>GridCtrl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -508,6 +511,9 @@
     </ClCompile>
     <ClCompile Include="BeamObj.cpp">
       <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellButton.cpp">
+      <Filter>GridCtrl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
