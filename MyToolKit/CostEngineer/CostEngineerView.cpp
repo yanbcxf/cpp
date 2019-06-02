@@ -21,9 +21,9 @@
 
 // CCostEngineerView
 
-IMPLEMENT_DYNCREATE(CCostEngineerView, CBaseGridCtlView)
+IMPLEMENT_DYNCREATE(CCostEngineerView, CBaseMessageFormView)
 
-BEGIN_MESSAGE_MAP(CCostEngineerView, CBaseGridCtlView)
+BEGIN_MESSAGE_MAP(CCostEngineerView, CBaseMessageFormView)
 	ON_WM_DESTROY()
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_OLE_INSERT_NEW, &CCostEngineerView::OnInsertObject)
@@ -56,51 +56,11 @@ BOOL CCostEngineerView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
-// CCostEngineerView 绘图
 
-void CCostEngineerView::OnDraw(CDC* pDC)
-{
-	if (!pDC)
-		return;
-
-	CCostEngineerDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	// TODO: 在此处为本机数据添加绘制代码
-	// TODO: 同时绘制文档中的所有 OLE 项
-
-	// 在任意位置绘制选定项。  一旦
-	//  实现了真正的绘制代码后，应移除此代码。  此位置
-	//  与 CCostEngineerCntrItem 返回的矩形完全对应，
-	//  从而产生就地编辑的效果。
-
-	// TODO: 最终绘制代码完成后移除此代码。
-	
-
-	if(CColumnObj::Draw(m_strMenuCode, m_pGridCtrl, pDoc->columns)) 
-		return;
-
-	try {
-		m_pGridCtrl->SetRowCount(1);
-		m_pGridCtrl->SetColumnCount(5 + 3);		
-		m_pGridCtrl->SetFixedRowCount(1);
-		m_pGridCtrl->SetFixedColumnCount(1);
-		m_pGridCtrl->SetHeaderSort(TRUE);
-		m_pGridCtrl->DeleteRow(0);
-	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return ;
-	}
-}
 
 void CCostEngineerView::OnInitialUpdate()
 {
-	CBaseGridCtlView::OnInitialUpdate();
+	CBaseMessageFormView::OnInitialUpdate();
 
 
 	// TODO: 写入最终选择模式代码之后移除此代码
@@ -148,7 +108,29 @@ void CCostEngineerView::OnDestroy()
    CView::OnDestroy();
 }
 
+// CCostEngineerView 绘图
 
+void CCostEngineerView::OnDraw(CDC* pDC)
+{
+	if (!pDC)
+		return;
+
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// TODO: 在此处为本机数据添加绘制代码
+	// TODO: 同时绘制文档中的所有 OLE 项
+
+	// 在任意位置绘制选定项。  一旦
+	//  实现了真正的绘制代码后，应移除此代码。  此位置
+	//  与 CCostEngineerCntrItem 返回的矩形完全对应，
+	//  从而产生就地编辑的效果。
+
+	// TODO: 最终绘制代码完成后移除此代码。
+
+}
 
 // OLE 客户端支持和命令
 
@@ -308,19 +290,133 @@ void CCostEngineerView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* 
 }
 
 
-void CCostEngineerView::PostGridClick(int nRow, int nCol) {
+void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 	CCostEngineerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	if (nCol == 6) {
-		if (CColumnObj::Update(m_strMenuCode, nRow, pDoc->columns)) {
-			pDoc->SetModifiedFlag();
-			Invalidate();
+	bool bRedraw = false;
+
+	if (gridId == 0 && m_nChildrenCode != nRow - 1) {
+		m_nChildrenCode = nRow - 1;
+		bRedraw = true;
+	}
+		
+	CString source ;
+	if (gridId == 0) {
+		source = m_Grid.GetItemText(nRow, nCol);
+	}
+	if (gridId == 1) {
+		source = m_Grid1.GetItemText(nRow, nCol);
+	}
+
+	if (source == "修改（update）") {
+		if (gridId == 0) {
+			/* 主表格 */
+			if (CColumnObj::Update(m_strMenuCode, nRow, pDoc->columns)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CBeamObj::Update(m_strMenuCode, nRow, pDoc->beams)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+		else {
+			/* 子表格 */
+			if (CBeamSpan::Update(m_strMenuCode, nRow, pDoc->beams[m_nChildrenCode].m_spans)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+		
+	}
+	if (source == "删除（delete）") {
+		int nRes = AfxMessageBox(_T("确定删除吗？"), MB_OKCANCEL | MB_ICONQUESTION);
+		if (nRes == IDOK) {
+			if (gridId == 0) {
+				/* 主表格 */
+				if (CColumnObj::Delete(m_strMenuCode, nRow, pDoc->columns)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CBeamObj::Delete(m_strMenuCode, nRow, pDoc->beams)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			else {
+				/* 子表格 */
+				if (CBeamSpan::Delete(m_strMenuCode, nRow, pDoc->beams[m_nChildrenCode].m_spans)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
 		}
 	}
-	if (nCol == 7) {
+	if (source == "增加（create）") {
+		if (gridId == 0) {
+			/* 主表格 */
+			CBeamSpan c;
+			if (c.CreateOrUpdate(m_strMenuCode)) {
+				pDoc->beams[m_nChildrenCode].m_spans.push_back(c);
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+	}
 
+	if (bRedraw) 
+		RedrawView();;
+}
+
+
+
+
+void CCostEngineerView::RedrawView() {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	if (CColumnObj::Draw(m_strMenuCode, &m_Grid, pDoc->columns)) {
+		m_Grid1.SetRowCount(0);
+		return;
+	}
+
+	if (CBeamObj::Draw(m_strMenuCode, &m_Grid, pDoc->beams)) {
+		if (m_nChildrenCode < pDoc->beams.size()) {
+			CBeamSpan::Draw(&m_Grid1, pDoc->beams[m_nChildrenCode].m_spans);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		return;
+	}
+
+
+	try {
+		/* 主表格清空 */
+		m_Grid.SetRowCount(1);
+		m_Grid.SetColumnCount(5 + 3);
+		m_Grid.SetFixedRowCount(1);
+		m_Grid.SetFixedColumnCount(1);
+		m_Grid.SetHeaderSort(TRUE);
+		m_Grid.DeleteRow(0);
+
+		/* 子表格清空 */
+		m_Grid1.SetRowCount(1);
+		m_Grid1.SetColumnCount(5 + 3);
+		m_Grid1.SetFixedRowCount(1);
+		m_Grid1.SetFixedColumnCount(1);
+		m_Grid1.SetHeaderSort(TRUE);
+		m_Grid1.DeleteRow(0);
+	}
+	catch (CMemoryException* e)
+	{
+		e->ReportError();
+		e->Delete();
+		return;
 	}
 }

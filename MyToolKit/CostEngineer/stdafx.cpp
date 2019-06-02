@@ -781,3 +781,24 @@ int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit)
 
 	return vecSplit.size();
 }
+
+bool parseSteelMarking(string marking, int& quantity, int & diameter, double& weight) {
+
+	vector<string>  match;
+	if (Pcre2Split(_T("[ABCDEabcde]+"), marking.c_str(), match) > 0)
+	{
+		if (match.size() == 2) {
+			quantity = atoi(match[0].c_str());
+			int d = atoi(match[1].c_str());
+			if (d == 8)  weight = 0.395;
+			if (d == 10) weight = 0.619;
+			if (d == 12) weight = 0.888;
+			if (d == 20) weight = 2.466;
+			if (d == 22) weight = 2.984;
+			if (d == 25) weight = 3.850;
+			diameter = d;
+			return true;
+		}
+	}
+	return false;
+}

@@ -98,6 +98,7 @@ typedef struct _item_info
 	}
 }item_info;
 
+
 #include "DyncItemEditDlg.h"
 #include "DyncItemFindDlg.h"
 #include "DyncItemGroupDlg.h"
@@ -108,6 +109,7 @@ typedef struct _item_info
 #include "BaseMessageControl.h"
 #include "BaseGridCtlView.h"
 #include "BaseChartCtlView.h"
+#include "BaseMessageFormView.h"
 
 #include "ColumnObj.h"
 #include "BeamObj.h"
@@ -141,6 +143,7 @@ extern void splitString(string s, string dim, vector<string>& resultVector);
 extern int MbcsToUnicode(const char * lpMbcsStr, wchar_t * lpUnicodeStr, int nUnicodeStrLen);
 extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit);
 extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
+extern bool parseSteelMarking(string marking, int& quantity, int & diameter, double& weight);
 
 #ifdef _UNICODE
 #if defined _M_IX86

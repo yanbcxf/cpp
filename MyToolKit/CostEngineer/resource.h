@@ -98,6 +98,8 @@
 #define ID_VIEW_MENUTREE                317
 #define IDD_GRID                        334
 #define IDD_CHART                       335
+#define IDD_BASEMESSAGEFORMVIEW         373
+#define IDC_GRID1                       1010
 #define IDC_CHART                       1011
 #define ID_CANCEL_EDIT_CNTR             32768
 #define ID_32771                        32771
@@ -111,7 +113,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        311
+#define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32777
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           318

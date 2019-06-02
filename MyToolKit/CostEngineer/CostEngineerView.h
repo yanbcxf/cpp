@@ -6,7 +6,7 @@
 
 class CCostEngineerCntrItem;
 
-class CCostEngineerView : public CBaseGridCtlView
+class CCostEngineerView : public CBaseMessageFormView
 {
 protected: // 仅从序列化创建
 	CCostEngineerView() noexcept;
@@ -24,7 +24,8 @@ public:
 	// TODO: 用适合应用程序的选择机制替换此选择机制
 	CCostEngineerCntrItem* m_pSelection;
 
-	string m_strMenuCode;
+	string	m_strMenuCode;
+	int		m_nChildrenCode;
 
 // 操作
 public:
@@ -43,6 +44,7 @@ protected:
 // 实现
 public:
 	virtual ~CCostEngineerView();
+	void RedrawView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -64,7 +66,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 
-	virtual void PostGridClick(int nRow, int nCol);
+	virtual void PostGridClick(int gridId, int nRow, int nCol);
 };
 
 #ifndef _DEBUG  // CostEngineerView.cpp 中的调试版本

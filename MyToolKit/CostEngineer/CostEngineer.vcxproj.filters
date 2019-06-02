@@ -294,6 +294,9 @@
     <ClInclude Include="NewCellTypes\GridCellButton.h">
       <Filter>GridCtrl</Filter>
     </ClInclude>
+    <ClInclude Include="BaseMessageFormView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -514,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="NewCellTypes\GridCellButton.cpp">
       <Filter>GridCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMessageFormView.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
