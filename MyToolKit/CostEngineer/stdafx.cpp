@@ -782,23 +782,84 @@ int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit)
 	return vecSplit.size();
 }
 
-bool parseSteelMarking(string marking, int& quantity, int & diameter, double& weight) {
+// 6C12 2/4
+bool parseSteelMarking(string marking, int* _quantity, int* _diameter, double* _weight, int* _first, int* _second) {
+	int quantity = 0;
+	int diameter = 0;
+	double weight = 0;
+	int first = 0;
+	int second = 0;
+	bool result = false;
 
-	vector<string>  match;
-	if (Pcre2Split(_T("[ABCDEabcde]+"), marking.c_str(), match) > 0)
-	{
-		if (match.size() == 2) {
-			quantity = atoi(match[0].c_str());
-			int d = atoi(match[1].c_str());
-			if (d == 8)  weight = 0.395;
-			if (d == 10) weight = 0.619;
-			if (d == 12) weight = 0.888;
-			if (d == 20) weight = 2.466;
-			if (d == 22) weight = 2.984;
-			if (d == 25) weight = 3.850;
-			diameter = d;
-			return true;
+	do {
+		vector<string>  match1;
+		if (Pcre2Split(_T("[\\s\\t]+"), marking.c_str(), match1) > 0) {
+			if (match1.size() > 0) {
+				vector<string>  match;
+				if (Pcre2Split(_T("[ABCDEabcde]+"), match1[0].c_str(), match) > 0)
+				{
+					if (match.size() == 2) {
+						quantity = atoi(match[0].c_str());
+						int d = atoi(match[1].c_str());
+						if (d == 8)  weight = 0.395;
+						if (d == 10) weight = 0.619;
+						if (d == 12) weight = 0.888;
+						if (d == 20) weight = 2.466;
+						if (d == 22) weight = 2.984;
+						if (d == 25) weight = 3.850;
+						diameter = d;
+					}
+				}
+			}
+
+			if (match1.size() > 1) {
+				vector<string>  match;
+				if (Pcre2Split(_T("[/]+"), match1[1].c_str(), match) > 0)
+				{
+					if (match.size() == 2) {
+						first = atoi(match[0].c_str());
+						second = atoi(match[1].c_str());
+					}
+				}
+
+				if (quantity > 0 && diameter > 0 && quantity == first + second) {
+					result = true;
+					break;;
+				}
+			}
+			else {
+				if (quantity > 0 && diameter > 0) {
+					result = true;
+					break;
+				}
+			}
 		}
-	}
-	return false;
+		else {
+			vector<string>  match;
+			if (Pcre2Split(_T("[ABCDEabcde]+"), marking.c_str(), match) > 0)
+			{
+				if (match.size() == 2) {
+					quantity = atoi(match[0].c_str());
+					int d = atoi(match[1].c_str());
+					if (d == 8)  weight = 0.395;
+					if (d == 10) weight = 0.619;
+					if (d == 12) weight = 0.888;
+					if (d == 20) weight = 2.466;
+					if (d == 22) weight = 2.984;
+					if (d == 25) weight = 3.850;
+					diameter = d;
+
+					result = true;
+					break;
+				}
+			}
+		}
+	} while (0);
+	
+	if (_quantity) *_quantity = quantity;
+	if (_diameter) *_diameter = diameter;
+	if (_weight) *_weight = weight;
+	if (_first) *_first = first;
+	if (_second) *_second = second;
+	return result;
 }

@@ -248,9 +248,9 @@ void CColumnObj::SteelQuantity(string menuCode, vector<CColumnObj>& cols) {
 
 	for (int i = 0; i < cols.size(); i++)
 	{
-		int quantity, diameter;
+		int quantity, diameter, first, second;
 		double weight;
-		parseSteelMarking(cols[i].m_steel_vertical.GetBuffer(), quantity, diameter, weight);
+		parseSteelMarking(cols[i].m_steel_vertical.GetBuffer(), &quantity, &diameter, &weight, &first, &second);
 		string str = cols[i].m_name.GetBuffer();
 		vector<string> vec;
 		vec.push_back(str);

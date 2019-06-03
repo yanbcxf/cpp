@@ -143,7 +143,7 @@ extern void splitString(string s, string dim, vector<string>& resultVector);
 extern int MbcsToUnicode(const char * lpMbcsStr, wchar_t * lpUnicodeStr, int nUnicodeStrLen);
 extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit);
 extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
-extern bool parseSteelMarking(string marking, int& quantity, int & diameter, double& weight);
+extern bool parseSteelMarking(string marking, int* quantity =NULL, int* diameter = NULL, double* weight = NULL, int* first = NULL, int* second = NULL);
 
 #ifdef _UNICODE
 #if defined _M_IX86
