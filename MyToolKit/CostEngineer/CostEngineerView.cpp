@@ -322,10 +322,19 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CSimilarEngineerBudget::Update(m_strMenuCode, nRow, pDoc->similarEngineerBudgets)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
 			if (CBeamSpan::Update(m_strMenuCode, nRow, pDoc->beams[m_nChildrenCode].m_spans)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CSimilarEngineerBudgetObj::Update(m_strMenuCode, nRow, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -345,10 +354,19 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CSimilarEngineerBudget::Delete(m_strMenuCode, nRow, pDoc->similarEngineerBudgets)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
 				if (CBeamSpan::Delete(m_strMenuCode, nRow, pDoc->beams[m_nChildrenCode].m_spans)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+
+				if (CSimilarEngineerBudgetObj::Delete(m_strMenuCode, nRow, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -358,12 +376,24 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 	if (source == "增加（create）") {
 		if (gridId == 0) {
 			/* 主表格 */
-			CBeamSpan c;
-			if (c.CreateOrUpdate(m_strMenuCode)) {
-				pDoc->beams[m_nChildrenCode].m_spans.push_back(c);
-				pDoc->SetModifiedFlag();
-				bRedraw = true;
+			{
+				CBeamSpan c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->beams[m_nChildrenCode].m_spans.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
+			
+			{
+				CSimilarEngineerBudgetObj c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			
 		}
 	}
 
@@ -395,6 +425,15 @@ void CCostEngineerView::RedrawView() {
 		return;
 	}
 
+	if (CSimilarEngineerBudget::Draw(m_strMenuCode, &m_Grid, pDoc->similarEngineerBudgets)) {
+		if (m_nChildrenCode < pDoc->similarEngineerBudgets.size()) {
+			CSimilarEngineerBudgetObj::Draw(&m_Grid1, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		return;
+	}
 
 	try {
 		/* 主表格清空 */

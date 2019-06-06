@@ -23,7 +23,7 @@
     <ProjectGuid>{D6C129E5-9141-4297-B613-E04AF6280AA2}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>CostEngineer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -192,6 +192,7 @@
     <ClInclude Include="BCMenu.h" />
     <ClInclude Include="BeamObj.h" />
     <ClInclude Include="BtnST.h" />
+    <ClInclude Include="BudgetIndex.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
     <ClInclude Include="ChartBarDlg.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SimilarEngineerBudget.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ViewTree.h" />
@@ -285,6 +287,7 @@
     <ClCompile Include="BCMenu.cpp" />
     <ClCompile Include="BeamObj.cpp" />
     <ClCompile Include="BtnST.cpp" />
+    <ClCompile Include="BudgetIndex.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />
     <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
@@ -349,6 +352,7 @@
     <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="SimilarEngineerBudget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

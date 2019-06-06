@@ -76,34 +76,61 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 		// TODO: 在此添加存储代码
 
 		// 梁
+		ar << CString(CBeamObj::m_ObjectCode.c_str());
+		ar << CBeamObj::m_ObjectVersion;
 		ar << beams.size();
 		for (int i = 0; i < beams.size(); i++) {
-			beams[i].Serialize(ar);
+			beams[i].Serialize(ar, CBeamObj::m_ObjectVersion);
 		}
 
 		// 柱
+		ar << CString(CColumnObj::m_ObjectCode.c_str());
+		ar << CColumnObj::m_ObjectVersion;
 		ar << columns.size();
 		for (int i = 0; i < columns.size(); i++) {
-			columns[i].Serialize(ar);
+			columns[i].Serialize(ar, CColumnObj::m_ObjectVersion);
 		}
+
+		// 类似工程预算法
+		ar << CString(CSimilarEngineerBudget::m_ObjectCode.c_str());
+		ar << CSimilarEngineerBudget::m_ObjectVersion;
+		ar << similarEngineerBudgets.size();
+		for (int i = 0; i < similarEngineerBudgets.size(); i++) {
+			similarEngineerBudgets[i].Serialize(ar, CSimilarEngineerBudget::m_ObjectVersion);
+		}
+
+		// 文件结束标志
+		ar << CString("eof");
 	}
 	else
 	{
 		// TODO: 在此添加加载代码
-		// 梁
-		ar >> num;
-		for (int i = 0; i < num; i++) {
-			CBeamObj b;
-			b.Serialize(ar);
-			beams.push_back(b);
-		}
 
-		// 柱
-		ar >> num;
-		for (int i = 0; i < num; i++) {
-			CColumnObj b;
-			b.Serialize(ar);
-			columns.push_back(b);
+		while (true) {
+			ar >> str;
+			if (str == "eof") break;
+			ar >> db;
+			ar >> num;
+			for (int i = 0; i < num; i++) {
+				// 梁
+				if (str == CBeamObj::m_ObjectCode.c_str()) {
+					CBeamObj b;
+					b.Serialize(ar, db);
+					beams.push_back(b);
+				}
+				// 柱
+				if (str == CColumnObj::m_ObjectCode.c_str()) {
+					CColumnObj b;
+					b.Serialize(ar, db);
+					columns.push_back(b);
+				}
+				// 类似工程预算法
+				if (str == CSimilarEngineerBudget::m_ObjectCode.c_str()) {
+					CSimilarEngineerBudget b;
+					b.Serialize(ar, db);
+					similarEngineerBudgets.push_back(b);
+				}
+			}
 		}
 	}
 

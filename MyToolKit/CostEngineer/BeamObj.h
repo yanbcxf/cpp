@@ -8,7 +8,7 @@ public:
 
 	~CBeamSpan();
 
-	void Serialize(CArchive& ar);
+	void Serialize(CArchive& ar, double version);
 
 	bool CreateOrUpdate(string menuCode);
 
@@ -39,7 +39,7 @@ public:
 
 	~CBeamObj();
 
-	void Serialize(CArchive& ar);
+	void Serialize(CArchive& ar, double version);
 
 	bool CreateOrUpdate(string strMenuCode);
 	void SteelQuantityOfBeamSpan(int spanId, vector<vector<string>>& vecData);
@@ -53,6 +53,7 @@ public:
 	static void SteelQuantity(string menuCode, vector<CBeamObj>& cols);
 
 	static string m_ObjectCode;
+	static double m_ObjectVersion;
 
 	CString m_name;
 	double	m_height;

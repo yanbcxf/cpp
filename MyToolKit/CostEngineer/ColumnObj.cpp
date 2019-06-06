@@ -4,6 +4,7 @@
 
 /* ¾ØÐÎÖù */
 string CColumnObj::m_ObjectCode = "01030103";
+double CColumnObj::m_ObjectVersion = 1.0;
 
 CColumnObj::CColumnObj()
 {
@@ -20,7 +21,7 @@ CColumnObj::~CColumnObj()
 {
 }
 
-void CColumnObj::Serialize(CArchive& ar) {
+void CColumnObj::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_breadth;
 		ar << m_height;

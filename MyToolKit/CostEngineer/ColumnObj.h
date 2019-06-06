@@ -6,7 +6,7 @@ public:
 
 	~CColumnObj();
 
-	void Serialize(CArchive& ar);
+	void Serialize(CArchive& ar, double version);
 
 	bool CreateOrUpdate(string strMenuCode);
 
@@ -19,6 +19,7 @@ public:
 	static void SteelQuantity(string menuCode, vector<CColumnObj>& cols);
 
 	static string m_ObjectCode;
+	static double m_ObjectVersion;
 
 	CString m_name;
 	double	m_height;

@@ -23,7 +23,7 @@ CBeamSpan::~CBeamSpan()
 
 
 
-void CBeamSpan::Serialize(CArchive& ar) {
+void CBeamSpan::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_breadth;
 		ar << m_height;
@@ -264,6 +264,7 @@ bool CBeamSpan::Delete(string menuCode, int nRow, vector<CBeamSpan>& cols) {
 
 /* ¾ØÐÎÁº */
 string CBeamObj::m_ObjectCode = "01030104";
+double CBeamObj::m_ObjectVersion = 1.0;
 
 CBeamObj::CBeamObj()
 {
@@ -281,7 +282,7 @@ CBeamObj::~CBeamObj()
 
 
 
-void CBeamObj::Serialize(CArchive& ar) {
+void CBeamObj::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_breadth;
 		ar << m_height;
@@ -292,7 +293,7 @@ void CBeamObj::Serialize(CArchive& ar) {
 		ar << m_steel_hooping;
 		ar << m_spans.size();
 		for (int i = 0; i < m_spans.size(); i++) {
-			m_spans[i].Serialize(ar);
+			m_spans[i].Serialize(ar, version);
 		}
 	}
 	else {
@@ -307,7 +308,7 @@ void CBeamObj::Serialize(CArchive& ar) {
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
 			CBeamSpan bs;
-			bs.Serialize(ar);
+			bs.Serialize(ar, version);
 			m_spans.push_back(bs);
 		}
 	}

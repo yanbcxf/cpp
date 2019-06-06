@@ -15,6 +15,7 @@ protected: // 仅从序列化创建
 public:
 	vector<CBeamObj>	beams;
 	vector<CColumnObj>	columns;
+	vector<CSimilarEngineerBudget> similarEngineerBudgets;
 
 // 操作
 public:
