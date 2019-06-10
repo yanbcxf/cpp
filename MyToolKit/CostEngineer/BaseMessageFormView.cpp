@@ -86,10 +86,12 @@ void CBaseMessageFormView::ReLayout()
 		GetClientRect(&rect);
 		rect.bottom = rect.top + (rect.bottom - rect.top) * 3 / 5 - 2;
 		m_Grid.MoveWindow(rect);
+		m_Grid.SetEditable(FALSE);
 
 		GetClientRect(&rect);
 		rect.top = rect.bottom - (rect.bottom - rect.top) * 2 / 5 + 2;
 		m_Grid1.MoveWindow(rect);
+		m_Grid1.SetEditable(FALSE);
 	}
 }
 

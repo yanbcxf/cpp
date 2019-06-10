@@ -46,9 +46,9 @@ public:
 	static double m_ObjectVersion;
 
 	CString m_name;			//	
-	double  m_original_unilateral_cost;		//	原工程单方造价
-	double	m_quantity;		// 现工程工程量		
+	double  m_other_material_cost_percent;		//	其它材料费占主材料费的比例
+	double	m_machine_tool_cost_percent;		//	施工机具使用费占人材机之和的比例		
 
-	vector<CBudgetIndexObj>	m_percents;	//	类似工程各费用的比例 及现工程与类似工程的差异系数
+	vector<CBudgetIndexObj>	m_materials;	//	各种耗材,人工等
 };
 

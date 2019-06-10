@@ -326,6 +326,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CBudgetIndex::Update(m_strMenuCode, nRow, pDoc->budgetIndexs)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CBuildingBudget::Update(m_strMenuCode, nRow, pDoc->buildingBudgets)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -335,6 +343,16 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 
 			if (CSimilarEngineerBudgetObj::Update(m_strMenuCode, nRow, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CBudgetIndexObj::Update(m_strMenuCode, nRow, pDoc->budgetIndexs[m_nChildrenCode].m_materials)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CBuildingBudgetObj::Update(m_strMenuCode, nRow, pDoc->buildingBudgets[m_nChildrenCode].m_materials)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -358,6 +376,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CBudgetIndex::Delete(m_strMenuCode, nRow, pDoc->budgetIndexs)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CBuildingBudget::Delete(m_strMenuCode, nRow, pDoc->buildingBudgets)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -367,6 +393,16 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 
 				if (CSimilarEngineerBudgetObj::Delete(m_strMenuCode, nRow, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+
+				if (CBudgetIndexObj::Delete(m_strMenuCode, nRow, pDoc->budgetIndexs[m_nChildrenCode].m_materials)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+
+				if (CBuildingBudgetObj::Delete(m_strMenuCode, nRow, pDoc->buildingBudgets[m_nChildrenCode].m_materials)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -389,6 +425,24 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				CSimilarEngineerBudgetObj c;
 				if (c.CreateOrUpdate(m_strMenuCode)) {
 					pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+
+			{
+				CBudgetIndexObj c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->budgetIndexs[m_nChildrenCode].m_materials.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+
+			{
+				CBuildingBudgetObj c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->buildingBudgets[m_nChildrenCode].m_materials.push_back(c);
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -428,6 +482,26 @@ void CCostEngineerView::RedrawView() {
 	if (CSimilarEngineerBudget::Draw(m_strMenuCode, &m_Grid, pDoc->similarEngineerBudgets)) {
 		if (m_nChildrenCode < pDoc->similarEngineerBudgets.size()) {
 			CSimilarEngineerBudgetObj::Draw(&m_Grid1, pDoc->similarEngineerBudgets[m_nChildrenCode].m_percents);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		return;
+	}
+
+	if (CBudgetIndex::Draw(m_strMenuCode, &m_Grid, pDoc->budgetIndexs)) {
+		if (m_nChildrenCode < pDoc->budgetIndexs.size()) {
+			CBudgetIndexObj::Draw(&m_Grid1, pDoc->budgetIndexs[m_nChildrenCode].m_materials);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		return;
+	}
+
+	if (CBuildingBudget::Draw(m_strMenuCode, &m_Grid, pDoc->buildingBudgets)) {
+		if (m_nChildrenCode < pDoc->buildingBudgets.size()) {
+			CBuildingBudgetObj::Draw(&m_Grid1, pDoc->buildingBudgets[m_nChildrenCode].m_materials);
 		}
 		else {
 			m_Grid1.SetRowCount(0);

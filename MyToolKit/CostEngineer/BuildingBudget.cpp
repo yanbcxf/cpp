@@ -1,40 +1,43 @@
 #include "stdafx.h"
-#include "BudgetIndex.h"
+#include "BuildingBudget.h"
 #include "GridDlg.h"
 
 
-CBudgetIndexObj::CBudgetIndexObj()
+CBuildingBudgetObj::CBuildingBudgetObj()
 {
 	m_unit_price = 0;
 	m_quantity = 0;
 	m_name = "";
+	m_unit = "";
 }
 
 
-CBudgetIndexObj::~CBudgetIndexObj()
+CBuildingBudgetObj::~CBuildingBudgetObj()
 {
 }
 
 
 
-void CBudgetIndexObj::Serialize(CArchive& ar, double version) {
+void CBuildingBudgetObj::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_unit_price;
 		ar << m_quantity;
 		ar << m_name;
+		ar << m_unit;
 	}
 	else {
 		ar >> m_unit_price;
 		ar >> m_quantity;
 		ar >> m_name;
+		ar >> m_unit;
 	}
 }
 
 
 
 
-bool CBudgetIndexObj::CreateOrUpdate(string menuCode) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+bool CBuildingBudgetObj::CreateOrUpdate(string menuCode) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	CDyncItemGroupDlg infd;
@@ -46,6 +49,11 @@ bool CBudgetIndexObj::CreateOrUpdate(string menuCode) {
 	if (!m_name.IsEmpty())
 		infd.m_vecFindItem[0][i][0].strItem = m_name;
 
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("单位"), 64);
+	if (!m_unit.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_unit;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
@@ -63,11 +71,12 @@ bool CBudgetIndexObj::CreateOrUpdate(string menuCode) {
 	infd.m_vecFindItem[0][i][0].dbMin = 0;
 	infd.m_vecFindItem[0][i][0].dbMax = 10000;
 
-
+	
 	infd.Init(_T("材料消耗 参数设置"), _T("材料消耗 参数设置"));
 	if (infd.DoModal() == IDOK) {
 		i = 0;
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
+		m_unit = infd.m_vecFindItem[0][i++][0].strItem;
 		m_quantity = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		m_unit_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		
@@ -76,17 +85,18 @@ bool CBudgetIndexObj::CreateOrUpdate(string menuCode) {
 	return false;
 }
 
-bool CBudgetIndexObj::Draw(CGridCtrl* pGridCtrl, vector<CBudgetIndexObj>& cols) {
+bool CBuildingBudgetObj::Draw(CGridCtrl* pGridCtrl, vector<CBuildingBudgetObj>& cols) {
 	if (!pGridCtrl)
 		return false;
 
 
 	try {
 		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(3 + 3);		//	额外增加三列 ： 序号/修改/删除
+		pGridCtrl->SetColumnCount(4 + 3);		//	额外增加三列 ： 序号/修改/删除
 		pGridCtrl->SetFixedRowCount(1);
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(TRUE);
+		pGridCtrl->SetEditable(FALSE);
 	}
 	catch (CMemoryException* e)
 	{
@@ -109,12 +119,13 @@ bool CBudgetIndexObj::Draw(CGridCtrl* pGridCtrl, vector<CBudgetIndexObj>& cols) 
 			if (row < 1) {
 				Item.nFormat = DT_LEFT | DT_WORDBREAK;
 
-				if (col == 0)		val = "费用比例";
+				if (col == 0)		val = "资源名称";
 				else if (col == 1)	val = "名称";
-				else if (col == 2)	val = "消耗量";
-				else if (col == 3)	val = "材料单价";
-				else if (col == 4)	val = "";
+				else if (col == 2)	val = "单位";
+				else if (col == 3)	val = "消耗量";
+				else if (col == 4)	val = "材料单价";
 				else if (col == 5)	val = "";
+				else if (col == 6)	val = "";
 
 
 				Item.strText.Format(_T("%s"), val.c_str());
@@ -126,26 +137,27 @@ bool CBudgetIndexObj::Draw(CGridCtrl* pGridCtrl, vector<CBudgetIndexObj>& cols) 
 				else
 					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
 
-				if (col >= 2 && col <= 3 || col == 0)
+				if (col >= 3 && col <= 4 || col == 0)
 				{
 					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
 						return false;
 				}
-				if (col == 4) {
+				if (col == 5) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
-				if (col == 5) {
+				if (col == 6) {
 					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
 
 				if (col == 0)	val = Int2String(row);
 				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
-				else if (col == 2)  val = Double2String(cols[row - 1].m_quantity);
-				else if (col == 3)  val = Double2String(cols[row - 1].m_unit_price);
-				else if (col == 4)	val = "修改（update）";
-				else if (col == 5)	val = "删除（delete）";
+				else if (col == 2) 	val = cols[row - 1].m_unit.GetBuffer();
+				else if (col == 3)  val = Double2String(cols[row - 1].m_quantity);
+				else if (col == 4)  val = Double2String(cols[row - 1].m_unit_price);
+				else if (col == 5)	val = "修改（update）";
+				else if (col == 6)	val = "删除（delete）";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -158,8 +170,8 @@ bool CBudgetIndexObj::Draw(CGridCtrl* pGridCtrl, vector<CBudgetIndexObj>& cols) 
 	return true;
 }
 
-bool CBudgetIndexObj::Update(string menuCode, int nRow, vector<CBudgetIndexObj>& cols) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+bool CBuildingBudgetObj::Update(string menuCode, int nRow, vector<CBuildingBudgetObj>& cols) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size())
@@ -168,13 +180,13 @@ bool CBudgetIndexObj::Update(string menuCode, int nRow, vector<CBudgetIndexObj>&
 }
 
 
-bool CBudgetIndexObj::Delete(string menuCode, int nRow, vector<CBudgetIndexObj>& cols) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+bool CBuildingBudgetObj::Delete(string menuCode, int nRow, vector<CBuildingBudgetObj>& cols) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size()) {
 		int idx = 0;
-		vector<CBudgetIndexObj>::iterator it = cols.begin();
+		vector<CBuildingBudgetObj>::iterator it = cols.begin();
 		for (; it != cols.end(); it++, idx++) {
 			if (idx == nRow - 1)
 				break;
@@ -189,11 +201,11 @@ bool CBudgetIndexObj::Delete(string menuCode, int nRow, vector<CBudgetIndexObj>&
 /***********************************************************************************/
 
 
-/* 概算指标法 */
-string CBudgetIndex::m_ObjectCode = "01030302";
-double CBudgetIndex::m_ObjectVersion = 1.0;
+/* 施工图预算-  实物量法 */
+string CBuildingBudget::m_ObjectCode = "01030401";
+double CBuildingBudget::m_ObjectVersion = 1.0;
 
-CBudgetIndex::CBudgetIndex()
+CBuildingBudget::CBuildingBudget()
 {
 	m_name = "";
 	m_other_material_cost_percent = 0;
@@ -201,14 +213,14 @@ CBudgetIndex::CBudgetIndex()
 }
 
 
-CBudgetIndex::~CBudgetIndex()
+CBuildingBudget::~CBuildingBudget()
 {
 }
 
 
 
 
-void CBudgetIndex::Serialize(CArchive& ar, double version) {
+void CBuildingBudget::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_other_material_cost_percent;
 		ar << m_machine_tool_cost_percent;
@@ -225,16 +237,16 @@ void CBudgetIndex::Serialize(CArchive& ar, double version) {
 		int nNum;
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
-			CBudgetIndexObj bs;
+			CBuildingBudgetObj bs;
 			bs.Serialize(ar, version);
 			m_materials.push_back(bs);
 		}
 	}
 }
 
-bool CBudgetIndex::CreateOrUpdate(string menuCode) {
+bool CBuildingBudget::CreateOrUpdate(string menuCode) {
 
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	CDyncItemGroupDlg infd;
@@ -277,11 +289,11 @@ bool CBudgetIndex::CreateOrUpdate(string menuCode) {
 
 
 
-bool CBudgetIndex::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CBudgetIndex>& cols) {
+bool CBuildingBudget::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CBuildingBudget>& cols) {
 	if (!pGridCtrl)
 		return false;
 
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	try {
@@ -363,22 +375,22 @@ bool CBudgetIndex::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CBudgetInd
 	return true;
 }
 
-bool CBudgetIndex::Update(string menuCode, int nRow, vector<CBudgetIndex>& cols) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+bool CBuildingBudget::Update(string menuCode, int nRow, vector<CBuildingBudget>& cols) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size())
-		return cols[nRow - 1].CreateOrUpdate(CBudgetIndex::m_ObjectCode);
+		return cols[nRow - 1].CreateOrUpdate(CBuildingBudget::m_ObjectCode);
 	return false;
 }
 
-bool CBudgetIndex::Delete(string menuCode, int nRow, vector<CBudgetIndex>& cols) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+bool CBuildingBudget::Delete(string menuCode, int nRow, vector<CBuildingBudget>& cols) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size()) {
 		int idx = 0;
-		vector<CBudgetIndex>::iterator it = cols.begin();
+		vector<CBuildingBudget>::iterator it = cols.begin();
 		for (; it != cols.end(); it++, idx++) {
 			if (idx == nRow - 1)
 				break;
@@ -390,16 +402,16 @@ bool CBudgetIndex::Delete(string menuCode, int nRow, vector<CBudgetIndex>& cols)
 }
 
 
-unsigned int CBudgetIndex::PopupMenuId(string menuCode) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+unsigned int CBuildingBudget::PopupMenuId(string menuCode) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return 0;
 	return IDR_POPUP_COMPONENT;
 }
 
 
 
-void CBudgetIndex::Calculate(string menuCode, vector<CBudgetIndex>& cols) {
-	if (menuCode != CBudgetIndex::m_ObjectCode)
+void CBuildingBudget::Calculate(string menuCode, vector<CBuildingBudget>& cols) {
+	if (menuCode != CBuildingBudget::m_ObjectCode)
 		return;
 
 	CGridDlg gridDlg;
@@ -409,7 +421,7 @@ void CBudgetIndex::Calculate(string menuCode, vector<CBudgetIndex>& cols) {
 
 	for (int i = 0; i < cols.size(); i++)
 	{
-		CBudgetIndex seb = cols[i];
+		CBuildingBudget seb = cols[i];
 
 		string str = seb.m_name.GetBuffer();
 		vector<string> vec;

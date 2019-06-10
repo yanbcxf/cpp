@@ -99,6 +99,22 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			similarEngineerBudgets[i].Serialize(ar, CSimilarEngineerBudget::m_ObjectVersion);
 		}
 
+		// 概算指标法
+		ar << CString(CBudgetIndex::m_ObjectCode.c_str());
+		ar << CBudgetIndex::m_ObjectVersion;
+		ar << budgetIndexs.size();
+		for (int i = 0; i < budgetIndexs.size(); i++) {
+			budgetIndexs[i].Serialize(ar, CBudgetIndex::m_ObjectVersion);
+		}
+
+		// 施工图预算法
+		ar << CString(CBuildingBudget::m_ObjectCode.c_str());
+		ar << CBuildingBudget::m_ObjectVersion;
+		ar << budgetIndexs.size();
+		for (int i = 0; i < buildingBudgets.size(); i++) {
+			buildingBudgets[i].Serialize(ar, CBuildingBudget::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -129,6 +145,18 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CSimilarEngineerBudget b;
 					b.Serialize(ar, db);
 					similarEngineerBudgets.push_back(b);
+				}
+				// 概算指标法
+				if (str == CBudgetIndex::m_ObjectCode.c_str()) {
+					CBudgetIndex b;
+					b.Serialize(ar, db);
+					budgetIndexs.push_back(b);
+				}
+				// 施工图预算法
+				if (str == CBuildingBudget::m_ObjectCode.c_str()) {
+					CBuildingBudget b;
+					b.Serialize(ar, db);
+					buildingBudgets.push_back(b);
 				}
 			}
 		}

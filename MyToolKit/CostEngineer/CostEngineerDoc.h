@@ -16,6 +16,8 @@ public:
 	vector<CBeamObj>	beams;
 	vector<CColumnObj>	columns;
 	vector<CSimilarEngineerBudget> similarEngineerBudgets;
+	vector<CBudgetIndex> budgetIndexs;
+	vector<CBuildingBudget>	buildingBudgets;
 
 // 操作
 public:

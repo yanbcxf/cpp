@@ -114,6 +114,8 @@ typedef struct _item_info
 #include "ColumnObj.h"
 #include "BeamObj.h"
 #include "SimilarEngineerBudget.h"
+#include "BudgetIndex.h"
+#include "BuildingBudget.h"
 
 #define WM_USER_XML		WM_USER + 1
 

@@ -303,6 +303,9 @@
     <ClInclude Include="BudgetIndex.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="BuildingBudget.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -531,6 +534,9 @@
       <Filter>BusinessObject</Filter>
     </ClCompile>
     <ClCompile Include="BudgetIndex.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingBudget.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

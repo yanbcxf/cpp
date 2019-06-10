@@ -193,6 +193,7 @@
     <ClInclude Include="BeamObj.h" />
     <ClInclude Include="BtnST.h" />
     <ClInclude Include="BudgetIndex.h" />
+    <ClInclude Include="BuildingBudget.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
     <ClInclude Include="ChartBarDlg.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="BeamObj.cpp" />
     <ClCompile Include="BtnST.cpp" />
     <ClCompile Include="BudgetIndex.cpp" />
+    <ClCompile Include="BuildingBudget.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />
     <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
