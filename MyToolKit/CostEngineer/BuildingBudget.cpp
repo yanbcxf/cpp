@@ -430,20 +430,33 @@ void CBuildingBudget::Calculate(string menuCode, vector<CBuildingBudget>& cols) 
 		// 主材费
 		double material = 0;
 		double people = 0;
+		double machine = 0;
+
 		for (auto e : seb.m_materials)
 		{
-			if (e.m_name.Find("人工")>=0) {
+			if (e.m_unit.Find("工日")>=0) {
 				people += e.m_quantity * e.m_unit_price;
+			} else if (e.m_unit.Find("台班") >= 0) {
+				machine += e.m_quantity * e.m_unit_price;
 			} else 
 				material += e.m_quantity * e.m_unit_price ;
 		}
-		// 加 其它材料费
-		material = material * seb.m_other_material_cost_percent / 100 + material;
-		// 加 施工机具费
-		material = (material + people) / (1 - seb.m_machine_tool_cost_percent / 100);
-		// 加 综合取费
-		material = material * (1 + 0.2);
-		vec.push_back(Double2String(material));
+		// 安全文明施工费
+		double  measure1 = (people + machine) * 0.12;
+		// 其它总价措施费
+		double	measure2 = (people + machine) * 0.08;
+		// 管理费
+		double manage = (people + machine + measure2 * 0.45) * 0.15;
+		// 利润
+		double net = (people + machine + measure2 * 0.45) * 0.1;
+		// 规费
+		double government = (people + measure2 * 0.35) * 0.15;
+		// 增值税
+		double tax = net * 0.11;
+		
+		double total = material + people + machine + measure1 + measure2 + manage + net + government + tax + 3000;
+		
+		vec.push_back(Double2String(total));
 		gridDlg.m_vecData.push_back(vec);
 	}
 	gridDlg.DoModal();
