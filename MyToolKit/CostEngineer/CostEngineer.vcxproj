@@ -94,7 +94,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;../libiconv-1.14/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;../libiconv-1.14/include;./BusinessObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -190,10 +190,13 @@
     <ClInclude Include="BaseMessageView.h" />
     <ClInclude Include="BasicExcel.hpp" />
     <ClInclude Include="BCMenu.h" />
-    <ClInclude Include="BeamObj.h" />
     <ClInclude Include="BtnST.h" />
-    <ClInclude Include="BudgetIndex.h" />
-    <ClInclude Include="BuildingBudget.h" />
+    <ClInclude Include="BusinessObject\BeamObj.h" />
+    <ClInclude Include="BusinessObject\BudgetIndex.h" />
+    <ClInclude Include="BusinessObject\BuildingBudget.h" />
+    <ClInclude Include="BusinessObject\ColumnObj.h" />
+    <ClInclude Include="BusinessObject\CompositeUnitPrice.h" />
+    <ClInclude Include="BusinessObject\SimilarEngineerBudget.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
     <ClInclude Include="ChartBarDlg.h" />
@@ -232,7 +235,6 @@
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="CntrItem.h" />
-    <ClInclude Include="ColumnObj.h" />
     <ClInclude Include="CostEngineer.h" />
     <ClInclude Include="CostEngineerDoc.h" />
     <ClInclude Include="CostEngineerView.h" />
@@ -270,7 +272,6 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SimilarEngineerBudget.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ViewTree.h" />
@@ -286,10 +287,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BCMenu.cpp" />
-    <ClCompile Include="BeamObj.cpp" />
     <ClCompile Include="BtnST.cpp" />
-    <ClCompile Include="BudgetIndex.cpp" />
-    <ClCompile Include="BuildingBudget.cpp" />
+    <ClCompile Include="BusinessObject\BeamObj.cpp" />
+    <ClCompile Include="BusinessObject\BudgetIndex.cpp" />
+    <ClCompile Include="BusinessObject\BuildingBudget.cpp" />
+    <ClCompile Include="BusinessObject\ColumnObj.cpp" />
+    <ClCompile Include="BusinessObject\CompositeUnitPrice.cpp" />
+    <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />
     <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
@@ -319,7 +323,6 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="CntrItem.cpp" />
-    <ClCompile Include="ColumnObj.cpp" />
     <ClCompile Include="CostEngineer.cpp" />
     <ClCompile Include="CostEngineerDoc.cpp" />
     <ClCompile Include="CostEngineerView.cpp" />
@@ -354,7 +357,6 @@
     <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
-    <ClCompile Include="SimilarEngineerBudget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

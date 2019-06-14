@@ -213,7 +213,7 @@ string Double2String(double db, string strFormat)
 	memset(buf, 0, 64);
 	if (strFormat.empty())
 	{
-		sprintf_s(buf, 64, "%.2f", db);
+		sprintf_s(buf, 64, "%.3f", db);
 	}
 	else if (strFormat.find("%") != string::npos)
 	{

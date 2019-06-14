@@ -285,25 +285,28 @@
     <ClInclude Include="MenuTreeView.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ColumnObj.h">
-      <Filter>BusinessObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BeamObj.h">
-      <Filter>BusinessObject</Filter>
-    </ClInclude>
     <ClInclude Include="NewCellTypes\GridCellButton.h">
       <Filter>GridCtrl</Filter>
     </ClInclude>
     <ClInclude Include="BaseMessageFormView.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SimilarEngineerBudget.h">
+    <ClInclude Include="BusinessObject\BeamObj.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
-    <ClInclude Include="BudgetIndex.h">
+    <ClInclude Include="BusinessObject\BudgetIndex.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
-    <ClInclude Include="BuildingBudget.h">
+    <ClInclude Include="BusinessObject\BuildingBudget.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BusinessObject\ColumnObj.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BusinessObject\SimilarEngineerBudget.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BusinessObject\CompositeUnitPrice.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -518,25 +521,28 @@
     <ClCompile Include="MenuTreeView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ColumnObj.cpp">
-      <Filter>BusinessObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BeamObj.cpp">
-      <Filter>BusinessObject</Filter>
-    </ClCompile>
     <ClCompile Include="NewCellTypes\GridCellButton.cpp">
       <Filter>GridCtrl</Filter>
     </ClCompile>
     <ClCompile Include="BaseMessageFormView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SimilarEngineerBudget.cpp">
+    <ClCompile Include="BusinessObject\BeamObj.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
-    <ClCompile Include="BudgetIndex.cpp">
+    <ClCompile Include="BusinessObject\BudgetIndex.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
-    <ClCompile Include="BuildingBudget.cpp">
+    <ClCompile Include="BusinessObject\BuildingBudget.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\ColumnObj.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\CompositeUnitPrice.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

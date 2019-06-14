@@ -334,6 +334,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CCompositeUnitPrice::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -353,6 +357,11 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 
 			if (CBuildingBudgetObj::Update(m_strMenuCode, nRow, pDoc->buildingBudgets[m_nChildrenCode].m_materials)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CCompositeUnitPriceObj::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -384,6 +393,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CCompositeUnitPrice::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -403,6 +416,11 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 
 				if (CBuildingBudgetObj::Delete(m_strMenuCode, nRow, pDoc->buildingBudgets[m_nChildrenCode].m_materials)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+
+				if (CCompositeUnitPriceObj::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -448,6 +466,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 			}
 			
+			{
+				CCompositeUnitPriceObj c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->compositeUnitPrices[m_nChildrenCode].m_materials.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
 		}
 	}
 
@@ -502,6 +528,16 @@ void CCostEngineerView::RedrawView() {
 	if (CBuildingBudget::Draw(m_strMenuCode, &m_Grid, pDoc->buildingBudgets)) {
 		if (m_nChildrenCode < pDoc->buildingBudgets.size()) {
 			CBuildingBudgetObj::Draw(&m_Grid1, pDoc->buildingBudgets[m_nChildrenCode].m_materials);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		return;
+	}
+
+	if (CCompositeUnitPrice::Draw(m_strMenuCode, &m_Grid, pDoc->compositeUnitPrices)) {
+		if (m_nChildrenCode < pDoc->compositeUnitPrices.size()) {
+			CCompositeUnitPriceObj::Draw(&m_Grid1, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials);
 		}
 		else {
 			m_Grid1.SetRowCount(0);
