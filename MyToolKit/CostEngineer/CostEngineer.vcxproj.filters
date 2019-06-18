@@ -309,6 +309,9 @@
     <ClInclude Include="BusinessObject\CompositeUnitPrice.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="BusinessObject\ConsumptionQuota.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -543,6 +546,9 @@
       <Filter>BusinessObject</Filter>
     </ClCompile>
     <ClCompile Include="BusinessObject\CompositeUnitPrice.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\ConsumptionQuota.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

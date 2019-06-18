@@ -18,6 +18,7 @@ public:
 	vector<CSimilarEngineerBudget> similarEngineerBudgets;
 	vector<CBudgetIndex> budgetIndexs;
 	vector<CBuildingBudget>	buildingBudgets;
+	vector<CConsumptionQuota> consumptionQuotas;
 	vector<CCompositeUnitPrice> compositeUnitPrices;
 
 // 操作

@@ -115,6 +115,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			buildingBudgets[i].Serialize(ar, CBuildingBudget::m_ObjectVersion);
 		}
 
+		// 消耗量定额
+		ar << CString(CConsumptionQuota::m_ObjectCode.c_str());
+		ar << CConsumptionQuota::m_ObjectVersion;
+		ar << consumptionQuotas.size();
+		for (int i = 0; i < consumptionQuotas.size(); i++) {
+			consumptionQuotas[i].Serialize(ar, CConsumptionQuota::m_ObjectVersion);
+		}
+
 		// 综合单价分析表
 		ar << CString(CCompositeUnitPrice::m_ObjectCode.c_str());
 		ar << CCompositeUnitPrice::m_ObjectVersion;
@@ -165,6 +173,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CBuildingBudget b;
 					b.Serialize(ar, db);
 					buildingBudgets.push_back(b);
+				}
+				// 消耗量定额
+				if (str == CConsumptionQuota::m_ObjectCode.c_str()) {
+					CConsumptionQuota b;
+					b.Serialize(ar, db);
+					consumptionQuotas.push_back(b);
 				}
 				// 综合单价分析表
 				if (str == CCompositeUnitPrice::m_ObjectCode.c_str()) {

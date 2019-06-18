@@ -111,12 +111,14 @@ typedef struct _item_info
 #include "BaseChartCtlView.h"
 #include "BaseMessageFormView.h"
 
+#include "ConsumptionQuota.h"
 #include "ColumnObj.h"
 #include "BeamObj.h"
 #include "SimilarEngineerBudget.h"
 #include "BudgetIndex.h"
 #include "BuildingBudget.h"
 #include "CompositeUnitPrice.h"
+
 
 #define WM_USER_XML		WM_USER + 1
 

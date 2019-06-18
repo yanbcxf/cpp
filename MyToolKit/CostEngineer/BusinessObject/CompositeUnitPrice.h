@@ -12,17 +12,14 @@ public:
 
 	void Serialize(CArchive& ar, double version);
 
-	bool CreateOrUpdate(string menuCode);
+	bool CreateOrUpdate(string menuCode, vector<CConsumptionQuota>& quotas);
 
-	static bool Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPriceObj>& cols);
-	static bool Update(string menuCode, int nRow, vector<CCompositeUnitPriceObj>& cols);
+	static bool Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas);
+	static bool Update(string menuCode, int nRow, vector<CCompositeUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas);
 	static bool Delete(string menuCode, int nRow, vector<CCompositeUnitPriceObj>& cols);
 
 	
-	CString m_name;				//  人工 、耗材名称
-	double	m_quantity;			//	消耗数量
-	double	m_unit_price;		//	单位价格
-	CString m_unit;				//	计量单位
+	CString m_consumption_quota_id;				//  消耗定额编号
 };
 
 
@@ -40,7 +37,7 @@ public:
 	static bool Update(string menuCode, int nRow, vector<CCompositeUnitPrice>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CCompositeUnitPrice>& cols);
 	static unsigned int PopupMenuId(string menuCode);
-	static void Calculate(string menuCode, vector<CCompositeUnitPrice>& cols);
+	static void Calculate(string menuCode, vector<CCompositeUnitPrice>& cols, vector<CConsumptionQuota>& quotas);
 
 	static string m_ObjectCode;
 	static double m_ObjectVersion;

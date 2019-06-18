@@ -72,6 +72,10 @@
 						<list>
 							<element>
 								<code>01030901</code>
+								<name>消耗量定额</name>
+							</element>
+							<element>
+								<code>01030902</code>
 								<name>综合单价分析表</name>
 							</element>
 						</list>

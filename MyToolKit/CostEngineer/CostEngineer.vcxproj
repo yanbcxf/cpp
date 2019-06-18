@@ -196,6 +196,7 @@
     <ClInclude Include="BusinessObject\BuildingBudget.h" />
     <ClInclude Include="BusinessObject\ColumnObj.h" />
     <ClInclude Include="BusinessObject\CompositeUnitPrice.h" />
+    <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
     <ClInclude Include="BusinessObject\SimilarEngineerBudget.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="BusinessObject\BuildingBudget.cpp" />
     <ClCompile Include="BusinessObject\ColumnObj.cpp" />
     <ClCompile Include="BusinessObject\CompositeUnitPrice.cpp" />
+    <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
     <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />
