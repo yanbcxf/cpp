@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CGridDlg, CDialog)
 CGridDlg::CGridDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CGridDlg::IDD, pParent)
 {
-
+	m_strTitle = "";
 }
 
 CGridDlg::~CGridDlg()
@@ -37,6 +37,8 @@ END_MESSAGE_MAP()
 BOOL CGridDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+
+	SetWindowText(m_strTitle);
 
 	// TODO:  在此添加额外的初始化
 

@@ -519,6 +519,10 @@ void CCostEngineerView::RedrawView() {
 
 	if (CColumnObj::Draw(m_strMenuCode, &m_Grid, pDoc->columns)) {
 		m_Grid1.SetRowCount(0);
+		
+		m_upper_percent = 9;
+		m_down_percent = 1;
+		ReLayout();
 		return;
 	}
 
@@ -529,6 +533,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 
@@ -539,6 +546,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 
@@ -549,6 +559,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 
@@ -559,6 +572,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 
@@ -569,6 +585,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 
@@ -579,6 +598,9 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
 		return;
 	}
 

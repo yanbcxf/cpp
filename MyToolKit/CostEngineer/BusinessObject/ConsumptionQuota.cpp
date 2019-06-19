@@ -446,7 +446,7 @@ void CConsumptionQuota::Calculate(string menuCode, vector<CConsumptionQuota>& co
 	gridDlg.m_vecHeader.push_back("材料费");
 	gridDlg.m_vecHeader.push_back("机具使用费");
 	gridDlg.m_vecHeader.push_back("管理费和利润");
-	
+	gridDlg.m_vecHeader.push_back("定额综合单价");
 
 	for (int i = 0; i < cols.size(); i++)
 	{
@@ -479,6 +479,8 @@ void CConsumptionQuota::Calculate(string menuCode, vector<CConsumptionQuota>& co
 
 		if (manage + net > 0) vec.push_back(Double2String(manage + net));
 		else vec.push_back("");
+
+		vec.push_back(Double2String(people + material + machine + manage + net));
 		
 		gridDlg.m_vecData.push_back(vec);
 	}

@@ -14,6 +14,8 @@ CBaseMessageFormView::CBaseMessageFormView()
 	: CFormView(CBaseMessageFormView::IDD)
 {
 	m_MessageCtrl.SetOwnerView(this);
+	m_upper_percent = 3;
+	m_down_percent = 4;
 }
 
 CBaseMessageFormView::~CBaseMessageFormView()
@@ -84,12 +86,12 @@ void CBaseMessageFormView::ReLayout()
 	{
 		CRect rect;
 		GetClientRect(&rect);
-		rect.bottom = rect.top + (rect.bottom - rect.top) * 3 / 7 - 2;
+		rect.bottom = rect.top + (rect.bottom - rect.top) * m_upper_percent / (m_upper_percent + m_down_percent) - 2;
 		m_Grid.MoveWindow(rect);
 		m_Grid.SetEditable(FALSE);
 
 		GetClientRect(&rect);
-		rect.top = rect.bottom - (rect.bottom - rect.top) * 4 / 7 + 2;
+		rect.top = rect.bottom - (rect.bottom - rect.top) * m_down_percent / (m_upper_percent + m_down_percent) + 2;
 		m_Grid1.MoveWindow(rect);
 		m_Grid1.SetEditable(FALSE);
 	}

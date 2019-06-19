@@ -76,7 +76,15 @@
 							</element>
 							<element>
 								<code>01030902</code>
-								<name>综合单价分析表</name>
+								<name>分部分项工程与单价措施项目</name>
+							</element>
+							<element>
+								<code>01030903</code>
+								<name>总价措施项目</name>
+							</element>
+							<element>
+								<code>01030904</code>
+								<name>其他项目</name>
 							</element>
 						</list>
 					</element>

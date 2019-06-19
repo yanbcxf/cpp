@@ -59,6 +59,9 @@ public:
 	void ReLayout();
 	CGridCtrl m_Grid1;
 
+	int m_upper_percent;	//	上表格占比
+	int	m_down_percent;		//	下表格占比
+
 public:
 
 	virtual void RedrawDmGraph()

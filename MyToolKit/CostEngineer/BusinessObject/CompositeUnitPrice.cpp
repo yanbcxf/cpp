@@ -18,9 +18,11 @@ CCompositeUnitPriceObj::~CCompositeUnitPriceObj()
 void CCompositeUnitPriceObj::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_consumption_quota_id;
+		ar << m_consumption_quantity;
 	}
 	else {
 		ar >> m_consumption_quota_id;
+		ar >> m_consumption_quantity;
 	}
 }
 
@@ -53,6 +55,7 @@ bool CCompositeUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumption
 	infd.CXCAPTION = 100;
 	infd.CXRADIO = 150;
 	int i = 0;
+	
 	int intItem = 0;
 	for (i =0; i< quotas.size(); i++)
 	{
@@ -67,6 +70,13 @@ bool CCompositeUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumption
 	infd.m_vecFindItem[0][0][0].bKey = true;
 	infd.m_vecFindItem[0][0][0].intItem = intItem;
 
+	infd.m_vecFindItem[1][0][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[1][0][0].caption, _T("按消耗量定额工程量"), 64);
+	if (m_consumption_quantity > 0)
+		infd.m_vecFindItem[1][0][0].strItem.Format("%.3f", m_consumption_quantity);
+	infd.m_vecFindItem[1][0][0].dbMin = 1;
+	infd.m_vecFindItem[1][0][0].dbMax = 1000000;
+
 	infd.Init(_T("选择消耗量定额"), _T("选择消耗量定额"));
 	if (infd.DoModal() == IDOK) {
 		/*i = 0
@@ -74,6 +84,8 @@ bool CCompositeUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumption
 
 		i = infd.m_vecFindItem[0][0][0].intItem;
 		m_consumption_quota_id = quotas[i].m_identifier;
+
+		m_consumption_quantity = String2Double(infd.m_vecFindItem[1][0][0].strItem.GetBuffer());
 		return true;
 	}
 	return false;
@@ -86,7 +98,7 @@ bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPri
 
 	try {
 		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(2 + 3);		//	额外增加三列 ： 序号/修改/删除
+		pGridCtrl->SetColumnCount(3 + 3);		//	额外增加三列 ： 序号/修改/删除
 		pGridCtrl->SetFixedRowCount(1);
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(TRUE);
@@ -116,8 +128,9 @@ bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPri
 				if (col == 0)		val = "消耗量定额";
 				else if (col == 1)	val = "编号";
 				else if (col == 2)	val = "名称";
-				else if (col == 3)	val = "";
+				else if (col == 3)	val = "工程量（消耗量定额）";
 				else if (col == 4)	val = "";
+				else if (col == 5)	val = "";
 
 
 				Item.strText.Format(_T("%s"), val.c_str());
@@ -134,11 +147,11 @@ bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPri
 					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
 						return false;
 				}
-				if (col == 3) {
+				if (col == 4) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
-				if (col == 4) {
+				if (col == 5) {
 					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
@@ -153,9 +166,9 @@ bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPri
 				if (col == 0)	val = Int2String(row);
 				else if (col == 1) 	val = cols[row - 1].m_consumption_quota_id.GetBuffer();
 				else if (col == 2) 	val = consumption_quota_name.GetBuffer();
-				
-				else if (col == 3)	val = "修改（update）";
-				else if (col == 4)	val = "删除（delete）";
+				else if (col == 3)	val = Double2String(cols[row - 1].m_consumption_quantity);
+				else if (col == 4)	val = "修改（update）";
+				else if (col == 5)	val = "删除（delete）";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -207,7 +220,6 @@ CCompositeUnitPrice::CCompositeUnitPrice()
 {
 	m_name = "";
 	m_formula_quantity = 0;
-	m_consumption_quantity = 0;
 }
 
 
@@ -219,7 +231,6 @@ CCompositeUnitPrice::~CCompositeUnitPrice()
 void CCompositeUnitPrice::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_formula_quantity;
-		ar << m_consumption_quantity;
 		ar << m_name;
 		ar << m_materials.size();
 		for (int i = 0; i < m_materials.size(); i++) {
@@ -228,7 +239,6 @@ void CCompositeUnitPrice::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_formula_quantity;
-		ar >> m_consumption_quantity;
 		ar >> m_name;
 		int nNum;
 		ar >> nNum;
@@ -263,21 +273,13 @@ bool CCompositeUnitPrice::CreateOrUpdate(string menuCode) {
 	infd.m_vecFindItem[0][i][0].dbMin = 0.0001;
 	infd.m_vecFindItem[0][i][0].dbMax = 100000;
 
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("按消耗量定额工程量"), 64);
-	if (m_consumption_quantity > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.3f", m_consumption_quantity);
-	infd.m_vecFindItem[0][i][0].dbMin = 1;
-	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
-
+	
 	infd.Init(_T("综合单价分析表 参数设置"), _T("综合单价分析表 参数设置"));
 	if (infd.DoModal() == IDOK) {
 		i = 0;
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
 		m_formula_quantity = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-		m_consumption_quantity = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-
+		
 		return true;
 	}
 	return false;
@@ -295,7 +297,7 @@ bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCo
 
 	try {
 		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(3 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
+		pGridCtrl->SetColumnCount(2 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
 		pGridCtrl->SetFixedRowCount(1);
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(TRUE);
@@ -324,10 +326,9 @@ bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCo
 				if (col == 0)		val = "综合单价分析表";
 				else if (col == 1)	val = "名称";
 				else if (col == 2)	val = "按计量规范工程量";
-				else if (col == 3)	val = "按消耗量定额工程量";
+				else if (col == 3)	val = "";
 				else if (col == 4)	val = "";
 				else if (col == 5)	val = "";
-				else if (col == 6)	val = "";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -338,16 +339,16 @@ bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCo
 				else
 					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
 
-				if (col >= 2 && col <= 3 || col == 0)
+				if (col >= 2 && col <= 2 || col == 0)
 				{
 					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
 						return false;
 				}
-				if (col == 4 || col == 6) {
+				if (col == 3 || col == 5) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
-				if (col == 5) {
+				if (col == 4) {
 					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
@@ -355,11 +356,10 @@ bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCo
 				if (col == 0)	val = Int2String(row);
 				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
 				else if (col == 2)  val = Double2String(cols[row - 1].m_formula_quantity, "%.2f");
-				else if (col == 3)  val = Double2String(cols[row - 1].m_consumption_quantity, "%.2f");
 				
-				else if (col == 4)	val = "修改（update）";
-				else if (col == 5)	val = "删除（delete）";
-				else if (col == 6)	val = "增加（create）";
+				else if (col == 3)	val = "修改（update）";
+				else if (col == 4)	val = "删除（delete）";
+				else if (col == 5)	val = "增加（create）";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -412,12 +412,14 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 		return;
 
 	CGridDlg gridDlg;
+	gridDlg.m_strTitle = "项目综合单价表";
 	gridDlg.m_vecHeader.push_back("名称");
-	gridDlg.m_vecHeader.push_back("清单工程量包含施工工程量");
+	// gridDlg.m_vecHeader.push_back("清单工程量包含施工工程量");
 	gridDlg.m_vecHeader.push_back("人工费");
 	gridDlg.m_vecHeader.push_back("材料费");
 	gridDlg.m_vecHeader.push_back("机具费");
 	gridDlg.m_vecHeader.push_back("管理费和利润");
+	gridDlg.m_vecHeader.push_back("清单项目综合单价");
 	
 	for (int i = 0; i < cols.size(); i++)
 	{
@@ -427,9 +429,7 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 		vector<string> vec;
 		vec.push_back(str);
 
-		//	一个单位的计量工程量 对应的 施工定额工程量
-		double quantity = seb.m_consumption_quantity / seb.m_formula_quantity / 10;		// 定额以 10 立方米为单位，所以除 10
-		vec.push_back(Double2String(quantity));
+		
 		
 		// 人材机
 		double material = 0;
@@ -441,10 +441,16 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 			double material1 = 0;
 			double people1 = 0;
 			double machine1 = 0;
+			double unit = 1;
 
 			CConsumptionQuota * q = CConsumptionQuota::FindQuota(e.m_consumption_quota_id, quotas);
-			if (q)
+			if (q) {
 				q->GetQuotaFee(people1, material1, machine1);
+				unit = q->m_unit;
+			}
+
+			//	一个单位的计量工程量 对应的 施工定额工程量 ( unit : 比如定额以 10 立方米为单位，所以除 10)
+			double quantity = e.m_consumption_quantity / seb.m_formula_quantity / unit;
 
 			material += material1 * quantity;
 			people += people1 * quantity;
@@ -461,6 +467,7 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 		double net = (people ) * 0.2;
 				
 		vec.push_back(Double2String(manage + net));
+		vec.push_back(Double2String(manage + net + people + material + machine));
 		gridDlg.m_vecData.push_back(vec);
 	}
 	gridDlg.DoModal();

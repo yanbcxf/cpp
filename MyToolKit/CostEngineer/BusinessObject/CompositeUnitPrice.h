@@ -20,6 +20,7 @@ public:
 
 	
 	CString m_consumption_quota_id;				//  消耗定额编号
+	double	m_consumption_quantity;		//	消耗量定额工程量
 };
 
 
@@ -44,7 +45,7 @@ public:
 
 	CString m_name;			//	
 	double  m_formula_quantity;		//	计量规范工程量
-	double	m_consumption_quantity;		//	消耗量定额工程量		
+			
 
 	vector<CCompositeUnitPriceObj>	m_materials;	//	各种耗材,人工等消耗量定额
 };

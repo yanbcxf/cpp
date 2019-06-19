@@ -25,7 +25,7 @@ public:
 	
 	CTreeGridCtrl m_Grid;
 	
-
+	CString					m_strTitle;
 	vector<string>			m_vecHeader;
 	vector<vector<string>>	m_vecData;
 
