@@ -117,7 +117,8 @@ typedef struct _item_info
 #include "SimilarEngineerBudget.h"
 #include "BudgetIndex.h"
 #include "BuildingBudget.h"
-#include "CompositeUnitPrice.h"
+#include "ItemOfUnitPrice.h"
+#include "ItemOfTotalPrice.h"
 
 
 #define WM_USER_XML		WM_USER + 1

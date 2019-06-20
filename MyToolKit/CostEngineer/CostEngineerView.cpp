@@ -334,11 +334,15 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
-			if (CCompositeUnitPrice::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
+			if (CItemOfUnitPrice::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
 			if (CConsumptionQuota::Update(m_strMenuCode, nRow, pDoc->consumptionQuotas)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CItemOfTotalPrice::Update(m_strMenuCode, nRow, pDoc->itemOfTotalPrices)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -365,7 +369,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				bRedraw = true;
 			}
 
-			if (CCompositeUnitPriceObj::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials, pDoc->consumptionQuotas)) {
+			if (CItemOfUnitPriceObj::Update(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials, pDoc->consumptionQuotas)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -402,11 +406,15 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
-				if (CCompositeUnitPrice::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
+				if (CItemOfUnitPrice::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
 				if (CConsumptionQuota::Delete(m_strMenuCode, nRow, pDoc->consumptionQuotas)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CItemOfTotalPrice::Delete(m_strMenuCode, nRow, pDoc->itemOfTotalPrices)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -433,7 +441,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					bRedraw = true;
 				}
 
-				if (CCompositeUnitPriceObj::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials)) {
+				if (CItemOfUnitPriceObj::Delete(m_strMenuCode, nRow, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -485,7 +493,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 			
 			{
-				CCompositeUnitPriceObj c;
+				CItemOfUnitPriceObj c;
 				if (c.CreateOrUpdate(m_strMenuCode, pDoc->consumptionQuotas)) {
 					pDoc->compositeUnitPrices[m_nChildrenCode].m_materials.push_back(c);
 					pDoc->SetModifiedFlag();
@@ -578,9 +586,9 @@ void CCostEngineerView::RedrawView() {
 		return;
 	}
 
-	if (CCompositeUnitPrice::Draw(m_strMenuCode, &m_Grid, pDoc->compositeUnitPrices)) {
+	if (CItemOfUnitPrice::Draw(m_strMenuCode, &m_Grid, pDoc->compositeUnitPrices)) {
 		if (m_nChildrenCode < pDoc->compositeUnitPrices.size()) {
-			CCompositeUnitPriceObj::Draw(&m_Grid1, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials, pDoc->consumptionQuotas);
+			CItemOfUnitPriceObj::Draw(&m_Grid1, pDoc->compositeUnitPrices[m_nChildrenCode].m_materials, pDoc->consumptionQuotas);
 		}
 		else {
 			m_Grid1.SetRowCount(0);
@@ -600,6 +608,15 @@ void CCostEngineerView::RedrawView() {
 		}
 		m_upper_percent = 4;
 		m_down_percent = 6;
+		ReLayout();
+		return;
+	}
+
+	if (CItemOfTotalPrice::Draw(m_strMenuCode, &m_Grid, pDoc->itemOfTotalPrices)) {
+		m_Grid1.SetRowCount(0);
+
+		m_upper_percent = 19;
+		m_down_percent = 1;
 		ReLayout();
 		return;
 	}

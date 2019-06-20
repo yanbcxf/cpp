@@ -123,12 +123,20 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			consumptionQuotas[i].Serialize(ar, CConsumptionQuota::m_ObjectVersion);
 		}
 
-		// 综合单价分析表
-		ar << CString(CCompositeUnitPrice::m_ObjectCode.c_str());
-		ar << CCompositeUnitPrice::m_ObjectVersion;
+		// 分部分项和单价项目
+		ar << CString(CItemOfUnitPrice::m_ObjectCode.c_str());
+		ar <<CItemOfUnitPrice::m_ObjectVersion;
 		ar << compositeUnitPrices.size();
 		for (int i = 0; i < compositeUnitPrices.size(); i++) {
-			compositeUnitPrices[i].Serialize(ar, CCompositeUnitPrice::m_ObjectVersion);
+			compositeUnitPrices[i].Serialize(ar,CItemOfUnitPrice::m_ObjectVersion);
+		}
+
+		// 总计措施项目
+		ar << CString(CItemOfTotalPrice::m_ObjectCode.c_str());
+		ar << CItemOfTotalPrice::m_ObjectVersion;
+		ar << itemOfTotalPrices.size();
+		for (int i = 0; i < itemOfTotalPrices.size(); i++) {
+			itemOfTotalPrices[i].Serialize(ar, CItemOfTotalPrice::m_ObjectVersion);
 		}
 
 		// 文件结束标志
@@ -180,12 +188,19 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					b.Serialize(ar, db);
 					consumptionQuotas.push_back(b);
 				}
-				// 综合单价分析表
-				if (str == CCompositeUnitPrice::m_ObjectCode.c_str()) {
-					CCompositeUnitPrice b;
+				// 分部分项和单价项目
+				if (str ==CItemOfUnitPrice::m_ObjectCode.c_str()) {
+					CItemOfUnitPrice b;
 					b.Serialize(ar, db);
 					compositeUnitPrices.push_back(b);
 				}
+				// 总计措施项目
+				if (str == CItemOfTotalPrice::m_ObjectCode.c_str()) {
+					CItemOfTotalPrice b;
+					b.Serialize(ar, db);
+					itemOfTotalPrices.push_back(b);
+				}
+
 			}
 		}
 	}

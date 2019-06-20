@@ -29,6 +29,7 @@ void CGridDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CGridDlg, CDialog)
+	ON_NOTIFY(NM_DBLCLK, IDC_GRID, OnGridDblClick)
 END_MESSAGE_MAP()
 
 
@@ -50,7 +51,7 @@ BOOL CGridDlg::OnInitDialog()
 		m_Grid.SetFixedRowCount(1);
 		m_Grid.SetFixedColumnCount(0);
 		m_Grid.SetHeaderSort(FALSE);
-		m_Grid.SetEditable(TRUE);
+		m_Grid.SetEditable(FALSE);
 	}
 	catch (CMemoryException* e)
 	{
@@ -97,4 +98,33 @@ BOOL CGridDlg::OnInitDialog()
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CGridDlg::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/)
+{
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
+	//Trace(_T("Double Clicked on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
+
+	CString str;
+	str.Format(_T("Context menu called on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
+	//AfxMessageBox(str);
+
+	//////////////////////////////////////////////////////////////////////////
+	//	将选中的单元格内容 拷贝到 剪贴板
+
+	CString source = m_Grid.GetItemText(pItem->iRow, pItem->iColumn);
+	if (OpenClipboard())
+	{
+		HGLOBAL clipbuffer;
+		char * buffer;
+		EmptyClipboard();
+		clipbuffer = GlobalAlloc(GMEM_DDESHARE, source.GetLength() + 1);
+		buffer = (char*)GlobalLock(clipbuffer);
+		strcpy(buffer, LPCSTR(source));
+		GlobalUnlock(clipbuffer);
+		SetClipboardData(CF_TEXT, clipbuffer);
+		CloseClipboard();
+	}
+
 }

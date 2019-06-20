@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "CompositeUnitPrice.h"
+#include "ItemOfUnitPrice.h"
 #include "GridDlg.h"
 
 
-CCompositeUnitPriceObj::CCompositeUnitPriceObj()
+CItemOfUnitPriceObj::CItemOfUnitPriceObj()
 {
 	m_consumption_quota_id = "";
 }
 
 
-CCompositeUnitPriceObj::~CCompositeUnitPriceObj()
+CItemOfUnitPriceObj::~CItemOfUnitPriceObj()
 {
 }
 
 
 
-void CCompositeUnitPriceObj::Serialize(CArchive& ar, double version) {
+void CItemOfUnitPriceObj::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_consumption_quota_id;
 		ar << m_consumption_quantity;
@@ -27,8 +27,8 @@ void CCompositeUnitPriceObj::Serialize(CArchive& ar, double version) {
 }
 
 
-bool CCompositeUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumptionQuota>& quotas) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+bool CItemOfUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumptionQuota>& quotas) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	/*CDyncItemGroupDlg infd;
@@ -91,7 +91,7 @@ bool CCompositeUnitPriceObj::CreateOrUpdate(string menuCode, vector<CConsumption
 	return false;
 }
 
-bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas) {
+bool CItemOfUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CItemOfUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas) {
 	if (!pGridCtrl)
 		return false;
 
@@ -181,8 +181,8 @@ bool CCompositeUnitPriceObj::Draw(CGridCtrl* pGridCtrl, vector<CCompositeUnitPri
 	return true;
 }
 
-bool CCompositeUnitPriceObj::Update(string menuCode, int nRow, vector<CCompositeUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+bool CItemOfUnitPriceObj::Update(string menuCode, int nRow, vector<CItemOfUnitPriceObj>& cols, vector<CConsumptionQuota>& quotas) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size())
@@ -191,13 +191,13 @@ bool CCompositeUnitPriceObj::Update(string menuCode, int nRow, vector<CComposite
 }
 
 
-bool CCompositeUnitPriceObj::Delete(string menuCode, int nRow, vector<CCompositeUnitPriceObj>& cols) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+bool CItemOfUnitPriceObj::Delete(string menuCode, int nRow, vector<CItemOfUnitPriceObj>& cols) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size()) {
 		int idx = 0;
-		vector<CCompositeUnitPriceObj>::iterator it = cols.begin();
+		vector<CItemOfUnitPriceObj>::iterator it = cols.begin();
 		for (; it != cols.end(); it++, idx++) {
 			if (idx == nRow - 1)
 				break;
@@ -213,22 +213,22 @@ bool CCompositeUnitPriceObj::Delete(string menuCode, int nRow, vector<CComposite
 
 
 /* 综合单价分析表 */
-string CCompositeUnitPrice::m_ObjectCode = "01030902";
-double CCompositeUnitPrice::m_ObjectVersion = 1.0;
+string CItemOfUnitPrice::m_ObjectCode = "01030902";
+double CItemOfUnitPrice::m_ObjectVersion = 1.0;
 
-CCompositeUnitPrice::CCompositeUnitPrice()
+CItemOfUnitPrice::CItemOfUnitPrice()
 {
 	m_name = "";
 	m_formula_quantity = 0;
 }
 
 
-CCompositeUnitPrice::~CCompositeUnitPrice()
+CItemOfUnitPrice::~CItemOfUnitPrice()
 {
 }
 
 
-void CCompositeUnitPrice::Serialize(CArchive& ar, double version) {
+void CItemOfUnitPrice::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_formula_quantity;
 		ar << m_name;
@@ -243,16 +243,16 @@ void CCompositeUnitPrice::Serialize(CArchive& ar, double version) {
 		int nNum;
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
-			CCompositeUnitPriceObj bs;
+			CItemOfUnitPriceObj bs;
 			bs.Serialize(ar, version);
 			m_materials.push_back(bs);
 		}
 	}
 }
 
-bool CCompositeUnitPrice::CreateOrUpdate(string menuCode) {
+bool CItemOfUnitPrice::CreateOrUpdate(string menuCode) {
 
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	CDyncItemGroupDlg infd;
@@ -288,11 +288,11 @@ bool CCompositeUnitPrice::CreateOrUpdate(string menuCode) {
 
 
 
-bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCompositeUnitPrice>& cols) {
+bool CItemOfUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CItemOfUnitPrice>& cols) {
 	if (!pGridCtrl)
 		return false;
 
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	try {
@@ -372,22 +372,22 @@ bool CCompositeUnitPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCo
 	return true;
 }
 
-bool CCompositeUnitPrice::Update(string menuCode, int nRow, vector<CCompositeUnitPrice>& cols) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+bool CItemOfUnitPrice::Update(string menuCode, int nRow, vector<CItemOfUnitPrice>& cols) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size())
-		return cols[nRow - 1].CreateOrUpdate(CCompositeUnitPrice::m_ObjectCode);
+		return cols[nRow - 1].CreateOrUpdate(CItemOfUnitPrice::m_ObjectCode);
 	return false;
 }
 
-bool CCompositeUnitPrice::Delete(string menuCode, int nRow, vector<CCompositeUnitPrice>& cols) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+bool CItemOfUnitPrice::Delete(string menuCode, int nRow, vector<CItemOfUnitPrice>& cols) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size()) {
 		int idx = 0;
-		vector<CCompositeUnitPrice>::iterator it = cols.begin();
+		vector<CItemOfUnitPrice>::iterator it = cols.begin();
 		for (; it != cols.end(); it++, idx++) {
 			if (idx == nRow - 1)
 				break;
@@ -399,16 +399,16 @@ bool CCompositeUnitPrice::Delete(string menuCode, int nRow, vector<CCompositeUni
 }
 
 
-unsigned int CCompositeUnitPrice::PopupMenuId(string menuCode) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+unsigned int CItemOfUnitPrice::PopupMenuId(string menuCode) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return 0;
 	return IDR_POPUP_COMPONENT;
 }
 
 
 
-void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>& cols, vector<CConsumptionQuota>& quotas) {
-	if (menuCode != CCompositeUnitPrice::m_ObjectCode)
+void CItemOfUnitPrice::Calculate(string menuCode, vector<CItemOfUnitPrice>& cols, vector<CConsumptionQuota>& quotas) {
+	if (menuCode !=CItemOfUnitPrice::m_ObjectCode)
 		return;
 
 	CGridDlg gridDlg;
@@ -423,7 +423,7 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 	
 	for (int i = 0; i < cols.size(); i++)
 	{
-		CCompositeUnitPrice seb = cols[i];
+		CItemOfUnitPrice seb = cols[i];
 
 		string str = seb.m_name.GetBuffer();
 		vector<string> vec;
@@ -470,5 +470,91 @@ void CCompositeUnitPrice::Calculate(string menuCode, vector<CCompositeUnitPrice>
 		vec.push_back(Double2String(manage + net + people + material + machine));
 		gridDlg.m_vecData.push_back(vec);
 	}
+	gridDlg.DoModal();
+}
+
+
+void CItemOfUnitPrice::Calculate1(string menuCode, vector<CItemOfUnitPrice>& cols, vector<CConsumptionQuota>& quotas) {
+	if (menuCode != CItemOfUnitPrice::m_ObjectCode)
+		return;
+
+	CGridDlg gridDlg;
+	gridDlg.m_strTitle = "分部分项工程和单价措施项目计价表";
+	gridDlg.m_vecHeader.push_back("名称");
+	// gridDlg.m_vecHeader.push_back("清单工程量包含施工工程量");
+	gridDlg.m_vecHeader.push_back("人工费");
+	gridDlg.m_vecHeader.push_back("材料费");
+	gridDlg.m_vecHeader.push_back("机具费");
+	gridDlg.m_vecHeader.push_back("管理费和利润");
+	gridDlg.m_vecHeader.push_back("总价");
+
+	double total_people = 0;
+	double total_material = 0;
+	double total_machine = 0;
+	double total_manage = 0;
+	double total_net = 0;
+
+	for (int i = 0; i < cols.size(); i++)
+	{
+		// seb 代表每个的分部分项工程
+		CItemOfUnitPrice seb = cols[i];
+
+		string str = seb.m_name.GetBuffer();
+		vector<string> vec;
+		vec.push_back(str);
+			   
+		// 人材机
+		double material = 0;
+		double people = 0;
+		double machine = 0;
+
+		for (auto e : seb.m_materials)
+		{
+			double material1 = 0;
+			double people1 = 0;
+			double machine1 = 0;
+			double unit = 1;
+
+			CConsumptionQuota * q = CConsumptionQuota::FindQuota(e.m_consumption_quota_id, quotas);
+			if (q) {
+				q->GetQuotaFee(people1, material1, machine1);
+				unit = q->m_unit;
+			}
+
+			double quantity = e.m_consumption_quantity  / unit;
+
+			material += material1 * quantity;
+			people += people1 * quantity;
+			machine += machine1 * quantity;
+		}
+
+		vec.push_back(Double2String(people));
+		vec.push_back(Double2String(material));
+		vec.push_back(Double2String(machine));
+
+		// 管理费
+		double manage = (people) * 0.3;
+		// 利润
+		double net = (people) * 0.2;
+
+		vec.push_back(Double2String(manage + net));
+		vec.push_back(Double2String(manage + net + people + material + machine));
+		gridDlg.m_vecData.push_back(vec);
+
+		total_people += people;
+		total_material += material;
+		total_machine += machine;
+		total_manage += manage;
+		total_net += net;
+	}
+	vector<string> vec;
+	vec.push_back("总计");
+	vec.push_back(Double2String(total_people));
+	vec.push_back(Double2String(total_material));
+	vec.push_back(Double2String(total_machine));
+	vec.push_back(Double2String(total_manage + total_net));
+	vec.push_back("");
+	gridDlg.m_vecData.push_back(vec);
+
 	gridDlg.DoModal();
 }

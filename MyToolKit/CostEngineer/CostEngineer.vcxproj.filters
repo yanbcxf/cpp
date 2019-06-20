@@ -306,10 +306,13 @@
     <ClInclude Include="BusinessObject\SimilarEngineerBudget.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
-    <ClInclude Include="BusinessObject\CompositeUnitPrice.h">
+    <ClInclude Include="BusinessObject\ConsumptionQuota.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
-    <ClInclude Include="BusinessObject\ConsumptionQuota.h">
+    <ClInclude Include="BusinessObject\ItemOfUnitPrice.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BusinessObject\ItemOfTotalPrice.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -545,10 +548,13 @@
     <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
-    <ClCompile Include="BusinessObject\CompositeUnitPrice.cpp">
+    <ClCompile Include="BusinessObject\ConsumptionQuota.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
-    <ClCompile Include="BusinessObject\ConsumptionQuota.cpp">
+    <ClCompile Include="BusinessObject\ItemOfUnitPrice.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

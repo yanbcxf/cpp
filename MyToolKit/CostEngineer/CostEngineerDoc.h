@@ -19,7 +19,8 @@ public:
 	vector<CBudgetIndex> budgetIndexs;
 	vector<CBuildingBudget>	buildingBudgets;
 	vector<CConsumptionQuota> consumptionQuotas;
-	vector<CCompositeUnitPrice> compositeUnitPrices;
+	vector<CItemOfUnitPrice> compositeUnitPrices;
+	vector<CItemOfTotalPrice>	itemOfTotalPrices;
 
 // 操作
 public:

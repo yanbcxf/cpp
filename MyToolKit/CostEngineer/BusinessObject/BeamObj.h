@@ -16,8 +16,8 @@ public:
 	static bool Update(string menuCode, int nRow, vector<CBeamSpan>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CBeamSpan>& cols);
 	
-	// static void ConcreteQuantity(string menuCode, vector<CColumnObj>& cols);
-	// static void SteelQuantity(string menuCode, vector<CColumnObj>& cols);
+	// static void ConcreteQuantity(string menuCode, vector<CItemOfTotalPrice>& cols);
+	// static void SteelQuantity(string menuCode, vector<CItemOfTotalPrice>& cols);
 
 
 	CString m_name;

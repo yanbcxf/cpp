@@ -30,4 +30,6 @@ public:
 	vector<vector<string>>	m_vecData;
 
 	virtual BOOL OnInitDialog();
+
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 };
