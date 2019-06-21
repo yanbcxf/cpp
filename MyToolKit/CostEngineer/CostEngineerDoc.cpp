@@ -139,6 +139,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			itemOfTotalPrices[i].Serialize(ar, CItemOfTotalPrice::m_ObjectVersion);
 		}
 
+		// 决策树
+		ar << CString(CDecisionTree::m_ObjectCode.c_str());
+		ar << CDecisionTree::m_ObjectVersion;
+		ar << decisionTrees.size();
+		for (int i = 0; i < decisionTrees.size(); i++) {
+			decisionTrees[i].Serialize(ar, CDecisionTree::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -200,7 +208,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					b.Serialize(ar, db);
 					itemOfTotalPrices.push_back(b);
 				}
-
+				// 决策树
+				if (str == CDecisionTree::m_ObjectCode.c_str()) {
+					CDecisionTree b;
+					b.Serialize(ar, db);
+					decisionTrees.push_back(b);
+				}
 			}
 		}
 	}

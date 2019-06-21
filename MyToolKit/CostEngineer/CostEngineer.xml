@@ -93,6 +93,18 @@
 			<element>
 				<code>0104</code>
 				<name>第四章、建设工程招标投标</name>
+				<list>
+					<element>
+						<code>010406</code>
+						<name>案例六</name>
+						<list>
+							<element>
+								<code>01040601</code>
+								<name>决策树法</name>
+							</element>
+						</list>
+					</element>
+				</list>
 			</element>
 			<element>
 				<code>0105</code>

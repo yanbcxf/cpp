@@ -196,6 +196,7 @@
     <ClInclude Include="BusinessObject\BuildingBudget.h" />
     <ClInclude Include="BusinessObject\ColumnObj.h" />
     <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
+    <ClInclude Include="BusinessObject\DecisionTree.h" />
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h" />
     <ClInclude Include="BusinessObject\ItemOfUnitPrice.h" />
     <ClInclude Include="BusinessObject\SimilarEngineerBudget.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TreeGridDlg.h" />
     <ClInclude Include="ViewTree.h" />
     <ClInclude Include="XmlParser.h" />
   </ItemGroup>
@@ -295,6 +297,7 @@
     <ClCompile Include="BusinessObject\BuildingBudget.cpp" />
     <ClCompile Include="BusinessObject\ColumnObj.cpp" />
     <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
+    <ClCompile Include="BusinessObject\DecisionTree.cpp" />
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp" />
     <ClCompile Include="BusinessObject\ItemOfUnitPrice.cpp" />
     <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp" />
@@ -367,6 +370,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TreeGridDlg.cpp" />
     <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="XmlParser.cpp" />
   </ItemGroup>

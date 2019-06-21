@@ -4,7 +4,7 @@
 
 #include "StdAfx.h"
 
-#define TREEGRIDCTRL
+
 #include "TreeGridCtrl.h"
 
 #include "TreeGridCell.h"

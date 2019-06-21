@@ -5,6 +5,8 @@
 #if !defined(__TreeGridCtrl_H__)
 #define __TreeGridCtrl_H__
 
+#define TREEGRIDCTRL
+
 #include "GridCtrl.h"
 #include "TreeNode.h"
 #include "TreeCell.h"

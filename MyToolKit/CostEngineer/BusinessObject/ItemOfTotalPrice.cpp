@@ -221,4 +221,24 @@ void CItemOfTotalPrice::Calculate(string menuCode, vector<CItemOfTotalPrice>& co
 
 	}
 	gridDlg.DoModal();
+
+	CTreeGridDlg treeDlg;
+	treeDlg.m_vecCode.push_back(1);
+	treeDlg.m_vecContent.push_back("1111111");
+	treeDlg.m_vecParentCode.push_back(-1);
+
+	treeDlg.m_vecCode.push_back(2);
+	treeDlg.m_vecContent.push_back("222222");
+	treeDlg.m_vecParentCode.push_back(1);
+	
+
+	treeDlg.m_vecCode.push_back(3);
+	treeDlg.m_vecContent.push_back("222222-1");
+	treeDlg.m_vecParentCode.push_back(1);
+	
+
+	treeDlg.m_vecCode.push_back(4);
+	treeDlg.m_vecContent.push_back("333333");
+	treeDlg.m_vecParentCode.push_back(2);
+	treeDlg.DoModal();
 }

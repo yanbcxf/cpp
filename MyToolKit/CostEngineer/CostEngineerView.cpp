@@ -346,6 +346,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CDecisionTree::Update(m_strMenuCode, nRow, pDoc->decisionTrees)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -415,6 +419,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					bRedraw = true;
 				}
 				if (CItemOfTotalPrice::Delete(m_strMenuCode, nRow, pDoc->itemOfTotalPrices)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CDecisionTree::Delete(m_strMenuCode, nRow, pDoc->decisionTrees)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -518,7 +526,6 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 
 
 
-
 void CCostEngineerView::RedrawView() {
 	CCostEngineerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -613,6 +620,15 @@ void CCostEngineerView::RedrawView() {
 	}
 
 	if (CItemOfTotalPrice::Draw(m_strMenuCode, &m_Grid, pDoc->itemOfTotalPrices)) {
+		m_Grid1.SetRowCount(0);
+
+		m_upper_percent = 19;
+		m_down_percent = 1;
+		ReLayout();
+		return;
+	}
+
+	if (CDecisionTree::Draw(m_strMenuCode, &m_Grid, pDoc->decisionTrees)) {
 		m_Grid1.SetRowCount(0);
 
 		m_upper_percent = 19;

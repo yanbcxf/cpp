@@ -102,6 +102,7 @@ typedef struct _item_info
 #include "DyncItemEditDlg.h"
 #include "DyncItemFindDlg.h"
 #include "DyncItemGroupDlg.h"
+#include "TreeGridDlg.h"
 
 //	计算任务执行模块
 #include "CalculateTask.h"
@@ -119,6 +120,7 @@ typedef struct _item_info
 #include "BuildingBudget.h"
 #include "ItemOfUnitPrice.h"
 #include "ItemOfTotalPrice.h"
+#include "DecisionTree.h"
 
 
 #define WM_USER_XML		WM_USER + 1

@@ -315,6 +315,12 @@
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="TreeGridDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="BusinessObject\DecisionTree.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -555,6 +561,12 @@
       <Filter>BusinessObject</Filter>
     </ClCompile>
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeGridDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\DecisionTree.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

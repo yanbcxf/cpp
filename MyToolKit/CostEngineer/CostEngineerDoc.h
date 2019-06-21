@@ -21,6 +21,7 @@ public:
 	vector<CConsumptionQuota> consumptionQuotas;
 	vector<CItemOfUnitPrice> compositeUnitPrices;
 	vector<CItemOfTotalPrice>	itemOfTotalPrices;
+	vector<CDecisionTree> decisionTrees;
 
 // 操作
 public:
