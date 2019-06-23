@@ -26,5 +26,7 @@ public:
 	double	m_probability;			//	分支发生的概率
 	double	m_score;				//  得分 （一般是期望利润）
 	int		m_parent_code;			//	父节点编号
+
+	bool	m_bLeaf;				//  是否叶子节点 （不保存 doc 文档）
 };
 

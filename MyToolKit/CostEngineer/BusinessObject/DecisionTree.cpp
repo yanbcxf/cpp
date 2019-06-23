@@ -80,7 +80,7 @@ bool CDecisionTree::CreateOrUpdate(string menuCode) {
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("得分(期望利润)"), 64);
 	if (m_score > 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_score);
-	infd.m_vecFindItem[0][i][0].dbMin = 0;
+	infd.m_vecFindItem[0][i][0].dbMin = -10000;
 	infd.m_vecFindItem[0][i][0].dbMax = 100000000;
 
 	
@@ -98,16 +98,15 @@ bool CDecisionTree::CreateOrUpdate(string menuCode) {
 	return false;
 }
 
-bool getBranchPath(CDecisionTree col, vector<CDecisionTree>& cols, vector<CDecisionTree>& path) {
+bool getBranchPath(int idx, vector<CDecisionTree>& cols, vector<int>& path) {
 	
 	do {
-		path.push_back(col);
-		if (col.m_parent_code < 0) break;
+		path.push_back(idx);
+		if (cols[idx].m_parent_code < 0) break;
 		// 是否形成环路
 		bool bLoop = false;	
 		for (auto e : path) {
-			if (e.m_code == col.m_parent_code) {
-				col = e;
+			if (cols[e].m_code == cols[idx].m_parent_code) {
 				bLoop = true;
 				break;
 			}
@@ -115,9 +114,9 @@ bool getBranchPath(CDecisionTree col, vector<CDecisionTree>& cols, vector<CDecis
 		if (bLoop) break;
 		// 是否存在父节点
 		bool bExist = false;
-		for (auto e : cols) {
-			if (e.m_code == col.m_parent_code) {
-				col = e;
+		for (int k = 0; k < cols.size(); k++) {
+			if (cols[k].m_code == cols[idx].m_parent_code) {
+				idx = k;
 				bExist = true;
 				break;
 			}
@@ -196,13 +195,13 @@ bool CDecisionTree::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CDecision
 					Item.mask |= GVIF_FGCLR;
 				}
 
-				vector<CDecisionTree> path;
-				bool bPath = getBranchPath(cols[row - 1], cols, path);
+				vector<int> path;
+				bool bPath = getBranchPath(row - 1, cols, path);
 				string brachName = "Error";
 				if (bPath) {
 					brachName = "";
 					for (int k = path.size() - 1; k >= 0; k--) {
-						brachName += path[k].m_branch_node.GetBuffer();
+						brachName += cols[path[k]].m_branch_node.GetBuffer();
 						if (k > 0) brachName += "-";
 					}
 				}
@@ -271,24 +270,53 @@ void CDecisionTree::Calculate(string menuCode, vector<CDecisionTree>& cols) {
 	if (menuCode != CDecisionTree::m_ObjectCode)
 		return ;
 	
+	for (int i = 0; i < cols.size(); i++) {
+		cols[i].m_bLeaf = true;
+	}
+
+	for (int k = 0; k < cols.size(); k++) {
+		vector<int>  path;
+		if (getBranchPath(k, cols, path)) {
+			for (int i = 1; i < path.size(); i++) {
+				cols[path[i]].m_bLeaf = false;
+				cols[path[i]].m_score = 0;
+			}
+		}
+	}
+
+	for (int k = 0; k < cols.size(); k++) {
+		if (cols[k].m_bLeaf == false) continue;
+		vector<int> path;
+		double score = 0;
+		if (getBranchPath(k, cols, path)) {
+			for (int i = 0; i < path.size(); i++) {
+				if (i < path.size() - 1) {
+					if (i == 0)	score = cols[path[0]].m_probability * cols[path[0]].m_score;
+					else score = score * cols[path[i]].m_probability;
+					cols[path[i + 1]].m_score += score;
+				}
+			}
+		}
+	}
+
 
 	CTreeGridDlg treeDlg;
-	treeDlg.m_vecCode.push_back(1);
-	treeDlg.m_vecContent.push_back("1111111");
-	treeDlg.m_vecParentCode.push_back(-1);
 
-	treeDlg.m_vecCode.push_back(2);
-	treeDlg.m_vecContent.push_back("222222");
-	treeDlg.m_vecParentCode.push_back(1);
-	
+	for (int i = 0; i < cols.size(); i++) {
+		treeDlg.m_vecCode.push_back(cols[i].m_code);
+		treeDlg.m_vecParentCode.push_back(cols[i].m_parent_code);
 
-	treeDlg.m_vecCode.push_back(3);
-	treeDlg.m_vecContent.push_back("222222-1");
-	treeDlg.m_vecParentCode.push_back(1);
-	
-
-	treeDlg.m_vecCode.push_back(4);
-	treeDlg.m_vecContent.push_back("333333");
-	treeDlg.m_vecParentCode.push_back(2);
+		vector<int> path;
+		bool bPath = getBranchPath(i, cols, path);
+		string brachName = "Error";
+		if (bPath) {
+			brachName = "";
+			for (int k = path.size() - 1; k >= 0; k--) {
+				brachName += cols[path[k]].m_branch_node.GetBuffer();
+				if (k > 0) brachName += "-";
+			}
+		}
+		treeDlg.m_vecContent.push_back( brachName + "  " + Double2String(cols[i].m_score));
+	}
 	treeDlg.DoModal();
 }
