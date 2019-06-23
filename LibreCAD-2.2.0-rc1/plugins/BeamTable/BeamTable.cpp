@@ -247,6 +247,39 @@ void parseBeamTable(std::vector<TextData>& texts, std::vector<BeamData>& beams) 
 	}*/
 }
 
+/**/
+void parseBeamTable1(std::vector<TextData>& texts, std::vector<BeamData>& beams) {
+	/* 按照梁名称匹配 */
+	for (int i = 1; i < 1000; i++) {
+		QString txt;
+		if (getCellText(1, i, texts, txt)) {
+			BeamData beam;
+			beam.col = 1;
+			beam.row = i;
+
+			// 准备单元格的宽高
+			beam.name = txt;
+			if (beam.name.indexOf("L") >= 0)
+				beams.push_back(beam);
+
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// 针对每个梁 获取钢筋信息
+	for (int i = 0; i < beams.size(); i++) {
+		getCellText(beams[i].col + 1, beams[i].row, texts, beams[i].bxh);
+		getCellText(beams[i].col + 2, beams[i].row, texts, beams[i].steelTop);
+		getCellText(beams[i].col + 3, beams[i].row, texts, beams[i].steelBottom);
+		getCellText(beams[i].col + 4, beams[i].row, texts, beams[i].steelMiddle);
+		getCellText(beams[i].col + 5, beams[i].row, texts, beams[i].steelHooping);
+	}
+}
+
+
 QString LC_List::getStrData(BeamData strip) {
     
 	QString strData(""), strCommon("  %1: %2\n");
@@ -289,6 +322,7 @@ void LC_List::execComm(Document_Interface *doc,
 	std::vector<BeamData> beams;
 	// parseLinkBeamTable(texts, beams);
 	parseBeamTable(texts, beams);
+	// parseBeamTable1(texts, beams);
 
 	QString text;
 	
@@ -322,7 +356,7 @@ void LC_List::execComm(Document_Interface *doc,
 			bases.push_back(e);
 		}
 		writeBeamData(doc, bases, name());
-		newBeamGraph(bases, QPointF(-150000, -20000), doc, name());
+		newBeamGraph(bases, name(), "Graph1",  doc);
 	}
 
 	while (!obj.isEmpty())
