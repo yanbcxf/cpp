@@ -28,6 +28,9 @@
     <Filter Include="BusinessObject">
       <UniqueIdentifier>{cd654b36-45e2-40a5-9e25-cdc79f904efe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dijkstra">
+      <UniqueIdentifier>{a98c3927-2fa3-43df-bd96-108652cd4c50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CostEngineer.h">
@@ -321,6 +324,18 @@
     <ClInclude Include="BusinessObject\DecisionTree.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="Dijkstra\Dijkstra.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra\Edge.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra\Graph.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra\Node.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -568,6 +583,18 @@
     </ClCompile>
     <ClCompile Include="BusinessObject\DecisionTree.cpp">
       <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra\Dijkstra.cpp">
+      <Filter>Dijkstra</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra\Edge.cpp">
+      <Filter>Dijkstra</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra\Graph.cpp">
+      <Filter>Dijkstra</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra\Node.cpp">
+      <Filter>Dijkstra</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

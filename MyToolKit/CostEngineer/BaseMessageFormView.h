@@ -6,6 +6,7 @@
 
 #include "../GridCtrl_src/GridCtrl.h"
 #include "ChartCtrl.h"
+#include "Dijkstra.h"
 
 
 
@@ -37,7 +38,7 @@ protected:
 	CBaseMessageControl	m_MessageCtrl;
 public:
 	CButton m_btn1;
-	CGridCtrl m_Grid;
+	
 	virtual void OnInitialUpdate();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
@@ -57,8 +58,19 @@ public:
 	}
 
 	void ReLayout();
+	CGridCtrl m_Grid;
 	CGridCtrl m_Grid1;
+	CDijkstra m_Dijkstra;
 
+	enum DisplayModes
+	{
+		Grid_Grid,
+		Grid,
+		Dijkstra,
+		None
+	};
+
+	DisplayModes m_display_mode;
 	int m_upper_percent;	//	上表格占比
 	int	m_down_percent;		//	下表格占比
 

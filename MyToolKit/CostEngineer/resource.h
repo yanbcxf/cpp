@@ -101,6 +101,8 @@
 #define IDD_BASEMESSAGEFORMVIEW         373
 #define IDC_GRID1                       1010
 #define IDC_CHART                       1011
+#define IDC_GRID2                       1011
+#define IDC_DIJKSTRA                    1011
 #define ID_CANCEL_EDIT_CNTR             32768
 #define ID_32771                        32771
 #define ID_32772                        32772

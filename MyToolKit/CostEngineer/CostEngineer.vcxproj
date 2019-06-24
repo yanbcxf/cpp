@@ -94,7 +94,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;../libiconv-1.14/include;./BusinessObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;..\expat-2.0.1\lib;./Dialog/;./ColourPicker;./ChartCtrl;../mxml-2.9/;./MessageString;./include_libxl;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;../libiconv-1.14/include;./BusinessObject;./Dijkstra;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -241,6 +241,10 @@
     <ClInclude Include="CostEngineer.h" />
     <ClInclude Include="CostEngineerDoc.h" />
     <ClInclude Include="CostEngineerView.h" />
+    <ClInclude Include="Dijkstra\Dijkstra.h" />
+    <ClInclude Include="Dijkstra\Edge.h" />
+    <ClInclude Include="Dijkstra\Graph.h" />
+    <ClInclude Include="Dijkstra\Node.h" />
     <ClInclude Include="DyncItemEditDlg.h" />
     <ClInclude Include="DyncItemFindDlg.h" />
     <ClInclude Include="DyncItemGroupDlg.h" />
@@ -333,6 +337,10 @@
     <ClCompile Include="CostEngineer.cpp" />
     <ClCompile Include="CostEngineerDoc.cpp" />
     <ClCompile Include="CostEngineerView.cpp" />
+    <ClCompile Include="Dijkstra\Dijkstra.cpp" />
+    <ClCompile Include="Dijkstra\Edge.cpp" />
+    <ClCompile Include="Dijkstra\Graph.cpp" />
+    <ClCompile Include="Dijkstra\Node.cpp" />
     <ClCompile Include="DyncItemEditDlg.cpp" />
     <ClCompile Include="DyncItemFindDlg.cpp" />
     <ClCompile Include="DyncItemGroupDlg.cpp" />

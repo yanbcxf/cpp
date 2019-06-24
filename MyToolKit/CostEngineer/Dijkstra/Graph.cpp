@@ -1,0 +1,28 @@
+// Graph.cpp: implementation of the CGraph class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "Graph.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CGraph::CGraph()
+{
+
+}
+
+CGraph::~CGraph()
+{
+	m_nodes.clear();
+	m_edges.clear();
+	d.clear();
+	pi.clear();
+}
+
+long CGraph::GetNrNodes()
+{
+	return m_nodes.size();
+}

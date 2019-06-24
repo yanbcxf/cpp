@@ -14,6 +14,7 @@ CBaseMessageFormView::CBaseMessageFormView()
 	: CFormView(CBaseMessageFormView::IDD)
 {
 	m_MessageCtrl.SetOwnerView(this);
+	m_display_mode = DisplayModes::Grid_Grid;
 	m_upper_percent = 3;
 	m_down_percent = 4;
 }
@@ -28,6 +29,7 @@ void CBaseMessageFormView::DoDataExchange(CDataExchange* pDX)
 	//DDX_Control(pDX, IDC_BUTTON1, m_btn1);
 	DDX_Control(pDX, IDC_GRID, m_Grid);
 	DDX_Control(pDX, IDC_GRID1, m_Grid1);
+	DDX_Control(pDX, IDC_DIJKSTRA, m_Dijkstra);
 }
 
 BEGIN_MESSAGE_MAP(CBaseMessageFormView, CFormView)
@@ -82,8 +84,18 @@ void CBaseMessageFormView::OnSize(UINT nType, int cx, int cy)
 
 void CBaseMessageFormView::ReLayout()
 {
-	if (m_Grid.GetSafeHwnd())
+	if (m_display_mode == DisplayModes::None) {
+		m_Grid.ShowWindow(false);
+		m_Grid1.ShowWindow(false);
+		m_Dijkstra.ShowWindow(false);
+	}
+
+	if (m_display_mode == DisplayModes::Grid_Grid)
 	{
+		m_Grid.ShowWindow(true);
+		m_Grid1.ShowWindow(true);
+		m_Dijkstra.ShowWindow(false);
+
 		CRect rect;
 		GetClientRect(&rect);
 		rect.bottom = rect.top + (rect.bottom - rect.top) * m_upper_percent / (m_upper_percent + m_down_percent) - 2;
@@ -94,6 +106,25 @@ void CBaseMessageFormView::ReLayout()
 		rect.top = rect.bottom - (rect.bottom - rect.top) * m_down_percent / (m_upper_percent + m_down_percent) + 2;
 		m_Grid1.MoveWindow(rect);
 		m_Grid1.SetEditable(FALSE);
+	}
+	
+	if (m_display_mode == DisplayModes::Grid) {
+		m_Grid.ShowWindow(true);
+		m_Grid1.ShowWindow(false);
+		m_Dijkstra.ShowWindow(false);
+
+		CRect rect;
+		GetClientRect(&rect);
+		m_Grid.MoveWindow(rect);
+	}
+	if (m_display_mode == DisplayModes::Dijkstra) {
+		m_Grid.ShowWindow(false);
+		m_Grid1.ShowWindow(false);
+		m_Dijkstra.ShowWindow(true);
+
+		CRect rect;
+		GetClientRect(&rect);
+		m_Dijkstra.MoveWindow(rect);
 	}
 }
 

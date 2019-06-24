@@ -535,6 +535,7 @@ void CCostEngineerView::RedrawView() {
 	if (CColumnObj::Draw(m_strMenuCode, &m_Grid, pDoc->columns)) {
 		m_Grid1.SetRowCount(0);
 		
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 9;
 		m_down_percent = 1;
 		ReLayout();
@@ -548,6 +549,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -561,6 +563,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -574,6 +577,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -587,6 +591,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -600,6 +605,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -613,6 +619,7 @@ void CCostEngineerView::RedrawView() {
 		else {
 			m_Grid1.SetRowCount(0);
 		}
+		m_display_mode = DisplayModes::Grid_Grid;
 		m_upper_percent = 4;
 		m_down_percent = 6;
 		ReLayout();
@@ -622,6 +629,7 @@ void CCostEngineerView::RedrawView() {
 	if (CItemOfTotalPrice::Draw(m_strMenuCode, &m_Grid, pDoc->itemOfTotalPrices)) {
 		m_Grid1.SetRowCount(0);
 
+		m_display_mode = DisplayModes::Grid;
 		m_upper_percent = 19;
 		m_down_percent = 1;
 		ReLayout();
@@ -631,6 +639,7 @@ void CCostEngineerView::RedrawView() {
 	if (CDecisionTree::Draw(m_strMenuCode, &m_Grid, pDoc->decisionTrees)) {
 		m_Grid1.SetRowCount(0);
 
+		m_display_mode = DisplayModes::Grid;
 		m_upper_percent = 19;
 		m_down_percent = 1;
 		ReLayout();
@@ -638,6 +647,9 @@ void CCostEngineerView::RedrawView() {
 	}
 
 	try {
+
+		m_display_mode = DisplayModes::None;
+
 		/* 主表格清空 */
 		m_Grid.SetRowCount(1);
 		m_Grid.SetColumnCount(5 + 3);
@@ -653,6 +665,8 @@ void CCostEngineerView::RedrawView() {
 		m_Grid1.SetFixedColumnCount(1);
 		m_Grid1.SetHeaderSort(TRUE);
 		m_Grid1.DeleteRow(0);
+
+		ReLayout();
 	}
 	catch (CMemoryException* e)
 	{
