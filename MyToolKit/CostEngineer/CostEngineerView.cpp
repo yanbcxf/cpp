@@ -31,7 +31,7 @@ BEGIN_MESSAGE_MAP(CCostEngineerView, CBaseMessageFormView)
 	ON_COMMAND(ID_FILE_PRINT, &CCostEngineerView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CCostEngineerView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
+	// ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
@@ -248,8 +248,8 @@ void CCostEngineerView::OnFilePrint()
 
 void CCostEngineerView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	/*ClientToScreen(&point);
+	OnContextMenu(this, point);*/
 }
 
 void CCostEngineerView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
@@ -350,6 +350,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CActivityOnArrow::Update(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -423,6 +427,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					bRedraw = true;
 				}
 				if (CDecisionTree::Delete(m_strMenuCode, nRow, pDoc->decisionTrees)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CActivityOnArrow::Delete(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -646,6 +654,20 @@ void CCostEngineerView::RedrawView() {
 		return;
 	}
 
+	if (CActivityOnArrow::Draw(m_strMenuCode, &m_Grid, pDoc->activityOnArrows)) {
+		if (m_nChildrenCode < pDoc->activityOnArrows.size()) {
+			pDoc->activityOnArrows[m_nChildrenCode].DrawGraph(&m_Graph);
+		}
+		else {
+			m_Graph.initGraph();
+		}
+		m_display_mode = DisplayModes::Grid_Dijkstra;
+		m_upper_percent = 3;
+		m_down_percent = 7;
+		ReLayout();
+		return;
+	}
+
 	try {
 
 		m_display_mode = DisplayModes::None;
@@ -674,4 +696,84 @@ void CCostEngineerView::RedrawView() {
 		e->Delete();
 		return;
 	}
+}
+
+void CCostEngineerView::PostAddNodeToGraph(int x, int y) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].AddNode(m_strMenuCode, x, y)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
+}
+
+void CCostEngineerView::PostAddEdgeToGraph(int from, int to) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].AddEdge(m_strMenuCode, from, to)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
+}
+
+void CCostEngineerView::PostEditNodeInGraph(int idx) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].UpdateNode(m_strMenuCode, idx)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
+}
+
+void CCostEngineerView::PostEditEdgeInGraph(int idx) {
+
+}
+
+void CCostEngineerView::PostDelNodeInGraph(int idx) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].DeleteNode(idx)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
+}
+
+void CCostEngineerView::PostDelEdgeInGraph(int idx) {
+
 }

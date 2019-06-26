@@ -101,7 +101,6 @@
 #define IDD_BASEMESSAGEFORMVIEW         373
 #define IDC_GRID1                       1010
 #define IDC_CHART                       1011
-#define IDC_GRID2                       1011
 #define IDC_DIJKSTRA                    1011
 #define ID_CANCEL_EDIT_CNTR             32768
 #define ID_32771                        32771
@@ -110,13 +109,21 @@
 #define ID_STEEL_QUANTITY               32774
 #define ID_32775                        32775
 #define ID_INPUT_COMPONENT              32776
+#define ID_GRAPHCTRL_32777              32777
+#define ID_GRAPHCTRL_32778              32778
+#define ID_GRAPHCTRL_32779              32779
+#define ID_GRAPHCTRL_32780              32780
+#define ID_GRAPH_ADD_NODE               32781
+#define ID_GRAPH_ADD_EDGE               32782
+#define ID_GRAPH_UPDATE                 32783
+#define ID_GRAPH_DELETE                 32784
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_COMMAND_VALUE         32785
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           318
 #endif

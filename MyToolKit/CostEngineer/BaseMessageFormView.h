@@ -6,7 +6,7 @@
 
 #include "../GridCtrl_src/GridCtrl.h"
 #include "ChartCtrl.h"
-#include "Dijkstra.h"
+#include "GraphCtrl.h"
 
 
 
@@ -48,6 +48,11 @@ public:
 	afx_msg void OnGridDblClick1(NMHDR *pNotifyStruct, LRESULT* pResult);
 	afx_msg void OnGridClick1(NMHDR *pNMHDR, LRESULT *pResult);
 
+	afx_msg void OnAddNodeToGraph(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnAddEdgeToGraph(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnEditNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDelNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult);
+
 	virtual void PostGridDblClick(int gridId, int nRow)
 	{
 
@@ -57,16 +62,43 @@ public:
 
 	}
 
+
+	virtual void PostAddNodeToGraph(int x, int y) {
+
+	}
+
+	virtual void PostAddEdgeToGraph(int from, int to) {
+
+	}
+
+	virtual void PostEditNodeInGraph(int idx) {
+
+	}
+
+	virtual void PostEditEdgeInGraph(int idx) {
+
+	}
+
+	virtual void PostDelNodeInGraph(int idx) {
+
+	}
+
+	virtual void PostDelEdgeInGraph(int idx) {
+
+	}
+	
+
 	void ReLayout();
 	CGridCtrl m_Grid;
 	CGridCtrl m_Grid1;
-	CDijkstra m_Dijkstra;
+	CGraphCtrl m_Graph;
 
 	enum DisplayModes
 	{
 		Grid_Grid,
 		Grid,
 		Dijkstra,
+		Grid_Dijkstra,
 		None
 	};
 

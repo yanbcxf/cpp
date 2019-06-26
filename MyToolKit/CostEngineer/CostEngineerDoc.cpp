@@ -147,6 +147,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			decisionTrees[i].Serialize(ar, CDecisionTree::m_ObjectVersion);
 		}
 
+		// 双代号网络图
+		ar << CString(CActivityOnArrow::m_ObjectCode.c_str());
+		ar << CActivityOnArrow::m_ObjectVersion;
+		ar << activityOnArrows.size();
+		for (int i = 0; i < activityOnArrows.size(); i++) {
+			activityOnArrows[i].Serialize(ar, CActivityOnArrow::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -213,6 +221,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CDecisionTree b;
 					b.Serialize(ar, db);
 					decisionTrees.push_back(b);
+				}
+				// 双代号网络图
+				if (str == CActivityOnArrow::m_ObjectCode.c_str()) {
+					CActivityOnArrow b;
+					b.Serialize(ar, db);
+					activityOnArrows.push_back(b);
 				}
 			}
 		}

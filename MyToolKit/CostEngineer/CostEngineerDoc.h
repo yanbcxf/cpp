@@ -22,6 +22,7 @@ public:
 	vector<CItemOfUnitPrice> compositeUnitPrices;
 	vector<CItemOfTotalPrice>	itemOfTotalPrices;
 	vector<CDecisionTree> decisionTrees;
+	vector<CActivityOnArrow> activityOnArrows;
 
 // 操作
 public:

@@ -121,6 +121,7 @@ typedef struct _item_info
 #include "ItemOfUnitPrice.h"
 #include "ItemOfTotalPrice.h"
 #include "DecisionTree.h"
+#include "ActivityOnArrow.h"
 
 
 #define WM_USER_XML		WM_USER + 1

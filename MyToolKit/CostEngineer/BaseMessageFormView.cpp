@@ -29,7 +29,7 @@ void CBaseMessageFormView::DoDataExchange(CDataExchange* pDX)
 	//DDX_Control(pDX, IDC_BUTTON1, m_btn1);
 	DDX_Control(pDX, IDC_GRID, m_Grid);
 	DDX_Control(pDX, IDC_GRID1, m_Grid1);
-	DDX_Control(pDX, IDC_DIJKSTRA, m_Dijkstra);
+	DDX_Control(pDX, IDC_DIJKSTRA, m_Graph);
 }
 
 BEGIN_MESSAGE_MAP(CBaseMessageFormView, CFormView)
@@ -43,6 +43,10 @@ BEGIN_MESSAGE_MAP(CBaseMessageFormView, CFormView)
 	ON_NOTIFY(NM_CLICK, IDC_GRID, OnGridClick)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRID1, OnGridDblClick1)
 	ON_NOTIFY(NM_CLICK, IDC_GRID1, OnGridClick1)
+	ON_NOTIFY(NM_GRAPH_ADD_NODE, IDC_DIJKSTRA, OnAddNodeToGraph)
+	ON_NOTIFY(NM_GRAPH_ADD_EDGE, IDC_DIJKSTRA, OnAddEdgeToGraph)
+	ON_NOTIFY(NM_GRAPH_EDIT_NODE, IDC_DIJKSTRA, OnEditNodeInGraph)
+	ON_NOTIFY(NM_GRAPH_DEL_NODE, IDC_DIJKSTRA, OnDelNodeInGraph)
 END_MESSAGE_MAP()
 
 
@@ -87,14 +91,14 @@ void CBaseMessageFormView::ReLayout()
 	if (m_display_mode == DisplayModes::None) {
 		m_Grid.ShowWindow(false);
 		m_Grid1.ShowWindow(false);
-		m_Dijkstra.ShowWindow(false);
+		m_Graph.ShowWindow(false);
 	}
 
-	if (m_display_mode == DisplayModes::Grid_Grid)
+	else if (m_display_mode == DisplayModes::Grid_Grid)
 	{
 		m_Grid.ShowWindow(true);
 		m_Grid1.ShowWindow(true);
-		m_Dijkstra.ShowWindow(false);
+		m_Graph.ShowWindow(false);
 
 		CRect rect;
 		GetClientRect(&rect);
@@ -108,23 +112,40 @@ void CBaseMessageFormView::ReLayout()
 		m_Grid1.SetEditable(FALSE);
 	}
 	
-	if (m_display_mode == DisplayModes::Grid) {
+	else if (m_display_mode == DisplayModes::Grid) {
 		m_Grid.ShowWindow(true);
 		m_Grid1.ShowWindow(false);
-		m_Dijkstra.ShowWindow(false);
+		m_Graph.ShowWindow(false);
 
 		CRect rect;
 		GetClientRect(&rect);
 		m_Grid.MoveWindow(rect);
 	}
-	if (m_display_mode == DisplayModes::Dijkstra) {
+	else if (m_display_mode == DisplayModes::Dijkstra) {
 		m_Grid.ShowWindow(false);
 		m_Grid1.ShowWindow(false);
-		m_Dijkstra.ShowWindow(true);
+		m_Graph.ShowWindow(true);
 
 		CRect rect;
 		GetClientRect(&rect);
-		m_Dijkstra.MoveWindow(rect);
+		m_Graph.MoveWindow(rect);
+	}
+
+	else if (m_display_mode == DisplayModes::Grid_Dijkstra)
+	{
+		m_Grid.ShowWindow(true);
+		m_Grid1.ShowWindow(false);
+		m_Graph.ShowWindow(true);
+
+		CRect rect;
+		GetClientRect(&rect);
+		rect.bottom = rect.top + (rect.bottom - rect.top) * m_upper_percent / (m_upper_percent + m_down_percent) - 2;
+		m_Grid.MoveWindow(rect);
+		m_Grid.SetEditable(FALSE);
+
+		GetClientRect(&rect);
+		rect.top = rect.bottom - (rect.bottom - rect.top) * m_down_percent / (m_upper_percent + m_down_percent) + 2;
+		m_Graph.MoveWindow(rect);
 	}
 }
 
@@ -257,5 +278,33 @@ void CBaseMessageFormView::OnGridClick1(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pItem->iRow > 0 && pItem->iColumn > 0)
 		PostGridClick(1, pItem->iRow, pItem->iColumn);
 
+	*pResult = 0;
+}
+
+void CBaseMessageFormView::OnAddNodeToGraph(NMHDR *pNMHDR, LRESULT *pResult) {
+	NM_GRAPH_ADD_NODE_STRUCT* pItem = (NM_GRAPH_ADD_NODE_STRUCT*)pNMHDR;
+	// AfxMessageBox("Add Node");
+	PostAddNodeToGraph(pItem->x, pItem->y);
+	*pResult = 0;
+}
+
+void CBaseMessageFormView::OnAddEdgeToGraph(NMHDR *pNMHDR, LRESULT *pResult) {
+	NM_GRAPH_ADD_EDGE_STRUCT* pItem = (NM_GRAPH_ADD_EDGE_STRUCT*)pNMHDR;
+	// AfxMessageBox("Add Edge");
+	PostAddEdgeToGraph(pItem->m_firstNode, pItem->m_secondNode);
+	*pResult = 0;
+}
+
+void CBaseMessageFormView::OnDelNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult) {
+	NM_GRAPH_DEL_EDIT_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_STRUCT*)pNMHDR;
+	// AfxMessageBox("Add Node");
+	PostDelNodeInGraph(pItem->idx);
+	*pResult = 0;
+}
+
+void CBaseMessageFormView::OnEditNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult) {
+	NM_GRAPH_DEL_EDIT_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_STRUCT*)pNMHDR;
+	// AfxMessageBox("Add Edge");
+	PostEditNodeInGraph(pItem->idx);
 	*pResult = 0;
 }

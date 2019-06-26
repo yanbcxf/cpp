@@ -191,6 +191,7 @@
     <ClInclude Include="BasicExcel.hpp" />
     <ClInclude Include="BCMenu.h" />
     <ClInclude Include="BtnST.h" />
+    <ClInclude Include="BusinessObject\ActivityOnArrow.h" />
     <ClInclude Include="BusinessObject\BeamObj.h" />
     <ClInclude Include="BusinessObject\BudgetIndex.h" />
     <ClInclude Include="BusinessObject\BuildingBudget.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="Dijkstra\Dijkstra.h" />
     <ClInclude Include="Dijkstra\Edge.h" />
     <ClInclude Include="Dijkstra\Graph.h" />
+    <ClInclude Include="Dijkstra\GraphCtrl.h" />
     <ClInclude Include="Dijkstra\Node.h" />
     <ClInclude Include="DyncItemEditDlg.h" />
     <ClInclude Include="DyncItemFindDlg.h" />
@@ -296,6 +298,7 @@
     </ClCompile>
     <ClCompile Include="BCMenu.cpp" />
     <ClCompile Include="BtnST.cpp" />
+    <ClCompile Include="BusinessObject\ActivityOnArrow.cpp" />
     <ClCompile Include="BusinessObject\BeamObj.cpp" />
     <ClCompile Include="BusinessObject\BudgetIndex.cpp" />
     <ClCompile Include="BusinessObject\BuildingBudget.cpp" />
@@ -340,6 +343,7 @@
     <ClCompile Include="Dijkstra\Dijkstra.cpp" />
     <ClCompile Include="Dijkstra\Edge.cpp" />
     <ClCompile Include="Dijkstra\Graph.cpp" />
+    <ClCompile Include="Dijkstra\GraphCtrl.cpp" />
     <ClCompile Include="Dijkstra\Node.cpp" />
     <ClCompile Include="DyncItemEditDlg.cpp" />
     <ClCompile Include="DyncItemFindDlg.cpp" />

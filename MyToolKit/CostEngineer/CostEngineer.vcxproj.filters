@@ -336,6 +336,12 @@
     <ClInclude Include="Dijkstra\Node.h">
       <Filter>Dijkstra</Filter>
     </ClInclude>
+    <ClInclude Include="BusinessObject\ActivityOnArrow.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra\GraphCtrl.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -594,6 +600,12 @@
       <Filter>Dijkstra</Filter>
     </ClCompile>
     <ClCompile Include="Dijkstra\Node.cpp">
+      <Filter>Dijkstra</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\ActivityOnArrow.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra\GraphCtrl.cpp">
       <Filter>Dijkstra</Filter>
     </ClCompile>
   </ItemGroup>

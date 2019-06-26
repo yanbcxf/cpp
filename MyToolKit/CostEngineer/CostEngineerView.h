@@ -56,7 +56,6 @@ protected:
 protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnInsertObject();
 	afx_msg void OnCancelEditCntr();
 	afx_msg void OnFilePrint();
@@ -67,6 +66,13 @@ protected:
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 
 	virtual void PostGridClick(int gridId, int nRow, int nCol);
+	
+	virtual void CCostEngineerView::PostAddNodeToGraph(int x, int y);
+	virtual void CCostEngineerView::PostAddEdgeToGraph(int from ,int to);
+	virtual void CCostEngineerView::PostEditNodeInGraph(int idx);
+	virtual void CCostEngineerView::PostEditEdgeInGraph(int idx);
+	virtual void CCostEngineerView::PostDelNodeInGraph(int idx);
+	virtual void CCostEngineerView::PostDelEdgeInGraph(int idx);
 };
 
 #ifndef _DEBUG  // CostEngineerView.cpp 中的调试版本
