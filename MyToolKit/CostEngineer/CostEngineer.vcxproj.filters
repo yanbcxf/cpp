@@ -324,22 +324,19 @@
     <ClInclude Include="BusinessObject\DecisionTree.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
-    <ClInclude Include="Dijkstra\Dijkstra.h">
-      <Filter>Dijkstra</Filter>
-    </ClInclude>
     <ClInclude Include="Dijkstra\Edge.h">
       <Filter>Dijkstra</Filter>
     </ClInclude>
     <ClInclude Include="Dijkstra\Graph.h">
       <Filter>Dijkstra</Filter>
     </ClInclude>
-    <ClInclude Include="Dijkstra\Node.h">
-      <Filter>Dijkstra</Filter>
-    </ClInclude>
     <ClInclude Include="BusinessObject\ActivityOnArrow.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
     <ClInclude Include="Dijkstra\GraphCtrl.h">
+      <Filter>Dijkstra</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra\Node.h">
       <Filter>Dijkstra</Filter>
     </ClInclude>
   </ItemGroup>
@@ -589,9 +586,6 @@
     </ClCompile>
     <ClCompile Include="BusinessObject\DecisionTree.cpp">
       <Filter>BusinessObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Dijkstra\Dijkstra.cpp">
-      <Filter>Dijkstra</Filter>
     </ClCompile>
     <ClCompile Include="Dijkstra\Edge.cpp">
       <Filter>Dijkstra</Filter>

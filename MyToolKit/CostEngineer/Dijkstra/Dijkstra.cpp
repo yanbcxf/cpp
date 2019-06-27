@@ -105,7 +105,7 @@ void CDijkstra::OnDraw(CDC* pDC)
 	for(kl=g.m_nodes.begin(); kl<g.m_nodes.end(); kl++)
 	{
 		char s[10];
-		ltoa((*kl).m_NodeNr, s, 10);
+		//ltoa((*kl).m_NodeNr, s, 10);
 		pDC->Ellipse((*kl).m_p.x-10, (*kl).m_p.y-10, (*kl).m_p.x+10, (*kl).m_p.y+10);
 		if(nr<9)
 			pDC->TextOut((*kl).m_p.x-5, (*kl).m_p.y-8, s, 1);
@@ -154,7 +154,7 @@ void CDijkstra::AddNode(long x, long y)
 	CNode node;
 	node.m_p.x = x;
 	node.m_p.y = y;
-	node.m_NodeNr = g.GetNrNodes()+1;
+	
 	g.m_nodes.push_back(node);
 	Refresh();
 }

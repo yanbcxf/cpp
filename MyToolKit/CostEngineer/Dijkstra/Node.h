@@ -20,10 +20,13 @@ class CNode
 {
 public:
 	CNode Copy();
-	double m_cost;	// not used yet
-	long m_NodeNr;	// node number
+	
 	POINT m_p;		// graphical point for that node
 	CNode();
+
+	string  m_top;
+	string  m_middle;
+	string	m_bottom;
 	virtual ~CNode();
 };
 

@@ -96,9 +96,10 @@ protected:
 	bool	m_mode_update;
 	bool	m_mode_delete;
 	bool	m_mode_move;
-	POINT m_LastLButtonDownPosition;
 
-	HFONT m_lmfont;
+	POINT	m_LastLButtonDownPosition;
+	HFONT	m_lmfont;
+	int		m_node_radius;
 	CGraph g;
 
 protected:
@@ -112,16 +113,17 @@ protected:
 public:
 	void initGraph();
 	bool ExistEdge(CNode u, CNode v);
-	double GetEdgeVal(CNode u, CNode v);
-	void Relax(CNode u, CNode v, double w);
-		
-	int GetNode(long x, long y);
 
+		
+	int	GetNode(long x, long y);
+
+	/* 先调用 AddNode 插入节点 ，然后调用 AddEdge 插入边，以便正确确定 节点的绘制半径 */
+	void AddNode(long x, long y, string top, string middle = "", string bottom = "");
 	void AddEdge(int from, int to);
-	void AddNode(long x, long y);
 
 	void Refresh();
 	void ReleaseAll();
+	void DrawNode(CDC* pDC, CNode node);
 
 	DECLARE_MESSAGE_MAP()
 

@@ -363,7 +363,7 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 
 	pCtrl->initGraph();
 	for (int i = 0; i < m_nodes.size(); i++) {
-		pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y);
+		pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer());
 	}
 
 	for (int i = 0; i < m_edges.size(); i++) {
@@ -380,6 +380,7 @@ bool CActivityOnArrow::AddNode(string menuCode, int x, int y) {
 	CAOANode node;
 	node.m_x = x;
 	node.m_y = y;
+	node.m_name.Format("%d", m_nodes.size() + 1);
 	if (node.CreateOrUpdate(menuCode)) {
 		m_nodes.push_back(node);
 	}

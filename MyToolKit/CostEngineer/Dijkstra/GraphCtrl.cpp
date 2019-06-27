@@ -132,14 +132,26 @@ BOOL CGraphCtrl::Create(const RECT& rect, CWnd* pParentWnd, UINT nID, DWORD dwSt
 	return TRUE;
 }
 
-void DrawNode(CDC* pDC, CNode node) {
-	char s[10];
-	ltoa(node.m_NodeNr + 1, s, 10);
-	pDC->Ellipse(node.m_p.x - 20, node.m_p.y - 20, node.m_p.x + 20, node.m_p.y + 20);
-	if(node.m_NodeNr + 1 <= 9)
-		pDC->TextOut(node.m_p.x - 5, node.m_p.y - 8, s, 1);
-	else
-		pDC->TextOut(node.m_p.x - 7, node.m_p.y - 8, s, 2);
+void CGraphCtrl::DrawNode(CDC* pDC, CNode node) {
+
+	if (node.m_bottom.empty() && node.m_middle.empty()) {
+		pDC->Ellipse(node.m_p.x - m_node_radius, node.m_p.y - m_node_radius, node.m_p.x + m_node_radius, node.m_p.y + m_node_radius);
+		pDC->TextOut(node.m_p.x - 5, node.m_p.y - 8, node.m_top.c_str(), node.m_top.length());
+	}
+	else {
+		pDC->Ellipse(node.m_p.x - m_node_radius, node.m_p.y - m_node_radius, node.m_p.x + m_node_radius, node.m_p.y + m_node_radius);
+
+		pDC->TextOut(node.m_p.x - 3 * node.m_top.length(), node.m_p.y - 8 - 14, node.m_top.c_str(), node.m_top.length());
+		pDC->TextOut(node.m_p.x - 3 * node.m_middle.length(), node.m_p.y - 8 , node.m_middle.c_str(), node.m_middle.length());
+		pDC->TextOut(node.m_p.x - 3 * node.m_bottom.length(), node.m_p.y - 8 + 15, node.m_bottom.c_str(), node.m_bottom.length());
+
+		
+		pDC->MoveTo(node.m_p.x - 22, node.m_p.y - 8);
+		pDC->LineTo(node.m_p.x + 22, node.m_p.y - 8);
+		pDC->MoveTo(node.m_p.x - 22, node.m_p.y + 7);
+		pDC->LineTo(node.m_p.x + 22, node.m_p.y + 7);
+	}
+
 }
 
 void CGraphCtrl::OnDraw(CDC* pDC)
@@ -213,14 +225,23 @@ void CGraphCtrl::ReleaseAll()
 void CGraphCtrl::initGraph() {
 	g.m_edges.clear();
 	g.m_nodes.clear();
+	/* 默认的 节点半径  */
+	m_node_radius = 15;
 }
 
-void CGraphCtrl::AddNode(long x, long y) {
+void CGraphCtrl::AddNode(long x, long y, string top, string middle, string bottom) {
 	CNode node;
 	node.m_p.x = x;
 	node.m_p.y = y;
-	node.m_NodeNr = g.GetNrNodes();
+	node.m_top = top;
+	node.m_middle = middle;
+	node.m_bottom = bottom;
+	
 	g.m_nodes.push_back(node);
+
+	/* 当有多行时，放大节点半径  */
+	if (!node.m_bottom.empty() || !node.m_middle.empty())
+		m_node_radius = 25;
 }
 
 
@@ -237,17 +258,17 @@ void  CGraphCtrl::AddEdge(int from, int to) {
 	double x = (x2 - x1) / d;
 	double y = (y2 - y1) / d;
 	
-	ed.m_firstPct.x = x1 + x * 20;
-	ed.m_firstPct.y = y1 + y * 20;
-	ed.m_secondPct.x = x2 - x * 20;
-	ed.m_secondPct.y = y2 - y * 20;
+	ed.m_firstPct.x = x1 + x * m_node_radius;
+	ed.m_firstPct.y = y1 + y * m_node_radius;
+	ed.m_secondPct.x = x2 - x * m_node_radius;
+	ed.m_secondPct.y = y2 - y * m_node_radius;
 
 	x = -x;
 	y = -y;
-	double arrow1_x = x * cos(3.14159 / 4) - y * sin(3.14159 / 4);
-	double arrow1_y = x * sin(3.14159 / 4) + y * cos(3.14159 / 4);
-	double arrow2_x = x * cos(-3.14159 / 4) - y * sin(-3.14159 / 4);
-	double arrow2_y = x * sin(-3.14159 / 4) + y * cos(-3.14159 / 4);
+	double arrow1_x = x * cos(3.14159 / 6) - y * sin(3.14159 / 4);
+	double arrow1_y = x * sin(3.14159 / 6) + y * cos(3.14159 / 4);
+	double arrow2_x = x * cos(-3.14159 / 6) - y * sin(-3.14159 / 4);
+	double arrow2_y = x * sin(-3.14159 / 6) + y * cos(-3.14159 / 4);
 
 	ed.m_arrow1.x = ed.m_secondPct.x + arrow1_x * 10;
 	ed.m_arrow1.y = ed.m_secondPct.y + arrow1_y * 10;
@@ -270,45 +291,26 @@ void CGraphCtrl::Refresh()
 int CGraphCtrl::GetNode(long x, long y)
 {
 	VTYPE_NODE::iterator kl;
-	for(kl=g.m_nodes.begin(); kl<g.m_nodes.end(); kl++)
+	for(int i = 0; i< g.m_nodes.size(); i++)
 	{
-		if(x<(*kl).m_p.x+15 && x>(*kl).m_p.x-15 && y<(*kl).m_p.y+15 && y>(*kl).m_p.y-15)
-			return (*kl).m_NodeNr;
+		CNode kl = g.m_nodes[i];
+		if (x< kl.m_p.x + m_node_radius && x>kl.m_p.x - m_node_radius && y<kl.m_p.y + m_node_radius && y>kl.m_p.y - m_node_radius)
+			return i;
 	}
 	return -1;
 }
 
 
-void CGraphCtrl::Relax(CNode u, CNode v, double w)
-{
-	if(g.d[v.m_NodeNr-1]>g.d[u.m_NodeNr-1]+w)
-	{
-		g.d[v.m_NodeNr-1] = g.d[u.m_NodeNr-1]+w;
-		g.pi[v.m_NodeNr-1] = u.m_NodeNr;
-	}
-}
 
-double CGraphCtrl::GetEdgeVal(CNode u, CNode v)
-{
-	VTYPE_EDGE::iterator kl;
-	for(kl=g.m_edges.begin(); kl<g.m_edges.end(); kl++)
-	{
-		if(((*kl).m_firstNode == u.m_NodeNr && (*kl).m_secondNode == v.m_NodeNr))/* ||
-			((*kl).m_firstNode == v.m_NodeNr && (*kl).m_secondNode == u.m_NodeNr))*/
-			return (*kl).m_cost;
-	}
-	return 0;
-}
 
 bool CGraphCtrl::ExistEdge(CNode u, CNode v)
 {
 	VTYPE_EDGE::iterator kl;
-	for(kl=g.m_edges.begin(); kl<g.m_edges.end(); kl++)
+	/*for(kl=g.m_edges.begin(); kl<g.m_edges.end(); kl++)
 	{
-		if(((*kl).m_firstNode == u.m_NodeNr && (*kl).m_secondNode == v.m_NodeNr))/* ||
-			((*kl).m_firstNode == v.m_NodeNr && (*kl).m_secondNode == u.m_NodeNr))*/
+		if(((*kl).m_firstNode == u.m_NodeNr && (*kl).m_secondNode == v.m_NodeNr))
 			return true;
-	}
+	}*/
 	return false;
 }
 
