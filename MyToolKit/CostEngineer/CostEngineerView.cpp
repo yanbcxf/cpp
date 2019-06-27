@@ -752,6 +752,24 @@ void CCostEngineerView::PostEditNodeInGraph(int idx) {
 		RedrawView();;
 }
 
+void CCostEngineerView::PostMoveNodeInGraph(int idx, int x, int y) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].MoveNode(m_strMenuCode, idx, x, y)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
+}
+
 void CCostEngineerView::PostEditEdgeInGraph(int idx) {
 
 }

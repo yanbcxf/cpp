@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CGraphCtrl, CWnd)
 	ON_COMMAND(ID_GRAPH_ADD_NODE, &CGraphCtrl::OnGraphAddNode)
 	ON_COMMAND(ID_GRAPH_DELETE, &CGraphCtrl::OnGraphDelete)
 	ON_COMMAND(ID_GRAPH_UPDATE, &CGraphCtrl::OnGraphUpdate)
+	ON_COMMAND(ID_GRAPH_MOVE, &CGraphCtrl::OnGraphMove)
 END_MESSAGE_MAP()
 
 void CGraphCtrl::OnPaint()
@@ -65,6 +66,8 @@ void CGraphCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 		OnUpdate(point.x, point.y);
 	else if (m_mode_delete)
 		OnDelete(point.x, point.y);
+	else if (m_mode_move)
+		OnMove(point.x, point.y);
 	return;
 }
 
@@ -105,6 +108,7 @@ void CGraphCtrl::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 	popupMenu->CheckMenuItem(ID_GRAPH_ADD_EDGE, MF_BYCOMMAND | m_mode_addEdges ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_UPDATE, MF_BYCOMMAND | m_mode_update ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_DELETE, MF_BYCOMMAND | m_mode_delete ? MF_CHECKED : MF_UNCHECKED);
+	popupMenu->CheckMenuItem(ID_GRAPH_MOVE, MF_BYCOMMAND | m_mode_move ? MF_CHECKED : MF_UNCHECKED);
 
 	popupMenu->TrackPopupMenu(TPM_RIGHTBUTTON | TPM_LEFTALIGN, point.x, point.y, this);
 }
@@ -128,6 +132,16 @@ BOOL CGraphCtrl::Create(const RECT& rect, CWnd* pParentWnd, UINT nID, DWORD dwSt
 	return TRUE;
 }
 
+void DrawNode(CDC* pDC, CNode node) {
+	char s[10];
+	ltoa(node.m_NodeNr + 1, s, 10);
+	pDC->Ellipse(node.m_p.x - 20, node.m_p.y - 20, node.m_p.x + 20, node.m_p.y + 20);
+	if(node.m_NodeNr + 1 <= 9)
+		pDC->TextOut(node.m_p.x - 5, node.m_p.y - 8, s, 1);
+	else
+		pDC->TextOut(node.m_p.x - 7, node.m_p.y - 8, s, 2);
+}
+
 void CGraphCtrl::OnDraw(CDC* pDC)
 {
 	//RECT& rc = *(RECT*)di.prcBounds;
@@ -149,13 +163,7 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	VTYPE_NODE::iterator kl;
 	for(kl=g.m_nodes.begin(); kl<g.m_nodes.end(); kl++)
 	{
-		char s[10];
-		ltoa((*kl).m_NodeNr + 1, s, 10);
-		pDC->Ellipse((*kl).m_p.x-20, (*kl).m_p.y-20, (*kl).m_p.x+20, (*kl).m_p.y+20);
-		if(nr<9)
-			pDC->TextOut((*kl).m_p.x-5, (*kl).m_p.y-8, s, 1);
-		else
-			pDC->TextOut((*kl).m_p.x-5, (*kl).m_p.y-8, s, 2);
+		DrawNode(pDC, *kl);
 		nr++;
 	}	
 	oldbrush=(HPEN)pDC->SelectObject(brush);
@@ -169,7 +177,15 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 			temp=(HPEN)pDC->SelectObject(penred);
 		pDC->MoveTo((*kll).m_firstPct.x, (*kll).m_firstPct.y);
 		pDC->LineTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
-		pDC->Ellipse((*kll).m_secondPct.x-5, (*kll).m_secondPct.y-5, (*kll).m_secondPct.x+5, (*kll).m_secondPct.y+5);
+
+		/* 绘制箭头 */
+		// pDC->Ellipse((*kll).m_secondPct.x-5, (*kll).m_secondPct.y-5, (*kll).m_secondPct.x+5, (*kll).m_secondPct.y+5);
+		pDC->MoveTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
+		pDC->LineTo((*kll).m_arrow1.x, (*kll).m_arrow1.y);
+
+		pDC->MoveTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
+		pDC->LineTo((*kll).m_arrow2.x, (*kll).m_arrow2.y);
+
 		// calcul middle pint
 		POINT po;
 		po.x = ((*kll).m_firstPct.x+(*kll).m_secondPct.x)/2;
@@ -213,10 +229,31 @@ void  CGraphCtrl::AddEdge(int from, int to) {
 	ed.m_firstNode = from;
 	ed.m_secondNode = to;
 
-	ed.m_firstPct.x = g.m_nodes[from].m_p.x;
-	ed.m_firstPct.y = g.m_nodes[from].m_p.y;
-	ed.m_secondPct.x = g.m_nodes[to].m_p.x;
-	ed.m_secondPct.y = g.m_nodes[to].m_p.y;
+	double x1 = g.m_nodes[from].m_p.x;
+	double y1 = g.m_nodes[from].m_p.y;
+	double x2 = g.m_nodes[to].m_p.x;
+	double y2 = g.m_nodes[to].m_p.y;
+	double d = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	double x = (x2 - x1) / d;
+	double y = (y2 - y1) / d;
+	
+	ed.m_firstPct.x = x1 + x * 20;
+	ed.m_firstPct.y = y1 + y * 20;
+	ed.m_secondPct.x = x2 - x * 20;
+	ed.m_secondPct.y = y2 - y * 20;
+
+	x = -x;
+	y = -y;
+	double arrow1_x = x * cos(3.14159 / 4) - y * sin(3.14159 / 4);
+	double arrow1_y = x * sin(3.14159 / 4) + y * cos(3.14159 / 4);
+	double arrow2_x = x * cos(-3.14159 / 4) - y * sin(-3.14159 / 4);
+	double arrow2_y = x * sin(-3.14159 / 4) + y * cos(-3.14159 / 4);
+
+	ed.m_arrow1.x = ed.m_secondPct.x + arrow1_x * 10;
+	ed.m_arrow1.y = ed.m_secondPct.y + arrow1_y * 10;
+	ed.m_arrow2.x = ed.m_secondPct.x + arrow2_x * 10;
+	ed.m_arrow2.y = ed.m_secondPct.y + arrow2_y * 10;
+
 	g.m_edges.push_back(ed);
 }
 
@@ -283,6 +320,7 @@ void CGraphCtrl::OnGraphAddEdge()
 	m_mode_addNodes = false;
 	m_mode_update = false;
 	m_mode_delete = false;
+	m_mode_move = false;
 }
 
 
@@ -293,6 +331,7 @@ void CGraphCtrl::OnGraphAddNode()
 	m_mode_addNodes = true;
 	m_mode_update = false;
 	m_mode_delete = false;
+	m_mode_move = false;
 }
 
 
@@ -303,6 +342,7 @@ void CGraphCtrl::OnGraphDelete()
 	m_mode_addNodes = false;
 	m_mode_update = false;
 	m_mode_delete = true;
+	m_mode_move = false;
 }
 
 
@@ -313,6 +353,17 @@ void CGraphCtrl::OnGraphUpdate()
 	m_mode_addNodes = false;
 	m_mode_update = true;
 	m_mode_delete = false;
+	m_mode_move = false;
+}
+
+void CGraphCtrl::OnGraphMove()
+{
+	// TODO: 在此添加命令处理程序代码
+	m_mode_addEdges = false;
+	m_mode_addNodes = false;
+	m_mode_update = false;
+	m_mode_delete = false;
+	m_mode_move = true;
 }
 
 void CGraphCtrl::OnAddNode(long x, long y)
@@ -406,13 +457,14 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 
 
 void CGraphCtrl::OnUpdate(long x, long y) {
-	NM_GRAPH_DEL_EDIT_STRUCT nmgv;
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 	nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
 
 	nmgv.idx = GetNode(x, y);
 	if (nmgv.idx >= 0) {
+		
 		CWnd *pOwner = GetOwner();
 		if (pOwner && IsWindow(pOwner->m_hWnd))
 			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
@@ -420,7 +472,7 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 }
 
 void CGraphCtrl::OnDelete(long x, long y) {
-	NM_GRAPH_DEL_EDIT_STRUCT nmgv;
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 	nmgv.hdr.code = NM_GRAPH_DEL_NODE;
@@ -431,4 +483,73 @@ void CGraphCtrl::OnDelete(long x, long y) {
 		if (pOwner && IsWindow(pOwner->m_hWnd))
 			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
 	}
+}
+
+void CGraphCtrl::OnMove(long x, long y) {
+	MSG msg;
+	HDC hdc = ::GetDC(m_hWnd);
+	SetROP2(hdc, R2_NOTXORPEN);
+	HPEN pen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
+	HPEN oldpen;
+	//POINT Apct;
+	CNode curNode;
+	oldpen = (HPEN)SelectObject(hdc, pen);
+	CDC dc;
+	dc.Attach(hdc);
+
+	bool TrackFinished = false;
+
+	long firstnode = GetNode(x, y);
+	if (firstnode < 0) {
+		TrackFinished = true;
+	}
+	else {
+		curNode = g.m_nodes[firstnode];
+	}
+
+	// while mouse not up try to find the nodes between which it will draw the edge
+	while (!TrackFinished)
+	{
+		GetMessage(&msg, m_hWnd, 0x200, 0x204);
+		if (msg.message == WM_MOUSEMOVE)
+		{
+			int poxT = ((int)LOWORD(msg.lParam));
+			int poyT = ((int)HIWORD(msg.lParam));
+			// 擦除旧节点
+			DrawNode(&dc, curNode);
+
+			/* 画新节点 */
+			curNode.m_p.x = poxT;
+			curNode.m_p.y = poyT;
+			DrawNode(&dc, curNode);
+			short fwKeys = short(UINT(msg.wParam));
+		}
+		if (msg.message == WM_LBUTTONUP)
+		{
+			int poxT = ((int)LOWORD(msg.lParam));
+			int poyT = ((int)HIWORD(msg.lParam));
+			
+			TrackFinished = true;
+
+			NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
+			nmgv.hdr.hwndFrom = m_hWnd;
+			nmgv.hdr.idFrom = GetDlgCtrlID();
+			nmgv.hdr.code = NM_GRAPH_MOVE_NODE;
+
+			nmgv.idx = firstnode;
+			nmgv.x = poxT;
+			nmgv.y = poyT;
+
+			if (nmgv.idx >= 0) {
+				CWnd *pOwner = GetOwner();
+				if (pOwner && IsWindow(pOwner->m_hWnd))
+					pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+			}
+		}
+	}
+
+	SelectObject(hdc, oldpen);
+	SetROP2(hdc, R2_COPYPEN);
+	DeleteObject(pen);
+	::ReleaseDC(m_hWnd, hdc);
 }

@@ -18,6 +18,8 @@ public:
 	long m_firstNode;	// the first node number
 	POINT m_secondPct;	// graphical elements for drawing the edges
 	POINT m_firstPct;
+	POINT m_arrow1;
+	POINT m_arrow2;
 	CEdge();
 	virtual ~CEdge();
 

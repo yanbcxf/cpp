@@ -46,6 +46,7 @@ public:
 	bool DrawGraph(CGraphCtrl* pCtrl);
 	bool AddNode(string menuCode, int x, int y);
 	bool AddEdge(string menuCode, int from, int to);
+	bool MoveNode(string menuCode, int nRow, int x, int y);
 	bool UpdateNode(string menuCode, int nRow);
 	bool UpdateEdge(int nRow);
 	bool DeleteNode(int nRow);

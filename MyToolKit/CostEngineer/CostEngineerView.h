@@ -69,6 +69,7 @@ protected:
 	
 	virtual void CCostEngineerView::PostAddNodeToGraph(int x, int y);
 	virtual void CCostEngineerView::PostAddEdgeToGraph(int from ,int to);
+	virtual void CCostEngineerView::PostMoveNodeInGraph(int idx, int x, int y);
 	virtual void CCostEngineerView::PostEditNodeInGraph(int idx);
 	virtual void CCostEngineerView::PostEditEdgeInGraph(int idx);
 	virtual void CCostEngineerView::PostDelNodeInGraph(int idx);

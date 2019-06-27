@@ -52,6 +52,7 @@ public:
 	afx_msg void OnAddEdgeToGraph(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEditNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDelNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnMoveNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult);
 
 	virtual void PostGridDblClick(int gridId, int nRow)
 	{
@@ -68,6 +69,10 @@ public:
 	}
 
 	virtual void PostAddEdgeToGraph(int from, int to) {
+
+	}
+
+	virtual void PostMoveNodeInGraph(int idx, int x, int y) {
 
 	}
 

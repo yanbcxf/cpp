@@ -13,15 +13,18 @@
 #define NM_GRAPH_ADD_NODE                0L      
 #define NM_GRAPH_DEL_NODE                1L
 #define NM_GRAPH_EDIT_NODE               2L
+#define NM_GRAPH_MOVE_NODE               3L
 
-#define NM_GRAPH_ADD_EDGE                3L
-#define NM_GRAPH_DEL_EDGE                4L
-#define NM_GRAPH_EDIT_EDGE               5L
+#define NM_GRAPH_ADD_EDGE                4L
+#define NM_GRAPH_DEL_EDGE                5L
+#define NM_GRAPH_EDIT_EDGE               6L
 
 typedef struct tagNM_GRAPH_DEL_EDIT {
 	NMHDR hdr;
 	int   idx;
-} NM_GRAPH_DEL_EDIT_STRUCT;
+	LONG  x;			//	对于 移动中的 节点的 x 和 y 坐标
+	LONG  y;
+} NM_GRAPH_DEL_EDIT_MOVE_STRUCT;
 
 typedef struct tagNM_GRAPH_ADD_NODE {
 	NMHDR hdr;
@@ -70,6 +73,7 @@ public:
 		m_mode_addEdges = false;
 		m_mode_update = false;
 		m_mode_delete = false;
+		m_mode_move = false;
 
 		m_bDoubleBuffer = true;
 	}
@@ -91,6 +95,7 @@ protected:
 	bool	m_mode_addEdges;
 	bool	m_mode_update;
 	bool	m_mode_delete;
+	bool	m_mode_move;
 	POINT m_LastLButtonDownPosition;
 
 	HFONT m_lmfont;
@@ -101,7 +106,7 @@ protected:
 	void OnAddNode(long x, long y);
 	void OnUpdate(long x, long y);
 	void OnDelete(long x, long y);
-
+	void OnMove(long x, long y);
 
 // IDijkstra
 public:
@@ -133,6 +138,7 @@ public:
 	afx_msg void OnGraphDelete();
 	afx_msg void OnGraphUpdate();
 	
+	afx_msg void OnGraphMove();
 };
 
 #endif //__DIJKSTRA_H_

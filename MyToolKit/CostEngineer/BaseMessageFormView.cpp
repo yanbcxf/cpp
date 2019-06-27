@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CBaseMessageFormView, CFormView)
 	ON_NOTIFY(NM_GRAPH_ADD_EDGE, IDC_DIJKSTRA, OnAddEdgeToGraph)
 	ON_NOTIFY(NM_GRAPH_EDIT_NODE, IDC_DIJKSTRA, OnEditNodeInGraph)
 	ON_NOTIFY(NM_GRAPH_DEL_NODE, IDC_DIJKSTRA, OnDelNodeInGraph)
+	ON_NOTIFY(NM_GRAPH_MOVE_NODE, IDC_DIJKSTRA, OnMoveNodeInGraph)
 END_MESSAGE_MAP()
 
 
@@ -296,15 +297,22 @@ void CBaseMessageFormView::OnAddEdgeToGraph(NMHDR *pNMHDR, LRESULT *pResult) {
 }
 
 void CBaseMessageFormView::OnDelNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult) {
-	NM_GRAPH_DEL_EDIT_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_STRUCT*)pNMHDR;
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_MOVE_STRUCT*)pNMHDR;
 	// AfxMessageBox("Add Node");
 	PostDelNodeInGraph(pItem->idx);
 	*pResult = 0;
 }
 
 void CBaseMessageFormView::OnEditNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult) {
-	NM_GRAPH_DEL_EDIT_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_STRUCT*)pNMHDR;
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_MOVE_STRUCT*)pNMHDR;
 	// AfxMessageBox("Add Edge");
 	PostEditNodeInGraph(pItem->idx);
+	*pResult = 0;
+}
+
+void CBaseMessageFormView::OnMoveNodeInGraph(NMHDR *pNMHDR, LRESULT *pResult) {
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT* pItem = (NM_GRAPH_DEL_EDIT_MOVE_STRUCT*)pNMHDR;
+	// AfxMessageBox("Add Edge");
+	PostMoveNodeInGraph(pItem->idx, pItem->x, pItem->y);
 	*pResult = 0;
 }

@@ -399,6 +399,16 @@ bool CActivityOnArrow::AddEdge(string menuCode, int from, int to) {
 	return true;
 }
 
+bool CActivityOnArrow::MoveNode(string menuCode, int nRow, int x, int y) {
+	if (menuCode != CActivityOnArrow::m_ObjectCode)
+		return false;
+
+	m_nodes[nRow].m_x = x;
+	m_nodes[nRow].m_y = y;
+		
+	return true;
+}
+
 bool CActivityOnArrow::UpdateNode(string menuCode, int nRow) {
 	if(m_nodes[nRow].CreateOrUpdate(menuCode))
 		return true;
@@ -411,6 +421,35 @@ bool CActivityOnArrow::UpdateEdge(int nRow) {
 }
 
 bool CActivityOnArrow::DeleteNode(int nRow) {
+	bool bDelete;
+	do {
+		bDelete = false;
+		vector<CAOAEdge>::iterator it;
+		for (it = m_edges.begin(); it != m_edges.end(); it++) {
+			if (it->m_from_node == nRow || it->m_to_node == nRow) {
+				m_edges.erase(it);
+				bDelete = true;
+				break;
+			}
+		}
+	} while (bDelete);
+
+	for (int i = 0; i < m_edges.size(); i++) {
+		if (m_edges[i].m_from_node > nRow)
+			m_edges[i].m_from_node = m_edges[i].m_from_node - 1;
+		if (m_edges[i].m_to_node > nRow)
+			m_edges[i].m_to_node = m_edges[i].m_to_node - 1;
+	}
+
+	vector<CAOANode>::iterator it;
+	int idx = 0;
+	for (it = m_nodes.begin(); it != m_nodes.end(); it++, idx++) {
+		if (idx == nRow) {
+			m_nodes.erase(it);
+			bDelete = true;
+			break;
+		}
+	}
 
 	return true;
 }
