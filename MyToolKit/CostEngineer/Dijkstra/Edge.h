@@ -13,13 +13,16 @@ class CEdge
 {
 public:
 	bool m_red;			// used to draw the result (if an edge it is a part of the shortest path it is drawn in red)
-	double m_cost;		// the cost of an edge (picked randomly between 0-9)
 	long m_secondNode;	// the second node number
 	long m_firstNode;	// the first node number
 	POINT m_secondPct;	// graphical elements for drawing the edges
 	POINT m_firstPct;
 	POINT m_arrow1;
 	POINT m_arrow2;
+
+	string m_top;
+	string m_bottom;
+
 	CEdge();
 	virtual ~CEdge();
 

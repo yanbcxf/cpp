@@ -771,7 +771,21 @@ void CCostEngineerView::PostMoveNodeInGraph(int idx, int x, int y) {
 }
 
 void CCostEngineerView::PostEditEdgeInGraph(int idx) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
 
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].UpdateEdge(m_strMenuCode, idx)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
 }
 
 void CCostEngineerView::PostDelNodeInGraph(int idx) {
@@ -793,5 +807,19 @@ void CCostEngineerView::PostDelNodeInGraph(int idx) {
 }
 
 void CCostEngineerView::PostDelEdgeInGraph(int idx) {
+	CCostEngineerDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
 
+	bool bRedraw = false;
+
+	if (m_nChildrenCode < pDoc->activityOnArrows.size() &&
+		pDoc->activityOnArrows[m_nChildrenCode].DeleteEdge(idx)) {
+		pDoc->SetModifiedFlag();
+		bRedraw = true;
+	}
+
+	if (bRedraw)
+		RedrawView();;
 }

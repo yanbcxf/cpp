@@ -116,10 +116,11 @@ public:
 
 		
 	int	GetNode(long x, long y);
+	int	GetEdge(long x, long y);
 
 	/* 先调用 AddNode 插入节点 ，然后调用 AddEdge 插入边，以便正确确定 节点的绘制半径 */
 	void AddNode(long x, long y, string top, string middle = "", string bottom = "");
-	void AddEdge(int from, int to);
+	void AddEdge(int from, int to, string top , string bottom = "");
 
 	void Refresh();
 	void ReleaseAll();

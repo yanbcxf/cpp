@@ -81,6 +81,7 @@ CAOAEdge::CAOAEdge()
 	m_name = "";
 	m_from_node = -1;
 	m_to_node = -1;
+	m_duration = -1;
 }
 
 
@@ -95,11 +96,13 @@ void CAOAEdge::Serialize(CArchive& ar, double version) {
 		ar << m_name;
 		ar << m_from_node;
 		ar << m_to_node;
+		ar << m_duration;
 	}
 	else {
 		ar >> m_name;
 		ar >> m_from_node;
 		ar >> m_to_node;
+		ar >> m_duration;
 	}
 }
 
@@ -134,6 +137,14 @@ bool CAOAEdge::CreateOrUpdate(string menuCode) {
 	infd.m_vecFindItem[0][i][0].nMin = 0;
 	infd.m_vecFindItem[0][i][0].nMax = 100000000;
 
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("持续时间"), 64);
+	if (m_duration >= 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%d", m_duration);
+	infd.m_vecFindItem[0][i][0].nMin = 0;
+	infd.m_vecFindItem[0][i][0].nMax = 100000000;
+
 	
 	infd.Init(_T("图边 参数设置"), _T("图边 参数设置"));
 	if (infd.DoModal() == IDOK) {
@@ -141,6 +152,7 @@ bool CAOAEdge::CreateOrUpdate(string menuCode) {
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
 		m_from_node = atoi(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		m_to_node = atoi(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_duration = atoi(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		
 		return true;
 	}
@@ -367,7 +379,9 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 	}
 
 	for (int i = 0; i < m_edges.size(); i++) {
-		pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node);
+		pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node, 
+			m_edges[i].m_name.GetBuffer(), 
+			m_edges[i].m_duration >= 0 ?Int2String(m_edges[i].m_duration) : "");
 	}
 	pCtrl->Refresh();
 	return true;
@@ -387,6 +401,13 @@ bool CActivityOnArrow::AddNode(string menuCode, int x, int y) {
 	return true;
 }
 
+string DecimalTo26System(int x) {
+	if (x < 0) return "";
+	int a = x / 26;
+	int b = x % 26;
+	return DecimalTo26System(a - 1) + (char)(b + 'A');
+}
+
 bool CActivityOnArrow::AddEdge(string menuCode, int from, int to) {
 	if (menuCode != CActivityOnArrow::m_ObjectCode)
 		return false;
@@ -394,6 +415,7 @@ bool CActivityOnArrow::AddEdge(string menuCode, int from, int to) {
 	CAOAEdge edge;
 	edge.m_from_node = from;
 	edge.m_to_node = to;
+	edge.m_name = DecimalTo26System(m_edges.size()).c_str();
 	if (edge.CreateOrUpdate(menuCode)) {
 		m_edges.push_back(edge);
 	}
@@ -416,9 +438,10 @@ bool CActivityOnArrow::UpdateNode(string menuCode, int nRow) {
 	return false;
 }
 
-bool CActivityOnArrow::UpdateEdge(int nRow) {
-
-	return true;
+bool CActivityOnArrow::UpdateEdge(string menuCode, int nRow) {
+	if (m_edges[nRow].CreateOrUpdate(menuCode))
+		return true;
+	return false;
 }
 
 bool CActivityOnArrow::DeleteNode(int nRow) {
@@ -457,5 +480,13 @@ bool CActivityOnArrow::DeleteNode(int nRow) {
 
 bool CActivityOnArrow::DeleteEdge(int nRow) {
 
+	vector<CAOAEdge>::iterator it;
+	int idx = 0;
+	for (it = m_edges.begin(); it != m_edges.end(); it++, idx++) {
+		if (idx == nRow) {
+			m_edges.erase(it);
+			break;
+		}
+	}
 	return true;
 }

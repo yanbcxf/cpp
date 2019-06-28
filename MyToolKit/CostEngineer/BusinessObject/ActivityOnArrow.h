@@ -31,6 +31,7 @@ public:
 	CString m_name;				//  边（活动）名称
 	int		m_from_node;		//	开始节点
 	int		m_to_node;			//	
+	int		m_duration;			//  活动持续时间
 
 };
 
@@ -48,7 +49,7 @@ public:
 	bool AddEdge(string menuCode, int from, int to);
 	bool MoveNode(string menuCode, int nRow, int x, int y);
 	bool UpdateNode(string menuCode, int nRow);
-	bool UpdateEdge(int nRow);
+	bool UpdateEdge(string menuCode, int nRow);
 	bool DeleteNode(int nRow);
 	bool DeleteEdge(int nRow);
 

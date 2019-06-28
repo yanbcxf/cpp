@@ -16,7 +16,8 @@ CEdge::CEdge()
 {
 	m_red = false;
 	srand( (unsigned)time( NULL ) );
-	m_cost = rand()%10;
+	m_top = "";
+	m_bottom = "";
 }
 
 CEdge::~CEdge()

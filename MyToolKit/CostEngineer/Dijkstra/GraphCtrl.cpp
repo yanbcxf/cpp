@@ -202,9 +202,11 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 		POINT po;
 		po.x = ((*kll).m_firstPct.x+(*kll).m_secondPct.x)/2;
 		po.y = ((*kll).m_firstPct.y+(*kll).m_secondPct.y)/2;
-		char s[5];
-		ltoa((*kll).m_cost, s, 10);
-		pDC->TextOut(po.x, po.y, s, 1);
+				
+		/* 绘制边上的标注 */
+		pDC->TextOut(po.x - 13, po.y - 13, (*kll).m_top.c_str(), (*kll).m_top.length());
+		pDC->TextOut(po.x + 4, po.y + 4, (*kll).m_bottom.c_str(), (*kll).m_bottom.length());
+
 		if((*kll).m_red)
 			pDC->SelectObject(temp);
 	}
@@ -245,7 +247,7 @@ void CGraphCtrl::AddNode(long x, long y, string top, string middle, string botto
 }
 
 
-void  CGraphCtrl::AddEdge(int from, int to) {
+void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom) {
 	CEdge ed;
 	ed.m_firstNode = from;
 	ed.m_secondNode = to;
@@ -258,11 +260,13 @@ void  CGraphCtrl::AddEdge(int from, int to) {
 	double x = (x2 - x1) / d;
 	double y = (y2 - y1) / d;
 	
+	/* 确定边线的起始和结束点 （扣除节点的半径） */
 	ed.m_firstPct.x = x1 + x * m_node_radius;
 	ed.m_firstPct.y = y1 + y * m_node_radius;
 	ed.m_secondPct.x = x2 - x * m_node_radius;
 	ed.m_secondPct.y = y2 - y * m_node_radius;
 
+	/* 确定箭头的 绘制点 */
 	x = -x;
 	y = -y;
 	double arrow1_x = x * cos(3.14159 / 6) - y * sin(3.14159 / 4);
@@ -275,6 +279,8 @@ void  CGraphCtrl::AddEdge(int from, int to) {
 	ed.m_arrow2.x = ed.m_secondPct.x + arrow2_x * 10;
 	ed.m_arrow2.y = ed.m_secondPct.y + arrow2_y * 10;
 
+	ed.m_top = top;
+	ed.m_bottom = bottom;
 	g.m_edges.push_back(ed);
 }
 
@@ -300,7 +306,64 @@ int CGraphCtrl::GetNode(long x, long y)
 	return -1;
 }
 
+/**
+* 计算点在直线的垂足.
+*/
+POINT footpointOfLine(const POINT& pt, const POINT& v1, const POINT& v2) {
 
+	double a, b, c;		// 直线一般式方程的系数
+	a = v2.y - v1.y;
+	b = v1.x - v2.x;
+	c = v2.x * v1.y - v1.x * v2.y;
+
+	POINT r;
+	r.x = (b * b * pt.x - a * b * pt.y - a * c) / (a * a + b * b);
+	r.y = (a * a * pt.y - a * b * pt.x - b * c) / (a * a + b * b);
+	return r;
+}
+
+int CGraphCtrl::GetEdge(long x, long y)
+{
+	vector<int> edges;
+	for (int i = 0; i < g.m_edges.size(); i++)
+	{
+		CEdge e = g.m_edges[i];
+		POINT min, max;
+		min.x = e.m_firstPct.x < e.m_secondPct.x ? e.m_firstPct.x : e.m_secondPct.x;
+		min.y = e.m_firstPct.y < e.m_secondPct.y ? e.m_firstPct.y : e.m_secondPct.y;
+		max.x = e.m_firstPct.x > e.m_secondPct.x ? e.m_firstPct.x : e.m_secondPct.x;
+		max.y = e.m_firstPct.y > e.m_secondPct.y ? e.m_firstPct.y : e.m_secondPct.y;
+
+		/* 对于水平或者垂直的 边线 ，扩大搜索区域 */
+		if (max.x - min.x < 30) {
+			min.x = (max.x + min.x) / 2 - 15;
+			max.x = (max.x + min.x) / 2 + 15;
+		}
+		if (max.y - min.y < 30) {
+			min.y = (max.y + min.y) / 2 - 15;
+			max.y = (max.y + min.y) / 2 + 15;
+		}
+
+		if (x > min.x && x < max.x && y > min.y && y < max.y)
+			edges.push_back(i);
+	}
+	if (edges.size() == 0)
+		return -1;
+
+	double d = 100000000;
+	int idx = -1;
+	for (int i = 0; i < edges.size(); i++) {
+		POINT pt;
+		pt.x = x; pt.y = y;
+		pt = footpointOfLine(pt, g.m_edges[edges[i]].m_firstPct, g.m_edges[edges[i]].m_secondPct);
+		double ds = sqrt((pt.x - x) * (pt.x - x) + (pt.y - y) * (pt.y - y));
+		if (ds < d) {
+			d = ds;
+			idx = edges[i];
+		}
+	}
+	return idx;
+}
 
 
 bool CGraphCtrl::ExistEdge(CNode u, CNode v)
@@ -370,6 +433,10 @@ void CGraphCtrl::OnGraphMove()
 
 void CGraphCtrl::OnAddNode(long x, long y)
 {
+	long n = GetNode(x, y);
+	if (n >= 0) return;
+
+	/* 该位置不存节点，则插入新节点 */
 	NM_GRAPH_ADD_NODE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
@@ -425,7 +492,7 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 			int poyT = ((int)HIWORD(msg.lParam));
 			secondnode = GetNode(poxT, poyT);
 			TrackFinished = true;
-			if (firstnode >= 0 && secondnode >= 0)
+			if (firstnode >= 0 && secondnode >= 0 && firstnode != secondnode)
 			{
 				NM_GRAPH_ADD_EDGE_STRUCT ed;
 				ed.hdr.hwndFrom = m_hWnd;
@@ -462,14 +529,24 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
-	nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
-
+	
 	nmgv.idx = GetNode(x, y);
 	if (nmgv.idx >= 0) {
-		
+		/* 编辑 节点 */
+		nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
 		CWnd *pOwner = GetOwner();
 		if (pOwner && IsWindow(pOwner->m_hWnd))
 			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+	}
+	else {
+		/* 编辑 边 */
+		nmgv.idx = GetEdge(x, y);
+		if (nmgv.idx >= 0) {
+			nmgv.hdr.code = NM_GRAPH_EDIT_EDGE;
+			CWnd *pOwner = GetOwner();
+			if (pOwner && IsWindow(pOwner->m_hWnd))
+				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+		}
 	}
 }
 
@@ -481,9 +558,20 @@ void CGraphCtrl::OnDelete(long x, long y) {
 
 	nmgv.idx = GetNode(x, y);
 	if (nmgv.idx >= 0) {
+		/* 删除 节点 */
 		CWnd *pOwner = GetOwner();
 		if (pOwner && IsWindow(pOwner->m_hWnd))
 			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+	}
+	else {
+		/* 删除 边 */
+		nmgv.idx = GetEdge(x, y);
+		if (nmgv.idx >= 0) {
+			nmgv.hdr.code = NM_GRAPH_DEL_EDGE;
+			CWnd *pOwner = GetOwner();
+			if (pOwner && IsWindow(pOwner->m_hWnd))
+				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+		}
 	}
 }
 

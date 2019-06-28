@@ -242,7 +242,6 @@
     <ClInclude Include="CostEngineer.h" />
     <ClInclude Include="CostEngineerDoc.h" />
     <ClInclude Include="CostEngineerView.h" />
-    <ClInclude Include="Dijkstra\Dijkstra.h" />
     <ClInclude Include="Dijkstra\Edge.h" />
     <ClInclude Include="Dijkstra\Graph.h" />
     <ClInclude Include="Dijkstra\GraphCtrl.h" />
@@ -340,7 +339,6 @@
     <ClCompile Include="CostEngineer.cpp" />
     <ClCompile Include="CostEngineerDoc.cpp" />
     <ClCompile Include="CostEngineerView.cpp" />
-    <ClCompile Include="Dijkstra\Dijkstra.cpp" />
     <ClCompile Include="Dijkstra\Edge.cpp" />
     <ClCompile Include="Dijkstra\Graph.cpp" />
     <ClCompile Include="Dijkstra\GraphCtrl.cpp" />
