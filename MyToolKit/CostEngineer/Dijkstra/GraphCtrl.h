@@ -76,6 +76,7 @@ public:
 		m_mode_move = false;
 
 		m_bDoubleBuffer = true;
+		m_pBalloonTip = NULL;
 	}
 
 	~CGraphCtrl()
@@ -101,8 +102,10 @@ protected:
 	HFONT	m_lmfont;
 	int		m_node_radius;
 	CGraph g;
+	CBalloonTip* m_pBalloonTip;
 
 protected:
+	void DisplayBalloon(int x, int y, const CString & szMessage);
 	void OnAddEdge(long x, long y);
 	void OnAddNode(long x, long y);
 	void OnUpdate(long x, long y);

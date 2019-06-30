@@ -57,6 +57,8 @@ void CGraphCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_LastLButtonDownPosition.x = point.x;
 	m_LastLButtonDownPosition.y = point.y;
+
+	CBalloonTip::Hide(m_pBalloonTip);
 	
 	if (m_mode_addNodes)
 		OnAddNode(point.x, point.y);
@@ -524,6 +526,36 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 	// Refresh();
 }
 
+void CGraphCtrl::DisplayBalloon(int x, int y, const CString & szMessage)
+
+{
+	LOGFONT lf;
+	::ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = 20;
+	lf.lfWeight = FW_BOLD;
+	lf.lfUnderline = FALSE;
+	::strcpy(lf.lfFaceName, _T("Arial"));
+
+	CPoint pt;
+	pt.x = x; pt.y = y;
+	ClientToScreen(&pt);
+
+	HDC hdc = ::GetDC(this->m_hWnd);
+
+	TEXTMETRIC tm;
+	GetTextMetrics(hdc, &tm);
+
+	int nCharWidth = tm.tmAveCharWidth;
+	int nCharHeight = tm.tmHeight;
+
+	CRect ClientRect;
+	GetClientRect(&ClientRect);
+
+	m_pBalloonTip = CBalloonTip::Show(pt, &ClientRect, nCharWidth, nCharHeight,
+		szMessage, lf, 5, TRUE);
+
+}
+
 
 void CGraphCtrl::OnUpdate(long x, long y) {
 	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
@@ -535,8 +567,10 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 		/* ±à¼­ ½Úµã */
 		nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
 		CWnd *pOwner = GetOwner();
-		if (pOwner && IsWindow(pOwner->m_hWnd))
-			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+		/*if (pOwner && IsWindow(pOwner->m_hWnd))
+			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);*/
+
+		DisplayBalloon(x, y, "12345678\n  tttttttttttttt\n hhhhhhjjhhj\n kkkkkkk\n Node");
 	}
 	else {
 		/* ±à¼­ ±ß */
@@ -544,10 +578,13 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 		if (nmgv.idx >= 0) {
 			nmgv.hdr.code = NM_GRAPH_EDIT_EDGE;
 			CWnd *pOwner = GetOwner();
-			if (pOwner && IsWindow(pOwner->m_hWnd))
-				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+			/*if (pOwner && IsWindow(pOwner->m_hWnd))
+				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);*/
+
+			DisplayBalloon(x, y, "12345678\n  yyyyyyyyyyyyyy\n kkkkkkkk\n ffffffffff\n Edge");
 		}
 	}
+
 }
 
 void CGraphCtrl::OnDelete(long x, long y) {

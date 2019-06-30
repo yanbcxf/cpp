@@ -98,6 +98,7 @@ typedef struct _item_info
 	}
 }item_info;
 
+#include "BalloonTip.h"
 
 #include "DyncItemEditDlg.h"
 #include "DyncItemFindDlg.h"
