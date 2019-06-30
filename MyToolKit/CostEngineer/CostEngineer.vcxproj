@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BalloonTip.h" />
     <ClInclude Include="BaseGridCtlView.h" />
     <ClInclude Include="BaseMessageControl.h" />
     <ClInclude Include="BaseMessageElementsParser.h" />
@@ -287,6 +288,7 @@
     <ClInclude Include="XmlParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BalloonTip.cpp" />
     <ClCompile Include="BaseGridCtlView.cpp" />
     <ClCompile Include="BaseMessageControl.cpp" />
     <ClCompile Include="BaseMessageElementsParser.cpp" />
