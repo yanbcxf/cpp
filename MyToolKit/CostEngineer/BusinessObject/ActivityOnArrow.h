@@ -56,6 +56,7 @@ public:
 	void Serialize(CArchive& ar, double version);
 	bool CreateOrUpdate(string strMenuCode);
 	bool DrawGraph(CGraphCtrl* pCtrl);
+	void InvalidateCaculate();
 	bool AddNode(string menuCode, int x, int y);
 	bool AddEdge(string menuCode, int from, int to);
 	bool MoveNode(string menuCode, int nRow, int x, int y);

@@ -366,12 +366,44 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 	}
 
 	for (int i = 0; i < m_edges.size(); i++) {
-		pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node, 
-			m_edges[i].m_name.GetBuffer(), 
-			m_edges[i].m_duration >= 0 ?Int2String(m_edges[i].m_duration) : "");
+		if (m_edges[i].m_earliest_start < 0) {
+			pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node,
+				m_edges[i].m_name.GetBuffer(),
+				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "");
+		}
+		else {
+			string tips = "边 : " + string(m_edges[i].m_name.GetBuffer()) + "\n";
+			if (m_edges[i].m_earliest_start >= 0) tips += "最早开始时间 : " + Int2String(m_edges[i].m_earliest_start) + "\n";
+			if (m_edges[i].m_earliest_finish >= 0) tips += "最早完成时间 : " + Int2String(m_edges[i].m_earliest_finish) + "\n";
+			if (m_edges[i].m_latest_start >= 0) tips += "最晚开始时间 : " + Int2String(m_edges[i].m_latest_start) + "\n";
+			if (m_edges[i].m_latest_finish >= 0) tips += "最晚完成时间 : " + Int2String(m_edges[i].m_latest_finish) + "\n";
+			if (m_edges[i].m_total_float >= 0) tips += "总时差 : " + Int2String(m_edges[i].m_total_float) + "\n";
+			tips += "\r\n\r\n";
+
+			pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node,
+				m_edges[i].m_name.GetBuffer(),
+				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "", tips);
+		}
+		
 	}
 	pCtrl->Refresh();
 	return true;
+}
+
+void CActivityOnArrow::InvalidateCaculate() {
+	/* 初始化 数据结构 */
+	for (int n = 0; n < m_nodes.size(); n++) {
+		m_nodes[n].m_earliest_event_time = -1;
+		m_nodes[n].m_latest_event_time = -1;
+	}
+	for (int e = 0; e < m_edges.size(); e++) {
+		m_edges[e].m_earliest_start = -1;
+		m_edges[e].m_earliest_finish = -1;
+		m_edges[e].m_latest_start = -1;
+		m_edges[e].m_latest_finish = -1;
+		m_edges[e].m_total_float = -1;
+		m_edges[e].m_free_float = -1;
+	}
 }
 
 bool CActivityOnArrow::AddNode(string menuCode, int x, int y) {
@@ -405,6 +437,7 @@ bool CActivityOnArrow::AddEdge(string menuCode, int from, int to) {
 	edge.m_name = DecimalTo26System(m_edges.size()).c_str();
 	if (edge.CreateOrUpdate(menuCode)) {
 		m_edges.push_back(edge);
+		InvalidateCaculate();
 	}
 	return true;
 }
@@ -420,16 +453,22 @@ bool CActivityOnArrow::MoveNode(string menuCode, int nRow, int x, int y) {
 }
 
 bool CActivityOnArrow::UpdateNode(string menuCode, int nRow) {
-	if(m_nodes[nRow].CreateOrUpdate(menuCode))
+	if (m_nodes[nRow].CreateOrUpdate(menuCode)) {
+		InvalidateCaculate();
 		return true;
+	}
 	return false;
 }
 
 bool CActivityOnArrow::UpdateEdge(string menuCode, int nRow) {
-	if (m_edges[nRow].CreateOrUpdate(menuCode))
+	if (m_edges[nRow].CreateOrUpdate(menuCode)) {
+		InvalidateCaculate();
 		return true;
+	}
 	return false;
 }
+
+
 
 bool CActivityOnArrow::DeleteNode(int nRow) {
 	bool bDelete;
@@ -462,6 +501,7 @@ bool CActivityOnArrow::DeleteNode(int nRow) {
 		}
 	}
 
+	InvalidateCaculate();
 	return true;
 }
 
@@ -475,6 +515,7 @@ bool CActivityOnArrow::DeleteEdge(int nRow) {
 			break;
 		}
 	}
+	InvalidateCaculate();
 	return true;
 }
 
@@ -510,38 +551,107 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 		/* 有多个起始节点 和 结束节点，则图不合格 */
 		if (beginNode.size() > 1 || endNode.size() > 1 || beginNode.size() == 0 || endNode.size() == 0) continue;
 
-		/* 初始化 数据结构 */
-		for (int n = 0; n < cols[i].m_nodes.size(); n++) {
-			cols[i].m_nodes[n].m_earliest_event_time = -1;
-			cols[i].m_nodes[n].m_latest_event_time = -1;
-		}
-		for (int e = 0; e < cols[i].m_edges.size(); e++) {
-			cols[i].m_edges[e].m_earliest_start = -1;
-			cols[i].m_edges[e].m_earliest_finish = -1;
-			cols[i].m_edges[e].m_latest_start = -1;
-			cols[i].m_edges[e].m_latest_finish = -1;
-			cols[i].m_edges[e].m_total_float = -1;
-			cols[i].m_edges[e].m_free_float = -1;
-		}
+		cols[i].InvalidateCaculate();
+
+		vector<int> begin;
+		vector<int> end;
 		/* 计算各节点、各活动的 最早开始时间 */
-		vector<int> cur;
 		cols[i].m_nodes[beginNode[0]].m_earliest_event_time = 0;
-		cur.push_back(beginNode[0]);
+		begin.push_back(beginNode[0]);
 		do {
-			for (auto n : cur) {
+			end.clear();
+			for (auto n : begin) {
 				for (int e = 0; e < cols[i].m_edges.size(); e++) {
 					if (cols[i].m_edges[e].m_from_node == n) {
 						cols[i].m_edges[e].m_earliest_start = cols[i].m_nodes[n].m_earliest_event_time;
 						cols[i].m_edges[e].m_earliest_finish = cols[i].m_nodes[n].m_earliest_event_time + cols[i].m_edges[e].m_duration;
+						end.push_back(cols[i].m_edges[e].m_to_node);
 					}
 				}
 			}
-			cur.clear();
-			for (int n = 0; n < cols[i].m_nodes.size(); n++) {
+			
+			/*  */
+			begin.clear();
+			for (auto n : end) {
+				int earliest_event_time = -1;
+				for (int e = 0; e < cols[i].m_edges.size(); e++) {
+					if (cols[i].m_edges[e].m_to_node == n) {
+						if (cols[i].m_edges[e].m_earliest_finish >= 0) {
+							if (earliest_event_time < cols[i].m_edges[e].m_earliest_finish)
+								earliest_event_time = cols[i].m_edges[e].m_earliest_finish;
+						}
+						else {
+							/*  */
+							earliest_event_time = -1;
+							break;
+						}
+					}
+				}
 
+				if (earliest_event_time >= 0) {
+					cols[i].m_nodes[n].m_earliest_event_time = earliest_event_time;
+					begin.push_back(n);
+				}
+			}
+
+			/*  */
+			if (cols[i].m_nodes[endNode[0]].m_earliest_event_time >= 0) {
+				end.push_back(endNode[0]);
+				cols[i].m_nodes[endNode[0]].m_latest_event_time = cols[i].m_nodes[endNode[0]].m_earliest_event_time;
+				break;
 			}
 
 		} while (1);
+
+		/*  */
+		do {
+			begin.clear();
+			for (auto n : end) {
+				for (int e = 0; e < cols[i].m_edges.size(); e++) {
+					if (cols[i].m_edges[e].m_to_node == n) {
+						cols[i].m_edges[e].m_latest_finish = cols[i].m_nodes[n].m_latest_event_time;
+						cols[i].m_edges[e].m_latest_start = cols[i].m_nodes[n].m_latest_event_time - cols[i].m_edges[e].m_duration;
+						begin.push_back(cols[i].m_edges[e].m_from_node);
+					}
+				}
+			}
+			
+
+			/*  */
+			end.clear();
+			for (auto n : begin) {
+				int latest_event_time = cols[i].m_nodes[endNode[0]].m_latest_event_time + 100;
+				for (int e = 0; e < cols[i].m_edges.size(); e++) {
+					if (cols[i].m_edges[e].m_from_node == n) {
+						if (cols[i].m_edges[e].m_latest_start >= 0) {
+							if (latest_event_time > cols[i].m_edges[e].m_latest_start)
+								latest_event_time = cols[i].m_edges[e].m_latest_start;
+						}
+						else {
+							/*  */
+							latest_event_time = -1;
+							break;
+						}
+					}
+				}
+
+				if (latest_event_time >= 0) {
+					cols[i].m_nodes[n].m_latest_event_time = latest_event_time;
+					end.push_back(n);
+				}
+			}
+
+			/*  */
+			if (cols[i].m_nodes[beginNode[0]].m_latest_event_time >= 0) {
+				
+				break;
+			}
+		} while (1);
+
+		/*  */
+		for (int e = 0; e < cols[i].m_edges.size(); e++) {
+			cols[i].m_edges[e].m_total_float = cols[i].m_edges[e].m_latest_start - cols[i].m_edges[e].m_earliest_start;
+		}
 	}
 
 }

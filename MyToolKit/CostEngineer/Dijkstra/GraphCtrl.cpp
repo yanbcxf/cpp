@@ -116,7 +116,7 @@ void CGraphCtrl::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 	popupMenu->CheckMenuItem(ID_GRAPH_UPDATE, MF_BYCOMMAND | m_mode_update ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_DELETE, MF_BYCOMMAND | m_mode_delete ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_MOVE, MF_BYCOMMAND | m_mode_move ? MF_CHECKED : MF_UNCHECKED);
-	popupMenu->CheckMenuItem(ID_GRAPH_MOVE, MF_BYCOMMAND | m_mode_tips ? MF_CHECKED : MF_UNCHECKED);
+	popupMenu->CheckMenuItem(ID_GRAPH_TIPS, MF_BYCOMMAND | m_mode_tips ? MF_CHECKED : MF_UNCHECKED);
 
 	popupMenu->TrackPopupMenu(TPM_RIGHTBUTTON | TPM_LEFTALIGN, point.x, point.y, this);
 }
@@ -145,7 +145,7 @@ void CGraphCtrl::PreSubclassWindow()
 		m_toolTipsCtrl.Activate(TRUE);
 
 		/* 设定宽度，\r\n和空格就会同时起作用，只是空格是在一行宽度超过设定宽度时起作用的 */
-		m_toolTipsCtrl.SetMaxTipWidth(100);
+		m_toolTipsCtrl.SetMaxTipWidth(120);
 		m_toolTipsCtrl.SetMargin(CRect(3, 3, 3, 3));
 
 		m_toolTipsCtrl.AddTool(this, "图形控件"); //为此控件添加tip
