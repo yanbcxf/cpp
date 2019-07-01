@@ -119,13 +119,15 @@
 #define ID_GRAPH_DELETE                 32784
 #define ID_GRAPHCTRL_32785              32785
 #define ID_GRAPH_MOVE                   32786
+#define ID_GRAPHCTRL_32787              32787
+#define ID_GRAPH_TIPS                   32788
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_COMMAND_VALUE         32789
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           318
 #endif

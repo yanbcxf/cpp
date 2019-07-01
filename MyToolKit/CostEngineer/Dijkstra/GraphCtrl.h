@@ -74,6 +74,7 @@ public:
 		m_mode_update = false;
 		m_mode_delete = false;
 		m_mode_move = false;
+		m_mode_tips = false;
 
 		m_bDoubleBuffer = true;
 		m_pBalloonTip = NULL;
@@ -97,12 +98,18 @@ protected:
 	bool	m_mode_update;
 	bool	m_mode_delete;
 	bool	m_mode_move;
+	bool	m_mode_tips;
 
 	POINT	m_LastLButtonDownPosition;
 	HFONT	m_lmfont;
 	int		m_node_radius;
 	CGraph g;
+
+	/* 多个屏幕时，不好用，不用了 */
 	CBalloonTip* m_pBalloonTip;
+
+	/* https://www.codeproject.com/Articles/3655/CPPToolTip-v2-1 */
+	CToolTipCtrl m_toolTipsCtrl;
 
 protected:
 	void DisplayBalloon(int x, int y, const CString & szMessage);
@@ -111,6 +118,9 @@ protected:
 	void OnUpdate(long x, long y);
 	void OnDelete(long x, long y);
 	void OnMove(long x, long y);
+	void OnTips(long x, long y);
+
+	void ShowBalloonTip(long x, long y, string tips);
 
 // IDijkstra
 public:
@@ -122,8 +132,8 @@ public:
 	int	GetEdge(long x, long y);
 
 	/* 先调用 AddNode 插入节点 ，然后调用 AddEdge 插入边，以便正确确定 节点的绘制半径 */
-	void AddNode(long x, long y, string top, string middle = "", string bottom = "");
-	void AddEdge(int from, int to, string top , string bottom = "");
+	void AddNode(long x, long y, string top,  string middle = "", string bottom = "", string tips = "");
+	void AddEdge(int from, int to, string top , string bottom = "", string tips = "");
 
 	void Refresh();
 	void ReleaseAll();
@@ -143,8 +153,12 @@ public:
 	afx_msg void OnGraphAddNode();
 	afx_msg void OnGraphDelete();
 	afx_msg void OnGraphUpdate();
-	
 	afx_msg void OnGraphMove();
+	afx_msg void OnGraphTips();
+
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	virtual void PreSubclassWindow();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #endif //__DIJKSTRA_H_

@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CGraphCtrl, CWnd)
 	ON_COMMAND(ID_GRAPH_DELETE, &CGraphCtrl::OnGraphDelete)
 	ON_COMMAND(ID_GRAPH_UPDATE, &CGraphCtrl::OnGraphUpdate)
 	ON_COMMAND(ID_GRAPH_MOVE, &CGraphCtrl::OnGraphMove)
+	ON_COMMAND(ID_GRAPH_TIPS, &CGraphCtrl::OnGraphTips)
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 void CGraphCtrl::OnPaint()
@@ -58,7 +60,8 @@ void CGraphCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	m_LastLButtonDownPosition.x = point.x;
 	m_LastLButtonDownPosition.y = point.y;
 
-	CBalloonTip::Hide(m_pBalloonTip);
+	// CBalloonTip::Hide(m_pBalloonTip);
+	m_toolTipsCtrl.Activate(FALSE);
 	
 	if (m_mode_addNodes)
 		OnAddNode(point.x, point.y);
@@ -70,6 +73,8 @@ void CGraphCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 		OnDelete(point.x, point.y);
 	else if (m_mode_move)
 		OnMove(point.x, point.y);
+	else if (m_mode_tips)
+		OnTips(point.x, point.y);
 	return;
 }
 
@@ -111,8 +116,72 @@ void CGraphCtrl::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 	popupMenu->CheckMenuItem(ID_GRAPH_UPDATE, MF_BYCOMMAND | m_mode_update ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_DELETE, MF_BYCOMMAND | m_mode_delete ? MF_CHECKED : MF_UNCHECKED);
 	popupMenu->CheckMenuItem(ID_GRAPH_MOVE, MF_BYCOMMAND | m_mode_move ? MF_CHECKED : MF_UNCHECKED);
+	popupMenu->CheckMenuItem(ID_GRAPH_MOVE, MF_BYCOMMAND | m_mode_tips ? MF_CHECKED : MF_UNCHECKED);
 
 	popupMenu->TrackPopupMenu(TPM_RIGHTBUTTON | TPM_LEFTALIGN, point.x, point.y, this);
+}
+
+
+int CGraphCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CWnd::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  在此添加您专用的创建代码
+
+	return 0;
+}
+
+
+void CGraphCtrl::PreSubclassWindow()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	// https://www.xuebuyuan.com/837800.html
+	/* 使用 DDX_Control 创建时，CGraphCtrl 控件窗口创建后会调用本函数 */
+
+	if (::IsWindow(m_hWnd)) {
+		EnableToolTips(TRUE);
+		m_toolTipsCtrl.Create(this);
+		m_toolTipsCtrl.Activate(TRUE);
+
+		/* 设定宽度，\r\n和空格就会同时起作用，只是空格是在一行宽度超过设定宽度时起作用的 */
+		m_toolTipsCtrl.SetMaxTipWidth(100);
+		m_toolTipsCtrl.SetMargin(CRect(3, 3, 3, 3));
+
+		m_toolTipsCtrl.AddTool(this, "图形控件"); //为此控件添加tip
+	}
+
+	CWnd::PreSubclassWindow();
+}
+
+
+
+BOOL CGraphCtrl::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	if (NULL != m_toolTipsCtrl.GetSafeHwnd())
+	{
+		m_toolTipsCtrl.RelayEvent(pMsg);
+	}
+	return CWnd::PreTranslateMessage(pMsg);
+}
+
+void CGraphCtrl::ShowBalloonTip(long x, long y, string tips) {
+
+	m_toolTipsCtrl.Activate(TRUE);
+	m_toolTipsCtrl.UpdateTipText(tips.c_str(), this);
+	CToolInfo       sTinfo;                // 提示信息
+	m_toolTipsCtrl.GetToolInfo(sTinfo, this);
+	sTinfo.uFlags = TTF_TRACK;     // 显示方式设置
+	m_toolTipsCtrl.SetToolInfo(&sTinfo);
+
+	CPoint pt;
+	pt.x = x; pt.y = y;
+	ClientToScreen(&pt);
+
+	// 下面是关键两步
+	m_toolTipsCtrl.SendMessage(TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(pt.x, pt.y));
+	m_toolTipsCtrl.SendMessage(TTM_TRACKACTIVATE, TRUE, (LPARAM)&sTinfo); // tips显示
 }
 
 // creates the control - use like any other window create control
@@ -233,13 +302,14 @@ void CGraphCtrl::initGraph() {
 	m_node_radius = 15;
 }
 
-void CGraphCtrl::AddNode(long x, long y, string top, string middle, string bottom) {
+void CGraphCtrl::AddNode(long x, long y, string top, string middle, string bottom, string tips) {
 	CNode node;
 	node.m_p.x = x;
 	node.m_p.y = y;
 	node.m_top = top;
 	node.m_middle = middle;
 	node.m_bottom = bottom;
+	node.m_tips = tips;
 	
 	g.m_nodes.push_back(node);
 
@@ -249,7 +319,7 @@ void CGraphCtrl::AddNode(long x, long y, string top, string middle, string botto
 }
 
 
-void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom) {
+void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string tips) {
 	CEdge ed;
 	ed.m_firstNode = from;
 	ed.m_secondNode = to;
@@ -283,6 +353,7 @@ void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom) {
 
 	ed.m_top = top;
 	ed.m_bottom = bottom;
+	ed.m_tips = tips;
 	g.m_edges.push_back(ed);
 }
 
@@ -388,6 +459,7 @@ void CGraphCtrl::OnGraphAddEdge()
 	m_mode_update = false;
 	m_mode_delete = false;
 	m_mode_move = false;
+	m_mode_tips = false;
 }
 
 
@@ -399,6 +471,7 @@ void CGraphCtrl::OnGraphAddNode()
 	m_mode_update = false;
 	m_mode_delete = false;
 	m_mode_move = false;
+	m_mode_tips = false;
 }
 
 
@@ -410,6 +483,7 @@ void CGraphCtrl::OnGraphDelete()
 	m_mode_update = false;
 	m_mode_delete = true;
 	m_mode_move = false;
+	m_mode_tips = false;
 }
 
 
@@ -421,6 +495,7 @@ void CGraphCtrl::OnGraphUpdate()
 	m_mode_update = true;
 	m_mode_delete = false;
 	m_mode_move = false;
+	m_mode_tips = false;
 }
 
 void CGraphCtrl::OnGraphMove()
@@ -431,6 +506,18 @@ void CGraphCtrl::OnGraphMove()
 	m_mode_update = false;
 	m_mode_delete = false;
 	m_mode_move = true;
+	m_mode_tips = false;
+}
+
+void CGraphCtrl::OnGraphTips()
+{
+	// TODO: 在此添加命令处理程序代码
+	m_mode_addEdges = false;
+	m_mode_addNodes = false;
+	m_mode_update = false;
+	m_mode_delete = false;
+	m_mode_move = false;
+	m_mode_tips = true;
 }
 
 void CGraphCtrl::OnAddNode(long x, long y)
@@ -527,7 +614,6 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 }
 
 void CGraphCtrl::DisplayBalloon(int x, int y, const CString & szMessage)
-
 {
 	LOGFONT lf;
 	::ZeroMemory(&lf, sizeof(lf));
@@ -553,7 +639,6 @@ void CGraphCtrl::DisplayBalloon(int x, int y, const CString & szMessage)
 
 	m_pBalloonTip = CBalloonTip::Show(pt, &ClientRect, nCharWidth, nCharHeight,
 		szMessage, lf, 5, TRUE);
-
 }
 
 
@@ -567,10 +652,8 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 		/* 编辑 节点 */
 		nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
 		CWnd *pOwner = GetOwner();
-		/*if (pOwner && IsWindow(pOwner->m_hWnd))
-			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);*/
-
-		DisplayBalloon(x, y, "12345678\n  tttttttttttttt\n hhhhhhjjhhj\n kkkkkkk\n Node");
+		if (pOwner && IsWindow(pOwner->m_hWnd))
+			pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
 	}
 	else {
 		/* 编辑 边 */
@@ -578,10 +661,9 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 		if (nmgv.idx >= 0) {
 			nmgv.hdr.code = NM_GRAPH_EDIT_EDGE;
 			CWnd *pOwner = GetOwner();
-			/*if (pOwner && IsWindow(pOwner->m_hWnd))
-				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);*/
+			if (pOwner && IsWindow(pOwner->m_hWnd))
+				pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
 
-			DisplayBalloon(x, y, "12345678\n  yyyyyyyyyyyyyy\n kkkkkkkk\n ffffffffff\n Edge");
 		}
 	}
 
@@ -679,4 +761,30 @@ void CGraphCtrl::OnMove(long x, long y) {
 	SetROP2(hdc, R2_COPYPEN);
 	DeleteObject(pen);
 	::ReleaseDC(m_hWnd, hdc);
+}
+
+void CGraphCtrl::OnTips(long x, long y) {
+	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
+	nmgv.hdr.hwndFrom = m_hWnd;
+	nmgv.hdr.idFrom = GetDlgCtrlID();
+
+	nmgv.idx = GetNode(x, y);
+	if (nmgv.idx >= 0) {
+		/* 节点 提示消息 */
+		
+		// DisplayBalloon(x, y, "12345678\n  tttttttttttttt\n hhhhhhjjhhj\n kkkkkkk\n Node");
+		if(g.m_nodes[nmgv.idx].m_tips.length() > 0)
+			ShowBalloonTip(x, y, g.m_nodes[nmgv.idx].m_tips);
+	}
+	else {
+		/* 边 提示消息 */
+		nmgv.idx = GetEdge(x, y);
+		if (nmgv.idx >= 0) {
+			
+			// DisplayBalloon(x, y, "12345678\n  yyyyyyyyyyyyyy\n kkkkkkkk\n ffffffffff\n Edge");
+			if (g.m_edges[nmgv.idx].m_tips.length() > 0)
+				ShowBalloonTip(x, y, g.m_edges[nmgv.idx].m_tips);
+		}
+	}
+
 }

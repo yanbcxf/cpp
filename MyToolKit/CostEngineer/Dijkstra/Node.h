@@ -27,6 +27,8 @@ public:
 	string  m_top;
 	string  m_middle;
 	string	m_bottom;
+	string  m_tips;
+
 	virtual ~CNode();
 };
 

@@ -22,6 +22,7 @@ public:
 
 	string m_top;
 	string m_bottom;
+	string m_tips;
 
 	CEdge();
 	virtual ~CEdge();

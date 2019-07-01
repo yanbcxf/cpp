@@ -355,19 +355,6 @@ unsigned int CActivityOnArrow::PopupMenuId(string menuCode) {
 	return IDR_POPUP_COMPONENT;
 }
 
-void CActivityOnArrow::SteelQuantity(string menuCode, vector<CActivityOnArrow>& cols) {
-	if (menuCode != CActivityOnArrow::m_ObjectCode)
-		return ;
-
-}
-
-void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols) {
-	if (menuCode != CActivityOnArrow::m_ObjectCode)
-		return ;
-	
-	
-}
-
 
 bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 	if (!pCtrl)
@@ -489,4 +476,72 @@ bool CActivityOnArrow::DeleteEdge(int nRow) {
 		}
 	}
 	return true;
+}
+
+void CActivityOnArrow::SteelQuantity(string menuCode, vector<CActivityOnArrow>& cols) {
+	if (menuCode != CActivityOnArrow::m_ObjectCode)
+		return;
+
+}
+
+void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols) {
+	if (menuCode != CActivityOnArrow::m_ObjectCode)
+		return;
+
+	for (int i = 0; i < cols.size(); i++) {
+		/* 寻找每个图的 起始节点 和 结束节点 */
+		vector<int> beginNode;
+		vector<int> endNode;
+		for (int n = 0; n < cols[i].m_nodes.size(); n++) {
+			bool bStart = false;
+			bool bEnd = false;
+			for (int e = 0; e < cols[i].m_edges.size(); e++) {
+				if (cols[i].m_edges[e].m_from_node == n) bStart = true;
+				if (cols[i].m_edges[e].m_to_node == n) bEnd = true;
+			}
+
+			if (bStart && !bEnd) {
+				beginNode.push_back(n);
+			}
+			if (!bStart && bEnd) {
+				endNode.push_back(n);
+			}
+		}
+		/* 有多个起始节点 和 结束节点，则图不合格 */
+		if (beginNode.size() > 1 || endNode.size() > 1 || beginNode.size() == 0 || endNode.size() == 0) continue;
+
+		/* 初始化 数据结构 */
+		for (int n = 0; n < cols[i].m_nodes.size(); n++) {
+			cols[i].m_nodes[n].m_earliest_event_time = -1;
+			cols[i].m_nodes[n].m_latest_event_time = -1;
+		}
+		for (int e = 0; e < cols[i].m_edges.size(); e++) {
+			cols[i].m_edges[e].m_earliest_start = -1;
+			cols[i].m_edges[e].m_earliest_finish = -1;
+			cols[i].m_edges[e].m_latest_start = -1;
+			cols[i].m_edges[e].m_latest_finish = -1;
+			cols[i].m_edges[e].m_total_float = -1;
+			cols[i].m_edges[e].m_free_float = -1;
+		}
+		/* 计算各节点、各活动的 最早开始时间 */
+		vector<int> cur;
+		cols[i].m_nodes[beginNode[0]].m_earliest_event_time = 0;
+		cur.push_back(beginNode[0]);
+		do {
+			for (auto n : cur) {
+				for (int e = 0; e < cols[i].m_edges.size(); e++) {
+					if (cols[i].m_edges[e].m_from_node == n) {
+						cols[i].m_edges[e].m_earliest_start = cols[i].m_nodes[n].m_earliest_event_time;
+						cols[i].m_edges[e].m_earliest_finish = cols[i].m_nodes[n].m_earliest_event_time + cols[i].m_edges[e].m_duration;
+					}
+				}
+			}
+			cur.clear();
+			for (int n = 0; n < cols[i].m_nodes.size(); n++) {
+
+			}
+
+		} while (1);
+	}
+
 }

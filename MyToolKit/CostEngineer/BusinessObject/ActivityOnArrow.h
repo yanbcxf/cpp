@@ -15,6 +15,9 @@ public:
 	int	m_x;			//	x 坐标
 	int	m_y;			//	y 坐标
 
+	/* 以下不保存到 DOC 文档 */
+	int	m_earliest_event_time;	//	以该节点为开始节点的各项工作的最早开始时间
+	int m_latest_event_time;	//  以该节点为结束节点的各项工作的最迟完成时间
 };
 
 class CAOAEdge
@@ -32,6 +35,14 @@ public:
 	int		m_from_node;		//	开始节点
 	int		m_to_node;			//	
 	int		m_duration;			//  活动持续时间
+
+	/* 以下不保存到 DOC 文档 */
+	int		m_earliest_start;		// 最早开始时间
+	int		m_earliest_finish;		// 最早完成时间
+	int		m_latest_start;			// 最晚开始时间
+	int		m_latest_finish;		// 最晚完成时间
+	int		m_total_float;			// 总时差
+	int		m_free_float;			// 自由时差
 
 };
 
