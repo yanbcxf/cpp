@@ -319,7 +319,7 @@ void CGraphCtrl::AddNode(long x, long y, string top, string middle, string botto
 }
 
 
-void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string tips) {
+void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string tips, bool bRed) {
 	CEdge ed;
 	ed.m_firstNode = from;
 	ed.m_secondNode = to;
@@ -354,6 +354,8 @@ void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string ti
 	ed.m_top = top;
 	ed.m_bottom = bottom;
 	ed.m_tips = tips;
+	ed.m_red = bRed;
+
 	g.m_edges.push_back(ed);
 }
 

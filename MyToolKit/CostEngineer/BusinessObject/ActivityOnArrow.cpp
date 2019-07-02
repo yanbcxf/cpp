@@ -362,7 +362,15 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 
 	pCtrl->initGraph();
 	for (int i = 0; i < m_nodes.size(); i++) {
-		pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer());
+		if (m_nodes[i].m_earliest_event_time < 0)
+			pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer());
+		else {
+			string tips = "节点: " + string(m_nodes[i].m_name.GetBuffer()) + "\n";
+			if (m_nodes[i].m_earliest_event_time >= 0) tips += "最早开始: " + Int2String(m_nodes[i].m_earliest_event_time) + "\n";
+			if (m_nodes[i].m_latest_event_time >= 0) tips += "最晚完成: " + Int2String(m_nodes[i].m_latest_event_time) + "\n";
+
+			pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer(), "", "" , tips);
+		}
 	}
 
 	for (int i = 0; i < m_edges.size(); i++) {
@@ -372,17 +380,17 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "");
 		}
 		else {
-			string tips = "边 : " + string(m_edges[i].m_name.GetBuffer()) + "\n";
-			if (m_edges[i].m_earliest_start >= 0) tips += "最早开始时间 : " + Int2String(m_edges[i].m_earliest_start) + "\n";
-			if (m_edges[i].m_earliest_finish >= 0) tips += "最早完成时间 : " + Int2String(m_edges[i].m_earliest_finish) + "\n";
-			if (m_edges[i].m_latest_start >= 0) tips += "最晚开始时间 : " + Int2String(m_edges[i].m_latest_start) + "\n";
-			if (m_edges[i].m_latest_finish >= 0) tips += "最晚完成时间 : " + Int2String(m_edges[i].m_latest_finish) + "\n";
-			if (m_edges[i].m_total_float >= 0) tips += "总时差 : " + Int2String(m_edges[i].m_total_float) + "\n";
-			tips += "\r\n\r\n";
+			string tips = "边: " + string(m_edges[i].m_name.GetBuffer()) + "\n";
+			if (m_edges[i].m_earliest_start >= 0) tips += "最早开始: " + Int2String(m_edges[i].m_earliest_start) + "\n" ;
+			if (m_edges[i].m_earliest_finish >= 0) tips += "最早完成: " + Int2String(m_edges[i].m_earliest_finish) + "\n";
+			if (m_edges[i].m_latest_start >= 0) tips += "最晚开始: " + Int2String(m_edges[i].m_latest_start) + "\n";
+			if (m_edges[i].m_latest_finish >= 0) tips += "最晚完成: " + Int2String(m_edges[i].m_latest_finish) + "\n";
+			if (m_edges[i].m_total_float >= 0) tips += "总时差: " + Int2String(m_edges[i].m_total_float) + "\n";
 
 			pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node,
 				m_edges[i].m_name.GetBuffer(),
-				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "", tips);
+				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "", tips,
+				m_edges[i].m_total_float == 0? true : false);
 		}
 		
 	}

@@ -731,7 +731,7 @@ void CCostEngineerView::PostAddEdgeToGraph(int from, int to) {
 	}
 
 	if (bRedraw)
-		RedrawView();;
+		RedrawView();
 }
 
 void CCostEngineerView::PostEditNodeInGraph(int idx) {
