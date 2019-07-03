@@ -133,7 +133,7 @@ public:
 
 	/* 先调用 AddNode 插入节点 ，然后调用 AddEdge 插入边，以便正确确定 节点的绘制半径 */
 	void AddNode(long x, long y, string top,  string middle = "", string bottom = "", string tips = "");
-	void AddEdge(int from, int to, string top , string bottom = "", string tips = "", bool bRed = false);
+	void AddEdge(int from, int to, string top , string bottom = "", string tips = "", bool bRed = false, bool bSolid = true);
 
 	void Refresh();
 	void ReleaseAll();

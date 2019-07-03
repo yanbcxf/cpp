@@ -13,6 +13,7 @@ class CEdge
 {
 public:
 	bool m_red;			// used to draw the result (if an edge it is a part of the shortest path it is drawn in red)
+	bool m_solid;		// 实线 或者 虚线
 	long m_secondNode;	// the second node number
 	long m_firstNode;	// the first node number
 	POINT m_secondPct;	// graphical elements for drawing the edges

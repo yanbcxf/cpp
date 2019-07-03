@@ -133,6 +133,7 @@ int CGraphCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 
 
+
 void CGraphCtrl::PreSubclassWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
@@ -145,10 +146,11 @@ void CGraphCtrl::PreSubclassWindow()
 		m_toolTipsCtrl.Activate(TRUE);
 
 		/* 设定宽度，\r\n和空格就会同时起作用，只是空格是在一行宽度超过设定宽度时起作用的 */
-		m_toolTipsCtrl.SetMaxTipWidth(120);
+		m_toolTipsCtrl.SetMaxTipWidth(160);
 		m_toolTipsCtrl.SetMargin(CRect(3, 3, 3, 3));
 
-		m_toolTipsCtrl.AddTool(this, "图形控件"); //为此控件添加tip
+		string sss = "图形控件";
+		m_toolTipsCtrl.AddTool(this, sss.c_str()); //为此控件添加tip
 	}
 
 	CWnd::PreSubclassWindow();
@@ -168,11 +170,16 @@ BOOL CGraphCtrl::PreTranslateMessage(MSG* pMsg)
 
 void CGraphCtrl::ShowBalloonTip(long x, long y, string tips) {
 
+	char szText[512];
+	memset(szText, 0, 512);
+	strcpy(szText, (LPCTSTR)tips.c_str());
+
 	m_toolTipsCtrl.Activate(TRUE);
-	m_toolTipsCtrl.UpdateTipText(tips.c_str(), this);
+	// m_toolTipsCtrl.UpdateTipText(szText, this);
 	CToolInfo       sTinfo;                // 提示信息
 	m_toolTipsCtrl.GetToolInfo(sTinfo, this);
-	sTinfo.uFlags = TTF_TRACK;     // 显示方式设置
+	sTinfo.uFlags = TTF_TRACK;		// 显示方式设置
+	sTinfo.lpszText = szText;		// 可以超出 80 个字符的限制
 	m_toolTipsCtrl.SetToolInfo(&sTinfo);
 
 	CPoint pt;
@@ -180,6 +187,7 @@ void CGraphCtrl::ShowBalloonTip(long x, long y, string tips) {
 	ClientToScreen(&pt);
 
 	// 下面是关键两步
+	// m_toolTipsCtrl.SendMessage(TTM_UPDATETIPTEXT, 0, (LPARAM)&sTinfo); // tips显示
 	m_toolTipsCtrl.SendMessage(TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(pt.x, pt.y));
 	m_toolTipsCtrl.SendMessage(TTM_TRACKACTIVATE, TRUE, (LPARAM)&sTinfo); // tips显示
 }
@@ -233,7 +241,9 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	
 	pDC->Rectangle(rc.left, rc.top, rc.right, rc.bottom);
 	HPEN pen=CreatePen(PS_SOLID,0,RGB(0,0,0));
-	HPEN penred=CreatePen(PS_SOLID,2,RGB(255,0,0));
+	HPEN penRed=CreatePen(PS_SOLID,1,RGB(255,0,0));
+	HPEN penDot = CreatePen(PS_DOT, 0, RGB(0, 0, 0));
+	HPEN penRedDot = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
 	HBRUSH brush=CreateSolidBrush(RGB(0,0,0));
 	HPEN oldpen;
 	HPEN oldbrush;
@@ -256,8 +266,12 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	for(kll=g.m_edges.begin(); kll<g.m_edges.end(); kll++)
 	{
 		HPEN temp;
-		if((*kll).m_red)
-			temp=(HPEN)pDC->SelectObject(penred);
+		if((*kll).m_red && (*kll).m_solid)
+			temp=(HPEN)pDC->SelectObject(penRed);
+		else if ((*kll).m_red && !(*kll).m_solid)
+			temp = (HPEN)pDC->SelectObject(penRedDot);
+		else if (!(*kll).m_red && !(*kll).m_solid)
+			temp = (HPEN)pDC->SelectObject(penDot);
 		pDC->MoveTo((*kll).m_firstPct.x, (*kll).m_firstPct.y);
 		pDC->LineTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
 
@@ -278,13 +292,16 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 		pDC->TextOut(po.x - 13, po.y - 13, (*kll).m_top.c_str(), (*kll).m_top.length());
 		pDC->TextOut(po.x + 4, po.y + 4, (*kll).m_bottom.c_str(), (*kll).m_bottom.length());
 
-		if((*kll).m_red)
+		if((*kll).m_red || !(*kll).m_solid)
 			pDC->SelectObject(temp);
 	}
 	pDC->SelectObject(OldFont);
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
 	DeleteObject(pen);
+	DeleteObject(penRed);
+	DeleteObject(penRedDot);
+	DeleteObject(penDot);
 	DeleteObject(brush);
 
 }
@@ -319,7 +336,7 @@ void CGraphCtrl::AddNode(long x, long y, string top, string middle, string botto
 }
 
 
-void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string tips, bool bRed) {
+void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string tips, bool bRed, bool bSolid) {
 	CEdge ed;
 	ed.m_firstNode = from;
 	ed.m_secondNode = to;
@@ -355,6 +372,7 @@ void  CGraphCtrl::AddEdge(int from, int to, string top, string bottom, string ti
 	ed.m_bottom = bottom;
 	ed.m_tips = tips;
 	ed.m_red = bRed;
+	ed.m_solid = bSolid;
 
 	g.m_edges.push_back(ed);
 }

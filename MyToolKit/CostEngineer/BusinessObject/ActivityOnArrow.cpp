@@ -377,20 +377,24 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 		if (m_edges[i].m_earliest_start < 0) {
 			pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node,
 				m_edges[i].m_name.GetBuffer(),
-				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "");
+				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "", 
+				"", false,
+				m_edges[i].m_duration > 0 ? true : false);
 		}
 		else {
 			string tips = "边: " + string(m_edges[i].m_name.GetBuffer()) + "\n";
-			if (m_edges[i].m_earliest_start >= 0) tips += "最早开始: " + Int2String(m_edges[i].m_earliest_start) + "\n" ;
-			if (m_edges[i].m_earliest_finish >= 0) tips += "最早完成: " + Int2String(m_edges[i].m_earliest_finish) + "\n";
-			if (m_edges[i].m_latest_start >= 0) tips += "最晚开始: " + Int2String(m_edges[i].m_latest_start) + "\n";
-			if (m_edges[i].m_latest_finish >= 0) tips += "最晚完成: " + Int2String(m_edges[i].m_latest_finish) + "\n";
-			if (m_edges[i].m_total_float >= 0) tips += "总时差: " + Int2String(m_edges[i].m_total_float) + "\n";
+			if (m_edges[i].m_earliest_start >= 0) tips += "Earliest Start: " + Int2String(m_edges[i].m_earliest_start) + "\n" ;
+			if (m_edges[i].m_earliest_finish >= 0) tips += "Earliest Finish: " + Int2String(m_edges[i].m_earliest_finish) + "\n";
+			if (m_edges[i].m_latest_start >= 0) tips += "Latest Start: " + Int2String(m_edges[i].m_latest_start) + "\n";
+			if (m_edges[i].m_latest_finish >= 0) tips += "Latest Finish: " + Int2String(m_edges[i].m_latest_finish) + "\n";
+			if (m_edges[i].m_total_float >= 0) tips += "Total Float: " + Int2String(m_edges[i].m_total_float) + "\n";
+			if (m_edges[i].m_free_float >= 0) tips += "Free Float: " + Int2String(m_edges[i].m_free_float) + "\n";
 
 			pCtrl->AddEdge(m_edges[i].m_from_node, m_edges[i].m_to_node,
 				m_edges[i].m_name.GetBuffer(),
 				m_edges[i].m_duration >= 0 ? Int2String(m_edges[i].m_duration) : "", tips,
-				m_edges[i].m_total_float == 0? true : false);
+				m_edges[i].m_total_float == 0? true : false,
+				m_edges[i].m_duration > 0 ? true : false);
 		}
 		
 	}
@@ -563,7 +567,7 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 
 		vector<int> begin;
 		vector<int> end;
-		/* 计算各节点、各活动的 最早开始时间 */
+		/* 从前向后，计算各节点、各活动的 最早开始时间 */
 		cols[i].m_nodes[beginNode[0]].m_earliest_event_time = 0;
 		begin.push_back(beginNode[0]);
 		do {
@@ -602,7 +606,7 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 				}
 			}
 
-			/*  */
+			/* 已经计算到最后节点，则停止   */
 			if (cols[i].m_nodes[endNode[0]].m_earliest_event_time >= 0) {
 				end.push_back(endNode[0]);
 				cols[i].m_nodes[endNode[0]].m_latest_event_time = cols[i].m_nodes[endNode[0]].m_earliest_event_time;
@@ -611,8 +615,9 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 
 		} while (1);
 
-		/*  */
+		/* 从后向前，计算各活动的 最晚开始时间 和 各个节点的最晚完成时间 */
 		do {
+			/* 计算各个边的最晚开始和最晚完成时间 */
 			begin.clear();
 			for (auto n : end) {
 				for (int e = 0; e < cols[i].m_edges.size(); e++) {
@@ -625,7 +630,7 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 			}
 			
 
-			/*  */
+			/* 计算各个节点的 最晚完成时间  */
 			end.clear();
 			for (auto n : begin) {
 				int latest_event_time = cols[i].m_nodes[endNode[0]].m_latest_event_time + 100;
@@ -649,16 +654,18 @@ void CActivityOnArrow::Calculate(string menuCode, vector<CActivityOnArrow>& cols
 				}
 			}
 
-			/*  */
+			/* 已经计算到开始节点，则停止 */
 			if (cols[i].m_nodes[beginNode[0]].m_latest_event_time >= 0) {
 				
 				break;
 			}
 		} while (1);
 
-		/*  */
+		/* 计算总时差 和 自由时差  */
 		for (int e = 0; e < cols[i].m_edges.size(); e++) {
 			cols[i].m_edges[e].m_total_float = cols[i].m_edges[e].m_latest_start - cols[i].m_edges[e].m_earliest_start;
+			int to = cols[i].m_edges[e].m_to_node;
+			cols[i].m_edges[e].m_free_float = cols[i].m_nodes[to].m_earliest_event_time - cols[i].m_edges[e].m_earliest_finish;
 		}
 	}
 
