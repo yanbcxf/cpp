@@ -342,6 +342,9 @@
     <ClInclude Include="BalloonTip.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BusinessObject\CashFlow.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -607,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="BalloonTip.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\CashFlow.cpp">
+      <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

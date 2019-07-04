@@ -863,3 +863,19 @@ bool parseSteelMarking(string marking, int* _quantity, int* _diameter, double* _
 	if (_second) *_second = second;
 	return result;
 }
+
+
+/* 年金现值系数 */
+double PresentValueOfAnnuity(double i, int n) {
+	double q = FutureValueOfAnnuity(i, n);
+	q = q / pow((1 + i), n);
+	return q;
+}
+
+/* 年金终值系数 */
+double FutureValueOfAnnuity(double i, int n) {
+	if (i == 0) return n;
+	double q = pow((1 + i), n);
+	q = (1 - q) / (-i);
+	return q;
+}

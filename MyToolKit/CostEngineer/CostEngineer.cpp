@@ -110,7 +110,7 @@ BOOL CCostEngineerApp::InitInstance()
 		AfxMessageBox(IDP_OLE_INIT_FAILED);
 		return FALSE;
 	}
-
+	
 	///////////////////////////////////////////////////////////////
 	//	读入xml 文件进行 菜单 配置
 

@@ -354,6 +354,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CCashFlow::Update(m_strMenuCode, nRow, pDoc->cashFlows)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -383,6 +387,11 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 
 			if (CConsumptionQuotaObj::Update(m_strMenuCode, nRow, pDoc->consumptionQuotas[m_nChildrenCode].m_materials)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CCashFlowObj::Update(m_strMenuCode, nRow, pDoc->cashFlows[m_nChildrenCode].m_objs)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -434,6 +443,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CCashFlow::Delete(m_strMenuCode, nRow, pDoc->cashFlows)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -463,6 +476,11 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 
 				if (CConsumptionQuotaObj::Delete(m_strMenuCode, nRow, pDoc->consumptionQuotas[m_nChildrenCode].m_materials)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+
+				if (CCashFlowObj::Delete(m_strMenuCode, nRow, pDoc->cashFlows[m_nChildrenCode].m_objs)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -521,6 +539,15 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				CConsumptionQuotaObj c;
 				if (c.CreateOrUpdate(m_strMenuCode)) {
 					pDoc->consumptionQuotas[m_nChildrenCode].m_materials.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+
+			{
+				CCashFlowObj c;
+				if (c.CreateOrUpdate(m_strMenuCode)) {
+					pDoc->cashFlows[m_nChildrenCode].m_objs.push_back(c);
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -664,6 +691,20 @@ void CCostEngineerView::RedrawView() {
 		m_display_mode = DisplayModes::Grid_Dijkstra;
 		m_upper_percent = 3;
 		m_down_percent = 7;
+		ReLayout();
+		return;
+	}
+
+	if (CCashFlow::Draw(m_strMenuCode, &m_Grid, pDoc->cashFlows)) {
+		if (m_nChildrenCode < pDoc->cashFlows.size()) {
+			CCashFlowObj::Draw(&m_Grid1, pDoc->cashFlows[m_nChildrenCode].m_objs, pDoc->cashFlows[m_nChildrenCode]);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		m_display_mode = DisplayModes::Grid_Grid;
+		m_upper_percent = 4;
+		m_down_percent = 6;
 		ReLayout();
 		return;
 	}

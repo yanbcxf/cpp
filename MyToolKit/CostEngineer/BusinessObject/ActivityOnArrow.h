@@ -11,7 +11,7 @@ public:
 
 	bool CreateOrUpdate(string menuCode);
 
-	CString m_name;			//  节点名称
+	CString m_name;		//  节点名称
 	int	m_x;			//	x 坐标
 	int	m_y;			//	y 坐标
 

@@ -123,6 +123,7 @@ typedef struct _item_info
 #include "ItemOfTotalPrice.h"
 #include "DecisionTree.h"
 #include "ActivityOnArrow.h"
+#include "CashFlow.h"
 
 
 #define WM_USER_XML		WM_USER + 1
@@ -155,6 +156,12 @@ extern int MbcsToUnicode(const char * lpMbcsStr, wchar_t * lpUnicodeStr, int nUn
 extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit);
 extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
 extern bool parseSteelMarking(string marking, int* quantity =NULL, int* diameter = NULL, double* weight = NULL, int* first = NULL, int* second = NULL);
+
+/* 年金现值系数 */
+extern double PresentValueOfAnnuity(double i, int n);
+
+/* 年金终值系数 */
+extern double FutureValueOfAnnuity(double i, int n);
 
 #ifdef _UNICODE
 #if defined _M_IX86

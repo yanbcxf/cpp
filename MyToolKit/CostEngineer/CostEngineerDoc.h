@@ -23,9 +23,11 @@ public:
 	vector<CItemOfTotalPrice>	itemOfTotalPrices;
 	vector<CDecisionTree> decisionTrees;
 	vector<CActivityOnArrow> activityOnArrows;
+	vector<CCashFlow> cashFlows;
 
 // 操作
 public:
+
 
 // 重写
 public:

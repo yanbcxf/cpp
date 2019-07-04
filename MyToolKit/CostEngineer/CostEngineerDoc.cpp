@@ -155,6 +155,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			activityOnArrows[i].Serialize(ar, CActivityOnArrow::m_ObjectVersion);
 		}
 
+		// 现金流量表
+		ar << CString(CCashFlow::m_ObjectCode.c_str());
+		ar << CCashFlow::m_ObjectVersion;
+		ar << cashFlows.size();
+		for (int i = 0; i < cashFlows.size(); i++) {
+			cashFlows[i].Serialize(ar, CCashFlow::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -228,6 +236,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					b.Serialize(ar, db);
 					activityOnArrows.push_back(b);
 				}
+				// 现金流量表
+				if (str == CCashFlow::m_ObjectCode.c_str()) {
+					CCashFlow b;
+					b.Serialize(ar, db);
+					cashFlows.push_back(b);
+				}
 			}
 		}
 	}
@@ -236,6 +250,7 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 	//  容器文档的 COleClientItem 对象的序列化。
 	COleDocument::Serialize(ar);
 }
+
 
 #ifdef SHARED_HANDLERS
 

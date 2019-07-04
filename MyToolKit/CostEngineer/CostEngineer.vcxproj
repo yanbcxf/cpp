@@ -196,6 +196,7 @@
     <ClInclude Include="BusinessObject\BeamObj.h" />
     <ClInclude Include="BusinessObject\BudgetIndex.h" />
     <ClInclude Include="BusinessObject\BuildingBudget.h" />
+    <ClInclude Include="BusinessObject\CashFlow.h" />
     <ClInclude Include="BusinessObject\ColumnObj.h" />
     <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
     <ClInclude Include="BusinessObject\DecisionTree.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="BusinessObject\BeamObj.cpp" />
     <ClCompile Include="BusinessObject\BudgetIndex.cpp" />
     <ClCompile Include="BusinessObject\BuildingBudget.cpp" />
+    <ClCompile Include="BusinessObject\CashFlow.cpp" />
     <ClCompile Include="BusinessObject\ColumnObj.cpp" />
     <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
     <ClCompile Include="BusinessObject\DecisionTree.cpp" />
