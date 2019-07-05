@@ -10,7 +10,8 @@ CCashFlowObj::CCashFlowObj()
 	m_building_duration = 0;
 	m_building_cost = 0;
 	m_payment_interval = 1;		//  默认以 一个月为一个支付期
-	m_payment_lag = 0;			//	默认为 月末支付
+	m_payment_lag = 0;			//	默认为 当期支付
+	m_payment_time = 1;			//	默认为 期末发生支付 或 扣款
 }
 
 
@@ -28,6 +29,7 @@ void CCashFlowObj::Serialize(CArchive& ar, double version) {
 		ar << m_building_cost;
 		ar << m_payment_interval;
 		ar << m_payment_lag;
+		ar << m_payment_time;
 	}
 	else {
 		ar >> m_name;
@@ -36,6 +38,7 @@ void CCashFlowObj::Serialize(CArchive& ar, double version) {
 		ar >> m_building_cost;
 		ar >> m_payment_interval;
 		ar >> m_payment_lag;
+		ar >> m_payment_time;
 	}
 }
 
@@ -72,10 +75,10 @@ bool CCashFlowObj::CreateOrUpdate(string menuCode) {
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("造价"), 64);
-	if (m_building_cost > 0)
+	if (m_building_cost != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_building_cost);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 100000;
+	infd.m_vecFindItem[0][i][0].dbMin = -1000000;
+	infd.m_vecFindItem[0][i][0].dbMax =  1000000;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
@@ -93,6 +96,14 @@ bool CCashFlowObj::CreateOrUpdate(string menuCode) {
 	infd.m_vecFindItem[0][i][0].nMin = 0;
 	infd.m_vecFindItem[0][i][0].nMax = 10000;
 
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = "期初;期末";
+	infd.m_vecFindItem[0][i][0].strItem = "期末";
+	if (m_payment_time == 0)
+		infd.m_vecFindItem[0][i][0].strItem = "期初";
+	memcpy(infd.m_vecFindItem[0][i][0].caption,  _T("支付时间") , 64);
+
 	
 	infd.Init(_T("工程支付 参数设置"), _T("工程支付 参数设置"));
 	if (infd.DoModal() == IDOK) {
@@ -103,11 +114,17 @@ bool CCashFlowObj::CreateOrUpdate(string menuCode) {
 		m_building_cost = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		m_payment_interval = atoi(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		m_payment_lag = atoi(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		if (string(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) == "期末")
+			m_payment_time = 1;
+		else
+			m_payment_time = 0;
 		
 		return true;
 	}
 	return false;
 }
+
+
 
 bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashFlow& parent) {
 	if (!pGridCtrl)
@@ -116,7 +133,7 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 
 	try {
 		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(7 + 3);		//	额外增加三列 ： 序号/修改/删除
+		pGridCtrl->SetColumnCount(8 + 3);		//	额外增加三列 ： 序号/修改/删除
 		pGridCtrl->SetFixedRowCount(1);
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(TRUE);
@@ -150,9 +167,10 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 				else if (col == 4)	val = "造价";
 				else if (col == 5)	val = "支付周期(月)";
 				else if (col == 6)	val = "支付延迟(月)";
-				else if (col == 7)	val = "终值 (以整个工程最后支付为基准)";
-				else if (col == 8)	val = "";
+				else if (col == 7)	val = "支付时间";
+				else if (col == 8)	val = "终值 (以分部工程结清为基准)";
 				else if (col == 9)	val = "";
+				else if (col == 10)	val = "";
 
 
 				Item.strText.Format(_T("%s"), val.c_str());
@@ -169,11 +187,11 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
 						return false;
 				}
-				if (col == 8) {
+				if (col == 9) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
-				if (col == 9) {
+				if (col == 10) {
 					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
@@ -186,15 +204,13 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 				else if (col == 5) 	val = Int2String(cols[row - 1].m_payment_interval);
 				else if (col == 6)  val = Int2String(cols[row - 1].m_payment_lag);
 				else if (col == 7) {
-					int latest = cols[row - 1].LatestPaymentTime();
-					int latest_whole = parent.LatestPaymentTime();
-					double annuity = cols[row - 1].m_building_cost / cols[row - 1].m_building_duration * cols[row - 1].m_payment_interval;
-					double future = FutureValueOfAnnuity(parent.m_interest_rate, cols[row - 1].m_building_duration) * annuity;
-					future = future * pow((1 + parent.m_interest_rate), latest_whole - latest);
-					val = Double2String(future);
+					val = cols[row - 1].m_payment_time == 0 ? "期初" : "期末";
 				}
-				else if (col == 8)	val = "修改（update）";
-				else if (col == 9)	val = "删除（delete）";
+				else if (col == 8) {
+					val = Double2String(cols[row - 1].FutureValueOfPartitionedProject(parent.m_interest_rate));
+				}
+				else if (col == 9)	val = "修改（update）";
+				else if (col == 10)	val = "删除（delete）";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -235,11 +251,50 @@ bool CCashFlowObj::Delete(string menuCode, int nRow, vector<CCashFlowObj>& cols)
 }
 
 int CCashFlowObj::EarliestPaymentTime() {
-	return m_building_start + m_payment_lag;
+	int num = m_building_duration / m_payment_interval;
+	int remain = m_building_duration % m_payment_interval;
+	if (m_payment_time == 0) {
+		/* 期初支付 */
+		return m_building_start + m_payment_lag;
+	}
+	else {
+		/* */
+		if(num > 0)
+			return m_building_start + m_payment_interval -1 + m_payment_lag;
+		else 
+			return m_building_start + remain - 1 + m_payment_lag;
+	}
+	
 }
 
 int CCashFlowObj::LatestPaymentTime() {
-	return m_building_start + m_building_duration + m_payment_lag;
+	return m_building_start + m_building_duration - 1 + m_payment_lag;
+}
+
+
+/* 终值都换算到结清月的月末或月初 */
+double CCashFlowObj::FutureValueOfPartitionedProject(double i) {
+	double annuity = m_building_cost / m_building_duration;
+	int num = m_building_duration / m_payment_interval;		/* 相同年金的笔数 */
+	int remain = m_building_duration % m_payment_interval;	/* 最后一笔款包含的月份数 */
+	double future;
+	if (m_payment_time == 0) {
+		/* 年金发生在期初，则终值换算到结清月的月初 */
+		future = FutureValueOfAnnuity(i * m_payment_interval, num) * annuity  * m_payment_interval;
+		if (remain > 0) {
+			future = future * pow(1 + i, m_payment_interval);
+			future += remain * annuity;
+		}
+	}
+	else {
+		/* 年金发生在期末，则终值换算到结清月的月末 */
+		future = FutureValueOfAnnuity(i * m_payment_interval, num) * annuity  * m_payment_interval;
+		if (remain > 0) {
+			future = future * pow(1 + i, remain);
+			future += remain * annuity;
+		}
+	}
+	return future;
 }
 
 
@@ -328,7 +383,7 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 
 	try {
 		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(3 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
+		pGridCtrl->SetColumnCount(5 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
 		pGridCtrl->SetFixedRowCount(1);
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(TRUE);
@@ -357,9 +412,11 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 				else if (col == 1)	val = "名称";
 				else if (col == 2)	val = "利率(%)(月)";
 				else if (col == 3)	val = "最后一笔支付款收到月份";
-				else if (col == 4)	val = "";
-				else if (col == 5)	val = "";
+				else if (col == 4)  val = "终值";
+				else if (col == 5)	val = "现值";
 				else if (col == 6)	val = "";
+				else if (col == 7)	val = "";
+				else if (col == 8)	val = "";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -375,11 +432,11 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
 						return false;
 				}
-				if (col == 4 || col == 6) {
+				if (col == 6 || col == 8) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
-				if (col == 5) {
+				if (col == 7) {
 					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
@@ -388,10 +445,11 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
 				else if (col == 2)  val = Double2String(cols[row - 1].m_interest_rate * 100, "%.2f");
 				else if (col == 3)  val = Int2String(cols[row - 1].LatestPaymentTime());
-				
-				else if (col == 4)	val = "修改（update）";
-				else if (col == 5)	val = "删除（delete）";
-				else if (col == 6)	val = "增加（create）";
+				else if (col == 4)  val = Double2String(cols[row - 1].FutureValueOfWholeProject(), "%.2f");
+				else if (col == 5) 	val = Double2String(cols[row - 1].PresentValueOfWholeProject() , "%.2f");
+				else if (col == 6)	val = "修改（update）";
+				else if (col == 7)	val = "删除（delete）";
+				else if (col == 8)	val = "增加（create）";
 
 				Item.strText.Format(_T("%s"), val.c_str());
 			}
@@ -445,6 +503,33 @@ int CCashFlow::LatestPaymentTime() {
 		}
 	}
 	return latest;
+}
+
+double CCashFlow::FutureValueOfWholeProject() {
+	int latest = LatestPaymentTime();
+	double sum = 0;
+	for (auto e : m_objs) {
+		double future = e.FutureValueOfPartitionedProject(m_interest_rate);
+		/* 换算到整个工程的结清月的月末 */
+		int months = latest - e.LatestPaymentTime();
+		if (e.m_payment_time == 0)
+			/* 如果为期初支付，则增加一个月 */
+			months++;
+
+		int num = months / e.m_payment_interval;
+		int remain = months / e.m_payment_interval;
+				
+		future = future * pow( 1+ (m_interest_rate * e.m_payment_interval), num);
+		future = future * pow(1 + m_interest_rate, remain);
+		sum += future;
+	}
+	return sum;
+}
+
+double CCashFlow::PresentValueOfWholeProject() {
+	int latest = LatestPaymentTime();
+	double future = FutureValueOfWholeProject();
+	return future / pow((1 + m_interest_rate), latest);
 }
 
 void CCashFlow::Calculate(string menuCode, vector<CCashFlow>& cols) {

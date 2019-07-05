@@ -18,8 +18,10 @@ public:
 
 	/* 最早收到支付款的月份 */
 	int  EarliestPaymentTime();
-	/* 最后一笔支付款的月份 */
+	/* 最后结清款的月份 */
 	int	 LatestPaymentTime();
+	/* 终值都换算到结清月的月末或月初 */
+	double FutureValueOfPartitionedProject(double i);
 
 	static bool Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashFlow& parent);
 	static bool Update(string menuCode, int nRow, vector<CCashFlowObj>& cols);
@@ -30,9 +32,9 @@ public:
 	int		m_building_start;	//	开始时间（月，周）
 	int		m_building_duration;//	工期
 	double	m_building_cost;	//	分部工程造价
-	int		m_payment_interval;	//	支付间隔时间
+	int		m_payment_interval;	//	支付周期 - 即每 N 个月结算一次
 	int		m_payment_lag;		//  支付延迟时间
-	
+	int		m_payment_time;		//	0 期初支付， 1 期末支付
 };
 
 
@@ -45,8 +47,12 @@ public:
 	void Serialize(CArchive& ar, double version);
 
 	bool CreateOrUpdate(string strMenuCode);
-	/* 最后一笔支付款的月份 */
+	/* 整个工程结清的月份 */
 	int	 LatestPaymentTime();
+	/* 整个工程的终值，换算到整个工程的结清月的月末 */
+	double FutureValueOfWholeProject();
+	/* 整个工程的现值 */
+	double PresentValueOfWholeProject();
 	
 	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& cols);
 	static bool Update(string menuCode, int nRow, vector<CCashFlow>& cols);
