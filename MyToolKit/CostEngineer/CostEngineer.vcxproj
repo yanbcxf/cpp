@@ -200,6 +200,7 @@
     <ClInclude Include="BusinessObject\ColumnObj.h" />
     <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
     <ClInclude Include="BusinessObject\DecisionTree.h" />
+    <ClInclude Include="BusinessObject\IntegratedEvaluation.h" />
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h" />
     <ClInclude Include="BusinessObject\ItemOfUnitPrice.h" />
     <ClInclude Include="BusinessObject\SimilarEngineerBudget.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="BusinessObject\ColumnObj.cpp" />
     <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
     <ClCompile Include="BusinessObject\DecisionTree.cpp" />
+    <ClCompile Include="BusinessObject\IntegratedEvaluation.cpp" />
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp" />
     <ClCompile Include="BusinessObject\ItemOfUnitPrice.cpp" />
     <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp" />

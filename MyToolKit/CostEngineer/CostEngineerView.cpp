@@ -358,6 +358,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CIntegratedEvaluation::Update(m_strMenuCode, nRow, pDoc->integratedEvaluations)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -392,6 +396,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 
 			if (CCashFlowObj::Update(m_strMenuCode, nRow, pDoc->cashFlows[m_nChildrenCode].m_objs)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CIntegratedEvaluationObj::Update(m_strMenuCode, nRow, pDoc->integratedEvaluations[m_nChildrenCode].m_objs, pDoc->integratedEvaluations[m_nChildrenCode])) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -447,6 +455,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CIntegratedEvaluation::Delete(m_strMenuCode, nRow, pDoc->integratedEvaluations)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -481,6 +493,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 
 				if (CCashFlowObj::Delete(m_strMenuCode, nRow, pDoc->cashFlows[m_nChildrenCode].m_objs)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CIntegratedEvaluationObj::Delete(m_strMenuCode, nRow, pDoc->integratedEvaluations[m_nChildrenCode].m_objs)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -548,6 +564,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				CCashFlowObj c;
 				if (c.CreateOrUpdate(m_strMenuCode)) {
 					pDoc->cashFlows[m_nChildrenCode].m_objs.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			{
+				CIntegratedEvaluationObj c;
+				if (c.CreateOrUpdate(m_strMenuCode, pDoc->integratedEvaluations[m_nChildrenCode])) {
+					pDoc->integratedEvaluations[m_nChildrenCode].m_objs.push_back(c);
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -698,6 +722,20 @@ void CCostEngineerView::RedrawView() {
 	if (CCashFlow::Draw(m_strMenuCode, &m_Grid, pDoc->cashFlows)) {
 		if (m_nChildrenCode < pDoc->cashFlows.size()) {
 			CCashFlowObj::Draw(&m_Grid1, pDoc->cashFlows[m_nChildrenCode].m_objs, pDoc->cashFlows[m_nChildrenCode]);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		m_display_mode = DisplayModes::Grid_Grid;
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
+		return;
+	}
+
+	if (CIntegratedEvaluation::Draw(m_strMenuCode, &m_Grid, pDoc->integratedEvaluations)) {
+		if (m_nChildrenCode < pDoc->integratedEvaluations.size()) {
+			CIntegratedEvaluationObj::Draw(&m_Grid1, pDoc->integratedEvaluations[m_nChildrenCode].m_objs, pDoc->integratedEvaluations[m_nChildrenCode]);
 		}
 		else {
 			m_Grid1.SetRowCount(0);

@@ -258,7 +258,7 @@ int CCashFlowObj::EarliestPaymentTime() {
 		return m_building_start + m_payment_lag;
 	}
 	else {
-		/* */
+		/* 期末支付*/
 		if(num > 0)
 			return m_building_start + m_payment_interval -1 + m_payment_lag;
 		else 
@@ -268,7 +268,19 @@ int CCashFlowObj::EarliestPaymentTime() {
 }
 
 int CCashFlowObj::LatestPaymentTime() {
-	return m_building_start + m_building_duration - 1 + m_payment_lag;
+	int num = m_building_duration / m_payment_interval;
+	int remain = m_building_duration % m_payment_interval;
+	if (m_payment_time == 0) {
+		/* 期初支付 */
+		if (remain > 0)
+			return m_building_start + m_payment_interval * num + m_payment_lag;
+		else
+			return m_building_start + m_payment_interval * (num-1) + m_payment_lag;
+	}
+	else {
+		/* 期末支付 */
+		return m_building_start + m_building_duration - 1 + m_payment_lag;
+	}
 }
 
 
@@ -280,17 +292,17 @@ double CCashFlowObj::FutureValueOfPartitionedProject(double i) {
 	double future;
 	if (m_payment_time == 0) {
 		/* 年金发生在期初，则终值换算到结清月的月初 */
-		future = FutureValueOfAnnuity(i * m_payment_interval, num) * annuity  * m_payment_interval;
+		future = Annuity2Future(i * m_payment_interval, num ,3) * annuity  * m_payment_interval;
 		if (remain > 0) {
-			future = future * pow(1 + i, m_payment_interval);
+			future = future * Present2Future(i, m_payment_interval);
 			future += remain * annuity;
 		}
 	}
 	else {
 		/* 年金发生在期末，则终值换算到结清月的月末 */
-		future = FutureValueOfAnnuity(i * m_payment_interval, num) * annuity  * m_payment_interval;
+		future = Annuity2Future(i * m_payment_interval, num, 3) * annuity  * m_payment_interval;
 		if (remain > 0) {
-			future = future * pow(1 + i, remain);
+			future = future * Present2Future(i, remain);
 			future += remain * annuity;
 		}
 	}
@@ -505,6 +517,8 @@ int CCashFlow::LatestPaymentTime() {
 	return latest;
 }
 
+
+
 double CCashFlow::FutureValueOfWholeProject() {
 	int latest = LatestPaymentTime();
 	double sum = 0;
@@ -517,10 +531,10 @@ double CCashFlow::FutureValueOfWholeProject() {
 			months++;
 
 		int num = months / e.m_payment_interval;
-		int remain = months / e.m_payment_interval;
+		int remain = months % e.m_payment_interval;
 				
-		future = future * pow( 1+ (m_interest_rate * e.m_payment_interval), num);
-		future = future * pow(1 + m_interest_rate, remain);
+		future = future * Present2Future(m_interest_rate * e.m_payment_interval, num, 3);
+		future = future * Present2Future(m_interest_rate, remain, 3);
 		sum += future;
 	}
 	return sum;
@@ -529,7 +543,7 @@ double CCashFlow::FutureValueOfWholeProject() {
 double CCashFlow::PresentValueOfWholeProject() {
 	int latest = LatestPaymentTime();
 	double future = FutureValueOfWholeProject();
-	return future / pow((1 + m_interest_rate), latest);
+	return future * Future2Present(m_interest_rate, latest);
 }
 
 void CCashFlow::Calculate(string menuCode, vector<CCashFlow>& cols) {

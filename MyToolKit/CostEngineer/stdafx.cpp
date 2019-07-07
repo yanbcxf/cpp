@@ -866,16 +866,44 @@ bool parseSteelMarking(string marking, int* _quantity, int* _diameter, double* _
 
 
 /* 年金现值系数 */
-double PresentValueOfAnnuity(double i, int n) {
-	double q = FutureValueOfAnnuity(i, n);
+double Annuity2Present(double i, int n, int digitalNum) {
+	double q = Annuity2Future(i, n);
 	q = q / pow((1 + i), n);
+
+	if (digitalNum >= 0) {
+		long x = q * pow(10, digitalNum) + 0.5;
+		q = x / pow(10, digitalNum);
+	}
 	return q;
 }
 
 /* 年金终值系数 */
-double FutureValueOfAnnuity(double i, int n) {
+double Annuity2Future(double i, int n, int digitalNum) {
 	if (i == 0) return n;
 	double q = pow((1 + i), n);
 	q = (1 - q) / (-i);
+
+	if (digitalNum >= 0) {
+		long x = q * pow(10, digitalNum) + 0.5;
+		q = x / pow(10, digitalNum);
+	}
+	return q;
+}
+
+double Future2Present(double i, int n, int digitalNum) {
+	double q = 1/pow(1 + i, n);
+	if (digitalNum >= 0) {
+		long x = q * pow(10, digitalNum) + 0.5;
+		q = x / pow(10, digitalNum);
+	}
+	return q;
+}
+
+double Present2Future(double i, int n, int digitalNum) {
+	double q = pow(1 + i, n);
+	if (digitalNum >= 0) {
+		long x = q * pow(10, digitalNum) + 0.5;
+		q = x / pow(10, digitalNum);
+	}
 	return q;
 }

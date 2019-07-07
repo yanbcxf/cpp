@@ -24,6 +24,7 @@ public:
 	vector<CDecisionTree> decisionTrees;
 	vector<CActivityOnArrow> activityOnArrows;
 	vector<CCashFlow> cashFlows;
+	vector<CIntegratedEvaluation> integratedEvaluations;
 
 // 操作
 public:

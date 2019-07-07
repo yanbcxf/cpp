@@ -124,6 +124,7 @@ typedef struct _item_info
 #include "DecisionTree.h"
 #include "ActivityOnArrow.h"
 #include "CashFlow.h"
+#include "IntegratedEvaluation.h"
 
 
 #define WM_USER_XML		WM_USER + 1
@@ -158,10 +159,14 @@ extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecM
 extern bool parseSteelMarking(string marking, int* quantity =NULL, int* diameter = NULL, double* weight = NULL, int* first = NULL, int* second = NULL);
 
 /* 年金现值系数 */
-extern double PresentValueOfAnnuity(double i, int n);
+extern double Annuity2Present(double i, int n, int digitalNum=-1);
 
 /* 年金终值系数 */
-extern double FutureValueOfAnnuity(double i, int n);
+extern double Annuity2Future(double i, int n, int digitalNum=-1);
+
+extern double Future2Present(double i, int n, int digitalNum=-1);
+
+extern double Present2Future(double i, int n, int digitalNum=-1);
 
 #ifdef _UNICODE
 #if defined _M_IX86
