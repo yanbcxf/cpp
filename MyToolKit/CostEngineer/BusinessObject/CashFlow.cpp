@@ -309,6 +309,32 @@ double CCashFlowObj::FutureValueOfPartitionedProject(double i) {
 	return future;
 }
 
+/* 现值都换算到开始支付月的月初 */
+double CCashFlowObj::PresentValueOfPartitionedProject(double i) {
+	double annuity = m_building_cost / m_building_duration;
+	int num = m_building_duration / m_payment_interval;		/* 相同年金的笔数 */
+	int remain = m_building_duration % m_payment_interval;	/* 最后一笔款包含的月份数 */
+	double future;
+	if (m_payment_time == 0) {
+		/* 年金发生在期初，则现值换算到开始支付月的月初 */
+		future = Annuity2Present(i * m_payment_interval, num - 1, 4) * annuity  * m_payment_interval;
+		future += annuity * m_payment_interval;		/* 加上月初的第一笔 */
+		if (remain > 0) {
+			future += remain * annuity * Future2Present(i * m_payment_interval, num, 4);
+		}
+	}
+	else {
+		/* 年金发生在期末，则现值换算到开始支付月的月初 */
+		future = Annuity2Present(i * m_payment_interval, num, 4);
+		future = future *annuity  * m_payment_interval;
+		if (remain > 0) {
+			
+			future += remain * annuity * Future2Present(i, m_building_duration, 4);
+		}
+	}
+	return future;
+}
+
 
 /***********************************************************************************/
 
@@ -542,8 +568,21 @@ double CCashFlow::FutureValueOfWholeProject() {
 
 double CCashFlow::PresentValueOfWholeProject() {
 	int latest = LatestPaymentTime();
-	double future = FutureValueOfWholeProject();
-	return future * Future2Present(m_interest_rate, latest);
+	double sum = 0;
+	for (auto e : m_objs) {
+		double present = e.PresentValueOfPartitionedProject(m_interest_rate);
+		/* 换算到整个工程的月初 */
+		int months = e.EarliestPaymentTime() - 1;
+		
+
+		int num = months / e.m_payment_interval;
+		int remain = months % e.m_payment_interval;
+
+		present = present * Future2Present(m_interest_rate * e.m_payment_interval, num, 4);
+		present = present * Future2Present(m_interest_rate, remain, 4);
+		sum += present;
+	}
+	return sum;
 }
 
 void CCashFlow::Calculate(string menuCode, vector<CCashFlow>& cols) {

@@ -23,6 +23,8 @@ public:
 	/* 终值都换算到结清月的月末或月初 */
 	double FutureValueOfPartitionedProject(double i);
 
+	double PresentValueOfPartitionedProject(double i);
+
 	static bool Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashFlow& parent);
 	static bool Update(string menuCode, int nRow, vector<CCashFlowObj>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CCashFlowObj>& cols);
