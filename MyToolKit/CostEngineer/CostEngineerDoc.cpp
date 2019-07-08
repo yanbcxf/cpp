@@ -163,6 +163,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			cashFlows[i].Serialize(ar, CCashFlow::m_ObjectVersion);
 		}
 
+		// 投标 - 综合评估法
+		ar << CString(CIntegratedEvaluation::m_ObjectCode.c_str());
+		ar << CIntegratedEvaluation::m_ObjectVersion;
+		ar << integratedEvaluations.size();
+		for (int i = 0; i < integratedEvaluations.size(); i++) {
+			integratedEvaluations[i].Serialize(ar, CIntegratedEvaluation::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -241,6 +249,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CCashFlow b;
 					b.Serialize(ar, db);
 					cashFlows.push_back(b);
+				}
+				// 投标 - 综合评估法
+				if (str == CIntegratedEvaluation::m_ObjectCode.c_str()) {
+					CIntegratedEvaluation b;
+					b.Serialize(ar, db);
+					integratedEvaluations.push_back(b);
 				}
 			}
 		}
