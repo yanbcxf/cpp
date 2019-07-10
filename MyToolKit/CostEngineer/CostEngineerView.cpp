@@ -578,6 +578,19 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
+	if (source == "复制（copy）") {
+		if (gridId == 0) {
+			if (CActivityOnArrow::Copy(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+
+			if (CCashFlow::Copy(m_strMenuCode, nRow, pDoc->cashFlows)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+	}
 
 	if (bRedraw) 
 		RedrawView();;

@@ -250,7 +250,7 @@ void CBaseMessageFormView::OnGridClick(NMHDR *pNMHDR, LRESULT *pResult)
 	str.Format(_T("Context menu called on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
 
 	// TODO:  在此添加控件通知处理程序代码
-	if (pItem->iRow > 0 && pItem->iColumn > 0)
+	if (pItem->iRow > 0 && pItem->iColumn >= 0)
 		PostGridClick(0, pItem->iRow, pItem->iColumn);
 
 	*pResult = 0;
@@ -279,7 +279,7 @@ void CBaseMessageFormView::OnGridClick1(NMHDR *pNMHDR, LRESULT *pResult)
 	str.Format(_T("Context menu called on row %d, col %d\n"), pItem->iRow, pItem->iColumn);
 
 	// TODO:  在此添加控件通知处理程序代码
-	if (pItem->iRow > 0 && pItem->iColumn > 0)
+	if (pItem->iRow > 0 && pItem->iColumn >= 0)
 		PostGridClick(1, pItem->iRow, pItem->iColumn);
 
 	*pResult = 0;

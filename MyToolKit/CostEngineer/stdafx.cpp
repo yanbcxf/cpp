@@ -907,3 +907,72 @@ double Present2Future(double i, int n, int digitalNum) {
 	}
 	return q;
 }
+
+bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<string>> & vecData) {
+	try {
+		pGridCtrl->SetRowCount(vecData.size() + 1);
+		pGridCtrl->SetColumnCount(vecHeader.size());	//	额外增加三列 ： 修改/删除
+		pGridCtrl->SetFixedRowCount(1);
+		pGridCtrl->SetFixedColumnCount(1);
+		pGridCtrl->SetHeaderSort(FALSE);
+		pGridCtrl->SetEditable(FALSE);
+	}
+	catch (CMemoryException* e)
+	{
+		e->ReportError();
+		e->Delete();
+		return TRUE;
+	}
+
+	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
+	{
+		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
+		{
+			GV_ITEM Item;
+			Item.mask = GVIF_TEXT | GVIF_FORMAT;
+			Item.row = row;
+			Item.col = col;
+			if (row < 1) {
+				Item.nFormat = DT_LEFT | DT_WORDBREAK;
+
+				Item.strText.Format(_T("%s"), vecHeader[col].c_str());
+			}
+			else
+			{
+				if (col == 0)
+					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
+				else
+					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
+
+				if (col < vecHeader.size() - 2)
+				{
+					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
+						return TRUE;
+				}
+
+				Item.strText.Format(_T("%s"), vecData[row - 1][col].c_str());
+
+				if (vecData[row - 1][col] == "修改（update）" || vecData[row - 1][col] == "增加（create）" 
+					|| vecData[row - 1][col] == "复制（copy）" ) {
+					Item.crFgClr = RGB(0, 120, 250);
+					Item.mask |= GVIF_FGCLR;
+				}
+				else if (vecData[row - 1][col] == "删除（delete）") {
+					Item.crFgClr = RGB(255, 0, 0);
+					Item.mask |= GVIF_FGCLR;
+				}
+				else {
+					Item.crFgClr = RGB(0, 0, 0);
+					Item.mask |= GVIF_FGCLR;
+				}
+			}
+
+			pGridCtrl->SetItem(&Item);
+		}
+
+	}
+
+	pGridCtrl->AutoSizeColumns();
+
+	return TRUE;
+}

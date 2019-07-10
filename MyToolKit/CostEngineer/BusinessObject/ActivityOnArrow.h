@@ -68,6 +68,7 @@ public:
 	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CActivityOnArrow>& cols);
 	static bool Update(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
+	static bool Copy(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
 	
 	static unsigned int PopupMenuId(string menuCode);
 	

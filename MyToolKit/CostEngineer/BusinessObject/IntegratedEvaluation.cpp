@@ -523,68 +523,7 @@ bool CIntegratedEvaluationObj::Draw(CGridCtrl* pGridCtrl, vector<CIntegratedEval
 		}
 	}
 		
-	try {
-		pGridCtrl->SetRowCount(vecData.size() + 1);
-		pGridCtrl->SetColumnCount(vecHeader.size());	//	额外增加三列 ： 修改/删除
-		pGridCtrl->SetFixedRowCount(1);
-		pGridCtrl->SetFixedColumnCount(1);
-		pGridCtrl->SetHeaderSort(FALSE);
-		pGridCtrl->SetEditable(FALSE);
-	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return TRUE;
-	}
-
-	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
-	{
-		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
-		{
-			GV_ITEM Item;
-			Item.mask = GVIF_TEXT | GVIF_FORMAT;
-			Item.row = row;
-			Item.col = col;
-			if (row < 1) {
-				Item.nFormat = DT_LEFT | DT_WORDBREAK;
-
-				Item.strText.Format(_T("%s"), vecHeader[col].c_str());
-			}
-			else
-			{
-				if (col == 0)
-					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-
-				if (col < vecHeader.size() - 2)
-				{
-					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
-						return TRUE;
-				}
-
-				if (col == vecHeader.size() - 2 ) {
-					Item.crFgClr = RGB(0, 120, 250);
-					Item.mask |= GVIF_FGCLR;
-				}
-				if (col == vecHeader.size() - 1) {
-					Item.crFgClr = RGB(255, 0, 0);
-					Item.mask |= GVIF_FGCLR;
-				}
-
-				Item.strText.Format(_T("%s"), vecData[row - 1][col].c_str());
-			}
-
-			pGridCtrl->SetItem(&Item);
-		}
-
-	}
-
-	pGridCtrl->ExpandColumnsToFit();
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常: OCX 属性页应返回 FALSE
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
 }
 
 
@@ -715,80 +654,28 @@ bool CIntegratedEvaluation::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 	if (menuCode != CIntegratedEvaluation::m_ObjectCode)
 		return false;
 
-	try {
-		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(2 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
-		pGridCtrl->SetFixedRowCount(1);
-		pGridCtrl->SetFixedColumnCount(1);
-		pGridCtrl->SetHeaderSort(TRUE);
+	vector<string> vecHeader;
+	vector<vector<string>> vecData;
+	vecHeader.push_back("现金流量表");
+	vecHeader.push_back("名称");
+	vecHeader.push_back("评标方法");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	int i = 1;
+	for (CIntegratedEvaluation e : cols) {
+		vector<string> vec;
+		vec.push_back(Int2String(i++));
+		vec.push_back(e.m_name.GetBuffer());
+		vec.push_back(e.m_evaluation_method.GetBuffer());
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+		vec.push_back("增加（create）");
+		vecData.push_back(vec);
 	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return false;
-	}
 
-	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
-	{
-		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
-		{
-			GV_ITEM Item;
-			Item.mask = GVIF_TEXT | GVIF_FORMAT;
-			Item.row = row;
-			Item.col = col;
-			Item.nMargin = 10;
-			string val;
-
-			if (row < 1) {
-				Item.nFormat = DT_LEFT | DT_WORDBREAK;
-				if (col == 0)	val = "现金流量表";
-				else if (col == 1)	val = "名称";
-				else if (col == 2)	val = "评标方法";
-				
-				else if (col == 3)	val = "";
-				else if (col == 4)	val = "";
-				else if (col == 5)	val = "";
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			else
-			{
-				if (col <= 2)
-					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-
-				if (col >= 2 && col <= 2 || col == 0)
-				{
-					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
-						return false;
-				}
-				if (col == 3 || col == 5) {
-					Item.crFgClr = RGB(0, 120, 250);
-					Item.mask |= GVIF_FGCLR;
-				}
-				if (col == 4) {
-					Item.crFgClr = RGB(255, 0, 0);
-					Item.mask |= GVIF_FGCLR;
-				}
-
-				if (col == 0)	val = Int2String(row);
-				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
-				else if (col == 2)  val = cols[row - 1].m_evaluation_method.GetBuffer();
-				else if (col == 3)	val = "修改（update）";
-				else if (col == 4)	val = "删除（delete）";
-				else if (col == 5)	val = "增加（create）";
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			pGridCtrl->SetItem(&Item);
-		}
-	}
-	//pGridCtrl->AutoFill();
-	pGridCtrl->Refresh();
-	pGridCtrl->ExpandColumnsToFit();
-	return true;
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
 }
 
 bool CIntegratedEvaluation::Update(string menuCode, int nRow, vector<CIntegratedEvaluation>& cols) {

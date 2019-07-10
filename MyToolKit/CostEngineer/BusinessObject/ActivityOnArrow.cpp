@@ -243,83 +243,28 @@ bool CActivityOnArrow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CActiv
 	if (menuCode != CActivityOnArrow::m_ObjectCode)
 		return false;
 
-	try {
-		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(3 + 3);		//	额外增加三列 ： 序号/修改/删除
-		pGridCtrl->SetFixedRowCount(1);
-		pGridCtrl->SetFixedColumnCount(1);
-		pGridCtrl->SetHeaderSort(TRUE);
+	vector<string> vecHeader;
+	vector<vector<string>>	vecData;
+	vecHeader.push_back("网络图名称");
+	vecHeader.push_back("节点数");
+	vecHeader.push_back("边数");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	for (CActivityOnArrow e : cols) {
+		vector<string> vec;
+		vec.push_back(e.m_name.GetBuffer());
+		vec.push_back(Int2String(e.m_nodes.size()));
+		vec.push_back(Int2String(e.m_edges.size()));
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+		vec.push_back("复制（copy）");
+
+		vecData.push_back(vec);
 	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return false;
-	}
-
-	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
-	{
-		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
-		{
-			GV_ITEM Item;
-			Item.mask = GVIF_TEXT | GVIF_FORMAT;
-			Item.row = row;
-			Item.col = col;
-			Item.nMargin = 10;
-			string val;
-
-			if (row < 1) {
-				Item.nFormat = DT_LEFT | DT_WORDBREAK;
-
-				if (col == 0)		val = "";
-				else if (col == 1)	val = "网络图名称";
-				else if (col == 2)	val = "节点数";
-				else if (col == 3)	val = "边数";
-								
-				else if (col == 4)	val = "";
-				else if (col == 5)	val = "";
-				
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			else
-			{
-				if (col <= 2)
-					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-
-				if (col >= 2 && col <= 3 || col == 0 )
-				{
-					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
-						return false;
-				}
-				if (col == 4 ) {
-					Item.crFgClr = RGB(0, 120, 250);
-					Item.mask |= GVIF_FGCLR;
-				}
-				if (col == 5) {
-					Item.crFgClr = RGB(255, 0, 0);
-					Item.mask |= GVIF_FGCLR;
-				}
-
-				
-				if (col == 0)	val = "";
-				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
-				else if (col == 2)  val = Int2String(cols[row - 1].m_nodes.size());
-				else if (col == 3)  val = Int2String(cols[row - 1].m_edges.size());
-								
-				else if (col == 4)	val = "修改（update）";
-				else if (col == 5)	val = "删除（delete）";
-		
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			pGridCtrl->SetItem(&Item);
-		}
-	}
-	//pGridCtrl->AutoFill();
-	pGridCtrl->Refresh();
-	pGridCtrl->ExpandColumnsToFit();
-	return true;
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
+	
 }
 
 bool CActivityOnArrow::Update(string menuCode, int nRow, vector<CActivityOnArrow>& cols) {
@@ -343,6 +288,19 @@ bool CActivityOnArrow::Delete(string menuCode, int nRow, vector<CActivityOnArrow
 				break;
 		}
 		cols.erase(it);
+		return true;
+	}
+	return false;
+}
+
+bool CActivityOnArrow::Copy(string menuCode, int nRow, vector<CActivityOnArrow>& cols) {
+	if (menuCode != CActivityOnArrow::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size()) {
+		CActivityOnArrow aoa = cols[nRow - 1];
+		aoa.m_name += "-cp";
+		cols.insert(cols.begin(), aoa);
 		return true;
 	}
 	return false;

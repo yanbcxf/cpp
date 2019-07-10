@@ -168,6 +168,8 @@ extern double Future2Present(double i, int n, int digitalNum=-1);
 
 extern double Present2Future(double i, int n, int digitalNum=-1);
 
+extern bool DrawGrid(CGridCtrl * pGridCtrl, vector<string>& vecHeader, vector<vector<string>>& vecData);
+
 #ifdef _UNICODE
 #if defined _M_IX86
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")

@@ -130,97 +130,35 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 	if (!pGridCtrl)
 		return false;
 
+	vector<string>	vecHeader;
+	vector<vector<string>>	vecData;
+	vecHeader.push_back("分部工程名称");
+	vecHeader.push_back("开始时间(月)");
+	vecHeader.push_back("工期(月)");
+	vecHeader.push_back("造价");
+	vecHeader.push_back("支付周期(月)");
+	vecHeader.push_back("支付延迟(月)");
+	vecHeader.push_back("支付时间");
+	vecHeader.push_back("终值 (以分部工程结清为基准)");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
 
-	try {
-		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(8 + 3);		//	额外增加三列 ： 序号/修改/删除
-		pGridCtrl->SetFixedRowCount(1);
-		pGridCtrl->SetFixedColumnCount(1);
-		pGridCtrl->SetHeaderSort(TRUE);
-		pGridCtrl->SetEditable(FALSE);
+	for (CCashFlowObj e : cols) {
+		vector<string> vec;
+		vec.push_back(e.m_name.GetBuffer());
+		vec.push_back(Int2String(e.m_building_start));
+		vec.push_back(Int2String(e.m_building_duration));
+		vec.push_back(Double2String(e.m_building_cost));
+		vec.push_back(Int2String(e.m_payment_interval));
+		vec.push_back(Int2String(e.m_payment_lag));
+		vec.push_back(e.m_payment_time == 0 ? "期初" : "期末");
+		vec.push_back(Double2String(e.FutureValueOfPartitionedProject(parent.m_interest_rate)));
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+
+		vecData.push_back(vec);
 	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return false;
-	}
-
-	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
-	{
-		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
-		{
-			GV_ITEM Item;
-			Item.mask = GVIF_TEXT | GVIF_FORMAT;
-			Item.row = row;
-			Item.col = col;
-			Item.nMargin = 10;
-			string val;
-
-			if (row < 1) {
-				Item.nFormat = DT_LEFT | DT_WORDBREAK;
-
-				if (col == 0)	val = "";
-				else if (col == 1)	val = "分部工程名称";
-				else if (col == 2)	val = "开始时间(月)";
-				else if (col == 3)	val = "工期(月)";
-				else if (col == 4)	val = "造价";
-				else if (col == 5)	val = "支付周期(月)";
-				else if (col == 6)	val = "支付延迟(月)";
-				else if (col == 7)	val = "支付时间";
-				else if (col == 8)	val = "终值 (以分部工程结清为基准)";
-				else if (col == 9)	val = "";
-				else if (col == 10)	val = "";
-
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			else
-			{
-				if (col <= 2)
-					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-
-				if (col >= 3 && col <= 4 || col == 0)
-				{
-					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
-						return false;
-				}
-				if (col == 9) {
-					Item.crFgClr = RGB(0, 120, 250);
-					Item.mask |= GVIF_FGCLR;
-				}
-				if (col == 10) {
-					Item.crFgClr = RGB(255, 0, 0);
-					Item.mask |= GVIF_FGCLR;
-				}
-
-				if (col == 0)	val = Int2String(row);
-				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
-				else if (col == 2) 	val = Int2String(cols[row - 1].m_building_start);
-				else if (col == 3)  val = Int2String(cols[row - 1].m_building_duration);
-				else if (col == 4)  val = Double2String(cols[row - 1].m_building_cost);
-				else if (col == 5) 	val = Int2String(cols[row - 1].m_payment_interval);
-				else if (col == 6)  val = Int2String(cols[row - 1].m_payment_lag);
-				else if (col == 7) {
-					val = cols[row - 1].m_payment_time == 0 ? "期初" : "期末";
-				}
-				else if (col == 8) {
-					val = Double2String(cols[row - 1].FutureValueOfPartitionedProject(parent.m_interest_rate));
-				}
-				else if (col == 9)	val = "修改（update）";
-				else if (col == 10)	val = "删除（delete）";
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			pGridCtrl->SetItem(&Item);
-		}
-	}
-	//pGridCtrl->AutoFill();
-	pGridCtrl->Refresh();
-	pGridCtrl->ExpandColumnsToFit();
-	return true;
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
 }
 
 bool CCashFlowObj::Update(string menuCode, int nRow, vector<CCashFlowObj>& cols) {
@@ -419,85 +357,33 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 	if (menuCode != CCashFlow::m_ObjectCode)
 		return false;
 
-	try {
-		pGridCtrl->SetRowCount(cols.size() + 1);
-		pGridCtrl->SetColumnCount(5 + 4);		//	额外增加4列 ： 序号/修改/删除/增加
-		pGridCtrl->SetFixedRowCount(1);
-		pGridCtrl->SetFixedColumnCount(1);
-		pGridCtrl->SetHeaderSort(TRUE);
+	vector<string>	vecHeader;
+	vector<vector<string>>	vecData;
+	vecHeader.push_back("现金流量表名");
+	vecHeader.push_back("利率(%)(月)");
+	vecHeader.push_back("最后一笔支付款收到月份");
+	vecHeader.push_back("终值");
+	vecHeader.push_back("现值");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	for (CCashFlow e : cols) {
+		vector<string> vec;
+		vec.push_back(e.m_name.GetBuffer());
+		vec.push_back(Double2String(e.m_interest_rate * 100, "%.2f"));
+		vec.push_back(Int2String(e.LatestPaymentTime()));
+		vec.push_back(Double2String(e.FutureValueOfWholeProject(), "%.2f"));
+		vec.push_back(Double2String(e.PresentValueOfWholeProject(), "%.2f"));
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+		vec.push_back("增加（create）");
+		vec.push_back("复制（copy）");
+
+		vecData.push_back(vec);
 	}
-	catch (CMemoryException* e)
-	{
-		e->ReportError();
-		e->Delete();
-		return false;
-	}
-
-	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
-	{
-		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
-		{
-			GV_ITEM Item;
-			Item.mask = GVIF_TEXT | GVIF_FORMAT;
-			Item.row = row;
-			Item.col = col;
-			Item.nMargin = 10;
-			string val;
-
-			if (row < 1) {
-				Item.nFormat = DT_LEFT | DT_WORDBREAK;
-				if (col == 0)	val = "现金流量表";
-				else if (col == 1)	val = "名称";
-				else if (col == 2)	val = "利率(%)(月)";
-				else if (col == 3)	val = "最后一笔支付款收到月份";
-				else if (col == 4)  val = "终值";
-				else if (col == 5)	val = "现值";
-				else if (col == 6)	val = "";
-				else if (col == 7)	val = "";
-				else if (col == 8)	val = "";
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			else
-			{
-				if (col <= 2)
-					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
-
-				if (col >= 2 && col <= 2 || col == 0)
-				{
-					if (!pGridCtrl->SetCellType(row, col, RUNTIME_CLASS(CGridCellNumeric)))
-						return false;
-				}
-				if (col == 6 || col == 8) {
-					Item.crFgClr = RGB(0, 120, 250);
-					Item.mask |= GVIF_FGCLR;
-				}
-				if (col == 7) {
-					Item.crFgClr = RGB(255, 0, 0);
-					Item.mask |= GVIF_FGCLR;
-				}
-
-				if (col == 0)	val = Int2String(row);
-				else if (col == 1) 	val = cols[row - 1].m_name.GetBuffer();
-				else if (col == 2)  val = Double2String(cols[row - 1].m_interest_rate * 100, "%.2f");
-				else if (col == 3)  val = Int2String(cols[row - 1].LatestPaymentTime());
-				else if (col == 4)  val = Double2String(cols[row - 1].FutureValueOfWholeProject(), "%.2f");
-				else if (col == 5) 	val = Double2String(cols[row - 1].PresentValueOfWholeProject() , "%.2f");
-				else if (col == 6)	val = "修改（update）";
-				else if (col == 7)	val = "删除（delete）";
-				else if (col == 8)	val = "增加（create）";
-
-				Item.strText.Format(_T("%s"), val.c_str());
-			}
-			pGridCtrl->SetItem(&Item);
-		}
-	}
-	//pGridCtrl->AutoFill();
-	pGridCtrl->Refresh();
-	pGridCtrl->ExpandColumnsToFit();
-	return true;
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
 }
 
 bool CCashFlow::Update(string menuCode, int nRow, vector<CCashFlow>& cols) {
@@ -521,6 +407,19 @@ bool CCashFlow::Delete(string menuCode, int nRow, vector<CCashFlow>& cols) {
 				break;
 		}
 		cols.erase(it);
+		return true;
+	}
+	return false;
+}
+
+bool CCashFlow::Copy(string menuCode, int nRow, vector<CCashFlow>& cols) {
+	if (menuCode != CCashFlow::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size()) {
+		CCashFlow aoa = cols[nRow - 1];
+		aoa.m_name += "-cp";
+		cols.insert(cols.begin(), aoa);
 		return true;
 	}
 	return false;

@@ -59,6 +59,7 @@ public:
 	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& cols);
 	static bool Update(string menuCode, int nRow, vector<CCashFlow>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CCashFlow>& cols);
+	static bool Copy(string menuCode, int nRow, vector<CCashFlow>& cols);
 	static unsigned int PopupMenuId(string menuCode);
 	static void Calculate(string menuCode, vector<CCashFlow>& cols);
 
