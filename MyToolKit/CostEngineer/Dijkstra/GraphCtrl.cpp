@@ -22,6 +22,8 @@ BEGIN_MESSAGE_MAP(CGraphCtrl, CWnd)
 	//{{AFX_MSG_MAP(CGraphCtrl)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
+	ON_WM_HSCROLL()
+	ON_WM_VSCROLL()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDBLCLK()
@@ -60,21 +62,24 @@ void CGraphCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	m_LastLButtonDownPosition.x = point.x;
 	m_LastLButtonDownPosition.y = point.y;
 
+	CPoint ptl = point;
+	ptl = Client2Logical(ptl);
+
 	// CBalloonTip::Hide(m_pBalloonTip);
 	m_toolTipsCtrl.Activate(FALSE);
 	
 	if (m_mode_addNodes)
-		OnAddNode(point.x, point.y);
+		OnAddNode(point.x, point.y, ptl.x, ptl.y);
 	else if (m_mode_addEdges)
-		OnAddEdge(point.x, point.y);
+		OnAddEdge(point.x, point.y, ptl.x, ptl.y);
 	else if (m_mode_update)
-		OnUpdate(point.x, point.y);
+		OnUpdate(point.x, point.y, ptl.x, ptl.y);
 	else if (m_mode_delete)
-		OnDelete(point.x, point.y);
+		OnDelete(point.x, point.y, ptl.x, ptl.y);
 	else if (m_mode_move)
-		OnMove(point.x, point.y);
+		OnMove(point.x, point.y, ptl.x, ptl.y);
 	else if (m_mode_tips)
-		OnTips(point.x, point.y);
+		OnTips(point.x, point.y, ptl.x, ptl.y);
 	return;
 }
 
@@ -88,8 +93,196 @@ void CGraphCtrl::OnSize(UINT nType, int cx, int cy)
 {
 	CWnd::OnSize(nType, cx, cy);
 
+	//设置滚动条范围
+	SCROLLINFO si;
+	si.cbSize = sizeof(si);
+	si.fMask = SIF_RANGE | SIF_PAGE;
+	si.nMin = 0;
+	si.nMax = 998;
+	si.nPage = cx;
+	SetScrollInfo(SB_HORZ, &si, TRUE);
+	si.nMax = 496;
+	si.nPage = cy;
+	SetScrollInfo(SB_VERT, &si, TRUE);
+
+	int icurxpos = GetScrollPos(SB_HORZ);
+	int icurypos = GetScrollPos(SB_VERT);
+
+	if (icurxpos < m_ixoldpos || icurypos < m_iyoldpos)
+	{
+		ScrollWindow(m_ixoldpos - icurxpos, 0);
+		ScrollWindow(0, m_iyoldpos - icurypos);
+
+	}
+	m_ixoldpos = icurxpos;
+	m_iyoldpos = icurypos;
+
+	Invalidate(TRUE);
+
 	return;
 }
+
+
+void CGraphCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	static int oldpos = 0;
+	int minpos = 0;
+	int maxpos = 0;
+	GetScrollRange(SB_HORZ, &minpos, &maxpos);
+	maxpos = GetScrollLimit(SB_HORZ);
+
+	// Get the current position of scroll box.
+	int curpos = GetScrollPos(SB_HORZ);
+
+	// Determine the new position of scroll box.
+	switch (nSBCode)
+	{
+	case SB_LEFT:      // Scroll to far left.
+		curpos = minpos;
+		break;
+
+	case SB_RIGHT:      // Scroll to far right.
+		curpos = maxpos;
+		break;
+
+	case SB_ENDSCROLL:   // End scroll.
+		break;
+
+	case SB_LINELEFT:      // Scroll left.
+		if (curpos > minpos)
+			curpos--;
+		break;
+
+	case SB_LINERIGHT:   // Scroll right.
+		if (curpos < maxpos)
+			curpos++;
+		break;
+
+	case SB_PAGELEFT:    // Scroll one page left.
+	{
+		// Get the page size. 
+		SCROLLINFO   info;
+		GetScrollInfo(SB_HORZ, &info, SIF_ALL);
+
+		if (curpos > minpos)
+			curpos = max(minpos, curpos - (int)info.nPage);
+	}
+	break;
+
+	case SB_PAGERIGHT:      // Scroll one page right.
+	{
+		// Get the page size. 
+		SCROLLINFO   info;
+		GetScrollInfo(SB_HORZ, &info, SIF_ALL);
+
+		if (curpos < maxpos)
+			curpos = min(maxpos, curpos + (int)info.nPage);
+	}
+	break;
+
+	case SB_THUMBPOSITION: // Scroll to absolute position. nPos is the position
+		curpos = nPos;      // of the scroll box at the end of the drag operation.
+		break;
+
+	case SB_THUMBTRACK:   // Drag scroll box to specified position. nPos is the
+		curpos = nPos;     // position that the scroll box has been dragged to.
+		break;
+	}
+
+	// Set the new position of the thumb (scroll box).
+	SetScrollPos(SB_HORZ, curpos);
+	ScrollWindow(oldpos - curpos, 0);
+
+	oldpos = curpos;
+	//UpdateWindow();
+	m_ixoldpos = curpos;
+	Invalidate(TRUE);
+
+	CWnd::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CGraphCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	static int oldpos = 0;
+	int minpos = 0;
+	int maxpos = 0;
+	GetScrollRange(SB_VERT, &minpos, &maxpos);
+	maxpos = GetScrollLimit(SB_VERT);
+
+	// Get the current position of scroll box.
+	int curpos = GetScrollPos(SB_VERT);
+
+	// Determine the new position of scroll box.
+	switch (nSBCode)
+	{
+	case SB_LEFT:      // Scroll to far left.
+		curpos = minpos;
+		break;
+
+	case SB_RIGHT:      // Scroll to far right.
+		curpos = maxpos;
+		break;
+
+	case SB_ENDSCROLL:   // End scroll.
+		break;
+
+	case SB_LINELEFT:      // Scroll left.
+		if (curpos > minpos)
+			curpos--;
+		break;
+
+	case SB_LINERIGHT:   // Scroll right.
+		if (curpos < maxpos)
+			curpos++;
+		break;
+
+	case SB_PAGELEFT:    // Scroll one page left.
+	{
+		// Get the page size. 
+		SCROLLINFO   info;
+		GetScrollInfo(SB_VERT, &info, SIF_ALL);
+
+		if (curpos > minpos)
+			curpos = max(minpos, curpos - (int)info.nPage);
+	}
+	break;
+
+	case SB_PAGERIGHT:      // Scroll one page right.
+	{
+		// Get the page size. 
+		SCROLLINFO   info;
+		GetScrollInfo(SB_VERT, &info, SIF_ALL);
+
+		if (curpos < maxpos)
+			curpos = min(maxpos, curpos + (int)info.nPage);
+	}
+	break;
+
+	case SB_THUMBPOSITION: // Scroll to absolute position. nPos is the position
+		curpos = nPos;      // of the scroll box at the end of the drag operation.
+		break;
+
+	case SB_THUMBTRACK:   // Drag scroll box to specified position. nPos is the
+		curpos = nPos;     // position that the scroll box has been dragged to.
+		break;
+	}
+
+	// Set the new position of the thumb (scroll box).
+	SetScrollPos(SB_VERT, curpos);
+	ScrollWindow(0, oldpos - curpos);
+
+	oldpos = curpos;
+	// UpdateWindow();
+	m_iyoldpos = curpos;
+	Invalidate(TRUE);
+
+	CWnd::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
 
 void CGraphCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
@@ -141,6 +334,9 @@ void CGraphCtrl::PreSubclassWindow()
 	/* 使用 DDX_Control 创建时，CGraphCtrl 控件窗口创建后会调用本函数 */
 
 	if (::IsWindow(m_hWnd)) {
+		/* 增加滚动条 */
+		ModifyStyle(0, WS_HSCROLL | WS_VSCROLL);
+
 		EnableToolTips(TRUE);
 		m_toolTipsCtrl.Create(this);
 		m_toolTipsCtrl.Activate(TRUE);
@@ -166,6 +362,20 @@ BOOL CGraphCtrl::PreTranslateMessage(MSG* pMsg)
 		m_toolTipsCtrl.RelayEvent(pMsg);
 	}
 	return CWnd::PreTranslateMessage(pMsg);
+}
+
+CPoint	CGraphCtrl::Logical2Client(CPoint pt) {
+	CPoint p;
+	p.x = pt.x - m_ixoldpos;
+	p.y = pt.y - m_iyoldpos;
+	return p;
+}
+
+CPoint	CGraphCtrl::Client2Logical(CPoint pt) {
+	CPoint p;
+	p.x = pt.x + m_ixoldpos;
+	p.y = pt.y + m_iyoldpos;
+	return p;
 }
 
 void CGraphCtrl::ShowBalloonTip(long x, long y, string tips) {
@@ -256,7 +466,9 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	VTYPE_NODE::iterator kl;
 	for(kl=g.m_nodes.begin(); kl<g.m_nodes.end(); kl++)
 	{
-		DrawNode(pDC, *kl);
+		CNode nd = *kl;
+		nd.m_p = Logical2Client(nd.m_p);
+		DrawNode(pDC, nd);
 		nr++;
 	}	
 	oldbrush=(HPEN)pDC->SelectObject(brush);
@@ -266,33 +478,39 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	for(kll=g.m_edges.begin(); kll<g.m_edges.end(); kll++)
 	{
 		HPEN temp;
-		if((*kll).m_red && (*kll).m_solid)
+		CEdge e = *kll;
+		e.m_firstPct = Logical2Client(e.m_firstPct);
+		e.m_secondPct = Logical2Client(e.m_secondPct);
+		e.m_arrow1 = Logical2Client(e.m_arrow1);
+		e.m_arrow2 = Logical2Client(e.m_arrow2);
+
+		if(e.m_red && e.m_solid)
 			temp=(HPEN)pDC->SelectObject(penRed);
-		else if ((*kll).m_red && !(*kll).m_solid)
+		else if (e.m_red && !e.m_solid)
 			temp = (HPEN)pDC->SelectObject(penRedDot);
-		else if (!(*kll).m_red && !(*kll).m_solid)
+		else if (!e.m_red && !e.m_solid)
 			temp = (HPEN)pDC->SelectObject(penDot);
-		pDC->MoveTo((*kll).m_firstPct.x, (*kll).m_firstPct.y);
-		pDC->LineTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
+		pDC->MoveTo(e.m_firstPct.x, e.m_firstPct.y);
+		pDC->LineTo(e.m_secondPct.x, e.m_secondPct.y);
 
 		/* 绘制箭头 */
 		// pDC->Ellipse((*kll).m_secondPct.x-5, (*kll).m_secondPct.y-5, (*kll).m_secondPct.x+5, (*kll).m_secondPct.y+5);
-		pDC->MoveTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
-		pDC->LineTo((*kll).m_arrow1.x, (*kll).m_arrow1.y);
+		pDC->MoveTo(e.m_secondPct.x, e.m_secondPct.y);
+		pDC->LineTo(e.m_arrow1.x, e.m_arrow1.y);
 
-		pDC->MoveTo((*kll).m_secondPct.x, (*kll).m_secondPct.y);
-		pDC->LineTo((*kll).m_arrow2.x, (*kll).m_arrow2.y);
+		pDC->MoveTo(e.m_secondPct.x, e.m_secondPct.y);
+		pDC->LineTo(e.m_arrow2.x, e.m_arrow2.y);
 
 		// calcul middle pint
 		POINT po;
-		po.x = ((*kll).m_firstPct.x+(*kll).m_secondPct.x)/2;
-		po.y = ((*kll).m_firstPct.y+(*kll).m_secondPct.y)/2;
+		po.x = (e.m_firstPct.x+e.m_secondPct.x)/2;
+		po.y = (e.m_firstPct.y+e.m_secondPct.y)/2;
 				
 		/* 绘制边上的标注 */
-		pDC->TextOut(po.x - 13, po.y - 13, (*kll).m_top.c_str(), (*kll).m_top.length());
-		pDC->TextOut(po.x + 4, po.y + 4, (*kll).m_bottom.c_str(), (*kll).m_bottom.length());
+		pDC->TextOut(po.x - 13, po.y - 13, e.m_top.c_str(), e.m_top.length());
+		pDC->TextOut(po.x + 4, po.y + 4, e.m_bottom.c_str(), e.m_bottom.length());
 
-		if((*kll).m_red || !(*kll).m_solid)
+		if(e.m_red || !e.m_solid)
 			pDC->SelectObject(temp);
 	}
 	pDC->SelectObject(OldFont);
@@ -389,11 +607,14 @@ void CGraphCtrl::Refresh()
 // used in getedge to find graphically the node
 int CGraphCtrl::GetNode(long x, long y)
 {
+	CPoint pt;
+	pt.x = x; pt.y = y;
+	
 	VTYPE_NODE::iterator kl;
 	for(int i = 0; i< g.m_nodes.size(); i++)
 	{
 		CNode kl = g.m_nodes[i];
-		if (x< kl.m_p.x + m_node_radius && x>kl.m_p.x - m_node_radius && y<kl.m_p.y + m_node_radius && y>kl.m_p.y - m_node_radius)
+		if (pt.x< kl.m_p.x + m_node_radius && pt.x>kl.m_p.x - m_node_radius && pt.y<kl.m_p.y + m_node_radius && pt.y>kl.m_p.y - m_node_radius)
 			return i;
 	}
 	return -1;
@@ -540,9 +761,9 @@ void CGraphCtrl::OnGraphTips()
 	m_mode_tips = true;
 }
 
-void CGraphCtrl::OnAddNode(long x, long y)
+void CGraphCtrl::OnAddNode(long x, long y, long xl, long yl)
 {
-	long n = GetNode(x, y);
+	long n = GetNode(xl, yl);
 	if (n >= 0) return;
 
 	/* 该位置不存节点，则插入新节点 */
@@ -551,15 +772,15 @@ void CGraphCtrl::OnAddNode(long x, long y)
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 	nmgv.hdr.code = NM_GRAPH_ADD_NODE;
 
-	nmgv.x = x;
-	nmgv.y = y;
+	nmgv.x = xl;
+	nmgv.y = yl;
 
 	CWnd *pOwner = GetOwner();
 	if (pOwner && IsWindow(pOwner->m_hWnd))
 		pOwner->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
 }
 
-void CGraphCtrl::OnAddEdge(long x, long y)
+void CGraphCtrl::OnAddEdge(long x, long y, long xl, long yl)
 {
 	MSG msg;
 	HDC hdc = ::GetDC(m_hWnd);
@@ -571,7 +792,7 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 	oldpen = (HPEN)SelectObject(hdc, pen);
 	bool TrackFinished = false;
 
-	long firstnode = GetNode(x, y);
+	long firstnode = GetNode(xl, yl);
 	long secondnode;
 
 	// while mouse not up try to find the nodes between which it will draw the edge
@@ -597,9 +818,12 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 		}
 		if (msg.message == WM_LBUTTONUP)
 		{
-			int poxT = ((int)LOWORD(msg.lParam));
-			int poyT = ((int)HIWORD(msg.lParam));
-			secondnode = GetNode(poxT, poyT);
+			CPoint po;
+			po.x = ((int)LOWORD(msg.lParam));
+			po.y = ((int)HIWORD(msg.lParam));
+			po = Client2Logical(po);
+
+			secondnode = GetNode(po.x, po.y);
 			TrackFinished = true;
 			if (firstnode >= 0 && secondnode >= 0 && firstnode != secondnode)
 			{
@@ -609,11 +833,11 @@ void CGraphCtrl::OnAddEdge(long x, long y)
 				ed.hdr.code = NM_GRAPH_ADD_EDGE;
 
 				ed.m_firstNode = firstnode;
-				ed.m_firstPct.x = x;
-				ed.m_firstPct.y = y;
+				/*ed.m_firstPct.x = xl;
+				ed.m_firstPct.y = yl;*/
 				ed.m_secondNode = secondnode;
-				ed.m_secondPct.x = poxT;
-				ed.m_secondPct.y = poyT;
+				/*ed.m_secondPct.x = poxT;
+				ed.m_secondPct.y = poyT;*/
 
 				CWnd *pOwner = GetOwner();
 				if (pOwner && IsWindow(pOwner->m_hWnd))
@@ -662,12 +886,12 @@ void CGraphCtrl::DisplayBalloon(int x, int y, const CString & szMessage)
 }
 
 
-void CGraphCtrl::OnUpdate(long x, long y) {
+void CGraphCtrl::OnUpdate(long x, long y, long xl, long yl) {
 	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 	
-	nmgv.idx = GetNode(x, y);
+	nmgv.idx = GetNode(xl, yl);
 	if (nmgv.idx >= 0) {
 		/* 编辑 节点 */
 		nmgv.hdr.code = NM_GRAPH_EDIT_NODE;
@@ -677,7 +901,7 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 	}
 	else {
 		/* 编辑 边 */
-		nmgv.idx = GetEdge(x, y);
+		nmgv.idx = GetEdge(xl, yl);
 		if (nmgv.idx >= 0) {
 			nmgv.hdr.code = NM_GRAPH_EDIT_EDGE;
 			CWnd *pOwner = GetOwner();
@@ -689,13 +913,13 @@ void CGraphCtrl::OnUpdate(long x, long y) {
 
 }
 
-void CGraphCtrl::OnDelete(long x, long y) {
+void CGraphCtrl::OnDelete(long x, long y, long xl, long yl) {
 	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 	nmgv.hdr.code = NM_GRAPH_DEL_NODE;
 
-	nmgv.idx = GetNode(x, y);
+	nmgv.idx = GetNode(xl, yl);
 	if (nmgv.idx >= 0) {
 		/* 删除 节点 */
 		CWnd *pOwner = GetOwner();
@@ -704,7 +928,7 @@ void CGraphCtrl::OnDelete(long x, long y) {
 	}
 	else {
 		/* 删除 边 */
-		nmgv.idx = GetEdge(x, y);
+		nmgv.idx = GetEdge(xl, yl);
 		if (nmgv.idx >= 0) {
 			nmgv.hdr.code = NM_GRAPH_DEL_EDGE;
 			CWnd *pOwner = GetOwner();
@@ -714,7 +938,7 @@ void CGraphCtrl::OnDelete(long x, long y) {
 	}
 }
 
-void CGraphCtrl::OnMove(long x, long y) {
+void CGraphCtrl::OnMove(long x, long y, long xl, long yl) {
 	MSG msg;
 	HDC hdc = ::GetDC(m_hWnd);
 	SetROP2(hdc, R2_NOTXORPEN);
@@ -728,13 +952,14 @@ void CGraphCtrl::OnMove(long x, long y) {
 
 	bool TrackFinished = false;
 
-	long firstnode = GetNode(x, y);
+	long firstnode = GetNode(xl, yl);
 	if (firstnode < 0) {
 		TrackFinished = true;
 	}
 	else {
 		curNode = g.m_nodes[firstnode];
 	}
+	curNode.m_p = Logical2Client(curNode.m_p);
 
 	// while mouse not up try to find the nodes between which it will draw the edge
 	while (!TrackFinished)
@@ -755,9 +980,11 @@ void CGraphCtrl::OnMove(long x, long y) {
 		}
 		if (msg.message == WM_LBUTTONUP)
 		{
-			int poxT = ((int)LOWORD(msg.lParam));
-			int poyT = ((int)HIWORD(msg.lParam));
-			
+			CPoint po;
+			po.x = ((int)LOWORD(msg.lParam));
+			po.y = ((int)HIWORD(msg.lParam));
+			po = Client2Logical(po);
+
 			TrackFinished = true;
 
 			NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
@@ -766,8 +993,8 @@ void CGraphCtrl::OnMove(long x, long y) {
 			nmgv.hdr.code = NM_GRAPH_MOVE_NODE;
 
 			nmgv.idx = firstnode;
-			nmgv.x = poxT;
-			nmgv.y = poyT;
+			nmgv.x = po.x;
+			nmgv.y = po.y;
 
 			if (nmgv.idx >= 0) {
 				CWnd *pOwner = GetOwner();
@@ -783,12 +1010,12 @@ void CGraphCtrl::OnMove(long x, long y) {
 	::ReleaseDC(m_hWnd, hdc);
 }
 
-void CGraphCtrl::OnTips(long x, long y) {
+void CGraphCtrl::OnTips(long x, long y, long xl, long yl) {
 	NM_GRAPH_DEL_EDIT_MOVE_STRUCT nmgv;
 	nmgv.hdr.hwndFrom = m_hWnd;
 	nmgv.hdr.idFrom = GetDlgCtrlID();
 
-	nmgv.idx = GetNode(x, y);
+	nmgv.idx = GetNode(xl, yl);
 	if (nmgv.idx >= 0) {
 		/* 节点 提示消息 */
 		
@@ -798,7 +1025,7 @@ void CGraphCtrl::OnTips(long x, long y) {
 	}
 	else {
 		/* 边 提示消息 */
-		nmgv.idx = GetEdge(x, y);
+		nmgv.idx = GetEdge(xl, yl);
 		if (nmgv.idx >= 0) {
 			
 			// DisplayBalloon(x, y, "12345678\n  yyyyyyyyyyyyyy\n kkkkkkkk\n ffffffffff\n Edge");

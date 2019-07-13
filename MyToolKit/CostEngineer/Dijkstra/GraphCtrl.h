@@ -103,6 +103,9 @@ protected:
 	POINT	m_LastLButtonDownPosition;
 	HFONT	m_lmfont;
 	int		m_node_radius;
+
+	int		m_ixoldpos;
+	int		m_iyoldpos;
 	CGraph g;
 
 	/* 多个屏幕时，不好用，不用了 */
@@ -113,14 +116,16 @@ protected:
 
 protected:
 	void DisplayBalloon(int x, int y, const CString & szMessage);
-	void OnAddEdge(long x, long y);
-	void OnAddNode(long x, long y);
-	void OnUpdate(long x, long y);
-	void OnDelete(long x, long y);
-	void OnMove(long x, long y);
-	void OnTips(long x, long y);
+	void OnAddEdge(long x, long y, long xl, long yl);
+	void OnAddNode(long x, long y, long xl, long yl);
+	void OnUpdate(long x, long y, long xl, long yl);
+	void OnDelete(long x, long y, long xl, long yl);
+	void OnMove(long x, long y, long xl, long yl);
+	void OnTips(long x, long y, long xl, long yl);
 
 	void ShowBalloonTip(long x, long y, string tips);
+	CPoint	Logical2Client(CPoint pt);
+	CPoint	Client2Logical(CPoint pt);
 
 // IDijkstra
 public:
@@ -147,6 +152,8 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnGraphAddEdge();
