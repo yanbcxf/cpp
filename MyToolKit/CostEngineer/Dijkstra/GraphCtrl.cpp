@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CGraphCtrl, CWnd)
 	ON_COMMAND(ID_GRAPH_MOVE, &CGraphCtrl::OnGraphMove)
 	ON_COMMAND(ID_GRAPH_TIPS, &CGraphCtrl::OnGraphTips)
 	ON_WM_CREATE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 void CGraphCtrl::OnPaint()
@@ -89,6 +90,32 @@ void CGraphCtrl::OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return;
 }
 
+void CGraphCtrl::SetGraphSize(int x, int y) {
+	SCROLLINFO si;
+	si.cbSize = sizeof(si);
+	si.fMask = SIF_RANGE;
+	si.nMin = 0;
+	si.nMax = x;
+	SetScrollInfo(SB_HORZ, &si, TRUE);
+	si.nMax = y;
+	SetScrollInfo(SB_VERT, &si, TRUE);
+
+	int icurxpos = GetScrollPos(SB_HORZ);
+	int icurypos = GetScrollPos(SB_VERT);
+
+	if (icurxpos < m_ixoldpos || icurypos < m_iyoldpos)
+	{
+		ScrollWindow(m_ixoldpos - icurxpos, 0);
+		ScrollWindow(0, m_iyoldpos - icurypos);
+
+	}
+	m_ixoldpos = icurxpos;
+	m_iyoldpos = icurypos;
+
+	m_graph_size_x = x;
+	m_graph_size_y = y;
+}
+
 void CGraphCtrl::OnSize(UINT nType, int cx, int cy)
 {
 	CWnd::OnSize(nType, cx, cy);
@@ -96,13 +123,13 @@ void CGraphCtrl::OnSize(UINT nType, int cx, int cy)
 	//设置滚动条范围
 	SCROLLINFO si;
 	si.cbSize = sizeof(si);
-	si.fMask = SIF_RANGE | SIF_PAGE;
-	si.nMin = 0;
-	si.nMax = 998;
+	si.fMask =  SIF_PAGE;
+	// si.nMin = 0;
+	// si.nMax = 998;
 	si.nPage = cx;
 	SetScrollInfo(SB_HORZ, &si, TRUE);
-	si.nMax = 496;
-	si.nPage = cy;
+	// si.nMax = 496;
+	si.nPage = cy ;
 	SetScrollInfo(SB_VERT, &si, TRUE);
 
 	int icurxpos = GetScrollPos(SB_HORZ);
@@ -193,7 +220,7 @@ void CGraphCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	// Set the new position of the thumb (scroll box).
 	SetScrollPos(SB_HORZ, curpos);
-	ScrollWindow(oldpos - curpos, 0);
+	// ScrollWindow(oldpos - curpos, 0);
 
 	oldpos = curpos;
 	//UpdateWindow();
@@ -273,7 +300,7 @@ void CGraphCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	// Set the new position of the thumb (scroll box).
 	SetScrollPos(SB_VERT, curpos);
-	ScrollWindow(0, oldpos - curpos);
+	// ScrollWindow(0, oldpos - curpos);
 
 	oldpos = curpos;
 	// UpdateWindow();
@@ -367,14 +394,14 @@ BOOL CGraphCtrl::PreTranslateMessage(MSG* pMsg)
 CPoint	CGraphCtrl::Logical2Client(CPoint pt) {
 	CPoint p;
 	p.x = pt.x - m_ixoldpos;
-	p.y = pt.y - m_iyoldpos;
+	p.y = pt.y - m_iyoldpos + /* 顶部预留空间绘制时标网格 */ 3 * m_node_radius ;
 	return p;
 }
 
 CPoint	CGraphCtrl::Client2Logical(CPoint pt) {
 	CPoint p;
 	p.x = pt.x + m_ixoldpos;
-	p.y = pt.y + m_iyoldpos;
+	p.y = pt.y + m_iyoldpos - /* 顶部预留空间绘制时标网格 */ 3 * m_node_radius;
 	return p;
 }
 
@@ -450,6 +477,7 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	GetClientRect(rc);
 	
 	pDC->Rectangle(rc.left, rc.top, rc.right, rc.bottom);
+
 	HPEN pen=CreatePen(PS_SOLID,0,RGB(0,0,0));
 	HPEN penRed=CreatePen(PS_SOLID,1,RGB(255,0,0));
 	HPEN penDot = CreatePen(PS_DOT, 0, RGB(0, 0, 0));
@@ -459,6 +487,58 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	HPEN oldbrush;
 	oldpen=(HPEN)pDC->SelectObject(pen);
 
+	/* 绘制上方的时标方格 */
+	int n = (m_graph_size_x - 100) / (4 * m_node_radius);
+
+	CPoint from, to;
+		
+	from.x = 50;					from.y = 0;
+	to.x = 50 + n * 4 * m_node_radius; to.y = 0;
+	from = Logical2Client(from);	from.y = 0;
+	to = Logical2Client(to);		to.y = 0;
+	pDC->MoveTo(from.x, from.y);
+	pDC->LineTo(to.x, to.y);
+
+	from.y = 2 * m_node_radius;		to.y = 2 * m_node_radius;
+	pDC->MoveTo(from.x, from.y);
+	pDC->LineTo(to.x, to.y);
+
+	pDC->SelectObject(penDot);
+	for (int i = 0; i < n; i++) {
+		
+		from.x = 50 + i * 4 * m_node_radius; from.y = 0;
+		to.x = 50 + i * 4 * m_node_radius; to.y = m_graph_size_y;
+		from = Logical2Client(from);	from.y = 0;
+		to = Logical2Client(to);
+		pDC->MoveTo(from.x, from.y);
+		pDC->LineTo(to.x ,to.y);
+
+		from.x = 50 + i * 4 * m_node_radius + 2 * m_node_radius - 5;	from.y = 0;
+		from = Logical2Client(from);	from.y = m_node_radius - 8;
+		pDC->TextOut(from.x, from.y, Int2String(i+1).c_str(), Int2String(i + 1).length());
+
+		if (i == n - 1) {
+			from.x = 50 + n * 4 * m_node_radius;	from.y = 0;
+			to.x = 50 + n * 4 * m_node_radius;		to.y = m_graph_size_y;
+			from = Logical2Client(from);	from.y = 0;
+			to = Logical2Client(to);
+			pDC->MoveTo(from.x, from.y);
+			pDC->LineTo(to.x, to.y);
+		}
+	}
+
+	/*设置裁剪区 */
+	GetClientRect(rc);
+	rc.top = 2 * m_node_radius + 10;
+	int isdc = pDC->SaveDC();
+	CRgn itemRegion;
+	itemRegion.CreateRectRgnIndirect(&rc);
+	pDC->SelectClipRgn(&itemRegion);
+	
+
+
+	/* 绘制节点 */
+	pDC->SelectObject(pen);
 	HFONT OldFont = (HFONT)pDC->SelectObject(m_lmfont);
 
 	// draw the nodes and the text on the nodes
@@ -473,6 +553,7 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	}	
 	oldbrush=(HPEN)pDC->SelectObject(brush);
 
+	/* 绘制边 */
 	// draw the edges and the text on the edges
 	VTYPE_EDGE::iterator kll;
 	for(kll=g.m_edges.begin(); kll<g.m_edges.end(); kll++)
@@ -490,10 +571,16 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 			temp = (HPEN)pDC->SelectObject(penRedDot);
 		else if (!e.m_red && !e.m_solid)
 			temp = (HPEN)pDC->SelectObject(penDot);
+		else 
+			pDC->SelectObject(pen);
 		pDC->MoveTo(e.m_firstPct.x, e.m_firstPct.y);
 		pDC->LineTo(e.m_secondPct.x, e.m_secondPct.y);
 
-		/* 绘制箭头 */
+		/* 绘制箭头, 都使用实线 */
+		if (e.m_red)
+			temp = (HPEN)pDC->SelectObject(penRed);
+		else
+			temp = (HPEN)pDC->SelectObject(pen);
 		// pDC->Ellipse((*kll).m_secondPct.x-5, (*kll).m_secondPct.y-5, (*kll).m_secondPct.x+5, (*kll).m_secondPct.y+5);
 		pDC->MoveTo(e.m_secondPct.x, e.m_secondPct.y);
 		pDC->LineTo(e.m_arrow1.x, e.m_arrow1.y);
@@ -510,9 +597,13 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 		pDC->TextOut(po.x - 13, po.y - 13, e.m_top.c_str(), e.m_top.length());
 		pDC->TextOut(po.x + 4, po.y + 4, e.m_bottom.c_str(), e.m_bottom.length());
 
-		if(e.m_red || !e.m_solid)
-			pDC->SelectObject(temp);
+		/* if(e.m_red || !e.m_solid)
+			pDC->SelectObject(temp);*/
 	}
+
+	itemRegion.DeleteObject();
+	pDC->RestoreDC(isdc);
+
 	pDC->SelectObject(OldFont);
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
@@ -1034,4 +1125,12 @@ void CGraphCtrl::OnTips(long x, long y, long xl, long yl) {
 		}
 	}
 
+}
+
+BOOL CGraphCtrl::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	return TRUE;
+	// return CWnd::OnEraseBkgnd(pDC);
 }

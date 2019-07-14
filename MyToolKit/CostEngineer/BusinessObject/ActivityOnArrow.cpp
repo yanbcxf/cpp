@@ -318,6 +318,7 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 	if (!pCtrl)
 		return false;
 
+	pCtrl->SetGraphSize(1500, 600);
 	pCtrl->initGraph();
 	for (int i = 0; i < m_nodes.size(); i++) {
 		if (m_nodes[i].m_earliest_event_time < 0)

@@ -106,6 +106,9 @@ protected:
 
 	int		m_ixoldpos;
 	int		m_iyoldpos;
+
+	int		m_graph_size_x;
+	int		m_graph_size_y;
 	CGraph g;
 
 	/* 多个屏幕时，不好用，不用了 */
@@ -130,6 +133,7 @@ protected:
 // IDijkstra
 public:
 	void initGraph();
+	void SetGraphSize(int x, int y);
 	bool ExistEdge(CNode u, CNode v);
 
 		
@@ -166,6 +170,7 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #endif //__DIJKSTRA_H_
