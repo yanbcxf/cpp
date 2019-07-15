@@ -78,6 +78,8 @@ public:
 
 		m_bDoubleBuffer = true;
 		m_pBalloonTip = NULL;
+
+		m_time_axis = 0;
 	}
 
 	~CGraphCtrl()
@@ -103,7 +105,9 @@ protected:
 	POINT	m_LastLButtonDownPosition;
 	HFONT	m_lmfont;
 	int		m_node_radius;
+	int		m_time_axis;		/* 时标表格： 0 不显示， 2 - 4 时标线的间隔，以节点半径为单位   */
 
+	/* 图纸当前显示区域的左上角坐标（使用图纸逻辑坐标） */
 	int		m_ixoldpos;
 	int		m_iyoldpos;
 
@@ -133,7 +137,7 @@ protected:
 // IDijkstra
 public:
 	void initGraph();
-	void SetGraphSize(int x, int y);
+	void SetGraphSize(int x, int y, int time_axis = 0);
 	bool ExistEdge(CNode u, CNode v);
 
 		

@@ -90,7 +90,7 @@ void CGraphCtrl::OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return;
 }
 
-void CGraphCtrl::SetGraphSize(int x, int y) {
+void CGraphCtrl::SetGraphSize(int x, int y, int time_axis) {
 	SCROLLINFO si;
 	si.cbSize = sizeof(si);
 	si.fMask = SIF_RANGE;
@@ -114,6 +114,7 @@ void CGraphCtrl::SetGraphSize(int x, int y) {
 
 	m_graph_size_x = x;
 	m_graph_size_y = y;
+	m_time_axis = time_axis;
 }
 
 void CGraphCtrl::OnSize(UINT nType, int cx, int cy)
@@ -394,14 +395,14 @@ BOOL CGraphCtrl::PreTranslateMessage(MSG* pMsg)
 CPoint	CGraphCtrl::Logical2Client(CPoint pt) {
 	CPoint p;
 	p.x = pt.x - m_ixoldpos;
-	p.y = pt.y - m_iyoldpos + /* 顶部预留空间绘制时标网格 */ 3 * m_node_radius ;
+	p.y = pt.y - m_iyoldpos;
 	return p;
 }
 
 CPoint	CGraphCtrl::Client2Logical(CPoint pt) {
 	CPoint p;
 	p.x = pt.x + m_ixoldpos;
-	p.y = pt.y + m_iyoldpos - /* 顶部预留空间绘制时标网格 */ 3 * m_node_radius;
+	p.y = pt.y + m_iyoldpos;
 	return p;
 }
 
@@ -487,55 +488,56 @@ void CGraphCtrl::OnDraw(CDC* pDC)
 	HPEN oldbrush;
 	oldpen=(HPEN)pDC->SelectObject(pen);
 
-	/* 绘制上方的时标方格 */
-	int n = (m_graph_size_x - 100) / (4 * m_node_radius);
+	if (m_time_axis > 0) {
+		/* 绘制上方的时标方格 */
+		int n = (m_graph_size_x - 100) / (m_time_axis * m_node_radius);
 
-	CPoint from, to;
-		
-	from.x = 50;					from.y = 0;
-	to.x = 50 + n * 4 * m_node_radius; to.y = 0;
-	from = Logical2Client(from);	from.y = 0;
-	to = Logical2Client(to);		to.y = 0;
-	pDC->MoveTo(from.x, from.y);
-	pDC->LineTo(to.x, to.y);
-
-	from.y = 2 * m_node_radius;		to.y = 2 * m_node_radius;
-	pDC->MoveTo(from.x, from.y);
-	pDC->LineTo(to.x, to.y);
-
-	pDC->SelectObject(penDot);
-	for (int i = 0; i < n; i++) {
-		
-		from.x = 50 + i * 4 * m_node_radius; from.y = 0;
-		to.x = 50 + i * 4 * m_node_radius; to.y = m_graph_size_y;
+		CPoint from, to;
+		/* 绘制上部两条时标水平线 */
+		from.x = 50;					from.y = 0;
+		to.x = 50 + n * m_time_axis * m_node_radius; to.y = 0;
 		from = Logical2Client(from);	from.y = 0;
-		to = Logical2Client(to);
+		to = Logical2Client(to);		to.y = 0;
 		pDC->MoveTo(from.x, from.y);
-		pDC->LineTo(to.x ,to.y);
+		pDC->LineTo(to.x, to.y);
 
-		from.x = 50 + i * 4 * m_node_radius + 2 * m_node_radius - 5;	from.y = 0;
-		from = Logical2Client(from);	from.y = m_node_radius - 8;
-		pDC->TextOut(from.x, from.y, Int2String(i+1).c_str(), Int2String(i + 1).length());
+		from.y = 2 * m_node_radius;		to.y = 2 * m_node_radius;
+		pDC->MoveTo(from.x, from.y);
+		pDC->LineTo(to.x, to.y);
 
-		if (i == n - 1) {
-			from.x = 50 + n * 4 * m_node_radius;	from.y = 0;
-			to.x = 50 + n * 4 * m_node_radius;		to.y = m_graph_size_y;
+		/* 绘制时标 n + 1 条时标垂直线 */
+		pDC->SelectObject(penDot);
+		for (int i = 0; i < n; i++) {
+
+			from.x = 50 + i * m_time_axis * m_node_radius; from.y = 0;
+			to.x = 50 + i * m_time_axis * m_node_radius; to.y = m_graph_size_y;
 			from = Logical2Client(from);	from.y = 0;
 			to = Logical2Client(to);
 			pDC->MoveTo(from.x, from.y);
 			pDC->LineTo(to.x, to.y);
+
+			from.x = 50 + i * m_time_axis * m_node_radius + m_time_axis * m_node_radius / 2 - 5;	from.y = 0;
+			from = Logical2Client(from);	from.y = m_node_radius - 8;
+			pDC->TextOut(from.x, from.y, Int2String(i + 1).c_str(), Int2String(i + 1).length());
+
+			if (i == n - 1) {
+				from.x = 50 + n * m_time_axis * m_node_radius;	from.y = 0;
+				to.x = 50 + n * m_time_axis * m_node_radius;		to.y = m_graph_size_y;
+				from = Logical2Client(from);	from.y = 0;
+				to = Logical2Client(to);
+				pDC->MoveTo(from.x, from.y);
+				pDC->LineTo(to.x, to.y);
+			}
 		}
 	}
 
-	/*设置裁剪区 */
+	/*设置裁剪区, 以便 不与上部时标线重合 */
 	GetClientRect(rc);
 	rc.top = 2 * m_node_radius + 10;
 	int isdc = pDC->SaveDC();
 	CRgn itemRegion;
 	itemRegion.CreateRectRgnIndirect(&rc);
 	pDC->SelectClipRgn(&itemRegion);
-	
-
 
 	/* 绘制节点 */
 	pDC->SelectObject(pen);
@@ -1131,6 +1133,7 @@ BOOL CGraphCtrl::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
+	/* 利用该消息，消除滚动条移动时产生的屏幕闪烁 */
 	return TRUE;
 	// return CWnd::OnEraseBkgnd(pDC);
 }

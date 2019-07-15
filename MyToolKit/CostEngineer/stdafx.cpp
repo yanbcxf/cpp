@@ -953,7 +953,7 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 				Item.strText.Format(_T("%s"), vecData[row - 1][col].c_str());
 
 				if (vecData[row - 1][col] == "修改（update）" || vecData[row - 1][col] == "增加（create）" 
-					|| vecData[row - 1][col] == "复制（copy）" ) {
+					|| vecData[row - 1][col] == "复制（copy）" || vecData[row-1][col].find("（oper" )!=string::npos) {
 					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}

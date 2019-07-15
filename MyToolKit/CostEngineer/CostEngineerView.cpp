@@ -406,7 +406,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 		}
 		
 	}
-	if (source == "删除（delete）") {
+	else if (source == "删除（delete）") {
 		int nRes = AfxMessageBox(_T("确定删除吗？"), MB_OKCANCEL | MB_ICONQUESTION);
 		if (nRes == IDOK) {
 			if (gridId == 0) {
@@ -503,7 +503,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
-	if (source == "增加（create）") {
+	else if (source == "增加（create）") {
 		if (gridId == 0) {
 			/* 主表格 */
 			{
@@ -578,7 +578,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
-	if (source == "复制（copy）") {
+	else if (source == "复制（copy）") {
 		if (gridId == 0) {
 			if (CActivityOnArrow::Copy(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
 				pDoc->SetModifiedFlag();
@@ -586,6 +586,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 
 			if (CCashFlow::Copy(m_strMenuCode, nRow, pDoc->cashFlows)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+	}
+	else if (source.Find("（operate1）")>=0) {
+		if (gridId == 0) {
+			if (CActivityOnArrow::TimeCoordinate(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}

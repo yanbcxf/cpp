@@ -64,12 +64,14 @@ public:
 	bool UpdateEdge(string menuCode, int nRow);
 	bool DeleteNode(int nRow);
 	bool DeleteEdge(int nRow);
+	void Calculate();
 
 	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CActivityOnArrow>& cols);
 	static bool Update(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
 	static bool Copy(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
-	
+	static bool TimeCoordinate(string menuCode, int nRow, vector<CActivityOnArrow>& cols);
+
 	static unsigned int PopupMenuId(string menuCode);
 	
 	static void Calculate(string menuCode, vector<CActivityOnArrow>& cols);
