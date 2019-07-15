@@ -83,6 +83,7 @@ public:
 	CString m_name;					//  网络图名称
 	vector<CAOANode> m_nodes;
 	vector<CAOAEdge> m_edges;		//	分支节点名称	
+	bool	m_bTimeCoordinate;		//	是否时标网络图展示
 	
 };
 

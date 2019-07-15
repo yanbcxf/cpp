@@ -150,6 +150,7 @@ void CBaseMessageFormView::ReLayout()
 		GetClientRect(&rect);
 		rect.top = rect.bottom - (rect.bottom - rect.top) * m_down_percent / (m_upper_percent + m_down_percent) + 2;
 		m_Graph.MoveWindow(rect);
+		m_Graph.Invalidate(true);
 	}
 }
 

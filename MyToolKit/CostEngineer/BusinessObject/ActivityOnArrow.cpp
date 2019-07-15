@@ -263,7 +263,8 @@ bool CActivityOnArrow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CActiv
 		vec.push_back("修改（update）");
 		vec.push_back("删除（delete）");
 		vec.push_back("复制（copy）");
-		vec.push_back("时标网络（operate1）");
+		if(!e.m_bTimeCoordinate)	vec.push_back("时标网络（operate1）");
+		else vec.push_back("非时标网络（operate1）");
 
 		vecData.push_back(vec);
 	}
@@ -322,30 +323,34 @@ bool CActivityOnArrow::DrawGraph(CGraphCtrl* pCtrl) {
 	if (!pCtrl)
 		return false;
 
-	/* 计算图纸的尺寸、时标线的间隔 */
-	int sizex = 0, sizey = 0, time_axis = 0;
-	for (int i = 0; i < m_nodes.size(); i++) {
-		if (m_nodes[i].m_x > sizex)
-			sizex = m_nodes[i].m_x;
-		if (m_nodes[i].m_y > sizey)
-			sizey = m_nodes[i].m_y;
-		if (m_nodes[i].m_earliest_event_time >=0)
-			time_axis = 2;
-	}
-	pCtrl->SetGraphSize(sizex + 100, sizey + 100, time_axis);
+	
+	int sizex = 0, sizey = 0;
 
 	pCtrl->initGraph();
 	for (int i = 0; i < m_nodes.size(); i++) {
+		int x = m_nodes[i].m_x;
+		int y = m_nodes[i].m_y;
+		if (m_bTimeCoordinate) {
+			if (m_nodes[i].m_earliest_event_time >= 0)
+				x = 50 + m_nodes[i].m_earliest_event_time * 2 * 15;
+		}
+
+		/* 计算图纸的尺寸、时标线的间隔 */
+		if (x > sizex)	sizex = x;
+		if (y > sizey)	sizey = y;
+
 		if (m_nodes[i].m_earliest_event_time < 0)
-			pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer());
+			pCtrl->AddNode(x, y, m_nodes[i].m_name.GetBuffer());
 		else {
 			string tips = "节点: " + string(m_nodes[i].m_name.GetBuffer()) + "\n";
 			if (m_nodes[i].m_earliest_event_time >= 0) tips += "最早开始: " + Int2String(m_nodes[i].m_earliest_event_time) + "\n";
 			if (m_nodes[i].m_latest_event_time >= 0) tips += "最晚完成: " + Int2String(m_nodes[i].m_latest_event_time) + "\n";
 
-			pCtrl->AddNode(m_nodes[i].m_x, m_nodes[i].m_y, m_nodes[i].m_name.GetBuffer(), "", "" , tips);
+			pCtrl->AddNode(x, y, m_nodes[i].m_name.GetBuffer(), "", "" , tips);
 		}
 	}
+
+	pCtrl->SetGraphSize(sizex + 100, sizey + 100, m_bTimeCoordinate ? 2 : 0);
 
 	for (int i = 0; i < m_edges.size(); i++) {
 		if (m_edges[i].m_earliest_start < 0) {
@@ -390,6 +395,7 @@ void CActivityOnArrow::InvalidateCaculate() {
 		m_edges[e].m_total_float = -1;
 		m_edges[e].m_free_float = -1;
 	}
+	m_bTimeCoordinate = false;
 }
 
 bool CActivityOnArrow::AddNode(string menuCode, int x, int y) {
@@ -655,10 +661,7 @@ bool CActivityOnArrow::TimeCoordinate(string menuCode, int nRow, vector<CActivit
 		return false;
 
 	if (nRow > 0 && nRow <= cols.size()) {
-		for (int i = 0; i < cols[nRow - 1].m_nodes.size(); i++) {
-			if(cols[nRow - 1].m_nodes[i].m_earliest_event_time >=0)
-				cols[nRow - 1].m_nodes[i].m_x = 50 + cols[nRow - 1].m_nodes[i].m_earliest_event_time * 2 * 15;
-		}
+		cols[nRow - 1].m_bTimeCoordinate = !cols[nRow - 1].m_bTimeCoordinate;
 	}
 	return true;
 }

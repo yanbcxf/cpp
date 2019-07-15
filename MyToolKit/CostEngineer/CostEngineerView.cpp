@@ -296,12 +296,15 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 	if (!pDoc)
 		return;
 
-	bool bRedraw = false;
-
+	/* 选择的行发生变化，则不做操作，先重画 */
 	if (gridId == 0 && m_nChildrenCode != nRow - 1) {
 		m_nChildrenCode = nRow - 1;
-		bRedraw = true;
+		RedrawView();
+		return;
 	}
+
+
+	bool bRedraw = false;
 		
 	CString source ;
 	if (gridId == 0) {

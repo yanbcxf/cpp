@@ -973,6 +973,7 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 	}
 
 	pGridCtrl->AutoSizeColumns();
+	pGridCtrl->Refresh();
 
 	return TRUE;
 }
