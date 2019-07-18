@@ -203,6 +203,7 @@
     <ClInclude Include="BusinessObject\IntegratedEvaluation.h" />
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h" />
     <ClInclude Include="BusinessObject\ItemOfUnitPrice.h" />
+    <ClInclude Include="BusinessObject\ProjectSettlement.h" />
     <ClInclude Include="BusinessObject\SimilarEngineerBudget.h" />
     <ClInclude Include="CalculateTask.h" />
     <ClInclude Include="CDyncDlg.h" />
@@ -312,6 +313,7 @@
     <ClCompile Include="BusinessObject\IntegratedEvaluation.cpp" />
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp" />
     <ClCompile Include="BusinessObject\ItemOfUnitPrice.cpp" />
+    <ClCompile Include="BusinessObject\ProjectSettlement.cpp" />
     <ClCompile Include="BusinessObject\SimilarEngineerBudget.cpp" />
     <ClCompile Include="CalculateTask.cpp" />
     <ClCompile Include="CDyncDlg.cpp" />

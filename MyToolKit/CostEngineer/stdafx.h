@@ -125,6 +125,7 @@ typedef struct _item_info
 #include "ActivityOnArrow.h"
 #include "CashFlow.h"
 #include "IntegratedEvaluation.h"
+#include "ProjectSettlement.h"
 
 
 #define WM_USER_XML		WM_USER + 1

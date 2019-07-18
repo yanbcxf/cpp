@@ -25,6 +25,7 @@ public:
 	vector<CActivityOnArrow> activityOnArrows;
 	vector<CCashFlow> cashFlows;
 	vector<CIntegratedEvaluation> integratedEvaluations;
+	vector<CProjectSettlement> projectSettlements;
 
 // 操作
 public:

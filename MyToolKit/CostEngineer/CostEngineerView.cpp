@@ -365,6 +365,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CProjectSettlement::Update(m_strMenuCode, nRow, pDoc->projectSettlements)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -403,6 +407,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				bRedraw = true;
 			}
 			if (CIntegratedEvaluationObj::Update(m_strMenuCode, nRow, pDoc->integratedEvaluations[m_nChildrenCode].m_objs, pDoc->integratedEvaluations[m_nChildrenCode])) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CProjectSettlementObj::Update(m_strMenuCode, nRow, pDoc->projectSettlements[m_nChildrenCode].m_objs, pDoc->projectSettlements[m_nChildrenCode])) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -462,6 +470,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CProjectSettlement::Delete(m_strMenuCode, nRow, pDoc->projectSettlements)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -500,6 +512,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					bRedraw = true;
 				}
 				if (CIntegratedEvaluationObj::Delete(m_strMenuCode, nRow, pDoc->integratedEvaluations[m_nChildrenCode].m_objs)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+				if (CProjectSettlementObj::Delete(m_strMenuCode, nRow, pDoc->projectSettlements[m_nChildrenCode].m_objs)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -575,6 +591,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				CIntegratedEvaluationObj c;
 				if (c.CreateOrUpdate(m_strMenuCode, pDoc->integratedEvaluations[m_nChildrenCode])) {
 					pDoc->integratedEvaluations[m_nChildrenCode].m_objs.push_back(c);
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			{
+				CProjectSettlementObj c;
+				if (c.CreateOrUpdate(m_strMenuCode, pDoc->projectSettlements[m_nChildrenCode])) {
+					pDoc->projectSettlements[m_nChildrenCode].m_objs.push_back(c);
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -760,6 +784,20 @@ void CCostEngineerView::RedrawView() {
 	if (CIntegratedEvaluation::Draw(m_strMenuCode, &m_Grid, pDoc->integratedEvaluations)) {
 		if (m_nChildrenCode < pDoc->integratedEvaluations.size()) {
 			CIntegratedEvaluationObj::Draw(&m_Grid1, pDoc->integratedEvaluations[m_nChildrenCode].m_objs, pDoc->integratedEvaluations[m_nChildrenCode]);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		m_display_mode = DisplayModes::Grid_Grid;
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
+		return;
+	}
+
+	if (CProjectSettlement::Draw(m_strMenuCode, &m_Grid, pDoc->projectSettlements)) {
+		if (m_nChildrenCode < pDoc->projectSettlements.size()) {
+			CProjectSettlementObj::Draw(&m_Grid1, pDoc->projectSettlements[m_nChildrenCode].m_objs, pDoc->projectSettlements[m_nChildrenCode]);
 		}
 		else {
 			m_Grid1.SetRowCount(0);
