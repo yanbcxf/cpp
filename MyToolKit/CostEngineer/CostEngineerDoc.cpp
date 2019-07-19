@@ -171,6 +171,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			integratedEvaluations[i].Serialize(ar, CIntegratedEvaluation::m_ObjectVersion);
 		}
 
+		// 工程结算
+		ar << CString(CProjectSettlement::m_ObjectCode.c_str());
+		ar << CProjectSettlement::m_ObjectVersion;
+		ar << projectSettlements.size();
+		for (int i = 0; i < projectSettlements.size(); i++) {
+			projectSettlements[i].Serialize(ar, CProjectSettlement::m_ObjectVersion);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -255,6 +263,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CIntegratedEvaluation b;
 					b.Serialize(ar, db);
 					integratedEvaluations.push_back(b);
+				}
+				// 工程结算
+				if (str == CProjectSettlement::m_ObjectCode.c_str()) {
+					CProjectSettlement b;
+					b.Serialize(ar, db);
+					projectSettlements.push_back(b);
 				}
 			}
 		}
