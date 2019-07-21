@@ -46,9 +46,6 @@ CCostEngineerDoc::CCostEngineerDoc() noexcept
 
 }
 
-CCostEngineerDoc::~CCostEngineerDoc()
-{
-}
 
 BOOL CCostEngineerDoc::OnNewDocument()
 {
@@ -168,7 +165,7 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 		ar << CIntegratedEvaluation::m_ObjectVersion;
 		ar << integratedEvaluations.size();
 		for (int i = 0; i < integratedEvaluations.size(); i++) {
-			integratedEvaluations[i].Serialize(ar, CIntegratedEvaluation::m_ObjectVersion);
+			CIntegratedEvaluation::Serialize(ar, CIntegratedEvaluation::m_ObjectVersion, integratedEvaluations[i]);
 		}
 
 		// 工程结算
@@ -176,7 +173,7 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 		ar << CProjectSettlement::m_ObjectVersion;
 		ar << projectSettlements.size();
 		for (int i = 0; i < projectSettlements.size(); i++) {
-			projectSettlements[i].Serialize(ar, CProjectSettlement::m_ObjectVersion);
+			CProjectSettlement::Serialize(ar, CProjectSettlement::m_ObjectVersion, projectSettlements[i]);
 		}
 
 		// 文件结束标志
@@ -260,15 +257,15 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 				}
 				// 投标 - 综合评估法
 				if (str == CIntegratedEvaluation::m_ObjectCode.c_str()) {
-					CIntegratedEvaluation b;
-					b.Serialize(ar, db);
-					integratedEvaluations.push_back(b);
+					CIntegratedEvaluation * p;
+					CIntegratedEvaluation::Serialize(ar, db, p);
+					integratedEvaluations.push_back(p);
 				}
 				// 工程结算
 				if (str == CProjectSettlement::m_ObjectCode.c_str()) {
-					CProjectSettlement b;
-					b.Serialize(ar, db);
-					projectSettlements.push_back(b);
+					CProjectSettlement *p;
+					CProjectSettlement::Serialize(ar, db, p);
+					projectSettlements.push_back(p);
 				}
 			}
 		}

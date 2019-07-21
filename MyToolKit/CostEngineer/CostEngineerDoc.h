@@ -10,6 +10,10 @@ class CCostEngineerDoc : public COleDocument
 protected: // 仅从序列化创建
 	CCostEngineerDoc() noexcept;
 	DECLARE_DYNCREATE(CCostEngineerDoc)
+	virtual ~CCostEngineerDoc() {
+		for (CIntegratedEvaluation * p : integratedEvaluations) delete p;
+		for (CProjectSettlement * p : projectSettlements) delete p;
+	};
 
 // 特性
 public:
@@ -24,8 +28,8 @@ public:
 	vector<CDecisionTree> decisionTrees;
 	vector<CActivityOnArrow> activityOnArrows;
 	vector<CCashFlow> cashFlows;
-	vector<CIntegratedEvaluation> integratedEvaluations;
-	vector<CProjectSettlement> projectSettlements;
+	vector<CIntegratedEvaluation *> integratedEvaluations;
+	vector<CProjectSettlement*> projectSettlements;
 
 // 操作
 public:
@@ -42,7 +46,7 @@ public:
 
 // 实现
 public:
-	virtual ~CCostEngineerDoc();
+	
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

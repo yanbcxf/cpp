@@ -12,9 +12,9 @@ public:
 
 	~CIntegratedEvaluationObj();
 
-	void Serialize(CArchive& ar, double version);
+	virtual void Serialize(CArchive& ar, double version);
 
-	bool CreateOrUpdate(string menuCode, CIntegratedEvaluation& parent);
+	virtual bool CreateOrUpdate(string menuCode, CIntegratedEvaluation* parent);
 
 	/* 最早收到支付款的月份 */
 	int  EarliestPaymentTime();
@@ -23,9 +23,7 @@ public:
 	/* 终值都换算到结清月的月末或月初 */
 	double FutureValueOfPartitionedProject(double i);
 
-	static bool Draw(CGridCtrl* pGridCtrl, vector<CIntegratedEvaluationObj>& cols, CIntegratedEvaluation& parent);
-	static bool Update(string menuCode, int nRow, vector<CIntegratedEvaluationObj>& cols, CIntegratedEvaluation& parent);
-	static bool Delete(string menuCode, int nRow, vector<CIntegratedEvaluationObj>& cols);
+	
 
 	
 	CString m_name;						//  工程名称
@@ -49,23 +47,23 @@ class CIntegratedEvaluation
 {
 public:
 	CIntegratedEvaluation();
-	~CIntegratedEvaluation();
+	virtual ~CIntegratedEvaluation();
 
-	void Serialize(CArchive& ar, double version);
 
-	bool CreateOrUpdate(string strMenuCode);
-	/* 整个工程结清的月份 */
-	int	 LatestPaymentTime();
-	/* 整个工程的终值，换算到整个工程的结清月的月末 */
-	double FutureValueOfWholeProject();
-	/* 整个工程的现值 */
-	double PresentValueOfWholeProject();
+	virtual CIntegratedEvaluationObj* NewChild();
+	virtual bool DrawChild(CGridCtrl* pGridCtrl);
+	virtual bool AddChild(string menuCode);
+	virtual bool UpdateChild(string menuCode, int nRow);
+	virtual bool DeleteChild(string menuCode, int nRow);
 	
-	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CIntegratedEvaluation>& cols);
-	static bool Update(string menuCode, int nRow, vector<CIntegratedEvaluation>& cols);
-	static bool Delete(string menuCode, int nRow, vector<CIntegratedEvaluation>& cols);
+	static CIntegratedEvaluation* NewParent(CString name);
+	static void Serialize(CArchive& ar, double version, CIntegratedEvaluation*  & p);
+	static bool CreateOrUpdate(string strMenuCode, CIntegratedEvaluation* & p);
+	static bool Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CIntegratedEvaluation *>& cols);
+	static bool Update(string menuCode, int nRow, vector<CIntegratedEvaluation *>& cols);
+	static bool Delete(string menuCode, int nRow, vector<CIntegratedEvaluation *>& cols);
 	static unsigned int PopupMenuId(string menuCode);
-	static void Calculate(string menuCode, vector<CIntegratedEvaluation>& cols);
+	static void Calculate(string menuCode, vector<CIntegratedEvaluation *>& cols);
 
 	static string m_ObjectCode;
 	static double m_ObjectVersion;
@@ -73,6 +71,32 @@ public:
 	CString m_name;				//	
 	CString m_evaluation_method;	//	评标法
 	
-	vector<CIntegratedEvaluationObj>	m_objs;	
+	vector<CIntegratedEvaluationObj*>	m_objs;	
 };
 
+class CIntegratedEvaluationEx10 : public CIntegratedEvaluation {
+	virtual CIntegratedEvaluationObj* NewChild();
+	virtual bool DrawChild(CGridCtrl* pGridCtrl);
+};
+
+class CIntegratedEvaluationEx11 : public CIntegratedEvaluation {
+	virtual CIntegratedEvaluationObj* NewChild();
+	virtual bool DrawChild(CGridCtrl* pGridCtrl);
+};
+
+class CIntegratedEvaluationEx12 : public CIntegratedEvaluation {
+	virtual CIntegratedEvaluationObj* NewChild();
+	virtual bool DrawChild(CGridCtrl* pGridCtrl);
+};
+
+class CIntegratedEvaluationObjEx10 : public CIntegratedEvaluationObj {
+	virtual bool CreateOrUpdate(string menuCode, CIntegratedEvaluation* parent);
+};
+
+class CIntegratedEvaluationObjEx11 : public CIntegratedEvaluationObj {
+	virtual bool CreateOrUpdate(string menuCode, CIntegratedEvaluation* parent);
+};
+
+class CIntegratedEvaluationObjEx12 : public CIntegratedEvaluationObj {
+	virtual bool CreateOrUpdate(string menuCode, CIntegratedEvaluation* parent);
+};
