@@ -5,22 +5,235 @@
 
 
 
+//
+//int CProjectSettlementObj::EarliestPaymentTime() {
+//
+//	return 0;
+//}
+//
+//int CProjectSettlementObj::LatestPaymentTime() {
+//	return 0;
+//}
 
-CProjectSettlementObj::CProjectSettlementObj()
+/***********************************************************************************/
+
+
+/* 第六章 - 工程结算 */
+string CProjectSettlement::m_ObjectCode = "01060101";
+double CProjectSettlement::m_ObjectVersion = 1.0;
+
+CProjectSettlement::CProjectSettlement()
 {
-	m_month = "";
-	m_actual_workload = 0;
-	m_schedule_workload = 0;
-	m_party_a_material = 0;
+	m_scheme = "";
 }
 
 
-CProjectSettlementObj::~CProjectSettlementObj()
+CProjectSettlement::~CProjectSettlement()
 {
+	for (CProjectSettlementObj* e : m_objs)
+		delete e;
+}
+
+unsigned int CProjectSettlement::PopupMenuId(string menuCode) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return 0;
+	return IDR_POPUP_COMPONENT;
+}
+
+CProjectSettlement* CProjectSettlement::NewParent(CString scheme) {
+	CProjectSettlement* p = NULL;
+	if (scheme == "案例2")
+		p = new CProjectSettlementEx2();
+	if (scheme == "案例3")
+		p = new CProjectSettlementEx3();
+
+	if (p) p->m_scheme = scheme;
+	return p;
 }
 
 
-void CProjectSettlementObj::Serialize(CArchive& ar, double version) {
+bool CProjectSettlement::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CProjectSettlement*>& cols) {
+	if (!pGridCtrl)
+		return false;
+
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	vector<string> vecHeader;
+	vector<vector<string>> vecData;
+	vecHeader.push_back("工程结算方案,120");
+	vecHeader.push_back("工程描述,550");
+	vecHeader.push_back(",120");
+	vecHeader.push_back(",120");
+	vecHeader.push_back(",120");
+
+	int i = 1;
+	for (CProjectSettlement* e : cols) {
+		vector<string> vec;
+		vec.push_back(e->m_scheme.GetBuffer());
+		vec.push_back(e->Description());
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+		vec.push_back("增加（create）");
+		vecData.push_back(vec);
+	}
+
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
+}
+
+void CProjectSettlement::Serialize(CArchive& ar, double version, CProjectSettlement*  & p) {
+	if (ar.IsStoring()) {
+		ar << p->m_scheme;
+		p->Serialize(ar, version);
+	}
+	else {
+		CString scheme;
+		ar >> scheme;
+		p = NewParent(scheme);
+		p->Serialize(ar, version);
+	}
+}
+
+
+void CProjectSettlement::Calculate(string menuCode, vector<CProjectSettlement*>& cols) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return;
+
+	CGridDlg gridDlg;
+	gridDlg.m_vecHeader.push_back("名称");
+	gridDlg.m_vecHeader.push_back("单方造价");
+
+
+	for (int i = 0; i < cols.size(); i++)
+	{
+
+
+		/*vec.push_back(Double2String(total));
+		gridDlg.m_vecData.push_back(vec);*/
+	}
+	gridDlg.DoModal();
+}
+
+bool CProjectSettlement::DrawChild(CGridCtrl* pGridCtrl)
+{
+	if (!pGridCtrl)
+		return false;
+
+	vector<string>			vecHeader;
+	vector<vector<string>>	vecData;
+
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
+}
+
+
+CProjectSettlementObj* CProjectSettlement::NewChild() {
+	CProjectSettlementObj* p = new CProjectSettlementObjEx2();
+	return p;
+}
+
+bool CProjectSettlement::AddChild(string menuCode) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	CProjectSettlementObj* c = NewChild();
+	if (c->CreateOrUpdate(menuCode, this)) {
+		m_objs.push_back(c);
+		return true;
+	}
+
+	return false;
+}
+
+bool CProjectSettlement::UpdateChild(string menuCode, int nRow) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= m_objs.size())
+		return m_objs[nRow - 1]->CreateOrUpdate(menuCode, this);
+	return false;
+}
+
+
+bool CProjectSettlement::DeleteChild(string menuCode, int nRow) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= m_objs.size()) {
+		int idx = 0;
+		vector<CProjectSettlementObj*>::iterator it = m_objs.begin();
+		for (; it != m_objs.end(); it++, idx++) {
+			if (idx == nRow - 1)
+				break;
+		}
+		m_objs.erase(it);
+		return true;
+	}
+	return false;
+}
+
+
+/* "工厂" 设计模式 */
+bool CProjectSettlement::Create(string strMenuCode, CProjectSettlement*  & p) {
+	if (strMenuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = "案例2;案例3";
+	infd.m_vecFindItem[0][i][0].strItem = "案例2";
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
+
+	infd.Init(_T("工程结算 方案选择"), _T("工程结算 方案选择"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		CString scheme = infd.m_vecFindItem[0][i++][0].strItem;
+		p = NewParent(scheme);
+		bool res = p->CreateOrUpdate();
+		if (res == false) {
+			delete p;
+			p = NULL;
+		}
+		return res;
+	}
+
+	return false;
+}
+
+bool CProjectSettlement::Update(string menuCode, int nRow, vector<CProjectSettlement*>& cols) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size())
+		return  cols[nRow - 1]->CreateOrUpdate();
+	return false;
+}
+
+bool CProjectSettlement::Delete(string menuCode, int nRow, vector<CProjectSettlement*>& cols) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size()) {
+		int idx = 0;
+		vector<CProjectSettlement*>::iterator it = cols.begin();
+		for (; it != cols.end(); it++, idx++) {
+			if (idx == nRow - 1)
+				break;
+		}
+		cols.erase(it);
+		return true;
+	}
+	return false;
+}
+
+
+
+
+/***********************************************************************************/
+
+void CProjectSettlementObjEx2::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_month;
 		ar << m_actual_workload;
@@ -29,14 +242,14 @@ void CProjectSettlementObj::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_month;
-		ar >> m_actual_workload; 
+		ar >> m_actual_workload;
 		ar >> m_schedule_workload;
 		ar >> m_party_a_material;
 	}
 }
 
 
-bool CProjectSettlementObj::CreateOrUpdate(string menuCode, CProjectSettlement* parent) {
+bool CProjectSettlementObjEx2::CreateOrUpdate(string menuCode, CProjectSettlement* parent) {
 	if (menuCode != CProjectSettlement::m_ObjectCode)
 		return false;
 
@@ -90,299 +303,113 @@ bool CProjectSettlementObj::CreateOrUpdate(string menuCode, CProjectSettlement* 
 
 
 
-//
-//int CProjectSettlementObj::EarliestPaymentTime() {
-//
-//	return 0;
-//}
-//
-//int CProjectSettlementObj::LatestPaymentTime() {
-//	return 0;
-//}
-
-/***********************************************************************************/
-
-
-/* 第六章 - 工程结算 */
-string CProjectSettlement::m_ObjectCode = "01060101";
-double CProjectSettlement::m_ObjectVersion = 1.0;
-
-CProjectSettlement::CProjectSettlement()
-{
-	m_name = "";
-	m_total_price = 0;
-	m_advance_payment_percent = 0;
-	m_material_percent = 0;
-	m_quality_bond_percent = 0;
-}
-
-
-CProjectSettlement::~CProjectSettlement()
-{
-	for (CProjectSettlementObj* e : m_objs)
-		delete e;
-}
-
-unsigned int CProjectSettlement::PopupMenuId(string menuCode) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return 0;
-	return IDR_POPUP_COMPONENT;
-}
-
-CProjectSettlement* CProjectSettlement::NewParent(CString method) {
-	CProjectSettlement* p = NULL;
-	p = new CProjectSettlementEx2();
-
+CProjectSettlementObj* CProjectSettlementEx2::NewChild() {
+	CProjectSettlementObj* p = new CProjectSettlementObjEx2();
 	return p;
 }
 
-void CProjectSettlement::Serialize(CArchive& ar, double version, CProjectSettlement*  & p) {
+
+void CProjectSettlementEx2::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
-		ar << p->m_name;
-		ar << p->m_total_price;
-		ar << p->m_advance_payment_percent;
-		ar << p->m_material_percent;
-		ar << p->m_quality_bond_percent;
-		ar << p->m_objs.size();
-		for (int i = 0; i < p->m_objs.size(); i++) {
-			p->m_objs[i]->Serialize(ar, version);
+		ar << m_name;
+		ar << m_total_price;
+		ar << m_advance_payment_percent;
+		ar << m_material_percent;
+		ar << m_quality_bond_percent;
+		ar << m_objs.size();
+		for (int i = 0; i < m_objs.size(); i++) {
+			m_objs[i]->Serialize(ar, version);
 		}
 	}
 	else {
-		p = NewParent("");
-		ar >> p->m_name;
-		ar >> p->m_total_price;
-		ar >> p->m_advance_payment_percent;
-		ar >> p->m_material_percent;
-		ar >> p->m_quality_bond_percent;
+		ar >> m_name;
+		ar >> m_total_price;
+		ar >> m_advance_payment_percent;
+		ar >> m_material_percent;
+		ar >> m_quality_bond_percent;
 		int nNum;
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
-			CProjectSettlementObj* bs = p->NewChild();
+			CProjectSettlementObj* bs = NewChild();
 			bs->Serialize(ar, version);
-			p->m_objs.push_back(bs);
+			m_objs.push_back(bs);
 		}
 	}
 }
 
-bool CProjectSettlement::CreateOrUpdate(string strMenuCode, CProjectSettlement* & p) {
 
-	if (strMenuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
+bool CProjectSettlementEx2::CreateOrUpdate() {
 	CDyncItemGroupDlg infd;
 	infd.CXCAPTION = 100;
 	infd.GROUP_NUM_PER_LINE = 3;
 	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = m_scheme;
+	infd.m_vecFindItem[0][i][0].strItem = m_scheme;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
+
+	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程名称"), 64);
-	if (p && !p->m_name.IsEmpty())
-		infd.m_vecFindItem[0][i][0].strItem = p->m_name;
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程造价(万元)"), 64);
-	if (p && p->m_total_price > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", p->m_total_price);
+	if (m_total_price > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_price);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("建筑材料及设备费占比（%）"), 64);
-	if (p && p->m_material_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", p->m_material_percent * 100);
+	if (m_material_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_material_percent * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("预付款占比（%）"), 64);
-	if (p && p->m_advance_payment_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", p->m_advance_payment_percent * 100);
+	if (m_advance_payment_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_advance_payment_percent * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("质量保证金占比（%）"), 64);
-	if (p && p->m_quality_bond_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", p->m_quality_bond_percent * 100);
+	if (m_quality_bond_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_quality_bond_percent * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
-	
-	infd.Init(_T("评标法 参数设置"), _T("评标法 参数设置"));
+
+	infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
 	if (infd.DoModal() == IDOK) {
 		i = 0;
-		if (!p) p = NewParent("");
-		p->m_name = infd.m_vecFindItem[0][i++][0].strItem;
-		p->m_total_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-		p->m_material_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer())/100;
-		p->m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer())/100;
-		p->m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
+		m_name = infd.m_vecFindItem[0][i++][0].strItem;
+		m_total_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_material_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		return true;
 	}
 	return false;
 }
 
 
-bool CProjectSettlement::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CProjectSettlement*>& cols) {
-	if (!pGridCtrl)
-		return false;
-
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	vector<string> vecHeader;
-	vector<vector<string>> vecData;
-	vecHeader.push_back("工程结算表");
-	vecHeader.push_back("工程名称");
-	vecHeader.push_back("工程造价（万元）");
-	vecHeader.push_back("建筑材料及设备费占比（%）");
-	vecHeader.push_back("预付款占比（%）");
-	vecHeader.push_back("质量保证金占比（%）");
-	vecHeader.push_back("");
-	vecHeader.push_back("");
-	vecHeader.push_back("");
-
-	int i = 1;
-	for (CProjectSettlement* e : cols) {
-		vector<string> vec;
-		vec.push_back(Int2String(i++));
-		vec.push_back(e->m_name.GetBuffer());
-		vec.push_back(Double2String(e->m_total_price));
-		vec.push_back(Double2String(e->m_material_percent * 100, "%.2f"));
-		vec.push_back(Double2String(e->m_advance_payment_percent * 100, "%.2f"));
-		vec.push_back(Double2String(e->m_quality_bond_percent * 100, "%.2f"));
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
-		vecData.push_back(vec);
-	}
-
-	return DrawGrid(pGridCtrl, vecHeader, vecData);
-}
-
-bool CProjectSettlement::Update(string menuCode, int nRow, vector<CProjectSettlement*>& cols) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	if (nRow > 0 && nRow <= cols.size())
-		return  CProjectSettlement::CreateOrUpdate(CProjectSettlement::m_ObjectCode, cols[nRow - 1]);
-	return false;
-}
-
-bool CProjectSettlement::Delete(string menuCode, int nRow, vector<CProjectSettlement*>& cols) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	if (nRow > 0 && nRow <= cols.size()) {
-		int idx = 0;
-		vector<CProjectSettlement*>::iterator it = cols.begin();
-		for (; it != cols.end(); it++, idx++) {
-			if (idx == nRow - 1)
-				break;
-		}
-		cols.erase(it);
-		return true;
-	}
-	return false;
-}
-
-
-
-void CProjectSettlement::Calculate(string menuCode, vector<CProjectSettlement*>& cols) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return;
-
-	CGridDlg gridDlg;
-	gridDlg.m_vecHeader.push_back("名称");
-	gridDlg.m_vecHeader.push_back("单方造价");
-	
-
-	for (int i = 0; i < cols.size(); i++)
-	{
-		CProjectSettlement seb = *cols[i];
-
-		string str = seb.m_name.GetBuffer();
-		vector<string> vec;
-		vec.push_back(str);
-		
-			
-		/*vec.push_back(Double2String(total));
-		gridDlg.m_vecData.push_back(vec);*/
-	}
-	gridDlg.DoModal();
-}
-
-
-
-
-bool CProjectSettlement::DrawChild(CGridCtrl* pGridCtrl)
-{
-	if (!pGridCtrl)
-		return false;
-
-	vector<string>			vecHeader;
-	vector<vector<string>>	vecData;
-
-	return DrawGrid(pGridCtrl, vecHeader, vecData);
-}
-
-
-CProjectSettlementObj* CProjectSettlement::NewChild() {
-	CProjectSettlementObj* p = new CProjectSettlementObj();
-	return p;
-}
-
-bool CProjectSettlement::AddChild(string menuCode) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	CProjectSettlementObj* c = NewChild();
-	if (c->CreateOrUpdate(menuCode, this)) {
-		m_objs.push_back(c);
-		return true;
-	}
-
-	return false;
-}
-
-bool CProjectSettlement::UpdateChild(string menuCode, int nRow) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	if (nRow > 0 && nRow <= m_objs.size())
-		return m_objs[nRow - 1]->CreateOrUpdate(menuCode, this);
-	return false;
-}
-
-
-bool CProjectSettlement::DeleteChild(string menuCode, int nRow) {
-	if (menuCode != CProjectSettlement::m_ObjectCode)
-		return false;
-
-	if (nRow > 0 && nRow <= m_objs.size()) {
-		int idx = 0;
-		vector<CProjectSettlementObj*>::iterator it = m_objs.begin();
-		for (; it != m_objs.end(); it++, idx++) {
-			if (idx == nRow - 1)
-				break;
-		}
-		m_objs.erase(it);
-		return true;
-	}
-	return false;
-}
-
-
-
-/***********************************************************************************/
-
-CProjectSettlementObj* CProjectSettlementEx2::NewChild() {
-	CProjectSettlementObj* p = new CProjectSettlementObj();
-	return p;
+string CProjectSettlementEx2::Description() {
+	stringstream ss;
+	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
+	ss << "工程造价（万元）: " << Double2String(m_total_price) << ",  ";
+	ss << "建筑材料及设备费占比（%）: " << Double2String(m_material_percent * 100, "%.2f") << ",  ";
+	ss << "预付款占比（%）: " << Double2String(m_advance_payment_percent * 100, "%.2f") << ",  ";
+	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << ",  ";
+	return ss.str();
 }
 
 
@@ -424,7 +451,7 @@ bool CProjectSettlementEx2::DrawChild(CGridCtrl* pGridCtrl)
 	int ttt = m_objs.size();
 
 	for (int i = 0; i < ttt; i++) {
-		CProjectSettlementObj e = *m_objs[i];
+		CProjectSettlementObjEx2 e = *(CProjectSettlementObjEx2 *)m_objs[i];
 		vector<string> vec;
 		vec.push_back(e.m_month.GetBuffer());
 		vec.push_back(Double2String(e.m_actual_workload, "%.2f"));
@@ -485,4 +512,240 @@ bool CProjectSettlementEx2::DrawChild(CGridCtrl* pGridCtrl)
 	}
 
 	return DrawGrid(pGridCtrl, vecHeader, vecData);
+}
+
+
+/***********************************************************************/
+
+void CProjectSettlementObjEx3::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_month;
+		ar << m_actual_workload;
+	}
+	else {
+		ar >> m_month;
+		ar >> m_actual_workload;
+	}
+}
+
+
+bool CProjectSettlementObjEx3::CreateOrUpdate(string menuCode, CProjectSettlement* parent) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
+	if (!m_month.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_month;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("实际完成产值(万元)"), 64);
+	if (m_actual_workload > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_actual_workload);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+	infd.Init(_T("各月实际完成产值 参数设置"), _T("各月实际完成产值 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_actual_workload = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+
+
+CProjectSettlementObj* CProjectSettlementEx3::NewChild() {
+	CProjectSettlementObj* p = new CProjectSettlementObjEx3();
+	return p;
+}
+
+
+
+bool CProjectSettlementEx3::DrawChild(CGridCtrl* pGridCtrl)
+{
+	if (!pGridCtrl)
+		return false;
+
+	vector<string>			vecHeader;
+	vector<vector<string>>	vecData;
+
+	vecHeader.push_back("月份");
+	vecHeader.push_back("完成产值");
+	
+	vecHeader.push_back("累计工程款");
+	vecHeader.push_back("预付款扣回");
+	vecHeader.push_back("质量保证金扣留");
+	vecHeader.push_back("工程款扣留");
+	vecHeader.push_back("进度款");
+
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	/* 预付款 */
+	double advance = m_total_price * m_advance_payment_percent;
+	/* 工程款起扣点 */
+	double deductValue = 199;
+	deductValue = m_total_price - deductValue;
+
+	/* 累计工程款 */
+	double value = 0;
+	/* 累计质量保证金 */
+	double quality = 0;
+	/* 累计扣留工程款 */
+	double detain = 0;
+
+	int ttt = m_objs.size();
+
+	for (int i = 0; i < ttt; i++) {
+		CProjectSettlementObjEx3 e = *(CProjectSettlementObjEx3 *)m_objs[i];
+		vector<string> vec;
+		vec.push_back(e.m_month.GetBuffer());
+		vec.push_back(Double2String(e.m_actual_workload, "%.2f"));
+
+		/* 累计工程款 */
+		value += e.m_actual_workload;
+		vec.push_back(Double2String(value, "%.2f"));
+
+		/* 工程进度款 */
+		double progress = e.m_actual_workload;
+
+		double deduct = 0;	/* 应扣回预付款 */
+		if (value > deductValue) {
+			if (value - e.m_actual_workload > deductValue) {
+				/* 上个月 工程款就已超过 起扣点 */
+				deduct = e.m_actual_workload * 0.5;
+			}
+			else {
+				/* 本月开始起扣 */
+				deduct = (value - deductValue) * 0.5;
+			}
+			advance = advance - deduct;
+		}
+
+		/* 进度款中扣除 预付款的扣回 */
+		progress -= deduct;
+		vec.push_back(Double2String(deduct, "%.2f"));
+
+		/* 进度款中扣除 质量保证金 */
+		progress -= e.m_actual_workload * m_quality_bond_percent;
+		quality += e.m_actual_workload * m_quality_bond_percent;
+		vec.push_back(Double2String(e.m_actual_workload * m_quality_bond_percent, "%.2f"));
+
+		/* 进度款中扣除 工程款扣留 */
+		vec.push_back(Double2String(0, "%.2f"));
+
+		/* 进度款中扣除 甲供材料价值 */
+		
+		/* 进度款 */
+		vec.push_back(Double2String(progress, "%.2f"));
+
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+
+		vecData.push_back(vec);
+	}
+
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
+}
+
+
+void CProjectSettlementEx3::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_name;
+		ar << m_total_price;
+		ar << m_advance_payment_percent;
+		ar << m_quality_bond_percent;
+		ar << m_objs.size();
+		for (int i = 0; i < m_objs.size(); i++) {
+			m_objs[i]->Serialize(ar, version);
+		}
+	}
+	else {
+		ar >> m_name;
+		ar >> m_total_price;
+		ar >> m_advance_payment_percent;
+		ar >> m_quality_bond_percent;
+		int nNum;
+		ar >> nNum;
+		for (int i = 0; i < nNum; i++) {
+			CProjectSettlementObj* bs = NewChild();
+			bs->Serialize(ar, version);
+			m_objs.push_back(bs);
+		}
+	}
+}
+
+bool CProjectSettlementEx3::CreateOrUpdate() {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = m_scheme;
+	infd.m_vecFindItem[0][i][0].strItem = m_scheme;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程造价(万元)"), 64);
+	if (m_total_price > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_price);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("预付款占比（%）"), 64);
+	if (m_advance_payment_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_advance_payment_percent * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("质量保证金占比（%）"), 64);
+	if (m_quality_bond_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_quality_bond_percent * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+
+	infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
+		m_name = infd.m_vecFindItem[0][i++][0].strItem;
+		m_total_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		return true;
+	}
+	return false;
+}
+
+
+string CProjectSettlementEx3::Description() {
+	stringstream ss;
+	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
+	ss << "工程造价（万元）: " << Double2String(m_total_price) << ",  ";
+	ss << "预付款占比（%）: " << Double2String(m_advance_payment_percent * 100, "%.2f") << ",  ";
+	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << "  ";
+	return ss.str();
 }

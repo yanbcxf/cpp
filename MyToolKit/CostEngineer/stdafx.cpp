@@ -916,6 +916,9 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 		pGridCtrl->SetFixedColumnCount(1);
 		pGridCtrl->SetHeaderSort(FALSE);
 		pGridCtrl->SetEditable(FALSE);
+
+		pGridCtrl->GetDefaultCell(FALSE, FALSE)->SetFormat(DT_WORDBREAK | DT_EDITCONTROL | DT_NOPREFIX | DT_END_ELLIPSIS);
+		pGridCtrl->EnableTitleTips(FALSE);		//	关闭每个单元格的文本超长的 气球提示
 	}
 	catch (CMemoryException* e)
 	{
@@ -923,6 +926,7 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 		e->Delete();
 		return TRUE;
 	}
+
 
 	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
 	{
@@ -939,10 +943,10 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 			}
 			else
 			{
-				if (col == 0)
+				/*if (col == 0)
 					Item.nFormat = DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
 				else
-					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;
+					Item.nFormat = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX;*/
 
 				if (col < vecHeader.size() - 2)
 				{
@@ -972,7 +976,51 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 
 	}
 
-	pGridCtrl->AutoSizeColumns();
+	bool bFormat = false;
+	//	确定列的宽度
+	for (int i = 0; i < vecHeader.size(); i++) {
+		vector<string> vec;
+		splitString(vecHeader[i], ",", vec);
+		if (vec.size() > 1) {
+			int nWidth = String2Double(vec[1]);
+			if (nWidth > 0) {
+				pGridCtrl->SetColumnWidth(i, nWidth);
+				bFormat = true;
+			}
+
+		}
+	}
+
+	//	确定行的高度
+	for (int row = 1; row < pGridCtrl->GetRowCount(); row++)
+	{
+		int nHeight = 0;
+		for (int i = 0; i < vecHeader.size(); i++) {
+			vector<string> vec;
+			splitString(vecHeader[i], ",", vec);
+			if (vec.size() > 1) {
+				int nWidth = String2Double(vec[1]);
+				if (nWidth > 0) {
+					CString strrr = pGridCtrl->GetItemText(row, i);
+					CGridCellBase* pCell = pGridCtrl->GetCell(row, i);
+					if (pCell)
+					{
+						CSize si = pCell->GetTextExtentByWidth(strrr, nWidth);
+						if( si.cy > nHeight ) nHeight = si.cy;
+					}
+
+				}
+			}
+		}
+		if(nHeight > 0)
+			pGridCtrl->SetRowHeight(row, nHeight);
+	}
+
+	
+	if (!bFormat) {
+		pGridCtrl->AutoSizeColumns();
+		pGridCtrl->AutoSizeRows();
+	}
 	pGridCtrl->Refresh();
 
 	return TRUE;

@@ -103,6 +103,8 @@
       <AdditionalDependencies>expat.lib;libiconv-1.14.lib;mxml1.lib;pcre2-8.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>2048000</StackReserveSize>
+      <StackCommitSize>9016</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
