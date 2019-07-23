@@ -120,7 +120,8 @@ class CProjectSettlementEx3 : public CProjectSettlement {
 public:
 	CProjectSettlementEx3() {
 		m_name = "";
-		m_total_price = 0;
+		m_total_workload = 0;
+		m_unit_price = 0;
 		m_advance_payment_percent = 0;
 		m_quality_bond_percent = 0;
 	};
@@ -133,7 +134,8 @@ public:
 
 public:
 	CString m_name;				//	工程名称
-	double  m_total_price;		//	工程总造价
+	double	m_total_workload;	//	工程计划总量
+	double  m_unit_price;		//	单价
 	double	m_advance_payment_percent;	//	预付款占比
 	double	m_quality_bond_percent;		//	质量保证金占比
 };

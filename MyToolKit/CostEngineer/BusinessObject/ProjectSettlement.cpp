@@ -572,98 +572,11 @@ CProjectSettlementObj* CProjectSettlementEx3::NewChild() {
 
 
 
-bool CProjectSettlementEx3::DrawChild(CGridCtrl* pGridCtrl)
-{
-	if (!pGridCtrl)
-		return false;
-
-	vector<string>			vecHeader;
-	vector<vector<string>>	vecData;
-
-	vecHeader.push_back("月份");
-	vecHeader.push_back("完成产值");
-	
-	vecHeader.push_back("累计工程款");
-	vecHeader.push_back("预付款扣回");
-	vecHeader.push_back("质量保证金扣留");
-	vecHeader.push_back("工程款扣留");
-	vecHeader.push_back("进度款");
-
-	vecHeader.push_back("");
-	vecHeader.push_back("");
-
-	/* 预付款 */
-	double advance = m_total_price * m_advance_payment_percent;
-	/* 工程款起扣点 */
-	double deductValue = 199;
-	deductValue = m_total_price - deductValue;
-
-	/* 累计工程款 */
-	double value = 0;
-	/* 累计质量保证金 */
-	double quality = 0;
-	/* 累计扣留工程款 */
-	double detain = 0;
-
-	int ttt = m_objs.size();
-
-	for (int i = 0; i < ttt; i++) {
-		CProjectSettlementObjEx3 e = *(CProjectSettlementObjEx3 *)m_objs[i];
-		vector<string> vec;
-		vec.push_back(e.m_month.GetBuffer());
-		vec.push_back(Double2String(e.m_actual_workload, "%.2f"));
-
-		/* 累计工程款 */
-		value += e.m_actual_workload;
-		vec.push_back(Double2String(value, "%.2f"));
-
-		/* 工程进度款 */
-		double progress = e.m_actual_workload;
-
-		double deduct = 0;	/* 应扣回预付款 */
-		if (value > deductValue) {
-			if (value - e.m_actual_workload > deductValue) {
-				/* 上个月 工程款就已超过 起扣点 */
-				deduct = e.m_actual_workload * 0.5;
-			}
-			else {
-				/* 本月开始起扣 */
-				deduct = (value - deductValue) * 0.5;
-			}
-			advance = advance - deduct;
-		}
-
-		/* 进度款中扣除 预付款的扣回 */
-		progress -= deduct;
-		vec.push_back(Double2String(deduct, "%.2f"));
-
-		/* 进度款中扣除 质量保证金 */
-		progress -= e.m_actual_workload * m_quality_bond_percent;
-		quality += e.m_actual_workload * m_quality_bond_percent;
-		vec.push_back(Double2String(e.m_actual_workload * m_quality_bond_percent, "%.2f"));
-
-		/* 进度款中扣除 工程款扣留 */
-		vec.push_back(Double2String(0, "%.2f"));
-
-		/* 进度款中扣除 甲供材料价值 */
-		
-		/* 进度款 */
-		vec.push_back(Double2String(progress, "%.2f"));
-
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-
-		vecData.push_back(vec);
-	}
-
-	return DrawGrid(pGridCtrl, vecHeader, vecData);
-}
-
-
 void CProjectSettlementEx3::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
-		ar << m_total_price;
+		ar << m_total_workload;
+		ar << m_unit_price;
 		ar << m_advance_payment_percent;
 		ar << m_quality_bond_percent;
 		ar << m_objs.size();
@@ -673,7 +586,8 @@ void CProjectSettlementEx3::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_name;
-		ar >> m_total_price;
+		ar >> m_total_workload;
+		ar >> m_unit_price;
 		ar >> m_advance_payment_percent;
 		ar >> m_quality_bond_percent;
 		int nNum;
@@ -704,9 +618,17 @@ bool CProjectSettlementEx3::CreateOrUpdate() {
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程造价(万元)"), 64);
-	if (m_total_price > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_price);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计划总量(立方米)"), 64);
+	if (m_total_workload > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_workload);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("单价(元/立方米)"), 64);
+	if (m_unit_price > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_unit_price);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
@@ -732,7 +654,8 @@ bool CProjectSettlementEx3::CreateOrUpdate() {
 		i = 0;
 		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
-		m_total_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_total_workload = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_unit_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 		m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		return true;
@@ -744,8 +667,135 @@ bool CProjectSettlementEx3::CreateOrUpdate() {
 string CProjectSettlementEx3::Description() {
 	stringstream ss;
 	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
-	ss << "工程造价（万元）: " << Double2String(m_total_price) << ",  ";
+	ss << "计划总量(立方米): " << Double2String(m_total_workload) << ",  ";
+	ss << "单价(元/立方米): " << Double2String(m_unit_price) << ",  ";
 	ss << "预付款占比（%）: " << Double2String(m_advance_payment_percent * 100, "%.2f") << ",  ";
-	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << "  ";
+	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << ",  ";
+	/* 预付款起扣点 */
+	double deductValue = m_total_workload * m_unit_price  * 0.3;
+	ss << "预付款起扣点 : " << Double2String(deductValue, "%.2f");
 	return ss.str();
+}
+
+
+
+bool CProjectSettlementEx3::DrawChild(CGridCtrl* pGridCtrl)
+{
+	if (!pGridCtrl)
+		return false;
+
+	vector<string>			vecHeader;
+	vector<vector<string>>	vecData;
+
+	vecHeader.push_back("月份");
+	vecHeader.push_back("完成工程量（立方米）");
+
+	vecHeader.push_back("理论进度款");
+	vecHeader.push_back("累计工程款");
+	vecHeader.push_back("累计工程量（立方米）");
+	
+	vecHeader.push_back("质量保证金扣留");
+	vecHeader.push_back("预付款扣回");
+
+	vecHeader.push_back("进度款");
+
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	/* 预付款 */
+	double advance = m_total_workload * m_unit_price * m_advance_payment_percent;
+	/* 预付款起扣点 */
+	double deductValue = m_total_workload * m_unit_price  * 0.3;
+	/* 工程量变化，单价调整点 */
+	double adjustWorkload = m_total_workload * 1.15;
+
+	/* 累计工程款 */
+	double accValue = 0;
+	/* 累计工程量 */
+	double accWorkload = 0;
+	/* 累计质量保证金 */
+	double accQuality = 0;
+	/* 累计扣留工程款 */
+	double accDetain = 0;
+	
+	/* 应扣回预付款 */
+	double deduct = 0;	
+	int deductStart, deductEnd;
+	int ttt = m_objs.size();
+	deductStart = deductEnd = ttt;
+
+	for (int i = 0; i < ttt; i++) {
+		CProjectSettlementObjEx3 e = *(CProjectSettlementObjEx3 *)m_objs[i];
+		vector<string> vec;
+		vec.push_back(e.m_month.GetBuffer());
+		vec.push_back(Double2String(e.m_actual_workload, "%.2f"));
+
+		
+		/* 工程进度款 */
+		double progress;
+		if ((accWorkload + e.m_actual_workload) < adjustWorkload) {
+			progress = e.m_actual_workload * m_unit_price;
+		}
+		else if (accWorkload < adjustWorkload && (accWorkload + e.m_actual_workload) > adjustWorkload) {
+			progress = (adjustWorkload - accWorkload) * m_unit_price;
+			progress += (accWorkload + e.m_actual_workload - adjustWorkload) * m_unit_price * 0.9;
+		}
+		else  {
+			progress = e.m_actual_workload * m_unit_price * 0.9;
+		}
+		vec.push_back(Double2String(progress, "%.2f"));
+
+		
+		/* 累计工程款 */
+		accValue += progress;
+		vec.push_back(Double2String(accValue, "%.2f"));
+
+		/* 累计工程量 */
+		accWorkload += e.m_actual_workload;
+		vec.push_back(Double2String(accWorkload, "%.2f"));
+		
+		/* 进度款中扣除 质量保证金 */
+		accQuality += progress * m_quality_bond_percent;
+		vec.push_back(Double2String(progress * m_quality_bond_percent, "%.2f"));
+		progress -= progress * m_quality_bond_percent;
+
+		/* 计算随后几个月的 应扣预付款 */
+		if (deduct == 0) {
+			if (accValue > deductValue) {
+				int n = ttt - 2 - i;
+				if (n > 0) deduct = advance / n;
+				deductStart = i + 1;
+				deductEnd = ttt - 2;
+			}
+		}
+
+		/* 进度款中扣除 预付款的扣回 */
+		if ( i >= deductStart &&  i <= deductEnd) {
+			progress -= deduct;
+			vec.push_back(Double2String(deduct, "%.2f"));
+		}
+		else {
+			vec.push_back(Double2String(0, "%.2f"));
+		}
+		
+
+		if (accDetain + progress < 150000) {
+			accDetain += progress;
+			progress = 0;
+		}
+		else {
+			progress = accDetain + progress;
+			accDetain = 0;
+		}
+
+		/* 进度款 */
+		vec.push_back(Double2String(progress, "%.2f"));
+
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+
+		vecData.push_back(vec);
+	}
+
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
 }
