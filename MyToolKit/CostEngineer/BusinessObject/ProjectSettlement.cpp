@@ -46,6 +46,8 @@ CProjectSettlement* CProjectSettlement::NewParent(CString scheme) {
 		p = new CProjectSettlementEx2();
 	if (scheme == "案例3")
 		p = new CProjectSettlementEx3();
+	if (scheme == "案例4")
+		p = new CProjectSettlementEx4();
 
 	if (p) p->m_scheme = scheme;
 	return p;
@@ -182,7 +184,7 @@ bool CProjectSettlement::Create(string strMenuCode, CProjectSettlement*  & p) {
 	infd.GROUP_NUM_PER_LINE = 3;
 	int i = 0;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
-	infd.m_vecFindItem[0][i][0].strData = "案例2;案例3";
+	infd.m_vecFindItem[0][i][0].strData = "案例2;案例3;案例4";
 	infd.m_vecFindItem[0][i][0].strItem = "案例2";
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
 
@@ -778,6 +780,345 @@ bool CProjectSettlementEx3::DrawChild(CGridCtrl* pGridCtrl)
 			vec.push_back(Double2String(0, "%.2f"));
 		}
 		
+
+		if (accDetain + progress < 150000) {
+			accDetain += progress;
+			progress = 0;
+		}
+		else {
+			progress = accDetain + progress;
+			accDetain = 0;
+		}
+
+		/* 进度款 */
+		vec.push_back(Double2String(progress, "%.2f"));
+
+		vec.push_back("修改（update）");
+		vec.push_back("删除（delete）");
+
+		vecData.push_back(vec);
+	}
+
+	return DrawGrid(pGridCtrl, vecHeader, vecData);
+}
+
+/***********************************************************************/
+
+void CProjectSettlementObjEx4::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_month;
+		ar << m_actual_fund;
+		ar << m_adjust_fund;
+		ar << m_ft1;
+		ar << m_ft2;
+		ar << m_ft3;
+		ar << m_ft4;
+		ar << m_ft5;
+	}
+	else {
+		ar >> m_month;
+		ar >> m_actual_fund;
+		ar >> m_adjust_fund;
+		ar >> m_ft1;
+		ar >> m_ft2;
+		ar >> m_ft3;
+		ar >> m_ft4;
+		ar >> m_ft5;
+	}
+}
+
+
+bool CProjectSettlementObjEx4::CreateOrUpdate(string menuCode, CProjectSettlement* parent) {
+	if (menuCode != CProjectSettlement::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
+	if (!m_month.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_month;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("完成工程款(万元)"), 64);
+	if (m_actual_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_actual_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("变动调整款(万元)"), 64);
+	if (m_adjust_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_adjust_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结算期价格指数1"), 64);
+	if (m_ft1 > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_ft1);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结算期价格指数2"), 64);
+	if (m_ft2 > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_ft2);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结算期价格指数3"), 64);
+	if (m_ft3 > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_ft3);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结算期价格指数4"), 64);
+	if (m_ft4 > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_ft4);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结算期价格指数5"), 64);
+	if (m_ft5 > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_ft5);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	infd.Init(_T("各月实际完成产值 参数设置"), _T("各月实际完成产值 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_actual_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_adjust_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_ft1 = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_ft2 = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_ft3 = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_ft4 = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_ft5 = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+
+
+CProjectSettlementObj* CProjectSettlementEx4::NewChild() {
+	CProjectSettlementObj* p = new CProjectSettlementObjEx4();
+	return p;
+}
+
+
+
+void CProjectSettlementEx4::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_name;
+		ar << m_total_fund;
+		ar << m_advance_payment_percent;
+		ar << m_quality_bond_percent;
+		ar << m_objs.size();
+		for (int i = 0; i < m_objs.size(); i++) {
+			m_objs[i]->Serialize(ar, version);
+		}
+	}
+	else {
+		ar >> m_name;
+		ar >> m_total_fund;
+		ar >> m_advance_payment_percent;
+		ar >> m_quality_bond_percent;
+		int nNum;
+		ar >> nNum;
+		for (int i = 0; i < nNum; i++) {
+			CProjectSettlementObj* bs = NewChild();
+			bs->Serialize(ar, version);
+			m_objs.push_back(bs);
+		}
+	}
+}
+
+bool CProjectSettlementEx4::CreateOrUpdate() {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = m_scheme;
+	infd.m_vecFindItem[0][i][0].strItem = m_scheme;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("合同总价(万元)"), 64);
+	if (m_total_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("预付款占比（%）"), 64);
+	if (m_advance_payment_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_advance_payment_percent * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("质量保证金占比（%）"), 64);
+	if (m_quality_bond_percent > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_quality_bond_percent * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+
+	infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
+		m_name = infd.m_vecFindItem[0][i++][0].strItem;
+		m_total_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		return true;
+	}
+	return false;
+}
+
+
+string CProjectSettlementEx4::Description() {
+	stringstream ss;
+	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
+	ss << "合同总价(万元): " << Double2String(m_total_fund) << ",  ";
+	ss << "预付款占比（%）: " << Double2String(m_advance_payment_percent * 100, "%.2f") << ",  ";
+	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << ",  ";
+	/* 预付款起扣点 */
+	double deductValue = 0.3;
+	ss << "预付款起扣点 : " << Double2String(deductValue, "%.2f");
+	return ss.str();
+}
+
+
+
+bool CProjectSettlementEx4::DrawChild(CGridCtrl* pGridCtrl)
+{
+	if (!pGridCtrl)
+		return false;
+
+	vector<string>			vecHeader;
+	vector<vector<string>>	vecData;
+
+	vecHeader.push_back("月份");
+	vecHeader.push_back("完成工程量（立方米）");
+
+	vecHeader.push_back("理论进度款");
+	vecHeader.push_back("累计工程款");
+	vecHeader.push_back("累计工程量（立方米）");
+
+	vecHeader.push_back("质量保证金扣留");
+	vecHeader.push_back("预付款扣回");
+
+	vecHeader.push_back("进度款");
+
+	vecHeader.push_back("");
+	vecHeader.push_back("");
+
+	/* 预付款 */
+	double advance = m_total_fund * 111 * m_advance_payment_percent;
+	/* 预付款起扣点 */
+	double deductValue = m_total_fund * 111  * 0.3;
+	/* 工程量变化，单价调整点 */
+	double adjustWorkload = m_total_fund * 1.15;
+
+	/* 累计工程款 */
+	double accValue = 0;
+	/* 累计工程量 */
+	double accWorkload = 0;
+	/* 累计质量保证金 */
+	double accQuality = 0;
+	/* 累计扣留工程款 */
+	double accDetain = 0;
+
+	/* 应扣回预付款 */
+	double deduct = 0;
+	int deductStart, deductEnd;
+	int ttt = m_objs.size();
+	deductStart = deductEnd = ttt;
+
+	for (int i = 0; i < ttt; i++) {
+		CProjectSettlementObjEx3 e = *(CProjectSettlementObjEx3 *)m_objs[i];
+		vector<string> vec;
+		vec.push_back(e.m_month.GetBuffer());
+		vec.push_back(Double2String(e.m_actual_workload, "%.2f"));
+
+
+		/* 工程进度款 */
+		double progress;
+		if ((accWorkload + e.m_actual_workload) < adjustWorkload) {
+			progress = e.m_actual_workload * 111;
+		}
+		else if (accWorkload < adjustWorkload && (accWorkload + e.m_actual_workload) > adjustWorkload) {
+			progress = (adjustWorkload - accWorkload) * 111;
+			progress += (accWorkload + e.m_actual_workload - adjustWorkload) * 111 * 0.9;
+		}
+		else {
+			progress = e.m_actual_workload * 111 * 0.9;
+		}
+		vec.push_back(Double2String(progress, "%.2f"));
+
+
+		/* 累计工程款 */
+		accValue += progress;
+		vec.push_back(Double2String(accValue, "%.2f"));
+
+		/* 累计工程量 */
+		accWorkload += e.m_actual_workload;
+		vec.push_back(Double2String(accWorkload, "%.2f"));
+
+		/* 进度款中扣除 质量保证金 */
+		accQuality += progress * m_quality_bond_percent;
+		vec.push_back(Double2String(progress * m_quality_bond_percent, "%.2f"));
+		progress -= progress * m_quality_bond_percent;
+
+		/* 计算随后几个月的 应扣预付款 */
+		if (deduct == 0) {
+			if (accValue > deductValue) {
+				int n = ttt - 2 - i;
+				if (n > 0) deduct = advance / n;
+				deductStart = i + 1;
+				deductEnd = ttt - 2;
+			}
+		}
+
+		/* 进度款中扣除 预付款的扣回 */
+		if (i >= deductStart && i <= deductEnd) {
+			progress -= deduct;
+			vec.push_back(Double2String(deduct, "%.2f"));
+		}
+		else {
+			vec.push_back(Double2String(0, "%.2f"));
+		}
+
 
 		if (accDetain + progress < 150000) {
 			accDetain += progress;
