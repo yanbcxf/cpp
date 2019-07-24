@@ -201,6 +201,7 @@
     <ClInclude Include="BusinessObject\CashFlow.h" />
     <ClInclude Include="BusinessObject\ColumnObj.h" />
     <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
+    <ClInclude Include="BusinessObject\ContractPrice.h" />
     <ClInclude Include="BusinessObject\DecisionTree.h" />
     <ClInclude Include="BusinessObject\IntegratedEvaluation.h" />
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="BusinessObject\CashFlow.cpp" />
     <ClCompile Include="BusinessObject\ColumnObj.cpp" />
     <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
+    <ClCompile Include="BusinessObject\ContractPrice.cpp" />
     <ClCompile Include="BusinessObject\DecisionTree.cpp" />
     <ClCompile Include="BusinessObject\IntegratedEvaluation.cpp" />
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp" />

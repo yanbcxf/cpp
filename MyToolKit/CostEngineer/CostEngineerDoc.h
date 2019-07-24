@@ -30,6 +30,7 @@ public:
 	vector<CCashFlow> cashFlows;
 	vector<CIntegratedEvaluation *> integratedEvaluations;
 	vector<CProjectSettlement*> projectSettlements;
+	vector<CContractPrice*> contractPrices;
 
 // 操作
 public:

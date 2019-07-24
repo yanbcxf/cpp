@@ -146,11 +146,21 @@
 				<list>
 					<element>
 						<code>010601</code>
-						<name>案例六</name>
+						<name>案例二</name>
 						<list>
 							<element>
 								<code>01060101</code>
 								<name>工程结算</name>
+							</element>
+						</list>
+					</element>
+					<element>
+						<code>010605</code>
+						<name>案例五</name>
+						<list>
+							<element>
+								<code>01060501</code>
+								<name>合同价款</name>
 							</element>
 						</list>
 					</element>
