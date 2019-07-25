@@ -14,6 +14,7 @@ public:
 	virtual void Serialize(CArchive& ar, double version) = 0;
 	virtual bool CreateOrUpdate(string menuCode, CContractPrice* parent) = 0;
 	virtual string Description() = 0;
+	virtual double ProjectPrice() = 0;
 
 public:
 	CString	m_name;
@@ -69,6 +70,7 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CContractPrice* parent);
 	virtual string Description() { return " Object A "; };
+	virtual double ProjectPrice();
 
 public:
 	double	m_actual_workload;		//	工作量
@@ -86,10 +88,43 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CContractPrice* parent);
 	virtual string Description() { return " Object B "; };
+	virtual double ProjectPrice();
 public:
 	double	m_fund;		//	措施费
 };
 
+/* 总价措施项目费 */
+class CContractPriceEx2ObjC : public CContractPriceObj {
+public:
+	CContractPriceEx2ObjC() {
+		m_fund = 0;
+	};
+
+public:
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CreateOrUpdate(string menuCode, CContractPrice* parent);
+	virtual string Description() { return " Object C "; };
+	virtual double ProjectPrice();
+public:
+	double	m_fund;		//	措施费
+};
+
+
+/* 其它项目费 */
+class CContractPriceEx2ObjD : public CContractPriceObj {
+public:
+	CContractPriceEx2ObjD() {
+		m_fund = 0;
+	};
+
+public:
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CreateOrUpdate(string menuCode, CContractPrice* parent);
+	virtual string Description() { return " Object D "; };
+	virtual double ProjectPrice();
+public:
+	double	m_fund;		//	费
+};
 
 /* 合同价款 */
 class CContractPriceEx2 : public CContractPrice {
@@ -97,10 +132,8 @@ public:
 
 	CContractPriceEx2() {
 		m_name = "";
-		m_total_price = 0;
-		m_advance_payment_percent = 0;
-		m_material_percent = 0;
-		m_quality_bond_percent = 0;
+		m_regulation_rate = 0;
+		m_tax_rate = 0;
 	};
 
 	virtual void Serialize(CArchive& ar, double version);
@@ -111,8 +144,6 @@ public:
 
 public:
 	CString m_name;				//	工程名称
-	double  m_total_price;		//	工程总造价
-	double	m_material_percent;	//	建筑材料及设备费占比
-	double	m_advance_payment_percent;	//	预付款占比
-	double	m_quality_bond_percent;		//	质量保证金占比
+	double	m_regulation_rate;	//	规费率
+	double	m_tax_rate;			//	税率
 };

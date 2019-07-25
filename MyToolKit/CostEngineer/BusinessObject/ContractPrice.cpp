@@ -138,7 +138,7 @@ bool CContractPrice::AddChild(string menuCode) {
 	infd.GROUP_NUM_PER_LINE = 3;
 	int i = 0;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
-	infd.m_vecFindItem[0][i][0].strData = "单价分项费;单价措施费";
+	infd.m_vecFindItem[0][i][0].strData = "单价分项费;单价措施费;总价措施费;其他项目费";
 	infd.m_vecFindItem[0][i][0].strItem = "单价分项费";
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
 
@@ -201,7 +201,7 @@ bool CContractPrice::Create(string strMenuCode, CContractPrice*  & p) {
 	infd.m_vecFindItem[0][i][0].strItem = "案例5";
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("计算方案"), 64);
 
-	infd.Init(_T("工程结算 方案选择"), _T("工程结算 方案选择"));
+	infd.Init(_T("合同价款 方案选择"), _T("合同价款 方案选择"));
 	if (infd.DoModal() == IDOK) {
 		i = 0;
 		CString scheme = infd.m_vecFindItem[0][i++][0].strItem;
@@ -305,6 +305,10 @@ bool CContractPriceEx2ObjA::CreateOrUpdate(string menuCode, CContractPrice* pare
 	return false;
 }
 
+double CContractPriceEx2ObjA::ProjectPrice() {
+	return m_unit_price * m_actual_workload / 10000;
+}
+
 void CContractPriceEx2ObjB::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
@@ -352,7 +356,116 @@ bool CContractPriceEx2ObjB::CreateOrUpdate(string menuCode, CContractPrice* pare
 	return false;
 }
 
+double CContractPriceEx2ObjB::ProjectPrice() {
+	return m_fund;
+}
 
+void CContractPriceEx2ObjC::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_name;
+		ar << m_fund;
+	}
+	else {
+		ar >> m_name;
+		ar >> m_fund;
+	}
+}
+
+
+bool CContractPriceEx2ObjC::CreateOrUpdate(string menuCode, CContractPrice* parent) {
+	if (menuCode != CContractPrice::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("措施费"), 64);
+	if (m_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+
+	infd.Init(_T("总价措施费 参数设置"), _T("总价措施费 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+double CContractPriceEx2ObjC::ProjectPrice() {
+	return m_fund;
+}
+
+
+
+void CContractPriceEx2ObjD::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_name;
+		ar << m_fund;
+	}
+	else {
+		ar >> m_name;
+		ar >> m_fund;
+	}
+}
+
+
+bool CContractPriceEx2ObjD::CreateOrUpdate(string menuCode, CContractPrice* parent) {
+	if (menuCode != CContractPrice::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("措施费"), 64);
+	if (m_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+
+	infd.Init(_T("其他项目费 参数设置"), _T("其他项目费 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+double CContractPriceEx2ObjD::ProjectPrice() {
+	return m_fund;
+}
+
+
+/* ------------------------------------------ */
 CContractPriceObj* CContractPriceEx2::NewChild(CString scheme) {
 	CContractPriceObj* p = NULL;
 
@@ -360,6 +473,10 @@ CContractPriceObj* CContractPriceEx2::NewChild(CString scheme) {
 		p = new CContractPriceEx2ObjA();
 	if (scheme == "单价措施费")
 		p = new CContractPriceEx2ObjB();
+	if (scheme == "总价措施费")
+		p = new CContractPriceEx2ObjC();
+	if (scheme == "其他项目费")
+		p = new CContractPriceEx2ObjD();
 	if (p) p->m_scheme = scheme;
 
 	return p;
@@ -369,10 +486,8 @@ CContractPriceObj* CContractPriceEx2::NewChild(CString scheme) {
 void CContractPriceEx2::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
-		ar << m_total_price;
-		ar << m_advance_payment_percent;
-		ar << m_material_percent;
-		ar << m_quality_bond_percent;
+		ar << m_regulation_rate;
+		ar << m_tax_rate;
 		ar << m_objs.size();
 		for (int i = 0; i < m_objs.size(); i++) {
 			ar << m_objs[i]->m_scheme;
@@ -381,10 +496,8 @@ void CContractPriceEx2::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_name;
-		ar >> m_total_price;
-		ar >> m_advance_payment_percent;
-		ar >> m_material_percent;
-		ar >> m_quality_bond_percent;
+		ar >> m_regulation_rate;
+		ar >> m_tax_rate;
 		int nNum;
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
@@ -416,33 +529,17 @@ bool CContractPriceEx2::CreateOrUpdate() {
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程造价(万元)"), 64);
-	if (m_total_price > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_total_price);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("建筑材料及设备费占比（%）"), 64);
-	if (m_material_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_material_percent * 100);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("规费率（%）"), 64);
+	if (m_regulation_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_regulation_rate * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("预付款占比（%）"), 64);
-	if (m_advance_payment_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_advance_payment_percent * 100);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 100;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("质量保证金占比（%）"), 64);
-	if (m_quality_bond_percent > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_quality_bond_percent * 100);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("增值税率（%）"), 64);
+	if (m_tax_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_tax_rate * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
@@ -452,10 +549,8 @@ bool CContractPriceEx2::CreateOrUpdate() {
 		i = 0;
 		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
-		m_total_price = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-		m_material_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
-		m_advance_payment_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
-		m_quality_bond_percent = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_regulation_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		m_tax_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		return true;
 	}
 	return false;
@@ -464,11 +559,17 @@ bool CContractPriceEx2::CreateOrUpdate() {
 
 string CContractPriceEx2::Description() {
 	stringstream ss;
+	double price = 0;
 	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
-	ss << "工程造价（万元）: " << Double2String(m_total_price) << ",  ";
-	ss << "建筑材料及设备费占比（%）: " << Double2String(m_material_percent * 100, "%.2f") << ",  ";
-	ss << "预付款占比（%）: " << Double2String(m_advance_payment_percent * 100, "%.2f") << ",  ";
-	ss << "质量保证金占比（%）: " << Double2String(m_quality_bond_percent * 100, "%.2f") << ",  ";
+	for (int i = 0; i < m_objs.size(); i++) {
+		price += m_objs[i]->ProjectPrice();
+	}
+	ss << "工程总造价（不含税）（万元）: " << Double2String(price) << ",  ";
+
+	price = price * (1 + m_regulation_rate) * (1 + m_tax_rate);
+
+	ss << "工程总造价（含税）（万元）: " << Double2String(price) << ",  ";
+	
 	return ss.str();
 }
 
@@ -487,19 +588,6 @@ bool CContractPriceEx2::DrawChild(CGridCtrl* pGridCtrl)
 
 	vecHeader.push_back("");
 	vecHeader.push_back("");          
-
-	/* 预付款 */
-	double advance = m_total_price * m_advance_payment_percent;
-	/* 工程款起扣点 */
-	double deductValue = advance / m_material_percent;
-	deductValue = m_total_price - deductValue;
-
-	/* 累计工程款 */
-	double value = 0;
-	/* 累计质量保证金 */
-	double quality = 0;
-	/* 累计扣留工程款 */
-	double detain = 0;
 
 	int ttt = m_objs.size();
 

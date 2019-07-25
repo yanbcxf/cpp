@@ -853,7 +853,7 @@ bool CProjectSettlementObjEx4::CreateOrUpdate(string menuCode, CProjectSettlemen
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("变动调整款(万元)"), 64);
-	if (m_adjust_fund > 0)
+	if (m_adjust_fund != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_adjust_fund);
 	infd.m_vecFindItem[0][i][0].dbMin = -1000000;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -1068,7 +1068,7 @@ bool CProjectSettlementEx4::DrawChild(CGridCtrl* pGridCtrl)
 		/* 工程进度款， 先调值后 再增减款 */
 		double progress;
 		progress = m_b0 + (m_b1 * e.m_ft1 / m_f01 + m_b2 * e.m_ft2 / m_f02 + m_b3 * e.m_ft3 / m_f03 + m_b4 * e.m_ft4 / m_f04 + m_b5 * e.m_ft5 / m_f05);
-		progress = progress * e.m_actual_fund + e.m_adjust_fund ;
+		progress = progress * e.m_actual_fund  ;
 		vec.push_back(Double2String(progress, "%.2f"));
 
 		
@@ -1086,7 +1086,7 @@ bool CProjectSettlementEx4::DrawChild(CGridCtrl* pGridCtrl)
 			vec.push_back(Double2String(0, "%.2f"));
 		}
 
-
+		progress += e.m_adjust_fund;
 		/* 进度款 */
 		vec.push_back(Double2String(progress, "%.2f"));
 
