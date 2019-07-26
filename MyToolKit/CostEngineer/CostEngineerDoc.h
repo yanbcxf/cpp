@@ -31,6 +31,7 @@ public:
 	vector<CIntegratedEvaluation *> integratedEvaluations;
 	vector<CProjectSettlement*> projectSettlements;
 	vector<CContractPrice*> contractPrices;
+	vector<CProjectSettlementEx5*> projectSettlementEx5s;
 
 // 操作
 public:

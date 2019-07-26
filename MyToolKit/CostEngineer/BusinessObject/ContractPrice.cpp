@@ -564,9 +564,10 @@ string CContractPriceEx2::Description() {
 	for (int i = 0; i < m_objs.size(); i++) {
 		price += m_objs[i]->ProjectPrice();
 	}
+	price = price * (1 + m_regulation_rate);
 	ss << "工程总造价（不含税）（万元）: " << Double2String(price) << ",  ";
 
-	price = price * (1 + m_regulation_rate) * (1 + m_tax_rate);
+	price = price  * (1 + m_tax_rate);
 
 	ss << "工程总造价（含税）（万元）: " << Double2String(price) << ",  ";
 	

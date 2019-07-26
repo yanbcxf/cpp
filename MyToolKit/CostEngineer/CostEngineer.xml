@@ -162,6 +162,10 @@
 								<code>01060501</code>
 								<name>合同价款</name>
 							</element>
+							<element>
+								<code>01060502</code>
+								<name>工程结算</name>
+							</element>
 						</list>
 					</element>
 				</list>

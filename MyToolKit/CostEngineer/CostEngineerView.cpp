@@ -373,6 +373,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CProjectSettlementEx5::Update(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -424,6 +428,12 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 			if (pDoc->contractPrices.size() > m_nChildrenCode) {
 				if (pDoc->contractPrices[m_nChildrenCode]->UpdateChild(m_strMenuCode, nRow)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			if (pDoc->projectSettlementEx5s.size() > m_nChildrenCode) {
+				if (pDoc->projectSettlementEx5s[m_nChildrenCode]->UpdateChild(m_strMenuCode, nRow)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -492,6 +502,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CProjectSettlementEx5::Delete(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -543,6 +557,12 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 				if (pDoc->contractPrices.size() > m_nChildrenCode) {
 					if (pDoc->contractPrices[m_nChildrenCode]->DeleteChild(m_strMenuCode, nRow)) {
+						pDoc->SetModifiedFlag();
+						bRedraw = true;
+					}
+				}
+				if (pDoc->projectSettlementEx5s.size() > m_nChildrenCode) {
+					if (pDoc->projectSettlementEx5s[m_nChildrenCode]->DeleteChild(m_strMenuCode, nRow)) {
 						pDoc->SetModifiedFlag();
 						bRedraw = true;
 					}
@@ -634,6 +654,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			{
 				if (m_nChildrenCode < pDoc->contractPrices.size()) {
 					if (pDoc->contractPrices[m_nChildrenCode]->AddChild(m_strMenuCode)) {
+						pDoc->SetModifiedFlag();
+						bRedraw = true;
+					}
+				}
+			}
+			{
+				if (m_nChildrenCode < pDoc->projectSettlementEx5s.size()) {
+					if (pDoc->projectSettlementEx5s[m_nChildrenCode]->AddChild(m_strMenuCode)) {
 						pDoc->SetModifiedFlag();
 						bRedraw = true;
 					}
@@ -848,6 +876,19 @@ void CCostEngineerView::RedrawView() {
 	if (CContractPrice::Draw(m_strMenuCode, &m_Grid, pDoc->contractPrices)) {
 		if (m_nChildrenCode < pDoc->contractPrices.size()) {
 			pDoc->contractPrices[m_nChildrenCode]->DrawChild(&m_Grid1);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		m_display_mode = DisplayModes::Grid_Grid;
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
+		return;
+	}
+	if (CProjectSettlementEx5::Draw(m_strMenuCode, &m_Grid, pDoc->projectSettlementEx5s)) {
+		if (m_nChildrenCode < pDoc->projectSettlementEx5s.size()) {
+			pDoc->projectSettlementEx5s[m_nChildrenCode]->DrawChild(&m_Grid1);
 		}
 		else {
 			m_Grid1.SetRowCount(0);
