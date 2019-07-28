@@ -117,7 +117,7 @@ bool CProjectSettlementEx5ObjB::CreateOrUpdate(string menuCode, CProjectSettleme
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("金额"), 64);
 	if (m_fund > 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMin = -100000;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 
@@ -422,14 +422,14 @@ void CProjectSettlementEx5::Calculate()
 	}
 
 	/* 记录当前月的所有分项工程的累计工程量 */
-	map<string, double> mapProj = m_mapProjectUnitPrice;
-	for (map<string, double>::iterator it = mapProj.begin(); it != mapProj.end(); it++) {
+	map<string, double> mapWorkload = m_mapProjectWorkload;
+	for (map<string, double>::iterator it = mapWorkload.begin(); it != mapWorkload.end(); it++) {
 		it->second = 0;
 	}
 
 	CGridDlg gridDlg;
 	gridDlg.m_vecHeader.push_back("月份");
-	gridDlg.m_vecHeader.push_back("进度款");
+	gridDlg.m_vecHeader.push_back("进度款(万元)");
 
 	/* 逐月汇总计算 */
 	map<string, double>::iterator it = mapMonth.begin();
@@ -441,16 +441,18 @@ void CProjectSettlementEx5::Calculate()
 				double price;
 				if (m_objs[i]->m_scheme == "按工程量结算款") {
 					string proj = m_objs[i]->m_name.GetBuffer();
-					if (mapProj[proj] > m_mapProjectWorkload[proj]) {
+					if (mapWorkload[proj] > m_mapProjectWorkload[proj] * 1.15) {
 						price = m_mapProjectUnitPrice[proj] * 0.9 * m_objs[i]->ProjectPrice();
 					}
-					else if (mapProj[proj] + m_objs[i]->ProjectPrice() > m_mapProjectWorkload[proj]) {
-						price = (m_mapProjectWorkload[proj] - mapProj[proj]) * m_mapProjectUnitPrice[proj];
-						price += (mapProj[proj] + m_objs[i]->ProjectPrice() - m_mapProjectWorkload[proj])  * m_mapProjectUnitPrice[proj] * 0.9;
+					else if (mapWorkload[proj] + m_objs[i]->ProjectPrice() > m_mapProjectWorkload[proj] * 1.15) {
+						price = (m_mapProjectWorkload[proj] * 1.15 - mapWorkload[proj]) * m_mapProjectUnitPrice[proj];
+						price += (mapWorkload[proj] + m_objs[i]->ProjectPrice() - m_mapProjectWorkload[proj] * 1.15)  * m_mapProjectUnitPrice[proj] * 0.9;
 					}
 					else {
 						price = m_mapProjectUnitPrice[proj] * m_objs[i]->ProjectPrice();
 					}
+					price = price / 10000;
+					mapWorkload[proj] += m_objs[i]->ProjectPrice();
 				}
 				else {
 					price = m_objs[i]->ProjectPrice();
@@ -461,7 +463,7 @@ void CProjectSettlementEx5::Calculate()
 			}
 		}
 		if (!desc.empty())	desc += " , ";
-		desc += "进度款 ： " + Double2String(mapMonth[month], "%.2f");
+		desc += "进度款 ： " + Double2String(mapMonth[month] * (1+m_regulation_rate) * (1+ m_tax_rate), "%.2f");
 
 		vector<string> vec;
 		vec.push_back(month);
@@ -480,15 +482,28 @@ bool CProjectSettlementEx5::DrawChild(CGridCtrl* pGridCtrl)
 	SortByMonth();
 
 	/* 获取所有的分项工程 */
+	map<string, double> mapProjectUnitPrice;
+	map<string, double> mapProjectWorkload;
 	for (int i = 0; i < m_objs.size(); i++) {
 		if (m_objs[i]->m_scheme == "按工程量结算款") {
 			string proj = m_objs[i]->m_name.GetBuffer();
-			if (m_mapProjectUnitPrice.count(proj) == 0) {
-				m_mapProjectUnitPrice[proj] = 0;
-				m_mapProjectWorkload[proj] = 0;
+			if (mapProjectUnitPrice.count(proj) == 0) {
+				mapProjectUnitPrice[proj] = 0;
+				mapProjectWorkload[proj] = 0;
 			}
 		}
 	}
+	for (map<string, double>::iterator it = mapProjectUnitPrice.begin(); it != mapProjectUnitPrice.end(); it++) {
+		if (m_mapProjectUnitPrice.count(it->first) > 0)
+			it->second = m_mapProjectUnitPrice[it->first];
+	}
+	for (map<string, double>::iterator it = mapProjectWorkload.begin(); it != mapProjectWorkload.end(); it++) {
+		if (m_mapProjectWorkload.count(it->first) > 0)
+			it->second = m_mapProjectWorkload[it->first];
+	}
+	m_mapProjectUnitPrice = mapProjectUnitPrice;
+	m_mapProjectWorkload = mapProjectWorkload;
+
 
 	vector<string>			vecHeader;
 	vector<vector<string>>	vecData;

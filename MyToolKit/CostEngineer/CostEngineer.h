@@ -59,6 +59,7 @@ public:
 
 	CostEngineerInfo	m_cost_engineer_info;
 	BOOL m_bRunning;
+	afx_msg void OnCalc();
 };
 
 extern CCostEngineerApp theApp;

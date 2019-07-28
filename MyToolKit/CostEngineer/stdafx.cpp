@@ -927,9 +927,20 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 		return TRUE;
 	}
 
-
+	string strRow = "";
+	int nColor = 0;
 	for (int row = 0; row < pGridCtrl->GetRowCount(); row++)
 	{
+		if (row > 0) {
+			if (strRow == vecData[row - 1][0]) {
+
+			}
+			else {
+				nColor++;
+				strRow = vecData[row - 1][0];
+			}
+		}
+		
 		for (int col = 0; col < pGridCtrl->GetColumnCount(); col++)
 		{
 			GV_ITEM Item;
@@ -969,11 +980,19 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 					Item.crFgClr = RGB(0, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
+
+				if (nColor % 2 ==0) {
+					Item.crBkClr = RGB(199, 237, 204);
+					Item.mask |= GVIF_BKCLR;
+				}
+				else {
+					Item.crBkClr = RGB(255, 255, 255);
+					Item.mask |= GVIF_BKCLR;
+				}
 			}
 
 			pGridCtrl->SetItem(&Item);
 		}
-
 	}
 
 	bool bFormat = false;

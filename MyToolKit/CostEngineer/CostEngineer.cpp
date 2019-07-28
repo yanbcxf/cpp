@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CCostEngineerApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 标准打印设置命令
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+	ON_COMMAND(ID_CALC, &CCostEngineerApp::OnCalc)
 END_MESSAGE_MAP()
 
 
@@ -353,3 +354,10 @@ CDocument * CCostEngineerApp::SearchDoc(int idx)
 	return pDoc;
 }
 
+
+
+void CCostEngineerApp::OnCalc()
+{
+	// TODO: 在此添加命令处理程序代码
+	ShellExecute(NULL, "open", "calc", NULL, NULL, SW_SHOW);
+}
