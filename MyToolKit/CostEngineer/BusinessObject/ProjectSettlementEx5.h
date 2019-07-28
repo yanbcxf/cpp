@@ -58,7 +58,8 @@ public:
 	static bool Update(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols);
 	static bool Delete(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols);
 	static unsigned int PopupMenuId(string menuCode);
-	static void Calculate(string menuCode, vector<CProjectSettlementEx5*>& cols);
+	// static void Calculate(string menuCode, vector<CProjectSettlementEx5*>& cols);
+	static bool Calculate(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols);
 
 	static string m_ObjectCode;
 	static double m_ObjectVersion;
@@ -70,6 +71,7 @@ public:
 	virtual CProjectSettlementEx5Obj* NewChild(CString scheme);
 	virtual bool DrawChild(CGridCtrl* pGridCtrl);
 	virtual void SortByMonth();
+	virtual void Calculate();
 
 public:
 	CString	m_scheme;			//	方案类型 -> 确定后续程序的执行 
@@ -79,6 +81,9 @@ public:
 	CString m_name;				//	工程名称
 	double	m_regulation_rate;	//	规费率
 	double	m_tax_rate;			//	税率
+
+	map<string, double> m_mapProjectUnitPrice;
+	map<string, double> m_mapProjectWorkload;
 };
 
 /*************************************************************************************/
@@ -88,18 +93,16 @@ class CProjectSettlementEx5ObjA : public CProjectSettlementEx5Obj {
 public:
 	CProjectSettlementEx5ObjA() {
 		m_actual_workload = 0;
-		m_unit_price = 0;
 	};
 
 public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent);
-	virtual string Description() { return " Object A "; };
+	virtual string Description();
 	virtual double ProjectPrice();
 
 public:
 	double	m_actual_workload;		//	工作量
-	double	m_unit_price;			//	单价
 };
 
 /* 单价措施项目费 */
@@ -112,7 +115,7 @@ public:
 public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent);
-	virtual string Description() { return " Object B "; };
+	virtual string Description() ;
 	virtual double ProjectPrice();
 public:
 	double	m_fund;		//	措施费

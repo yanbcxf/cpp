@@ -15,6 +15,133 @@
 //	return 0;
 //}
 
+
+void CProjectSettlementEx5ObjA::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_month;
+		ar << m_name;
+		ar << m_actual_workload;
+	}
+	else {
+		ar >> m_month;
+		ar >> m_name;
+		ar >> m_actual_workload;
+	}
+}
+
+
+bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent) {
+	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
+	if (!m_month.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_month;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("款项名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程量（立方米）"), 64);
+	if (m_actual_workload > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_actual_workload);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	infd.Init(_T("按工程量结算 参数设置"), _T("按工程量结算 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_actual_workload = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+double CProjectSettlementEx5ObjA::ProjectPrice() {
+	return m_actual_workload ;
+}
+
+string CProjectSettlementEx5ObjA::Description() {
+	return string("工程量 ： ") + Double2String(m_actual_workload, "%.2f");
+}
+
+void CProjectSettlementEx5ObjB::Serialize(CArchive& ar, double version) {
+	if (ar.IsStoring()) {
+		ar << m_month;
+		ar << m_name;
+		ar << m_fund;
+	}
+	else {
+		ar >> m_month;
+		ar >> m_name;
+		ar >> m_fund;
+	}
+}
+
+
+bool CProjectSettlementEx5ObjB::CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent) {
+	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
+		return false;
+
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
+	if (!m_month.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_month;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("款项名称"), 64);
+	if (!m_name.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("金额"), 64);
+	if (m_fund > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+
+	infd.Init(_T("金额结算 参数设置"), _T("金额结算 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
+		m_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+
+		return true;
+	}
+	return false;
+}
+
+double CProjectSettlementEx5ObjB::ProjectPrice() {
+	return m_fund;
+}
+
+string CProjectSettlementEx5ObjB::Description() {
+	return string("进度款 ： ") + Double2String(m_fund, "%.2f");
+}
+
 /***********************************************************************************/
 
 
@@ -54,6 +181,7 @@ bool CProjectSettlementEx5::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 	vecHeader.push_back(",120");
 	vecHeader.push_back(",120");
 	vecHeader.push_back(",120");
+	vecHeader.push_back(",120");
 
 	int i = 1;
 	for (CProjectSettlementEx5* e : cols) {
@@ -63,6 +191,7 @@ bool CProjectSettlementEx5::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 		vec.push_back("修改（update）");
 		vec.push_back("删除（delete）");
 		vec.push_back("增加（create）");
+		vec.push_back("计算（operate1）");
 		vecData.push_back(vec);
 	}
 
@@ -83,24 +212,7 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version, CProjectSett
 }
 
 
-void CProjectSettlementEx5::Calculate(string menuCode, vector<CProjectSettlementEx5*>& cols) {
-	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
-		return;
 
-	CGridDlg gridDlg;
-	gridDlg.m_vecHeader.push_back("名称");
-	gridDlg.m_vecHeader.push_back("单方造价");
-
-
-	for (int i = 0; i < cols.size(); i++)
-	{
-
-
-		/*vec.push_back(Double2String(total));
-		gridDlg.m_vecData.push_back(vec);*/
-	}
-	gridDlg.DoModal();
-}
 
 CProjectSettlementEx5Obj* CProjectSettlementEx5::NewChild(CString scheme) {
 	CProjectSettlementEx5Obj* p = NULL;
@@ -126,6 +238,20 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 			ar << m_objs[i]->m_scheme;
 			m_objs[i]->Serialize(ar, version);
 		}
+
+		ar << m_mapProjectUnitPrice.size();
+		for (map<string, double>::iterator it = m_mapProjectUnitPrice.begin(); it != m_mapProjectUnitPrice.end(); it++) {
+			CString proj = it->first.c_str();
+			ar << proj;
+			ar << it->second;
+		}
+
+		ar << m_mapProjectWorkload.size();
+		for (map<string, double>::iterator it = m_mapProjectWorkload.begin(); it != m_mapProjectWorkload.end(); it++) {
+			CString proj = it->first.c_str();
+			ar << proj;
+			ar << it->second;
+		}
 	}
 	else {
 		ar >> m_name;
@@ -139,6 +265,18 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 			CProjectSettlementEx5Obj* bs = NewChild(scheme);
 			bs->Serialize(ar, version);
 			m_objs.push_back(bs);
+		}
+		ar >> nNum;
+		for (int i = 0; i < nNum; i++) {
+			CString proj;	double db;
+			ar >> proj;		ar >> db;
+			m_mapProjectUnitPrice[proj.GetBuffer()] = db;
+		}
+		ar >> nNum;
+		for (int i = 0; i < nNum; i++) {
+			CString proj;	double db;
+			ar >> proj;		ar >> db;
+			m_mapProjectWorkload[proj.GetBuffer()] = db;
 		}
 	}
 }
@@ -176,6 +314,31 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
+	/* 获取所有的分项工程 */
+
+	map<string, double>::iterator it1 = m_mapProjectUnitPrice.begin();
+	for (; it1 != m_mapProjectUnitPrice.end(); it1++) {
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, (it1->first + "单价（元/立方米）").c_str() , 64);
+		if (it1->second > 0)
+			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", it1->second);
+		infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+		infd.m_vecFindItem[0][i][0].dbMax = 10000000;
+	}
+
+	map<string, double>::iterator it2 = m_mapProjectWorkload.begin();
+	for (; it2 != m_mapProjectWorkload.end(); it2++) {
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, (it2->first + "工程量（立方米）").c_str(), 64);
+		if (it2->second > 0)
+			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", it2->second);
+		infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+		infd.m_vecFindItem[0][i][0].dbMax = 100000000;
+	}
+	
+
 
 	infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
 	if (infd.DoModal() == IDOK) {
@@ -184,6 +347,17 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
 		m_regulation_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		m_tax_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+
+		map<string, double>::iterator it1 = m_mapProjectUnitPrice.begin();
+		for (; it1 != m_mapProjectUnitPrice.end(); it1++) {
+			it1->second = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		}
+
+		map<string, double>::iterator it2 = m_mapProjectWorkload.begin();
+		for (; it2 != m_mapProjectWorkload.end(); it2++) {
+			it2->second = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		}
+
 		return true;
 	}
 	return false;
@@ -219,6 +393,84 @@ void CProjectSettlementEx5::SortByMonth() {
 	std::sort(m_objs.begin(), m_objs.end(), sort_deref());
 }
 
+void CProjectSettlementEx5::Calculate() 
+{
+	bool bOK = true;
+	for (map<string, double>::iterator it = m_mapProjectUnitPrice.begin(); it != m_mapProjectUnitPrice.end(); it++) {
+		if (it->second == 0 ) bOK = false;
+	}
+	if (!bOK) {
+		AfxMessageBox("请为分项工程设置‘单价’");
+		return;
+	}
+
+	for (map<string, double>::iterator it = m_mapProjectWorkload.begin(); it != m_mapProjectWorkload.end(); it++) {
+		if (it->second == 0) bOK = false;
+	}
+	if (!bOK) {
+		AfxMessageBox("请为分项工程设置‘工程量’");
+		return;
+	}
+
+	/* 记录施工月份的进度款 */
+	map<string, double> mapMonth;
+	for (int i = 0; i < m_objs.size(); i++) {
+		string month = m_objs[i]->m_month.GetBuffer();
+		if (mapMonth.count(month) == 0) {
+			mapMonth[month] = 0;
+		}
+	}
+
+	/* 记录当前月的所有分项工程的累计工程量 */
+	map<string, double> mapProj = m_mapProjectUnitPrice;
+	for (map<string, double>::iterator it = mapProj.begin(); it != mapProj.end(); it++) {
+		it->second = 0;
+	}
+
+	CGridDlg gridDlg;
+	gridDlg.m_vecHeader.push_back("月份");
+	gridDlg.m_vecHeader.push_back("进度款");
+
+	/* 逐月汇总计算 */
+	map<string, double>::iterator it = mapMonth.begin();
+	for (; it != mapMonth.end(); it++) {
+		string month = it->first;
+		string desc;
+		for (int i = 0; i < m_objs.size(); i++) {
+			if (m_objs[i]->m_month.GetBuffer() == month) {
+				double price;
+				if (m_objs[i]->m_scheme == "按工程量结算款") {
+					string proj = m_objs[i]->m_name.GetBuffer();
+					if (mapProj[proj] > m_mapProjectWorkload[proj]) {
+						price = m_mapProjectUnitPrice[proj] * 0.9 * m_objs[i]->ProjectPrice();
+					}
+					else if (mapProj[proj] + m_objs[i]->ProjectPrice() > m_mapProjectWorkload[proj]) {
+						price = (m_mapProjectWorkload[proj] - mapProj[proj]) * m_mapProjectUnitPrice[proj];
+						price += (mapProj[proj] + m_objs[i]->ProjectPrice() - m_mapProjectWorkload[proj])  * m_mapProjectUnitPrice[proj] * 0.9;
+					}
+					else {
+						price = m_mapProjectUnitPrice[proj] * m_objs[i]->ProjectPrice();
+					}
+				}
+				else {
+					price = m_objs[i]->ProjectPrice();
+				}
+				if (!desc.empty())	desc += " , ";
+				desc += m_objs[i]->m_name.GetBuffer() + string(" : ") + Double2String(price, "%.2f");
+				mapMonth[month] += price;
+			}
+		}
+		if (!desc.empty())	desc += " , ";
+		desc += "进度款 ： " + Double2String(mapMonth[month], "%.2f");
+
+		vector<string> vec;
+		vec.push_back(month);
+		vec.push_back(desc);
+		gridDlg.m_vecData.push_back(vec);
+	}
+	gridDlg.DoModal();
+}
+
 
 bool CProjectSettlementEx5::DrawChild(CGridCtrl* pGridCtrl)
 {
@@ -226,6 +478,17 @@ bool CProjectSettlementEx5::DrawChild(CGridCtrl* pGridCtrl)
 		return false;
 
 	SortByMonth();
+
+	/* 获取所有的分项工程 */
+	for (int i = 0; i < m_objs.size(); i++) {
+		if (m_objs[i]->m_scheme == "按工程量结算款") {
+			string proj = m_objs[i]->m_name.GetBuffer();
+			if (m_mapProjectUnitPrice.count(proj) == 0) {
+				m_mapProjectUnitPrice[proj] = 0;
+				m_mapProjectWorkload[proj] = 0;
+			}
+		}
+	}
 
 	vector<string>			vecHeader;
 	vector<vector<string>>	vecData;
@@ -372,122 +635,16 @@ bool CProjectSettlementEx5::Delete(string menuCode, int nRow, vector<CProjectSet
 	return false;
 }
 
+
+bool CProjectSettlementEx5::Calculate(string menuCode, int nRow,  vector<CProjectSettlementEx5*>& cols) {
+	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size()) {
+		cols[nRow - 1]->Calculate();
+	}
+	return true;
+}
+
 /***********************************************************************************/
 
-void CProjectSettlementEx5ObjA::Serialize(CArchive& ar, double version) {
-	if (ar.IsStoring()) {
-		ar << m_month;
-		ar << m_name;
-		ar << m_actual_workload;
-	}
-	else {
-		ar >> m_month;
-		ar >> m_name;
-		ar >> m_actual_workload;
-	}
-}
-
-
-bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent) {
-	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
-		return false;
-
-	CDyncItemGroupDlg infd;
-	infd.CXCAPTION = 80;
-	infd.GROUP_NUM_PER_LINE = 3;
-
-	int i = 0;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
-	if (!m_month.IsEmpty())
-		infd.m_vecFindItem[0][i][0].strItem = m_month;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("款项名称"), 64);
-	if (!m_name.IsEmpty())
-		infd.m_vecFindItem[0][i][0].strItem = m_name;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程量（立方米）"), 64);
-	if (m_actual_workload > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_actual_workload);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
-
-	infd.Init(_T("按工程量结算 参数设置"), _T("按工程量结算 参数设置"));
-	if (infd.DoModal() == IDOK) {
-		i = 0;
-		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
-		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
-		m_actual_workload = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-
-		return true;
-	}
-	return false;
-}
-
-double CProjectSettlementEx5ObjA::ProjectPrice() {
-	return m_unit_price * m_actual_workload / 10000;
-}
-
-void CProjectSettlementEx5ObjB::Serialize(CArchive& ar, double version) {
-	if (ar.IsStoring()) {
-		ar << m_month;
-		ar << m_name;
-		ar << m_fund;
-	}
-	else {
-		ar >> m_month;
-		ar >> m_name;
-		ar >> m_fund;
-	}
-}
-
-
-bool CProjectSettlementEx5ObjB::CreateOrUpdate(string menuCode, CProjectSettlementEx5* parent) {
-	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
-		return false;
-
-	CDyncItemGroupDlg infd;
-	infd.CXCAPTION = 80;
-	infd.GROUP_NUM_PER_LINE = 3;
-
-	int i = 0;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("月份"), 64);
-	if (!m_month.IsEmpty())
-		infd.m_vecFindItem[0][i][0].strItem = m_month;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("款项名称"), 64);
-	if (!m_name.IsEmpty())
-		infd.m_vecFindItem[0][i][0].strItem = m_name;
-
-	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("金额"), 64);
-	if (m_fund > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
-
-	
-
-	infd.Init(_T("金额结算 参数设置"), _T("金额结算 参数设置"));
-	if (infd.DoModal() == IDOK) {
-		i = 0;
-		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
-		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
-		m_fund = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
-
-		return true;
-	}
-	return false;
-}
-
-double CProjectSettlementEx5ObjB::ProjectPrice() {
-	return m_fund;
-}

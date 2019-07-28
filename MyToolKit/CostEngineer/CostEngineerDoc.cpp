@@ -184,6 +184,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 			CContractPrice::Serialize(ar, CProjectSettlement::m_ObjectVersion, contractPrices[i]);
 		}
 
+		// 工程结算(案例5)
+		ar << CString(CProjectSettlementEx5::m_ObjectCode.c_str());
+		ar << CProjectSettlementEx5::m_ObjectVersion;
+		ar << projectSettlementEx5s.size();
+		for (int i = 0; i < projectSettlementEx5s.size(); i++) {
+			CProjectSettlementEx5::Serialize(ar, CProjectSettlementEx5::m_ObjectVersion, projectSettlementEx5s[i]);
+		}
+
 		// 文件结束标志
 		ar << CString("eof");
 	}
@@ -280,6 +288,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CContractPrice *p;
 					CContractPrice::Serialize(ar, db, p);
 					contractPrices.push_back(p);
+				}
+				// 工程结算(案例5)
+				if (str == CProjectSettlementEx5::m_ObjectCode.c_str()) {
+					CProjectSettlementEx5 *p;
+					CProjectSettlementEx5::Serialize(ar, db, p);
+					projectSettlementEx5s.push_back(p);
 				}
 			}
 		}

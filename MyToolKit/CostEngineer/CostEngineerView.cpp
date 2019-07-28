@@ -689,6 +689,12 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				bRedraw = true;
 			}
 		}
+		if (gridId == 0) {
+			if (CProjectSettlementEx5::Calculate(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
 	}
 
 	if (bRedraw) 
