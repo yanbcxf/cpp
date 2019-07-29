@@ -34,6 +34,15 @@ public:
 		m_manage_rate = 0;
 		m_regulation_rate = 0;
 		m_tax_rate = 0;
+
+		m_unit_measure = 0;
+		m_total_measure = 0;
+
+		m_provisional_sum = 0;
+		m_daywork_labor = 0;
+		m_estimate_engineering = 0;
+		m_estimate_material = 0;
+		m_general_constracting_service_fee = 0;
 	};
 
 	~CProjectSettlementEx5()
@@ -83,6 +92,15 @@ public:
 	double  m_manage_rate;		//	管理费率
 	double	m_regulation_rate;	//	规费率
 	double	m_tax_rate;			//	税率
+
+	double	m_unit_measure;		//	单价措施费
+	double	m_total_measure;	//	总价措施费
+
+	double	m_estimate_material;	//	材料暂估单价
+	double	m_estimate_engineering;	//	专业工程暂估价
+	double	m_daywork_labor;		//	计日工
+	double	m_provisional_sum;		//	暂列金额
+	double	m_general_constracting_service_fee;		//	总承包服务费
 
 	map<string, double> m_mapProjectUnitPrice;
 	map<string, double> m_mapProjectWorkload;

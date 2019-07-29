@@ -254,6 +254,16 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 		ar << m_manage_rate;
 		ar << m_regulation_rate;
 		ar << m_tax_rate;
+
+		ar << m_unit_measure;
+		ar << m_total_measure;
+
+		ar << m_provisional_sum;
+		ar << m_daywork_labor;
+		ar << m_estimate_engineering;
+		ar << m_estimate_material;
+		ar << m_general_constracting_service_fee;
+
 		ar << m_objs.size();
 		for (int i = 0; i < m_objs.size(); i++) {
 			ar << m_objs[i]->m_scheme;
@@ -279,6 +289,16 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 		ar >> m_manage_rate;
 		ar >> m_regulation_rate;
 		ar >> m_tax_rate;
+
+		ar >> m_unit_measure;
+		ar >> m_total_measure;
+
+		ar >> m_provisional_sum;
+		ar >> m_daywork_labor;
+		ar >> m_estimate_engineering;
+		ar >> m_estimate_material;
+		ar >> m_general_constracting_service_fee;
+
 		int nNum;
 		ar >> nNum;
 		for (int i = 0; i < nNum; i++) {
@@ -300,6 +320,7 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 			ar >> proj;		ar >> db;
 			m_mapProjectWorkload[proj.GetBuffer()] = db;
 		}
+		SortByMonth();
 	}
 }
 
@@ -308,6 +329,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	CDyncItemGroupDlg infd;
 	infd.CXCAPTION = 100;
 	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
 	int i = 0;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
 	infd.m_vecFindItem[0][i][0].strData = m_scheme;
@@ -344,49 +366,128 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
-	/* 获取所有的分项工程 */
+	/* 措施项目费 */
+	i=0;
+	infd.m_vecFindItem[1][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[1][i][0].caption, _T("单价措施项目费（万元）"), 64);
+	if (m_unit_measure > 0)
+		infd.m_vecFindItem[1][i][0].strItem.Format("%.2f", m_unit_measure);
+	infd.m_vecFindItem[1][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[1][i][0].dbMax = 100000;
 
+	i++;
+	infd.m_vecFindItem[1][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[1][i][0].caption, _T("总价措施项目费（万元）"), 64);
+	if (m_total_measure > 0)
+		infd.m_vecFindItem[1][i][0].strItem.Format("%.2f", m_total_measure);
+	infd.m_vecFindItem[1][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[1][i][0].dbMax = 100000;
+
+	/* 其他项目费 */
+	i = 0;
+	infd.m_vecFindItem[2][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("暂列金额（万元）"), 64);
+	if (m_provisional_sum > 0)
+		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_provisional_sum);
+	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[2][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("材料暂估单价（万元）"), 64);
+	if (m_estimate_material > 0)
+		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_estimate_material);
+	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[2][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("专业工程暂估价（万元）"), 64);
+	if (m_estimate_engineering > 0)
+		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_estimate_engineering);
+	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[2][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("计日工（万元）"), 64);
+	if (m_daywork_labor > 0)
+		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_daywork_labor);
+	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[2][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("总承包服务费（万元）"), 64);
+	if (m_general_constracting_service_fee > 0)
+		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_general_constracting_service_fee);
+	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMax = 100000;
+
+
+	/* 获取所有的分项工程 */
+	g = 3;
+	i = 0;
 	map<string, double>::iterator it1 = m_mapProjectUnitPrice.begin();
 	for (; it1 != m_mapProjectUnitPrice.end(); it1++) {
-		i++;
-		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, (it1->first + "单价（元/立方米）").c_str() , 64);
+		infd.m_vecFindItem[g][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[g][i][0].caption, (it1->first + "单价（元/立方米）").c_str() , 64);
 		if (it1->second > 0)
-			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", it1->second);
-		infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-		infd.m_vecFindItem[0][i][0].dbMax = 10000000;
+			infd.m_vecFindItem[g][i][0].strItem.Format("%.2f", it1->second);
+		infd.m_vecFindItem[g][i][0].dbMin = 0.01;
+		infd.m_vecFindItem[g][i][0].dbMax = 10000000;
+		i++;
 	}
 
+	g = 4;
+	i = 0;
 	map<string, double>::iterator it2 = m_mapProjectWorkload.begin();
 	for (; it2 != m_mapProjectWorkload.end(); it2++) {
-		i++;
-		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, (it2->first + "工程量（立方米）").c_str(), 64);
+		infd.m_vecFindItem[g][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[g][i][0].caption, (it2->first + "工程量（立方米）").c_str(), 64);
 		if (it2->second > 0)
-			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", it2->second);
-		infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-		infd.m_vecFindItem[0][i][0].dbMax = 100000000;
+			infd.m_vecFindItem[g][i][0].strItem.Format("%.2f", it2->second);
+		infd.m_vecFindItem[g][i][0].dbMin = 0.01;
+		infd.m_vecFindItem[g][i][0].dbMax = 10000000;
+		i++;
 	}
 	
-
 
 	infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
 	if (infd.DoModal() == IDOK) {
 		i = 0;
-		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
-		m_name = infd.m_vecFindItem[0][i++][0].strItem;
-		m_manage_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
-		m_regulation_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
-		m_tax_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
+		g = 0;
+		m_scheme = infd.m_vecFindItem[g][i++][0].strItem;
+		m_name = infd.m_vecFindItem[g][i++][0].strItem;
+		m_manage_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		m_regulation_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		m_tax_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 
+		i = 0;
+		g = 1;
+		m_unit_measure = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		m_total_measure = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		i = 0;
+		g = 2;
+		m_provisional_sum = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		m_estimate_material = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		m_estimate_engineering = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		m_daywork_labor = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		m_general_constracting_service_fee = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		i = 0;
+		g = 3;
 		map<string, double>::iterator it1 = m_mapProjectUnitPrice.begin();
 		for (; it1 != m_mapProjectUnitPrice.end(); it1++) {
-			it1->second = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+			it1->second = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 		}
 
+		i = 0;
+		g = 4;
 		map<string, double>::iterator it2 = m_mapProjectWorkload.begin();
 		for (; it2 != m_mapProjectWorkload.end(); it2++) {
-			it2->second = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+			it2->second = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 		}
 
 		return true;
@@ -409,6 +510,21 @@ string CProjectSettlementEx5::Description() {
 
 	ss << "工程总造价（含税）（万元）: " << Double2String(price) << ",  ";
 
+	/* 统计实际工程量 */
+	map<string, double> mapProjectWorkload = m_mapProjectWorkload;
+	for (map<string, double>::iterator it = mapProjectWorkload.begin(); it != mapProjectWorkload.end(); it++) {
+		it->second = 0;
+	}
+	for (int i = 0; i < m_objs.size(); i++) {
+		if (m_objs[i]->m_scheme == "按工程量结算款") {
+			string proj = m_objs[i]->m_name.GetBuffer();
+			mapProjectWorkload[proj] += m_objs[i]->ProjectPrice();
+		}
+	}
+	for (map<string, double>::iterator it = mapProjectWorkload.begin(); it != mapProjectWorkload.end(); it++) {
+		ss << it->first <<  "实际工程量 : " << Double2String(it->second) << ", " ;
+	}
+
 	return ss.str();
 }
 
@@ -422,6 +538,29 @@ void CProjectSettlementEx5::SortByMonth() {
 	};
 
 	std::sort(m_objs.begin(), m_objs.end(), sort_deref());
+
+	/* 获取所有的分项工程 */
+	map<string, double> mapProjectUnitPrice;
+	map<string, double> mapProjectWorkload;
+	for (int i = 0; i < m_objs.size(); i++) {
+		if (m_objs[i]->m_scheme == "按工程量结算款") {
+			string proj = m_objs[i]->m_name.GetBuffer();
+			if (mapProjectUnitPrice.count(proj) == 0) {
+				mapProjectUnitPrice[proj] = 0;
+				mapProjectWorkload[proj] = 0;
+			}
+		}
+	}
+	for (map<string, double>::iterator it = mapProjectUnitPrice.begin(); it != mapProjectUnitPrice.end(); it++) {
+		if (m_mapProjectUnitPrice.count(it->first) > 0)
+			it->second = m_mapProjectUnitPrice[it->first];
+	}
+	for (map<string, double>::iterator it = mapProjectWorkload.begin(); it != mapProjectWorkload.end(); it++) {
+		if (m_mapProjectWorkload.count(it->first) > 0)
+			it->second = m_mapProjectWorkload[it->first];
+	}
+	m_mapProjectUnitPrice = mapProjectUnitPrice;
+	m_mapProjectWorkload = mapProjectWorkload;
 }
 
 void CProjectSettlementEx5::Calculate() 
@@ -509,33 +648,7 @@ bool CProjectSettlementEx5::DrawChild(CGridCtrl* pGridCtrl)
 {
 	if (!pGridCtrl)
 		return false;
-
-	SortByMonth();
-
-	/* 获取所有的分项工程 */
-	map<string, double> mapProjectUnitPrice;
-	map<string, double> mapProjectWorkload;
-	for (int i = 0; i < m_objs.size(); i++) {
-		if (m_objs[i]->m_scheme == "按工程量结算款") {
-			string proj = m_objs[i]->m_name.GetBuffer();
-			if (mapProjectUnitPrice.count(proj) == 0) {
-				mapProjectUnitPrice[proj] = 0;
-				mapProjectWorkload[proj] = 0;
-			}
-		}
-	}
-	for (map<string, double>::iterator it = mapProjectUnitPrice.begin(); it != mapProjectUnitPrice.end(); it++) {
-		if (m_mapProjectUnitPrice.count(it->first) > 0)
-			it->second = m_mapProjectUnitPrice[it->first];
-	}
-	for (map<string, double>::iterator it = mapProjectWorkload.begin(); it != mapProjectWorkload.end(); it++) {
-		if (m_mapProjectWorkload.count(it->first) > 0)
-			it->second = m_mapProjectWorkload[it->first];
-	}
-	m_mapProjectUnitPrice = mapProjectUnitPrice;
-	m_mapProjectWorkload = mapProjectWorkload;
-
-
+	
 	vector<string>			vecHeader;
 	vector<vector<string>>	vecData;
 
@@ -587,6 +700,8 @@ bool CProjectSettlementEx5::AddChild(string menuCode) {
 		CProjectSettlementEx5Obj* c = NewChild(scheme);
 		if (c->CreateOrUpdate(menuCode, this)) {
 			m_objs.push_back(c);
+
+			SortByMonth();
 			return true;
 		}
 		else {
@@ -601,8 +716,11 @@ bool CProjectSettlementEx5::UpdateChild(string menuCode, int nRow) {
 	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
 		return false;
 
-	if (nRow > 0 && nRow <= m_objs.size())
-		return m_objs[nRow - 1]->CreateOrUpdate(menuCode, this);
+	if (nRow > 0 && nRow <= m_objs.size()) {
+		bool res =  m_objs[nRow - 1]->CreateOrUpdate(menuCode, this);
+		SortByMonth();
+		return res;
+	}
 	return false;
 }
 
@@ -619,6 +737,7 @@ bool CProjectSettlementEx5::DeleteChild(string menuCode, int nRow) {
 				break;
 		}
 		m_objs.erase(it);
+		SortByMonth();
 		return true;
 	}
 	return false;
