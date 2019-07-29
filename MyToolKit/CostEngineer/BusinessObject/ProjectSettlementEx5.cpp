@@ -21,11 +21,15 @@ void CProjectSettlementEx5ObjA::Serialize(CArchive& ar, double version) {
 		ar << m_month;
 		ar << m_name;
 		ar << m_actual_workload;
+		ar << m_material_change;
+		ar << m_people_change;
 	}
 	else {
 		ar >> m_month;
 		ar >> m_name;
 		ar >> m_actual_workload;
+		ar >> m_material_change;
+		ar >> m_people_change;
 	}
 }
 
@@ -56,6 +60,22 @@ bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettleme
 	if (m_actual_workload > 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_actual_workload);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料费变动（万元）"), 64);
+	if (m_material_change > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_material_change);
+	infd.m_vecFindItem[0][i][0].dbMin = -100000;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("人工费变动（万元）"), 64);
+	if (m_people_change > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_people_change);
+	infd.m_vecFindItem[0][i][0].dbMin = -100000;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 	infd.Init(_T("按工程量结算 参数设置"), _T("按工程量结算 参数设置"));
@@ -231,6 +251,7 @@ CProjectSettlementEx5Obj* CProjectSettlementEx5::NewChild(CString scheme) {
 void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
+		ar << m_manage_rate;
 		ar << m_regulation_rate;
 		ar << m_tax_rate;
 		ar << m_objs.size();
@@ -255,6 +276,7 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_name;
+		ar >> m_manage_rate;
 		ar >> m_regulation_rate;
 		ar >> m_tax_rate;
 		int nNum;
@@ -297,6 +319,14 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("工程名称"), 64);
 	if (!m_name.IsEmpty())
 		infd.m_vecFindItem[0][i][0].strItem = m_name;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("管理费率（%）"), 64);
+	if (m_manage_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_manage_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
@@ -345,6 +375,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 		i = 0;
 		m_scheme = infd.m_vecFindItem[0][i++][0].strItem;
 		m_name = infd.m_vecFindItem[0][i++][0].strItem;
+		m_manage_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		m_regulation_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 		m_tax_rate = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer()) / 100;
 

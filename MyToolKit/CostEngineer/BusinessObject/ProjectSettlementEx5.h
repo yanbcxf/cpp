@@ -31,6 +31,7 @@ public:
 		m_scheme = "";
 
 		m_name = "";
+		m_manage_rate = 0;
 		m_regulation_rate = 0;
 		m_tax_rate = 0;
 	};
@@ -79,6 +80,7 @@ public:
 
 public:
 	CString m_name;				//	工程名称
+	double  m_manage_rate;		//	管理费率
 	double	m_regulation_rate;	//	规费率
 	double	m_tax_rate;			//	税率
 
@@ -93,6 +95,8 @@ class CProjectSettlementEx5ObjA : public CProjectSettlementEx5Obj {
 public:
 	CProjectSettlementEx5ObjA() {
 		m_actual_workload = 0;
+		m_people_change = 0;
+		m_material_change = 0;
 	};
 
 public:
@@ -103,6 +107,8 @@ public:
 
 public:
 	double	m_actual_workload;		//	工作量
+	double	m_material_change;		//	材料费变动
+	double	m_people_change;		//	人工费变动
 };
 
 /* 单价措施项目费 */
