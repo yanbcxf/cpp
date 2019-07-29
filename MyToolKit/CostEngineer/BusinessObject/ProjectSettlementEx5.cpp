@@ -64,16 +64,16 @@ bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettleme
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料费变动（万元）"), 64);
-	if (m_material_change > 0)
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料费变动（元）"), 64);
+	if (m_material_change != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_material_change);
 	infd.m_vecFindItem[0][i][0].dbMin = -100000;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("人工费变动（万元）"), 64);
-	if (m_people_change > 0)
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("人工费变动（元）"), 64);
+	if (m_people_change != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_people_change);
 	infd.m_vecFindItem[0][i][0].dbMin = -100000;
 	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -84,6 +84,8 @@ bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettleme
 		m_month = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
 		m_name = infd.m_vecFindItem[0][i++][0].strItem.GetBuffer();
 		m_actual_workload = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_material_change = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
+		m_people_change = String2Double(infd.m_vecFindItem[0][i++][0].strItem.GetBuffer());
 
 		return true;
 	}
@@ -95,7 +97,13 @@ double CProjectSettlementEx5ObjA::ProjectPrice() {
 }
 
 string CProjectSettlementEx5ObjA::Description() {
-	return string("工程量 ： ") + Double2String(m_actual_workload, "%.2f");
+	stringstream ss;
+	ss << "工程量 ： " << Double2String(m_actual_workload, "%.2f");
+	if (m_material_change != 0)
+		ss << ", " << "材料费变动 : " << Double2String(m_material_change, "%.2f");
+	if (m_people_change != 0)
+		ss << ", " << "人工费变动 : " << Double2String(m_people_change, "%.2f");
+	return ss.str();
 }
 
 void CProjectSettlementEx5ObjB::Serialize(CArchive& ar, double version) {
@@ -372,7 +380,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[1][i][0].caption, _T("单价措施项目费（万元）"), 64);
 	if (m_unit_measure > 0)
 		infd.m_vecFindItem[1][i][0].strItem.Format("%.2f", m_unit_measure);
-	infd.m_vecFindItem[1][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[1][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[1][i][0].dbMax = 100000;
 
 	i++;
@@ -380,7 +388,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[1][i][0].caption, _T("总价措施项目费（万元）"), 64);
 	if (m_total_measure > 0)
 		infd.m_vecFindItem[1][i][0].strItem.Format("%.2f", m_total_measure);
-	infd.m_vecFindItem[1][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[1][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[1][i][0].dbMax = 100000;
 
 	/* 其他项目费 */
@@ -389,7 +397,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("暂列金额（万元）"), 64);
 	if (m_provisional_sum > 0)
 		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_provisional_sum);
-	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[2][i][0].dbMax = 100000;
 
 	i++;
@@ -397,7 +405,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("材料暂估单价（万元）"), 64);
 	if (m_estimate_material > 0)
 		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_estimate_material);
-	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[2][i][0].dbMax = 100000;
 
 	i++;
@@ -405,7 +413,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("专业工程暂估价（万元）"), 64);
 	if (m_estimate_engineering > 0)
 		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_estimate_engineering);
-	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[2][i][0].dbMax = 100000;
 
 	i++;
@@ -413,7 +421,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("计日工（万元）"), 64);
 	if (m_daywork_labor > 0)
 		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_daywork_labor);
-	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[2][i][0].dbMax = 100000;
 
 	i++;
@@ -421,7 +429,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[2][i][0].caption, _T("总承包服务费（万元）"), 64);
 	if (m_general_constracting_service_fee > 0)
 		infd.m_vecFindItem[2][i][0].strItem.Format("%.2f", m_general_constracting_service_fee);
-	infd.m_vecFindItem[2][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[2][i][0].dbMin = 0.00;
 	infd.m_vecFindItem[2][i][0].dbMax = 100000;
 
 
