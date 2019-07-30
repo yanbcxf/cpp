@@ -32,6 +32,7 @@ public:
 
 		m_name = "";
 		m_manage_rate = 0;
+		m_net_rate = 0;
 		m_regulation_rate = 0;
 		m_tax_rate = 0;
 
@@ -70,6 +71,7 @@ public:
 	static unsigned int PopupMenuId(string menuCode);
 	// static void Calculate(string menuCode, vector<CProjectSettlementEx5*>& cols);
 	static bool Calculate(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols);
+	static bool Adjust(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols);
 
 	static string m_ObjectCode;
 	static double m_ObjectVersion;
@@ -82,6 +84,7 @@ public:
 	virtual bool DrawChild(CGridCtrl* pGridCtrl);
 	virtual void SortByMonth();
 	virtual void Calculate();
+	virtual void Adjust();
 
 public:
 	CString	m_scheme;			//	方案类型 -> 确定后续程序的执行 
@@ -90,6 +93,7 @@ public:
 public:
 	CString m_name;				//	工程名称
 	double  m_manage_rate;		//	管理费率
+	double	m_net_rate;			//	利润率
 	double	m_regulation_rate;	//	规费率
 	double	m_tax_rate;			//	税率
 

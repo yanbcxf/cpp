@@ -696,6 +696,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
+	else if (source.Find("（operate2）") >= 0) {
+		if (gridId == 0) {
+			if (CProjectSettlementEx5::Adjust(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+	}
 
 	if (bRedraw) 
 		RedrawView();;

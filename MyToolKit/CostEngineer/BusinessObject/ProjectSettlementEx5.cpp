@@ -64,7 +64,7 @@ bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettleme
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料费变动（元）"), 64);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料费变动(不含规费和税金)（元）"), 64);
 	if (m_material_change != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_material_change);
 	infd.m_vecFindItem[0][i][0].dbMin = -100000;
@@ -72,7 +72,7 @@ bool CProjectSettlementEx5ObjA::CreateOrUpdate(string menuCode, CProjectSettleme
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("人工费变动（元）"), 64);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("人工费变动(不含规费和税金)（元）"), 64);
 	if (m_people_change != 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_people_change);
 	infd.m_vecFindItem[0][i][0].dbMin = -100000;
@@ -142,7 +142,7 @@ bool CProjectSettlementEx5ObjB::CreateOrUpdate(string menuCode, CProjectSettleme
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("金额"), 64);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("金额(不含规费和税金)"), 64);
 	if (m_fund > 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_fund);
 	infd.m_vecFindItem[0][i][0].dbMin = -100000;
@@ -206,10 +206,11 @@ bool CProjectSettlementEx5::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 	vector<vector<string>> vecData;
 	vecHeader.push_back("工程结算方案,120");
 	vecHeader.push_back("工程描述,550");
-	vecHeader.push_back(",120");
-	vecHeader.push_back(",120");
-	vecHeader.push_back(",120");
-	vecHeader.push_back(",120");
+	vecHeader.push_back(",80");
+	vecHeader.push_back(",80");
+	vecHeader.push_back(",80");
+	vecHeader.push_back(",80");
+	vecHeader.push_back(",80");
 
 	int i = 1;
 	for (CProjectSettlementEx5* e : cols) {
@@ -220,6 +221,7 @@ bool CProjectSettlementEx5::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 		vec.push_back("删除（delete）");
 		vec.push_back("增加（create）");
 		vec.push_back("计算（operate1）");
+		vec.push_back("调整款计算（operate2）");
 		vecData.push_back(vec);
 	}
 
@@ -260,6 +262,7 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
 		ar << m_manage_rate;
+		ar << m_net_rate;
 		ar << m_regulation_rate;
 		ar << m_tax_rate;
 
@@ -295,6 +298,7 @@ void CProjectSettlementEx5::Serialize(CArchive& ar, double version) {
 	else {
 		ar >> m_name;
 		ar >> m_manage_rate;
+		ar >> m_net_rate;
 		ar >> m_regulation_rate;
 		ar >> m_tax_rate;
 
@@ -355,6 +359,14 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("管理费率（%）"), 64);
 	if (m_manage_rate > 0)
 		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_manage_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("利润率（%）"), 64);
+	if (m_net_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_net_rate * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
@@ -468,6 +480,7 @@ bool CProjectSettlementEx5::CreateOrUpdate() {
 		m_scheme = infd.m_vecFindItem[g][i++][0].strItem;
 		m_name = infd.m_vecFindItem[g][i++][0].strItem;
 		m_manage_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		m_net_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 		m_regulation_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 		m_tax_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 
@@ -508,14 +521,20 @@ string CProjectSettlementEx5::Description() {
 	stringstream ss;
 	double price = 0;
 	ss << "工程名称 : " << m_name.GetBuffer() << ",  ";
-	for (int i = 0; i < m_objs.size(); i++) {
-		price += m_objs[i]->ProjectPrice();
+
+	for (map<string, double>::iterator it = m_mapProjectWorkload.begin(); it != m_mapProjectWorkload.end(); it++) {
+		double p = it->second * m_mapProjectUnitPrice[it->first] / 10000;
+		price += p;
 	}
+	price += m_daywork_labor;
+	price += m_estimate_engineering;
+	price += m_general_constracting_service_fee;
+	price += m_provisional_sum;
+	price += m_total_measure;
+	price += m_unit_measure;
 	price = price * (1 + m_regulation_rate);
 	ss << "工程总造价（不含税）（万元）: " << Double2String(price) << ",  ";
-
 	price = price * (1 + m_tax_rate);
-
 	ss << "工程总造价（含税）（万元）: " << Double2String(price) << ",  ";
 
 	/* 统计实际工程量 */
@@ -619,29 +638,39 @@ void CProjectSettlementEx5::Calculate()
 				double price;
 				if (m_objs[i]->m_scheme == "按工程量结算款") {
 					string proj = m_objs[i]->m_name.GetBuffer();
+					CProjectSettlementEx5ObjA * pa = (CProjectSettlementEx5ObjA *)m_objs[i];
+					/* 按工程量计算进度款 */
 					if (mapWorkload[proj] > m_mapProjectWorkload[proj] * 1.15) {
-						price = m_mapProjectUnitPrice[proj] * 0.9 * m_objs[i]->ProjectPrice();
+						price = m_mapProjectUnitPrice[proj] * 0.9 * pa->m_actual_workload;
 					}
-					else if (mapWorkload[proj] + m_objs[i]->ProjectPrice() > m_mapProjectWorkload[proj] * 1.15) {
+					else if (mapWorkload[proj] + pa->m_actual_workload > m_mapProjectWorkload[proj] * 1.15) {
 						price = (m_mapProjectWorkload[proj] * 1.15 - mapWorkload[proj]) * m_mapProjectUnitPrice[proj];
-						price += (mapWorkload[proj] + m_objs[i]->ProjectPrice() - m_mapProjectWorkload[proj] * 1.15)  * m_mapProjectUnitPrice[proj] * 0.9;
+						price += (mapWorkload[proj] + pa->m_actual_workload - m_mapProjectWorkload[proj] * 1.15)  * m_mapProjectUnitPrice[proj] * 0.9;
 					}
 					else {
-						price = m_mapProjectUnitPrice[proj] * m_objs[i]->ProjectPrice();
+						price = m_mapProjectUnitPrice[proj] * pa->m_actual_workload;
 					}
+					mapWorkload[proj] += pa->m_actual_workload;
+					
+					/* 材料费变动款 */
+					price += pa->m_material_change;
+					/* 人工费变动款 */
+					price += pa->m_people_change;
+
 					price = price / 10000;
-					mapWorkload[proj] += m_objs[i]->ProjectPrice();
+					
 				}
 				else {
 					price = m_objs[i]->ProjectPrice();
 				}
 				if (!desc.empty())	desc += " , ";
-				desc += m_objs[i]->m_name.GetBuffer() + string(" : ") + Double2String(price, "%.2f");
+				desc += m_objs[i]->m_name.GetBuffer() + string(" : ") + Double2String(price, "%.3f");
+				/* 汇总 每月的工程款 （不含 规费和税金） */
 				mapMonth[month] += price;
 			}
 		}
 		if (!desc.empty())	desc += " , ";
-		desc += "进度款 ： " + Double2String(mapMonth[month] * (1+m_regulation_rate) * (1+ m_tax_rate), "%.2f");
+		desc += "已完工程款 ： " + Double2String(mapMonth[month] * (1+m_regulation_rate) * (1+ m_tax_rate), "%.3f");
 
 		vector<string> vec;
 		vec.push_back(month);
@@ -651,6 +680,76 @@ void CProjectSettlementEx5::Calculate()
 	gridDlg.DoModal();
 }
 
+/* 计算人工费 、材料费等的调整款 */
+void CProjectSettlementEx5::Adjust() {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+
+	int g = 0;
+	int i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("材料量/劳动量"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("单价调整额(元)"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("管理费率（%）"), 64);
+	if (m_manage_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_manage_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("利润率（%）"), 64);
+	if (m_net_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_net_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("规费率（%）"), 64);
+	if (m_regulation_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_regulation_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("增值税率（%）"), 64);
+	if (m_tax_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_tax_rate * 100);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 100;
+
+	infd.Init(_T("调整款计算 参数设置"), _T("调整款计算 参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		g = 0;
+		double amount = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		double unit_price = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		double manage_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		double net_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		double regulation_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		double tax_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+
+		double price = amount * unit_price * (1 + manage_rate) * (1 + net_rate) ;
+		double price1 = price * (1 + regulation_rate) * (1 + tax_rate);
+		string msg = "调整款(不含规费和税金)(元） : " + Double2String(price, "%.2f");
+		msg += ",   调整款(元） : " + Double2String(price1, "%.2f");
+		AfxMessageBox(msg.c_str());
+	}
+}
 
 bool CProjectSettlementEx5::DrawChild(CGridCtrl* pGridCtrl)
 {
@@ -815,6 +914,16 @@ bool CProjectSettlementEx5::Calculate(string menuCode, int nRow,  vector<CProjec
 
 	if (nRow > 0 && nRow <= cols.size()) {
 		cols[nRow - 1]->Calculate();
+	}
+	return true;
+}
+
+bool CProjectSettlementEx5::Adjust(string menuCode, int nRow, vector<CProjectSettlementEx5*>& cols) {
+	if (menuCode != CProjectSettlementEx5::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= cols.size()) {
+		cols[nRow - 1]->Adjust();
 	}
 	return true;
 }
