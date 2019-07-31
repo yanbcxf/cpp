@@ -32,6 +32,7 @@ public:
 	vector<CProjectSettlement*> projectSettlements;
 	vector<CContractPrice*> contractPrices;
 	vector<CProjectSettlementEx5*> projectSettlementEx5s;
+	vector<CFinanceAnalysis*> financeAnalysis;
 
 // 操作
 public:

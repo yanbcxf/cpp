@@ -357,6 +357,9 @@
     <ClInclude Include="BusinessObject\ProjectSettlementEx5.h">
       <Filter>BusinessObject</Filter>
     </ClInclude>
+    <ClInclude Include="BusinessObject\FinanceAnalysis.h">
+      <Filter>BusinessObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CostEngineer.cpp">
@@ -636,6 +639,9 @@
       <Filter>BusinessObject</Filter>
     </ClCompile>
     <ClCompile Include="BusinessObject\ProjectSettlementEx5.cpp">
+      <Filter>BusinessObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BusinessObject\FinanceAnalysis.cpp">
       <Filter>BusinessObject</Filter>
     </ClCompile>
   </ItemGroup>

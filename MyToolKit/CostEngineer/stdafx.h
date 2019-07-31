@@ -128,6 +128,7 @@ typedef struct _item_info
 #include "ProjectSettlement.h"
 #include "ContractPrice.h"
 #include "ProjectSettlementEx5.h"
+#include "FinanceAnalysis.h"
 
 
 #define WM_USER_XML		WM_USER + 1

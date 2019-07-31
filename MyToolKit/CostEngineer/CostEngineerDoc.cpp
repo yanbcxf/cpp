@@ -181,7 +181,7 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 		ar << CContractPrice::m_ObjectVersion;
 		ar << contractPrices.size();
 		for (int i = 0; i < contractPrices.size(); i++) {
-			CContractPrice::Serialize(ar, CProjectSettlement::m_ObjectVersion, contractPrices[i]);
+			CContractPrice::Serialize(ar, CContractPrice::m_ObjectVersion, contractPrices[i]);
 		}
 
 		// 工程结算(案例5)
@@ -190,6 +190,14 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 		ar << projectSettlementEx5s.size();
 		for (int i = 0; i < projectSettlementEx5s.size(); i++) {
 			CProjectSettlementEx5::Serialize(ar, CProjectSettlementEx5::m_ObjectVersion, projectSettlementEx5s[i]);
+		}
+
+		// 财务分析
+		ar << CString(CFinanceAnalysis::m_ObjectCode.c_str());
+		ar << CFinanceAnalysis::m_ObjectVersion;
+		ar << financeAnalysis.size();
+		for (int i = 0; i < financeAnalysis.size(); i++) {
+			CFinanceAnalysis::Serialize(ar, CFinanceAnalysis::m_ObjectVersion, financeAnalysis[i]);
 		}
 
 		// 文件结束标志
@@ -294,6 +302,12 @@ void CCostEngineerDoc::Serialize(CArchive& ar)
 					CProjectSettlementEx5 *p;
 					CProjectSettlementEx5::Serialize(ar, db, p);
 					projectSettlementEx5s.push_back(p);
+				}
+				// 财务分析
+				if (str == CFinanceAnalysis::m_ObjectCode.c_str()) {
+					CFinanceAnalysis *p;
+					CFinanceAnalysis::Serialize(ar, db, p);
+					financeAnalysis.push_back(p);
 				}
 			}
 		}

@@ -203,6 +203,7 @@
     <ClInclude Include="BusinessObject\ConsumptionQuota.h" />
     <ClInclude Include="BusinessObject\ContractPrice.h" />
     <ClInclude Include="BusinessObject\DecisionTree.h" />
+    <ClInclude Include="BusinessObject\FinanceAnalysis.h" />
     <ClInclude Include="BusinessObject\IntegratedEvaluation.h" />
     <ClInclude Include="BusinessObject\ItemOfTotalPrice.h" />
     <ClInclude Include="BusinessObject\ItemOfUnitPrice.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="BusinessObject\ConsumptionQuota.cpp" />
     <ClCompile Include="BusinessObject\ContractPrice.cpp" />
     <ClCompile Include="BusinessObject\DecisionTree.cpp" />
+    <ClCompile Include="BusinessObject\FinanceAnalysis.cpp" />
     <ClCompile Include="BusinessObject\IntegratedEvaluation.cpp" />
     <ClCompile Include="BusinessObject\ItemOfTotalPrice.cpp" />
     <ClCompile Include="BusinessObject\ItemOfUnitPrice.cpp" />

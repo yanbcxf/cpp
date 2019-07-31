@@ -7,6 +7,18 @@
 			<element>
 				<code>0101</code>
 				<name>第一章、建设项目投资估算与财务评价</name>
+				<list>
+					<element>
+						<code>010104</code>
+						<name>案例四</name>
+						<list>
+							<element>
+								<code>01010401</code>
+								<name>财务分析</name>
+							</element>
+						</list>
+					</element>
+				</list>
 			</element>
 			<element>
 				<code>0102</code>

@@ -377,6 +377,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CFinanceAnalysis::Update(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
 		else {
 			/* 子表格 */
@@ -434,6 +438,12 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 			if (pDoc->projectSettlementEx5s.size() > m_nChildrenCode) {
 				if (pDoc->projectSettlementEx5s[m_nChildrenCode]->UpdateChild(m_strMenuCode, nRow)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+			if (pDoc->financeAnalysis.size() > m_nChildrenCode) {
+				if (pDoc->financeAnalysis[m_nChildrenCode]->UpdateChild(m_strMenuCode, nRow)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
@@ -506,6 +516,10 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
+				if (CFinanceAnalysis::Delete(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
 			}
 			else {
 				/* 子表格 */
@@ -563,6 +577,12 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				}
 				if (pDoc->projectSettlementEx5s.size() > m_nChildrenCode) {
 					if (pDoc->projectSettlementEx5s[m_nChildrenCode]->DeleteChild(m_strMenuCode, nRow)) {
+						pDoc->SetModifiedFlag();
+						bRedraw = true;
+					}
+				}
+				if (pDoc->financeAnalysis.size() > m_nChildrenCode) {
+					if (pDoc->financeAnalysis[m_nChildrenCode]->DeleteChild(m_strMenuCode, nRow)) {
 						pDoc->SetModifiedFlag();
 						bRedraw = true;
 					}
@@ -667,6 +687,14 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 					}
 				}
 			}
+			{
+				if (m_nChildrenCode < pDoc->financeAnalysis.size()) {
+					if (pDoc->financeAnalysis[m_nChildrenCode]->AddChild(m_strMenuCode)) {
+						pDoc->SetModifiedFlag();
+						bRedraw = true;
+					}
+				}
+			}
 		}
 	}
 	else if (source == "复制（copy）") {
@@ -688,17 +716,34 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
-		}
-		if (gridId == 0) {
 			if (CProjectSettlementEx5::Calculate(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
+			if (CFinanceAnalysis::Calculate(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
 		}
+		if (gridId == 1) {
+			if (pDoc->financeAnalysis.size() > m_nChildrenCode) {
+				if (pDoc->financeAnalysis[m_nChildrenCode]->AssistChild(m_strMenuCode, nRow)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+		}
+		
 	}
 	else if (source.Find("（operate2）") >= 0) {
 		if (gridId == 0) {
 			if (CProjectSettlementEx5::Adjust(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
+		if (gridId == 0) {
+			if (CFinanceAnalysis::Adjust(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
 				pDoc->SetModifiedFlag();
 				bRedraw = true;
 			}
@@ -903,6 +948,20 @@ void CCostEngineerView::RedrawView() {
 	if (CProjectSettlementEx5::Draw(m_strMenuCode, &m_Grid, pDoc->projectSettlementEx5s)) {
 		if (m_nChildrenCode < pDoc->projectSettlementEx5s.size()) {
 			pDoc->projectSettlementEx5s[m_nChildrenCode]->DrawChild(&m_Grid1);
+		}
+		else {
+			m_Grid1.SetRowCount(0);
+		}
+		m_display_mode = DisplayModes::Grid_Grid;
+		m_upper_percent = 4;
+		m_down_percent = 6;
+		ReLayout();
+		return;
+	}
+
+	if (CFinanceAnalysis::Draw(m_strMenuCode, &m_Grid, pDoc->financeAnalysis)) {
+		if (m_nChildrenCode < pDoc->financeAnalysis.size()) {
+			pDoc->financeAnalysis[m_nChildrenCode]->DrawChild(&m_Grid1);
 		}
 		else {
 			m_Grid1.SetRowCount(0);
