@@ -69,9 +69,9 @@ bool CContractPrice::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CContrac
 		vector<string> vec;
 		vec.push_back(e->m_scheme.GetBuffer());
 		vec.push_back(e->Description());
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("增加" + ActionType2String(ActionType::Create));
 		vecData.push_back(vec);
 	}
 
@@ -598,8 +598,8 @@ bool CContractPriceEx2::DrawChild(CGridCtrl* pGridCtrl)
 		vec.push_back(m_objs[i]->m_name.GetBuffer());
 		vec.push_back(m_objs[i]->Description());
 
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}

@@ -908,6 +908,10 @@ double Present2Future(double i, int n, int digitalNum) {
 	return q;
 }
 
+string ActionType2String(ActionType at) {
+	return "[AT:" + Int2String(at) + "]";
+}
+
 bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<string>> & vecData) {
 	try {
 		pGridCtrl->SetRowCount(vecData.size() + 1);
@@ -966,14 +970,28 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 				}
 
 				Item.strText.Format(_T("%s"), vecData[row - 1][col].c_str());
+				
+				Item.lParam = ActionType::None;
+				vector<string> firstMatch;
+				if (Pcre2Grep(_T("\\[AT:[\\d]\\]"), vecData[row - 1][col].c_str(), firstMatch) > 0)
+				{
+					int at;
+					sscanf_s(firstMatch[0].c_str(), "[AT:%d]", &at);
+					Item.lParam = at;
 
-				if (vecData[row - 1][col] == "修改（update）" || vecData[row - 1][col] == "增加（create）" 
-					|| vecData[row - 1][col] == "复制（copy）" || vecData[row-1][col].find("（oper" )!=string::npos) {
-					Item.crFgClr = RGB(0, 120, 250);
+					at = vecData[row - 1][col].find(firstMatch[0]);
+					string substr = vecData[row - 1][col].substr(0, at);
+					Item.strText.Format(_T("%s"), substr.c_str());
+
+					Item.mask |= GVIF_PARAM;
+				}
+
+				if (Item.lParam == ActionType::Delete) {
+					Item.crFgClr = RGB(255, 0, 0);
 					Item.mask |= GVIF_FGCLR;
 				}
-				else if (vecData[row - 1][col] == "删除（delete）") {
-					Item.crFgClr = RGB(255, 0, 0);
+				else if (Item.lParam != ActionType::None) {
+					Item.crFgClr = RGB(0, 120, 250);
 					Item.mask |= GVIF_FGCLR;
 				}
 				else {
@@ -981,6 +999,7 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 					Item.mask |= GVIF_FGCLR;
 				}
 
+				/* 相邻行 变背景色 */
 				if (nColor % 2 ==0) {
 					Item.crBkClr = RGB(199, 237, 204);
 					Item.mask |= GVIF_BKCLR;

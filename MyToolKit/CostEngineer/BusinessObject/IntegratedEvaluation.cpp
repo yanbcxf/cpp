@@ -211,9 +211,9 @@ bool CIntegratedEvaluation::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 		vec.push_back(Int2String(i++));
 		vec.push_back(e->m_name.GetBuffer());
 		vec.push_back(e->m_evaluation_method.GetBuffer());
-		vec.push_back("ÐÞ¸Ä£¨update£©");
-		vec.push_back("É¾³ý£¨delete£©");
-		vec.push_back("Ôö¼Ó£¨create£©");
+		vec.push_back("ÐÞ¸Ä" + ActionType2String(ActionType::Update));
+		vec.push_back("É¾³ý" + ActionType2String(ActionType::Delete));
+		vec.push_back("Ôö¼Ó" + ActionType2String(ActionType::Create));
 		vecData.push_back(vec);
 	}
 
@@ -390,8 +390,8 @@ bool CIntegratedEvaluationEx10::DrawChild(CGridCtrl* pGridCtrl) {
 		vec.push_back(Double2String(e->m_business_total_price, "%.2f"));
 		vec.push_back(Double2String(e->m_business_unit_price, "%.2f"));
 
-		vec.push_back("ÐÞ¸Ä£¨update£©");
-		vec.push_back("É¾³ý£¨delete£©");
+		vec.push_back("ÐÞ¸Ä" + ActionType2String(ActionType::Update));
+		vec.push_back("É¾³ý" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}
@@ -469,8 +469,8 @@ bool CIntegratedEvaluationEx11::DrawChild(CGridCtrl* pGridCtrl) {
 		vec.push_back(Double2String(business, "%.0f"));
 		vec.push_back(Double2String(technique + business, "%.0f"));
 
-		vec.push_back("ÐÞ¸Ä£¨update£©");
-		vec.push_back("É¾³ý£¨delete£©");
+		vec.push_back("ÐÞ¸Ä" + ActionType2String(ActionType::Update));
+		vec.push_back("É¾³ý" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}
@@ -637,8 +637,8 @@ bool CIntegratedEvaluationEx12::DrawChild(CGridCtrl* pGridCtrl) {
 		vec.push_back(Double2String(business, "%.2f"));
 		vec.push_back(Double2String(technique + business, "%.2f"));
 
-		vec.push_back("ÐÞ¸Ä£¨update£©");
-		vec.push_back("É¾³ý£¨delete£©");
+		vec.push_back("ÐÞ¸Ä" + ActionType2String(ActionType::Update));
+		vec.push_back("É¾³ý" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}

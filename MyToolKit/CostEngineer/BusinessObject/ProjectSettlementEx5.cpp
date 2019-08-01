@@ -217,11 +217,11 @@ bool CProjectSettlementEx5::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<C
 		vector<string> vec;
 		vec.push_back(e->m_scheme.GetBuffer());
 		vec.push_back(e->Description());
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
-		vec.push_back("计算（operate1）");
-		vec.push_back("调整款计算（operate2）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("增加" + ActionType2String(ActionType::Create));
+		vec.push_back("计算" + ActionType2String(ActionType::Calculate));
+		vec.push_back("调整款计算" + ActionType2String(ActionType::Assist));
 		vecData.push_back(vec);
 	}
 

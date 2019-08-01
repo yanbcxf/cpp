@@ -306,15 +306,17 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 
 	bool bRedraw = false;
 		
-	CString source ;
+	ActionType actionType;
 	if (gridId == 0) {
-		source = m_Grid.GetItemText(nRow, nCol);
+		// source = m_Grid.GetItemText(nRow, nCol);
+		actionType = (ActionType)m_Grid.GetItemData(nRow, nCol);
 	}
 	if (gridId == 1) {
-		source = m_Grid1.GetItemText(nRow, nCol);
+		// source = m_Grid1.GetItemText(nRow, nCol);
+		actionType = (ActionType)m_Grid1.GetItemData(nRow, nCol);
 	}
 
-	if (source == "修改（update）") {
+	if (actionType == ActionType::Update) {
 		if (gridId == 0) {
 			/* 主表格 */
 			if (CColumnObj::Update(m_strMenuCode, nRow, pDoc->columns)) {
@@ -451,7 +453,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 		}
 		
 	}
-	else if (source == "删除（delete）") {
+	else if (actionType == ActionType::Delete) {
 		int nRes = AfxMessageBox(_T("确定删除吗？"), MB_OKCANCEL | MB_ICONQUESTION);
 		if (nRes == IDOK) {
 			if (gridId == 0) {
@@ -590,7 +592,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
-	else if (source == "增加（create）") {
+	else if (actionType == ActionType::Create) {
 		if (gridId == 0) {
 			/* 主表格 */
 			{
@@ -697,7 +699,7 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
-	else if (source == "复制（copy）") {
+	else if (actionType == ActionType::Copy) {
 		if (gridId == 0) {
 			if (CActivityOnArrow::Copy(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
 				pDoc->SetModifiedFlag();
@@ -710,7 +712,17 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 			}
 		}
 	}
-	else if (source.Find("（operate1）")>=0) {
+	else if (actionType == ActionType::CopyTo) {
+		if (gridId == 1) {
+			if (pDoc->financeAnalysis.size() > m_nChildrenCode) {
+				if (pDoc->financeAnalysis[m_nChildrenCode]->CopyToChild(m_strMenuCode, nRow)) {
+					pDoc->SetModifiedFlag();
+					bRedraw = true;
+				}
+			}
+		}
+	}
+	else if (actionType == ActionType::Calculate) {
 		if (gridId == 0) {
 			if (CActivityOnArrow::TimeCoordinate(m_strMenuCode, nRow, pDoc->activityOnArrows)) {
 				pDoc->SetModifiedFlag();
@@ -725,27 +737,24 @@ void CCostEngineerView::PostGridClick(int gridId, int nRow, int nCol) {
 				bRedraw = true;
 			}
 		}
+	}
+	else if (actionType == ActionType::Assist) {
+		if (gridId == 0) {
+			if (CProjectSettlementEx5::Adjust(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+			if (CFinanceAnalysis::Adjust(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
+				pDoc->SetModifiedFlag();
+				bRedraw = true;
+			}
+		}
 		if (gridId == 1) {
 			if (pDoc->financeAnalysis.size() > m_nChildrenCode) {
 				if (pDoc->financeAnalysis[m_nChildrenCode]->AssistChild(m_strMenuCode, nRow)) {
 					pDoc->SetModifiedFlag();
 					bRedraw = true;
 				}
-			}
-		}
-		
-	}
-	else if (source.Find("（operate2）") >= 0) {
-		if (gridId == 0) {
-			if (CProjectSettlementEx5::Adjust(m_strMenuCode, nRow, pDoc->projectSettlementEx5s)) {
-				pDoc->SetModifiedFlag();
-				bRedraw = true;
-			}
-		}
-		if (gridId == 0) {
-			if (CFinanceAnalysis::Adjust(m_strMenuCode, nRow, pDoc->financeAnalysis)) {
-				pDoc->SetModifiedFlag();
-				bRedraw = true;
 			}
 		}
 	}
@@ -967,8 +976,8 @@ void CCostEngineerView::RedrawView() {
 			m_Grid1.SetRowCount(0);
 		}
 		m_display_mode = DisplayModes::Grid_Grid;
-		m_upper_percent = 4;
-		m_down_percent = 6;
+		m_upper_percent = 2;
+		m_down_percent = 8;
 		ReLayout();
 		return;
 	}

@@ -98,6 +98,17 @@ typedef struct _item_info
 	}
 }item_info;
 
+enum ActionType {
+	Assist = 1,
+	Calculate,
+	Copy,
+	CopyTo,
+	Create,
+	Delete,
+	Update,
+	None
+};
+
 #include "BalloonTip.h"
 
 #include "DyncItemEditDlg.h"
@@ -161,6 +172,7 @@ extern int MbcsToUnicode(const char * lpMbcsStr, wchar_t * lpUnicodeStr, int nUn
 extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vecSplit);
 extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
 extern bool parseSteelMarking(string marking, int* quantity =NULL, int* diameter = NULL, double* weight = NULL, int* first = NULL, int* second = NULL);
+extern string ActionType2String(ActionType at);
 
 /* 年金现值系数 */
 extern double Annuity2Present(double i, int n, int digitalNum=-1);

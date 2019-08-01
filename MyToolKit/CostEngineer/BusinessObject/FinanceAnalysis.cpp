@@ -37,6 +37,7 @@ bool CFinanceAnalysisObjA::CreateOrUpdate(string menuCode, CFinanceAnalysis* par
 	CDyncItemGroupDlg infd;
 	infd.CXCAPTION = 80;
 	infd.CXCOMBOX = 100;
+	infd.CYCOMBOX = 30;
 	infd.GROUP_NUM_PER_LINE = 3;
 
 	int i = 0;
@@ -47,11 +48,11 @@ bool CFinanceAnalysisObjA::CreateOrUpdate(string menuCode, CFinanceAnalysis* par
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
-	infd.m_vecFindItem[0][i][0].strData = "建设投资;流动资金投资;经营成本(不含进项税);进项税额;应纳增值税;增值税附加;调整所得税;其他支出";
+	infd.m_vecFindItem[0][i][0].strData = "1.建设投资;2.流动资金投资;3.经营成本(不含进项税);4.进项税额;5.应纳增值税;6.增值税附加;7.维持运营投资;8.调整所得税";
 	if(!m_name.IsEmpty())
 		infd.m_vecFindItem[0][i][0].strItem = m_name;
 	else 
-		infd.m_vecFindItem[0][i][0].strItem = "建设投资";
+		infd.m_vecFindItem[0][i][0].strItem = "1.建设投资";
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("流出款项"), 64);
 
 	i++;
@@ -87,11 +88,11 @@ string CFinanceAnalysisObjA::Description() {
 }
 
 bool CFinanceAnalysisObjA::HasAssist() {
-	if (m_name == "应纳增值税")
+	if (m_name == "5.应纳增值税")
 		return true;
-	else if (m_name == "增值税附加")
+	else if (m_name == "6.增值税附加")
 		return true;
-	else if (m_name == "调整所得税")
+	else if (m_name == "8.调整所得税")
 		return true;
 	else
 		return false;
@@ -107,11 +108,11 @@ bool CFinanceAnalysisObjA::Assist(CFinanceAnalysis* parent) {
 	int i = 0;
 	double amount = 0;
 
-	if (m_name == "应纳增值税") {
+	if (m_name == "5.应纳增值税") {
 		i = 0;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("销项税额"), 64);
-		if(parent->GetAmountOfMoney(m_month, "销项税额", amount))
+		if(parent->GetAmountOfMoney(m_month, "2.销项税额", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -119,7 +120,7 @@ bool CFinanceAnalysisObjA::Assist(CFinanceAnalysis* parent) {
 		i++;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
 		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("进项税额"), 64);
-		if (parent->GetAmountOfMoney(m_month, "进项税额", amount))
+		if (parent->GetAmountOfMoney(m_month, "2.进项税额", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -135,11 +136,11 @@ bool CFinanceAnalysisObjA::Assist(CFinanceAnalysis* parent) {
 			return true;
 		}
 	}
-	else if (m_name == "增值税附加") {
+	else if (m_name == "6.增值税附加") {
 		i = 0;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("应纳增值税"), 64);
-		if (parent->GetAmountOfMoney(m_month, "应纳增值税", amount))
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("5.应纳增值税"), 64);
+		if (parent->GetAmountOfMoney(m_month, "5.应纳增值税", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -163,44 +164,37 @@ bool CFinanceAnalysisObjA::Assist(CFinanceAnalysis* parent) {
 			return true;
 		}
 	}
-	else if (m_name == "调整所得税") {
+	else if (m_name == "8.调整所得税") {
 
 		i = 0;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("营业收入(不含销项税)"), 64);
-		if (parent->GetAmountOfMoney(m_month, "营业收入(不含销项税)", amount))
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("1.营业收入(不含销项税)"), 64);
+		if (parent->GetAmountOfMoney(m_month, "1.营业收入(不含销项税)", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 		i++;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("补贴收入"), 64);
-		if (parent->GetAmountOfMoney(m_month, "补贴收入", amount))
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("3.补贴收入"), 64);
+		if (parent->GetAmountOfMoney(m_month, "3.补贴收入", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
 		i++;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("经营成本(不含进项税)"), 64);
-		if (parent->GetAmountOfMoney(m_month, "经营成本(不含进项税)", amount))
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("3.经营成本(不含进项税)"), 64);
+		if (parent->GetAmountOfMoney(m_month, "3.经营成本(不含进项税)", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
+		
 		i++;
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("应纳增值税"), 64);
-		if (parent->GetAmountOfMoney(m_month, "应纳增值税", amount))
-			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
-		infd.m_vecFindItem[0][i][0].dbMin = -100000;
-		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
-
-		i++;
-		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("增值税附加"), 64);
-		if (parent->GetAmountOfMoney(m_month, "应纳增值税", amount))
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("6.增值税附加"), 64);
+		if (parent->GetAmountOfMoney(m_month, "6.增值税附加", amount))
 			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
 		infd.m_vecFindItem[0][i][0].dbMin = -100000;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
@@ -232,14 +226,61 @@ bool CFinanceAnalysisObjA::Assist(CFinanceAnalysis* parent) {
 			double output1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double output2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double output3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double output4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
 			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
-			m_amount_of_money = input1 + input2 - output1 - output2 - output3 - output4;
+			m_amount_of_money = input1 + input2 - output1 - output2 - output3;
+			m_amount_of_money = m_amount_of_money * rate;
 
 			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
 		}
+	}
+	
+	return false;
+}
+
+
+bool CFinanceAnalysisObjA::CopyTo(CFinanceAnalysis* parent) {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.CXCOMBOX = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
+	int i = 0;
+	double amount = 0;
+
+	i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("开始年度"), 64);
+	infd.m_vecFindItem[0][i][0].nMin = 1;
+	infd.m_vecFindItem[0][i][0].nMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结束年度"), 64);
+	infd.m_vecFindItem[0][i][0].nMin = 0;
+	infd.m_vecFindItem[0][i][0].nMin = 1000000;
+
+	infd.Init(_T("参数设置"), _T("参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		g = 0;
+		int v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		int v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		if (v2 < v1) v2 = v1;
+
+		for (int i = v1; i <= v2; i++) {
+			if (!parent->GetAmountOfMoney(Int2String(i).c_str(), m_name, amount)) {
+				/* 不存在，则添加 */
+				CFinanceAnalysisObjA * p = new CFinanceAnalysisObjA();
+				p->m_month = Int2String(i).c_str();
+				p->m_scheme = m_scheme;
+				p->m_name = m_name;
+				p->m_amount_of_money = m_amount_of_money;
+				parent->m_objs.push_back(p);
+			}
+		}
+		return true;
 	}
 	return false;
 }
@@ -277,11 +318,11 @@ bool CFinanceAnalysisObjB::CreateOrUpdate(string menuCode, CFinanceAnalysis* par
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
-	infd.m_vecFindItem[0][i][0].strData = "营业收入(不含销项税);销项税额;固定资产回收;回收流动资金;补贴收入";
+	infd.m_vecFindItem[0][i][0].strData = "1.营业收入(不含销项税);2.销项税额;3.补贴收入;4.回收固定资产余值;5.回收流动资金";
 	if (!m_name.IsEmpty())
 		infd.m_vecFindItem[0][i][0].strItem = m_name;
 	else
-		infd.m_vecFindItem[0][i][0].strItem = "营业收入(不含销项税)";
+		infd.m_vecFindItem[0][i][0].strItem = "1.营业收入(不含销项税)";
 	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("流入款项"), 64);
 
 	i++;
@@ -314,14 +355,122 @@ string CFinanceAnalysisObjB::Description() {
 }
 
 bool CFinanceAnalysisObjB::HasAssist() {
-	if (m_name == "固定资产回收")
+
+	if (m_name == "4.回收固定资产余值")
 		return true;
 	else
 		return false;
 }
 
 bool CFinanceAnalysisObjB::Assist(CFinanceAnalysis* parent) {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.CXCOMBOX = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
+	int i = 0;
+	double amount = 0;
 
+	if (m_name == "4.回收固定资产余值") {
+		i = 0;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("1.建设投资"), 64);
+		if (parent->GetAmountOfMoney(m_month, "1.建设投资", amount))
+			infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", amount);
+		infd.m_vecFindItem[0][i][0].dbMin = -0.01;
+		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+		
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("固定资产进项税额"), 64);
+		infd.m_vecFindItem[0][i][0].dbMin = 0;
+		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("使用年限"), 64);
+		infd.m_vecFindItem[0][i][0].dbMin = 0;
+		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+		
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("期末净残值率(%)"), 64);
+		infd.m_vecFindItem[0][i][0].dbMin = 0;
+		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, _T("剩余使用年限"), 64);
+		infd.m_vecFindItem[0][i][0].dbMin = 0;
+		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+		infd.Init(_T("参数设置"), _T("参数设置"));
+		if (infd.DoModal() == IDOK) {
+			i = 0;
+			g = 0;
+			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+			double v4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+			double v = (v1 - v2) * (1 - rate) / v3;
+			v = v * v4 + (v1 - v2) * rate;
+			m_amount_of_money = v;
+			if (m_amount_of_money < 0) m_amount_of_money = 0;
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+bool CFinanceAnalysisObjB::CopyTo(CFinanceAnalysis* parent) {
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.CXCOMBOX = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
+	int i = 0;
+	double amount = 0;
+
+	i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("开始年度"), 64);
+	infd.m_vecFindItem[0][i][0].nMin = 1;
+	infd.m_vecFindItem[0][i][0].nMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("结束年度"), 64);
+	infd.m_vecFindItem[0][i][0].nMin = 0;
+	infd.m_vecFindItem[0][i][0].nMin = 1000000;
+
+	infd.Init(_T("参数设置"), _T("参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		g = 0;
+		int v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		int v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		if (v2 < v1) v2 = v1;
+
+		for (int i = v1; i <= v2; i++) {
+			if (!parent->GetAmountOfMoney(Int2String(i).c_str(), m_name, amount)) {
+				/* 不存在，则添加 */
+				CFinanceAnalysisObjB * p = new CFinanceAnalysisObjB();
+				p->m_month = Int2String(i).c_str();
+				p->m_scheme = m_scheme;
+				p->m_name = m_name;
+				p->m_amount_of_money = m_amount_of_money;
+				parent->m_objs.push_back(p);
+			}
+		}
+
+		return true;
+	}
 	return false;
 }
 
@@ -358,23 +507,21 @@ bool CFinanceAnalysis::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CFinan
 	vector<string> vecHeader;
 	vector<vector<string>> vecData;
 	vecHeader.push_back("工程结算方案,120");
-	vecHeader.push_back("工程描述,550");
-	vecHeader.push_back(",80");
-	vecHeader.push_back(",80");
-	vecHeader.push_back(",80");
-	vecHeader.push_back(",80");
-	vecHeader.push_back(",80");
+	vecHeader.push_back("工程描述,400");
+	vecHeader.push_back(",120");
+	vecHeader.push_back(",120");
+	vecHeader.push_back(",120");
+	vecHeader.push_back(",140");
 
 	int i = 1;
 	for (CFinanceAnalysis* e : cols) {
 		vector<string> vec;
 		vec.push_back(e->m_scheme.GetBuffer());
 		vec.push_back(e->Description());
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
-		vec.push_back("计算（operate1）");
-		vec.push_back("调整款计算（operate2）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("增加" + ActionType2String(ActionType::Create));
+		vec.push_back("计算" + ActionType2String(ActionType::Calculate));
 		vecData.push_back(vec);
 	}
 
@@ -395,8 +542,6 @@ void CFinanceAnalysis::Serialize(CArchive& ar, double version, CFinanceAnalysis*
 }
 
 
-
-
 CFinanceAnalysisObj* CFinanceAnalysis::NewChild(CString scheme) {
 	CFinanceAnalysisObj* p = NULL;
 
@@ -414,8 +559,8 @@ CFinanceAnalysisObj* CFinanceAnalysis::NewChild(CString scheme) {
 void CFinanceAnalysis::Serialize(CArchive& ar, double version) {
 	if (ar.IsStoring()) {
 		ar << m_name;
-		ar << m_manage_rate;
-		ar << m_net_rate;
+		ar << m_discount;
+		ar << m_net_residual_rate;
 		ar << m_tax_surcharge_rate;
 		ar << m_income_tax_rate;
 
@@ -427,8 +572,8 @@ void CFinanceAnalysis::Serialize(CArchive& ar, double version) {
 	}
 	else {
 		ar >> m_name;
-		ar >> m_manage_rate;
-		ar >> m_net_rate;
+		ar >> m_discount;
+		ar >> m_net_residual_rate;
 		ar >> m_tax_surcharge_rate;
 		ar >> m_income_tax_rate;
 
@@ -465,18 +610,19 @@ bool CFinanceAnalysis::CreateOrUpdate() {
 		infd.m_vecFindItem[0][i][0].strItem = m_name;
 
 	i++;
-	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("管理费率（%）"), 64);
-	if (m_manage_rate > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_manage_rate * 100);
-	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
-	infd.m_vecFindItem[0][i][0].dbMax = 100;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+	infd.m_vecFindItem[0][i][0].strData = "直线法;双倍余额递减法";
+	if (!m_discount.IsEmpty())
+		infd.m_vecFindItem[0][i][0].strItem = m_discount;
+	else
+		infd.m_vecFindItem[0][i][0].strItem = "直线法";
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("折旧法"), 64);
 
 	i++;
 	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("利润率（%）"), 64);
-	if (m_net_rate > 0)
-		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_net_rate * 100);
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("期末净残值率（%）"), 64);
+	if (m_net_residual_rate > 0)
+		infd.m_vecFindItem[0][i][0].strItem.Format("%.2f", m_net_residual_rate * 100);
 	infd.m_vecFindItem[0][i][0].dbMin = 0.01;
 	infd.m_vecFindItem[0][i][0].dbMax = 100;
 
@@ -503,8 +649,8 @@ bool CFinanceAnalysis::CreateOrUpdate() {
 		g = 0;
 		m_scheme = infd.m_vecFindItem[g][i++][0].strItem;
 		m_name = infd.m_vecFindItem[g][i++][0].strItem;
-		m_manage_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
-		m_net_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		m_discount = infd.m_vecFindItem[g][i++][0].strItem;
+		m_net_residual_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 		m_tax_surcharge_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 		m_income_tax_rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 
@@ -527,7 +673,23 @@ void CFinanceAnalysis::SortByMonth() {
 	{
 		bool operator() (CFinanceAnalysisObj* lhs, CFinanceAnalysisObj* rhs)
 		{
-			return String2Double(lhs->m_month.GetBuffer()) < String2Double(rhs->m_month.GetBuffer());
+			int left = String2Double(lhs->m_month.GetBuffer());
+			int right = String2Double(rhs->m_month.GetBuffer());
+			if (left < right) return true;
+			if (left == right) {
+				string lscheme = lhs->m_scheme.GetBuffer();
+				string rscheme = rhs->m_scheme.GetBuffer();
+				if (lscheme != rscheme) {
+					if (lscheme == "现金流入") return true;
+				}
+				else {
+					string lname = lhs->m_name.GetBuffer();
+					string rname = rhs->m_name.GetBuffer();
+					if (lname < rname) return true;
+				}
+				
+			}
+			return false;
 		}
 	};
 
@@ -585,6 +747,18 @@ bool CFinanceAnalysis::AssistChild(string menuCode, int nRow) {
 	return false;
 }
 
+bool CFinanceAnalysis::CopyToChild(string menuCode, int nRow) {
+	if (menuCode != CFinanceAnalysis::m_ObjectCode)
+		return false;
+
+	if (nRow > 0 && nRow <= m_objs.size()) {
+		bool res = m_objs[nRow - 1]->CopyTo(this);
+		SortByMonth();
+		return res;
+	}
+	return false;
+}
+
 bool CFinanceAnalysis::DrawChild(CGridCtrl* pGridCtrl)
 {
 	if (!pGridCtrl)
@@ -601,6 +775,7 @@ bool CFinanceAnalysis::DrawChild(CGridCtrl* pGridCtrl)
 	vecHeader.push_back("");
 	vecHeader.push_back("");
 	vecHeader.push_back("");
+	vecHeader.push_back("");
 
 	int ttt = m_objs.size();
 
@@ -611,10 +786,11 @@ bool CFinanceAnalysis::DrawChild(CGridCtrl* pGridCtrl)
 		vec.push_back(m_objs[i]->m_scheme.GetBuffer());
 		vec.push_back(m_objs[i]->Description());
 
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("复制到" + ActionType2String(ActionType::CopyTo));
 		if (m_objs[i]->HasAssist())	
-			vec.push_back("辅助计算（operate1）");
+			vec.push_back("辅助计算" + ActionType2String(ActionType::Assist));
 		else
 			vec.push_back("");
 

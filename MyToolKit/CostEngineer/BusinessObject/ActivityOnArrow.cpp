@@ -260,11 +260,11 @@ bool CActivityOnArrow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CActiv
 		vec.push_back(e.m_name.GetBuffer());
 		vec.push_back(Int2String(e.m_nodes.size()));
 		vec.push_back(Int2String(e.m_edges.size()));
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("复制（copy）");
-		if(!e.m_bTimeCoordinate)	vec.push_back("时标网络（operate1）");
-		else vec.push_back("非时标网络（operate1）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("复制" + ActionType2String(ActionType::Copy));
+		if(!e.m_bTimeCoordinate)	vec.push_back("时标网络" + ActionType2String(ActionType::Calculate));
+		else vec.push_back("非时标网络" + ActionType2String(ActionType::Calculate));
 
 		vecData.push_back(vec);
 	}

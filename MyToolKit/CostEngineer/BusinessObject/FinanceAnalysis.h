@@ -23,6 +23,7 @@ public:
 	virtual double ProjectPrice() = 0;
 	virtual bool Assist(CFinanceAnalysis* parent) = 0;
 	virtual bool HasAssist() = 0;
+	virtual bool CopyTo(CFinanceAnalysis* parent) = 0;
 
 public:
 	CString	m_scheme;
@@ -41,8 +42,8 @@ public:
 		m_scheme = "";
 
 		m_name = "";
-		m_manage_rate = 0;
-		m_net_rate = 0;
+		m_discount = "";
+		m_net_residual_rate = 0;
 		m_tax_surcharge_rate = 0;
 		m_income_tax_rate = 0;
 	};
@@ -63,6 +64,7 @@ public:
 	virtual bool UpdateChild(string menuCode, int nRow);
 	virtual bool DeleteChild(string menuCode, int nRow);
 	virtual bool AssistChild(string menuCode, int nRow);
+	virtual bool CopyToChild(string menuCode, int nRow);
 
 	static CFinanceAnalysis* NewParent(CString name);
 	static void Serialize(CArchive& ar, double version, CFinanceAnalysis*  & p);
@@ -95,8 +97,8 @@ public:
 
 public:
 	CString m_name;				//	工程名称
-	double  m_manage_rate;			//	管理费率
-	double	m_net_rate;				//	利润率
+	CString m_discount;			//	固定资产折旧方法
+	double	m_net_residual_rate;	//	折旧期末净残值率
 	double	m_tax_surcharge_rate;	//	税金附加率
 	double	m_income_tax_rate;		//	所得税率
 
@@ -118,6 +120,7 @@ public:
 	virtual double ProjectPrice();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
+	virtual bool CopyTo(CFinanceAnalysis* parent);
 
 public:
 	
@@ -137,6 +140,7 @@ public:
 	virtual double ProjectPrice();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
+	virtual bool CopyTo(CFinanceAnalysis* parent);
 public:
 	
 };

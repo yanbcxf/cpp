@@ -74,9 +74,9 @@ bool CProjectSettlement::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CPro
 		vector<string> vec;
 		vec.push_back(e->m_scheme.GetBuffer());
 		vec.push_back(e->Description());
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("增加" + ActionType2String(ActionType::Create));
 		vecData.push_back(vec);
 	}
 
@@ -507,8 +507,8 @@ bool CProjectSettlementEx2::DrawChild(CGridCtrl* pGridCtrl)
 		/* 进度款 */
 		vec.push_back(Double2String(progress, "%.2f"));
 
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}
@@ -793,8 +793,8 @@ bool CProjectSettlementEx3::DrawChild(CGridCtrl* pGridCtrl)
 		/* 进度款 */
 		vec.push_back(Double2String(progress, "%.2f"));
 
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}
@@ -1090,8 +1090,8 @@ bool CProjectSettlementEx4::DrawChild(CGridCtrl* pGridCtrl)
 		/* 进度款 */
 		vec.push_back(Double2String(progress, "%.2f"));
 
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}

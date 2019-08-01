@@ -153,8 +153,8 @@ bool CCashFlowObj::Draw(CGridCtrl* pGridCtrl, vector<CCashFlowObj>& cols, CCashF
 		vec.push_back(Int2String(e.m_payment_lag));
 		vec.push_back(e.m_payment_time == 0 ? "期初" : "期末");
 		vec.push_back(Double2String(e.FutureValueOfPartitionedProject(parent.m_interest_rate)));
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
 
 		vecData.push_back(vec);
 	}
@@ -376,10 +376,10 @@ bool CCashFlow::Draw(string menuCode, CGridCtrl* pGridCtrl, vector<CCashFlow>& c
 		vec.push_back(Int2String(e.LatestPaymentTime()));
 		vec.push_back(Double2String(e.FutureValueOfWholeProject(), "%.2f"));
 		vec.push_back(Double2String(e.PresentValueOfWholeProject(), "%.2f"));
-		vec.push_back("修改（update）");
-		vec.push_back("删除（delete）");
-		vec.push_back("增加（create）");
-		vec.push_back("复制（copy）");
+		vec.push_back("修改" + ActionType2String(ActionType::Update));
+		vec.push_back("删除" + ActionType2String(ActionType::Delete));
+		vec.push_back("增加" + ActionType2String(ActionType::Create));
+		vec.push_back("复制" + ActionType2String(ActionType::Copy));
 
 		vecData.push_back(vec);
 	}
