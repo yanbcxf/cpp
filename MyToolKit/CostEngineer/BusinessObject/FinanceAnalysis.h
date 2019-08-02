@@ -20,7 +20,7 @@ public:
 	virtual void Serialize(CArchive& ar, double version) = 0;
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent) = 0;
 	virtual string Description() = 0;
-	virtual double ProjectPrice() = 0;
+	virtual double AmountOfMoney() = 0;
 	virtual bool Assist(CFinanceAnalysis* parent) = 0;
 	virtual bool HasAssist() = 0;
 	virtual bool CopyTo(CFinanceAnalysis* parent) = 0;
@@ -90,6 +90,8 @@ public:
 	virtual void Calculate();
 	virtual void Adjust();
 	virtual bool GetAmountOfMoney(CString month, CString name, double & amount);
+	double AccumulativeTax(int nMonth);
+
 
 public:
 	CString	m_scheme;			//	方案类型 -> 确定后续程序的执行 
@@ -117,7 +119,7 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description();
-	virtual double ProjectPrice();
+	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
 	virtual bool CopyTo(CFinanceAnalysis* parent);
@@ -137,7 +139,7 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description() ;
-	virtual double ProjectPrice();
+	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
 	virtual bool CopyTo(CFinanceAnalysis* parent);

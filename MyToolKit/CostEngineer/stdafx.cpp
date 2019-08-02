@@ -877,7 +877,7 @@ double Annuity2Present(double i, int n, int digitalNum) {
 	return q;
 }
 
-/* 年金终值系数 */
+/* 年金终值系数, 精确到小数点后 digitalNum 位 */
 double Annuity2Future(double i, int n, int digitalNum) {
 	if (i == 0) return n;
 	double q = pow((1 + i), n);
