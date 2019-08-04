@@ -46,6 +46,8 @@ public:
 		m_net_residual_rate = 0;
 		m_tax_surcharge_rate = 0;
 		m_income_tax_rate = 0;
+
+		m_tax_on_purchase = 0;
 	};
 
 	~CFinanceAnalysis()
@@ -84,13 +86,13 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate();
 	virtual string Description();
-	virtual CFinanceAnalysisObj* NewChild(CString scheme);
+	virtual CFinanceAnalysisObj* NewChild(CString scheme) = 0;
 	virtual bool DrawChild(CGridCtrl* pGridCtrl);
 	virtual void SortByMonth();
 	virtual void Calculate();
 	virtual void Adjust();
 	virtual bool GetAmountOfMoney(CString month, CString name, double & amount);
-	double AccumulativeTax(int nMonth);
+	virtual double AccumulativeTax(int nMonth) = 0;
 
 
 public:
@@ -104,11 +106,32 @@ public:
 	double	m_tax_surcharge_rate;	//	税金附加率
 	double	m_income_tax_rate;		//	所得税率
 
+	double	m_tax_on_purchase;		//	建设期进项税额
+
+};
+
+class CBeforeFinancing : public CFinanceAnalysis {
+public:
+	virtual double AccumulativeTax(int nMonth);
+	virtual CFinanceAnalysisObj* NewChild(CString scheme);
+};
+
+class CAfterFinancing : public CFinanceAnalysis {
+public:
+	CAfterFinancing() {
+		m_interest_rate = 0;
+	};
+	virtual double AccumulativeTax(int nMonth);
+	virtual CFinanceAnalysisObj* NewChild(CString scheme);
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CreateOrUpdate();
+public:
+	double	m_interest_rate;		//	贷款利率
 };
 
 /*************************************************************************************/
 
-/* 单价分项分部工程款 */
+/* 现金流出 */
 class CFinanceAnalysisObjA : public CFinanceAnalysisObj {
 public:
 	CFinanceAnalysisObjA() {
@@ -128,7 +151,26 @@ public:
 	
 };
 
-/* 单价措施项目费 */
+class CFinanceAnalysisObjA1 : public CFinanceAnalysisObj {
+public:
+	CFinanceAnalysisObjA1() {
+
+	};
+
+public:
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
+	virtual string Description();
+	virtual double AmountOfMoney();
+	virtual bool Assist(CFinanceAnalysis* parent);
+	virtual bool HasAssist();
+	virtual bool CopyTo(CFinanceAnalysis* parent);
+
+public:
+
+};
+
+/* 现金流入 */
 class CFinanceAnalysisObjB : public CFinanceAnalysisObj {
 public:
 	CFinanceAnalysisObjB() {
