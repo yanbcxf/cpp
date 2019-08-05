@@ -91,7 +91,7 @@ public:
 	virtual void SortByMonth();
 	virtual void Calculate();
 	virtual void Adjust();
-	virtual bool GetAmountOfMoney(CString month, CString name, double & amount);
+	virtual bool GetAmountOfMoney(CString month, CString scheme, CString name, double & amount);
 	virtual double AccumulativeTax(int nMonth) = 0;
 
 
@@ -119,14 +119,16 @@ public:
 class CAfterFinancing : public CFinanceAnalysis {
 public:
 	CAfterFinancing() {
-		m_interest_rate = 0;
+		for(int i = 0; i< 5; i++)
+		m_interest_rate[i] = 0;
 	};
 	virtual double AccumulativeTax(int nMonth);
 	virtual CFinanceAnalysisObj* NewChild(CString scheme);
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate();
+	virtual double LoanRemaining(int nMonth, int nLoan);
 public:
-	double	m_interest_rate;		//	贷款利率
+	double	m_interest_rate[5];		//	借款 贷款利率
 };
 
 /*************************************************************************************/
@@ -189,4 +191,22 @@ public:
 	
 };
 
+/* 借款n */
+class CFinanceAnalysisObjC : public CFinanceAnalysisObj {
+public:
+	CFinanceAnalysisObjC() {
+
+	};
+
+public:
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
+	virtual string Description();
+	virtual double AmountOfMoney();
+	virtual bool Assist(CFinanceAnalysis* parent);
+	virtual bool HasAssist();
+	virtual bool CopyTo(CFinanceAnalysis* parent);
+public:
+
+};
 
