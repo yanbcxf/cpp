@@ -111,6 +111,9 @@ BOOL CCostEngineerApp::InitInstance()
 		AfxMessageBox(IDP_OLE_INIT_FAILED);
 		return FALSE;
 	}
+
+	
+
 	
 	///////////////////////////////////////////////////////////////
 	//	读入xml 文件进行 菜单 配置
@@ -128,6 +131,22 @@ BOOL CCostEngineerApp::InitInstance()
 		}
 
 		fclose(fp);
+	}
+
+	char buffer[1024 + 1] = { 0 };
+	strncpy(buffer, "<?xml version=\"1.0\" encoding=\"UTF - 8\" standalone=\"yes\" ?><Query><CmdType>Catalog</CmdType><SN>102</SN><DeviceID>14022900002000000003</DeviceID></Query>", 1024);
+	
+	tree = mxmlLoadString(NULL, buffer, MXML_TEXT_CALLBACK);
+	if (NULL == tree)
+	{
+		printf("%s line=%d mxmlLoadString is NULL. ERROR......\n", __FUNCTION__, __LINE__);
+		return -1;
+	}
+
+	/*fill ptz_control*/
+	node = mxmlFindElement(tree, tree, "CmdType", NULL, NULL, MXML_DESCEND);
+	if (NULL == node) {
+
 	}
 
 

@@ -981,6 +981,15 @@ bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
 		infd.m_vecFindItem[0][i][0].dbMin = 0;
 		infd.m_vecFindItem[0][i][0].dbMax = 1000000;
 
+		i++;
+		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
+		memcpy(infd.m_vecFindItem[0][i][0].caption, "首年利息减半", 64);
+		infd.m_vecFindItem[0][i][0].strData = "yes;no";
+		if (p->m_interest_half[i])
+			infd.m_vecFindItem[0][i][0].strItem = "yes";
+		else
+			infd.m_vecFindItem[0][i][0].strItem = "no";
+
 
 		infd.Init(_T("本期新产生利息"), _T("本期新产生利息"));
 		if (infd.DoModal() == IDOK) {
@@ -989,7 +998,10 @@ bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
-			m_amount_of_money = v1 * rate + v2 * 0.5 * rate;
+			bool bHalf = true;
+			if (infd.m_vecFindItem[g][i++][0].strItem.CompareNoCase("no") == 0)
+				bHalf = false;
+			m_amount_of_money = v1 * rate +  v2 * (bHalf? 0.5:1) * rate;
 			
 			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
@@ -1628,8 +1640,14 @@ double CAfterFinancing::LoanRemaining(int nMonth, int nLoan) {
 		remain = remain * (1 + m_interest_rate[nLoan - 1]);
 		if (GetAmountOfMoney(Int2String(i).c_str(), loanScheme.c_str(), "1.借入", amount)) {
 			remain += amount;
-			/* 新借入，本期利息减半 */
-			remain += amount * 0.5 * m_interest_rate[nLoan - 1];
+			if (m_interest_half[nLoan - 1]) {
+				/* 新借入，本期利息减半 */
+				remain += amount * 0.5 * m_interest_rate[nLoan - 1];
+			}
+			else {
+				remain += amount * m_interest_rate[nLoan - 1];
+			}
+			
 		}
 		
 		if (GetAmountOfMoney(Int2String(i).c_str(), loanScheme.c_str(), "2.还本", amount)) {
@@ -1675,12 +1693,16 @@ CFinanceAnalysisObj* CAfterFinancing::NewChild(CString scheme) {
 void CAfterFinancing::Serialize(CArchive& ar, double version) {
 	CFinanceAnalysis::Serialize(ar, version);
 	if (ar.IsStoring()) {
-		for(int i=0; i<5; i++)
+		for (int i = 0; i < 5; i++) {
 			ar << m_interest_rate[i];
+			ar << m_interest_half[i];
+		}
 	}
 	else {
-		for(int i=0; i<5; i++)
+		for (int i = 0; i < 5; i++) {
 			ar >> m_interest_rate[i];
+			ar >> m_interest_half[i];
+		}
 	}
 }
 
@@ -1693,20 +1715,35 @@ bool CAfterFinancing::CreateOrUpdate() {
 		int i = 0;
 		for (i = 0; i < 5; i++) {
 			string caption = "借款" + Int2String(i+1) + " - 贷款利率（%）";
-			infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
-			memcpy(infd.m_vecFindItem[0][i][0].caption, caption.c_str(), 64);
-			if (m_interest_rate[i] > 0)
-				infd.m_vecFindItem[0][i][0].strItem.Format("%.3f", m_interest_rate[i] * 100);
-			infd.m_vecFindItem[0][i][0].dbMin = 0;
-			infd.m_vecFindItem[0][i][0].dbMax = 100;
+			infd.m_vecFindItem[0][2*i][0].nType = CDlgTemplateBuilder::EDIT;
+			memcpy(infd.m_vecFindItem[0][2*i][0].caption, caption.c_str(), 64);
+			if (m_interest_rate[i] > 0.00001)
+				infd.m_vecFindItem[0][2*i][0].strItem.Format("%.3f", m_interest_rate[i] * 100);
+			infd.m_vecFindItem[0][2*i][0].dbMin = 0;
+			infd.m_vecFindItem[0][2*i][0].dbMax = 100;
+
+			caption = "借款" + Int2String(i + 1) + " - 首年利息减半";
+			infd.m_vecFindItem[0][2 * i + 1][0].nType = CDlgTemplateBuilder::COMBOBOX;
+			memcpy(infd.m_vecFindItem[0][2 * i + 1][0].caption, caption.c_str(), 64);
+			infd.m_vecFindItem[0][2 * i + 1][0].strData = "yes;no";
+			if (m_interest_half[i])
+				infd.m_vecFindItem[0][2 * i + 1][0].strItem = "yes";
+			else
+				infd.m_vecFindItem[0][2 * i + 1][0].strItem = "no";
 		}
 		
 		infd.Init(_T("工程结算 参数设置"), _T("工程结算 参数设置"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
-			for(i = 0; i< 5; i++)
-				m_interest_rate[i] = String2Double(infd.m_vecFindItem[g][i][0].strItem.GetBuffer()) / 100;
+			for (i = 0; i < 5; i++) {
+				m_interest_rate[i] = String2Double(infd.m_vecFindItem[g][2*i][0].strItem.GetBuffer()) / 100;
+				if (infd.m_vecFindItem[g][2 * i + 1][0].strItem.CompareNoCase("yes") == 0)
+					m_interest_half[i] = true;
+				else
+					m_interest_half[i] = false;
+
+			}
 			return true;
 		}
 	}

@@ -119,8 +119,10 @@ public:
 class CAfterFinancing : public CFinanceAnalysis {
 public:
 	CAfterFinancing() {
-		for(int i = 0; i< 5; i++)
-		m_interest_rate[i] = 0;
+		for (int i = 0; i < 5; i++) {
+			m_interest_half[i] = false;
+			m_interest_rate[i] = 0;
+		}
 	};
 	virtual double AccumulativeTax(int nMonth);
 	virtual CFinanceAnalysisObj* NewChild(CString scheme);
@@ -129,6 +131,7 @@ public:
 	virtual double LoanRemaining(int nMonth, int nLoan);
 public:
 	double	m_interest_rate[5];		//	借款 贷款利率
+	bool	m_interest_half[5];		//	首年 利息减半
 };
 
 /*************************************************************************************/
