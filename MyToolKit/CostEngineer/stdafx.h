@@ -173,6 +173,7 @@ extern int Pcre2Split(string patternStr, string subjectStr, vector<string> & vec
 extern int Pcre2Grep(string patternStr, string subjectStr, vector<string> & vecMatch);
 extern bool parseSteelMarking(string marking, int* quantity =NULL, int* diameter = NULL, double* weight = NULL, int* first = NULL, int* second = NULL);
 extern string ActionType2String(ActionType at);
+extern void paste(CString source);
 
 /* 年金现值系数 */
 extern double Annuity2Present(double i, int n, int digitalNum=-1);

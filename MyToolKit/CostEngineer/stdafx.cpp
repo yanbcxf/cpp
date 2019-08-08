@@ -1063,3 +1063,18 @@ bool DrawGrid(CGridCtrl * pGridCtrl, vector<string> & vecHeader, vector<vector<s
 
 	return TRUE;
 }
+
+void paste(CString source) {
+	if (OpenClipboard(NULL))
+	{
+		HGLOBAL clipbuffer;
+		char * buffer;
+		EmptyClipboard();
+		clipbuffer = GlobalAlloc(GMEM_DDESHARE, source.GetLength() + 1);
+		buffer = (char*)GlobalLock(clipbuffer);
+		strcpy(buffer, LPCSTR(source));
+		GlobalUnlock(clipbuffer);
+		SetClipboardData(CF_TEXT, clipbuffer);
+		CloseClipboard();
+	}
+}

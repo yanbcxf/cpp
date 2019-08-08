@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CCostEngineerApp, CWinAppEx)
 	// 标准打印设置命令
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 	ON_COMMAND(ID_CALC, &CCostEngineerApp::OnCalc)
+	ON_COMMAND(ID_FIXED_ASSET_DEPRECIATION, &CCostEngineerApp::OnFixedAssetDepreciation)
 END_MESSAGE_MAP()
 
 
@@ -379,4 +380,69 @@ void CCostEngineerApp::OnCalc()
 {
 	// TODO: 在此添加命令处理程序代码
 	ShellExecute(NULL, "open", "calc", NULL, NULL, SW_SHOW);
+}
+
+
+void CCostEngineerApp::OnFixedAssetDepreciation()
+{
+	// TODO: 在此添加命令处理程序代码
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.CXCOMBOX = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
+	int i = 0;
+	double amount = 0;
+
+	i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("建设投资(含建设期利息)"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = -0.01;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("固定资产进项税额"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("使用年限"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("期末净残值率(%)"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("剩余使用年限"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	infd.Init(_T("参数设置"), _T("参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		double v4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		double v = (v1 - v2) * (1 - rate) / v3;
+		double v5 = v * v4 + (v1 - v2) * rate;
+		CString source;
+		source.Format("年折旧费:  %.3f ,  固定资产余值: %.3f", v, v5);
+		AfxMessageBox(source);
+		paste(source);
+		// m_amount_of_money = v;
+
+	}
 }

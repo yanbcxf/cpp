@@ -60,6 +60,7 @@ public:
 	CostEngineerInfo	m_cost_engineer_info;
 	BOOL m_bRunning;
 	afx_msg void OnCalc();
+	afx_msg void OnFixedAssetDepreciation();
 };
 
 extern CCostEngineerApp theApp;
