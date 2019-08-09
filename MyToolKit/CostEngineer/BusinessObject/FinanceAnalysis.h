@@ -17,13 +17,15 @@ public:
 	};
 	virtual ~CFinanceAnalysisObj() {};
 
-	virtual void Serialize(CArchive& ar, double version) = 0;
+	virtual void Serialize(CArchive& ar, double version);
+	virtual bool CopyTo(CFinanceAnalysis* parent);
+
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent) = 0;
 	virtual string Description() = 0;
 	virtual double AmountOfMoney() = 0;
 	virtual bool Assist(CFinanceAnalysis* parent) = 0;
 	virtual bool HasAssist() = 0;
-	virtual bool CopyTo(CFinanceAnalysis* parent) = 0;
+	virtual CFinanceAnalysisObj * Clone() = 0;
 
 public:
 	CString	m_scheme;
@@ -120,8 +122,8 @@ class CAfterFinancing : public CFinanceAnalysis {
 public:
 	CAfterFinancing() {
 		for (int i = 0; i < 5; i++) {
-			m_interest_half[i] = false;
-			m_interest_rate[i] = 0;
+			m_loan_borrow[i] = "";
+			m_loan_rate[i] = 0;
 		}
 	};
 	virtual double AccumulativeTax(int nMonth);
@@ -129,9 +131,10 @@ public:
 	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate();
 	virtual double LoanRemaining(int nMonth, int nLoan);
+	virtual void Calculate();
 public:
-	double	m_interest_rate[5];		//	借款 贷款利率
-	bool	m_interest_half[5];		//	首年 利息减半
+	double	m_loan_rate[5];		//	贷款利率
+	CString	m_loan_borrow[5];	//	贷款借入时点	
 };
 
 /*************************************************************************************/
@@ -144,13 +147,19 @@ public:
 	};
 
 public:
-	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description();
 	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
-	virtual bool CopyTo(CFinanceAnalysis* parent);
+	virtual CFinanceAnalysisObj * Clone() {
+		CFinanceAnalysisObjA * p = new CFinanceAnalysisObjA();
+		p->m_scheme = m_scheme;
+		p->m_month = m_month;
+		p->m_name = m_name;
+		p->m_amount_of_money = m_amount_of_money;
+		return p;
+	};
 
 public:
 	
@@ -163,13 +172,19 @@ public:
 	};
 
 public:
-	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description();
 	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
-	virtual bool CopyTo(CFinanceAnalysis* parent);
+	virtual CFinanceAnalysisObj * Clone() {
+		CFinanceAnalysisObjA1 * p = new CFinanceAnalysisObjA1();
+		p->m_scheme = m_scheme;
+		p->m_month = m_month;
+		p->m_name = m_name;
+		p->m_amount_of_money = m_amount_of_money;
+		return p;
+	};
 
 public:
 
@@ -183,13 +198,19 @@ public:
 	};
 
 public:
-	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description() ;
 	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
-	virtual bool CopyTo(CFinanceAnalysis* parent);
+	virtual CFinanceAnalysisObj * Clone() {
+		CFinanceAnalysisObjB * p = new CFinanceAnalysisObjB();
+		p->m_scheme = m_scheme;
+		p->m_month = m_month;
+		p->m_name = m_name;
+		p->m_amount_of_money = m_amount_of_money;
+		return p;
+	};
 public:
 	
 };
@@ -202,13 +223,44 @@ public:
 	};
 
 public:
-	virtual void Serialize(CArchive& ar, double version);
 	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
 	virtual string Description();
 	virtual double AmountOfMoney();
 	virtual bool Assist(CFinanceAnalysis* parent);
 	virtual bool HasAssist();
-	virtual bool CopyTo(CFinanceAnalysis* parent);
+	virtual CFinanceAnalysisObj * Clone() {
+		CFinanceAnalysisObjC * p = new CFinanceAnalysisObjC();
+		p->m_scheme = m_scheme;
+		p->m_month = m_month;
+		p->m_name = m_name;
+		p->m_amount_of_money = m_amount_of_money;
+		return p;
+	};
+public:
+
+};
+
+/* 总成本费用 */
+class CFinanceAnalysisObjD : public CFinanceAnalysisObj {
+public:
+	CFinanceAnalysisObjD() {
+
+	};
+
+public:
+	virtual bool CreateOrUpdate(string menuCode, CFinanceAnalysis* parent);
+	virtual string Description();
+	virtual double AmountOfMoney();
+	virtual bool Assist(CFinanceAnalysis* parent);
+	virtual bool HasAssist();
+	virtual CFinanceAnalysisObj * Clone() {
+		CFinanceAnalysisObjD * p = new CFinanceAnalysisObjD();
+		p->m_scheme = m_scheme;
+		p->m_month = m_month;
+		p->m_name = m_name;
+		p->m_amount_of_money = m_amount_of_money;
+		return p;
+	};
 public:
 
 };
