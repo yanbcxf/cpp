@@ -61,6 +61,7 @@ public:
 	BOOL m_bRunning;
 	afx_msg void OnCalc();
 	afx_msg void OnFixedAssetDepreciation();
+	afx_msg void OnAnnuityCalc();
 };
 
 extern CCostEngineerApp theApp;

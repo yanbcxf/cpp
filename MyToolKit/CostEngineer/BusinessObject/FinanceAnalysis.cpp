@@ -1140,6 +1140,10 @@ string CFinanceAnalysisObjA1::Description() {
 }
 
 bool CFinanceAnalysisObjA1::HasAssist() {
+	if (m_name.Find("借款本金偿还") >=0)
+		return true;
+	if (m_name.Find("借款利息偿还") >=0)
+		return true;
 	if (m_name == "7.应纳增值税")
 		return true;
 	else if (m_name == "8.增值税附加")
@@ -1162,6 +1166,59 @@ bool CFinanceAnalysisObjA1::Assist(CFinanceAnalysis* p) {
 	int i = 0;
 	double amount = 0;
 	CAfterFinancing * parent = (CAfterFinancing *)p;
+
+	if (m_name.Find("借款本金偿还") >= 0) {
+		double sum = 0;
+		if (p->GetAmountOfMoney(m_month, "借款1", "还本", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款2", "还本", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款3", "还本", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款4", "还本", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款5", "还本", amount))
+			sum += amount;
+
+		i = 0;
+		SetDlgEditItem(infd, p, i++, "", "借款本金偿还", 0, 100000, sum);
+		
+
+		infd.Init(_T("参数设置"), _T("参数设置"));
+		if (infd.DoModal() == IDOK) {
+			i = 0;
+			g = 0;
+			double tax1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			m_amount_of_money = tax1;
+			return true;
+		}
+	}
+	if (m_name.Find("借款利息偿还") >= 0) {
+		double sum = 0;
+		if (p->GetAmountOfMoney(m_month, "借款1", "付息", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款2", "付息", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款3", "付息", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款4", "付息", amount))
+			sum += amount;
+		if (p->GetAmountOfMoney(m_month, "借款5", "付息", amount))
+			sum += amount;
+
+		i = 0;
+		SetDlgEditItem(infd, p, i++, "", "借款利息偿还", 0, 100000, sum);
+
+
+		infd.Init(_T("参数设置"), _T("参数设置"));
+		if (infd.DoModal() == IDOK) {
+			i = 0;
+			g = 0;
+			double tax1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			m_amount_of_money = tax1;
+			return true;
+		}
+	}
 
 	if (m_name == "7.应纳增值税") {
 		int nMonth = String2Double(m_month.GetBuffer());
@@ -1293,10 +1350,11 @@ string CFinanceAnalysisObjC::Description() {
 
 bool CFinanceAnalysisObjC::HasAssist() {
 
-	if (m_name == "3.付息")
+	if (m_name.Find("还本") >= 0)
 		return true;
-	else
-		return false;
+	if (m_name.Find("付息") >= 0)
+		return true;
+	return false;
 }
 
 bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
@@ -1311,7 +1369,24 @@ bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
 	int nMonth = atoi(m_month.GetBuffer());
 	int nLoan = atoi(m_scheme.Mid(m_scheme.GetLength() - 1, 1).GetBuffer());
 
-	if (m_name == "3.付息") {
+	if (m_name.Find("还本") >= 0) {
+		i = 0;
+		SetDlgEditItem(infd, p, i++, "", "等额还本付息额", 0.0001, 100000);
+
+		SetDlgEditItem(infd, p, i++, m_scheme.GetBuffer(), "付息", 0, 100000);
+
+		infd.Init(_T("本期新产生利息"), _T("本期新产生利息"));
+		if (infd.DoModal() == IDOK) {
+			i = 0;
+			g = 0;
+			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			m_amount_of_money = v1 - v2;
+			if (m_amount_of_money < 0) m_amount_of_money = 0;
+			return true;
+		}
+	}
+	else if (m_name.Find("付息") >= 0){
 		i = 0;
 		amount = p->LoanRemaining(nMonth, nLoan);
 		SetDlgEditItem(infd, p, i++, "", "截止本期初，贷款余额", -0.01, 100000, amount);
@@ -1473,7 +1548,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		SetDlgEditItem(infd, p, i++, "总成本费用", "摊销费", -100000, 100000);
 				
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("利润总额"), _T("利润总额"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1498,7 +1573,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 
 		SetDlgEditItem(infd, p, i++, "现金流出", "所得税", 0, 100000);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("净利润"), _T("净利润"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1520,7 +1595,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		else 
 			SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("可供分配利润"), _T("可供分配利润"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1544,7 +1619,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		
 		SetDlgEditItem(infd, p, i++, "", "法定盈余率(%)", 0, 100000, 10);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("法定盈余公积金"), _T("法定盈余公积金"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1577,11 +1652,11 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", 0, 100000);
 
 		/* 按照协议，经营期头二年按照 投资者可分配利润的 10%， 后面 30%  */
-		SetDlgEditItem(infd, p, i++, "", "约定的分配比例", -100000, 100000, 10);
+		SetDlgEditItem(infd, p, i++, "", "约定的分配比例", 0.0001, 100000);
 
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", -100000, 100000);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("应付投资者各方股利"), _T("应付投资者各方股利"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1614,7 +1689,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "应付投资者各方股利", 0, 100000);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("未分配利润"), _T("未分配利润"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1650,7 +1725,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "未分配利润", -100000, 100000);
 
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("用于还款未分配利润"), _T("用于还款未分配利润"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;
@@ -1671,8 +1746,14 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 					paste(source);
 				}
 				else {
-					/* 部分用于还款 */
-					m_amount_of_money = v1 - (v2 + v3);
+					if (v1 > v2 + v3) {
+						/* 部分用于还款 */
+						m_amount_of_money = v1 - (v2 + v3);
+					}
+					else {
+						/* 摊销费 + 折旧费 就足够还款 */
+						m_amount_of_money = 0;
+					}
 				}
 			}
 			else {
@@ -1696,7 +1777,7 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "用于还款未分配利润", -100000, 100000);
 
-		infd.Init(_T("参数设置"), _T("参数设置"));
+		infd.Init(_T("剩余未分配利润"), _T("剩余未分配利润"));
 		if (infd.DoModal() == IDOK) {
 			i = 0;
 			g = 0;

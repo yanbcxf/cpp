@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CCostEngineerApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 	ON_COMMAND(ID_CALC, &CCostEngineerApp::OnCalc)
 	ON_COMMAND(ID_FIXED_ASSET_DEPRECIATION, &CCostEngineerApp::OnFixedAssetDepreciation)
+	ON_COMMAND(ID_ANNUITY_CALC, &CCostEngineerApp::OnAnnuityCalc)
 END_MESSAGE_MAP()
 
 
@@ -441,6 +442,57 @@ void CCostEngineerApp::OnFixedAssetDepreciation()
 		CString source;
 		source.Format("年折旧费:  %.3f ,  固定资产余值: %.3f", v, v5);
 		AfxMessageBox(source);
+		paste(source);
+		// m_amount_of_money = v;
+
+	}
+}
+
+
+void CCostEngineerApp::OnAnnuityCalc()
+{
+	// TODO: 在此添加命令处理程序代码
+	CDyncItemGroupDlg infd;
+	infd.CXCAPTION = 80;
+	infd.CXCOMBOX = 100;
+	infd.GROUP_NUM_PER_LINE = 3;
+	int g = 0;
+	int i = 0;
+	double amount = 0;
+
+	i = 0;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("现值"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.00001;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("年利率(%)"), 64);
+	infd.m_vecFindItem[0][i][0].dbMin = 0.001;
+	infd.m_vecFindItem[0][i][0].dbMax = 1000000;
+
+	i++;
+	infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::EDIT;
+	memcpy(infd.m_vecFindItem[0][i][0].caption, _T("年份数"), 64);
+	infd.m_vecFindItem[0][i][0].nMin = 1;
+	infd.m_vecFindItem[0][i][0].nMax = 1000000;
+
+	infd.Init(_T("参数设置"), _T("参数设置"));
+	if (infd.DoModal() == IDOK) {
+		i = 0;
+		double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+		double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		int n = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+		double k = Annuity2Present(rate, n, 3);
+		double a = v1 / k;
+
+		CString source;
+		source.Format("年金:  %.3f", a);
+		AfxMessageBox(source);
+
+		source.Format("%.3f", a);
 		paste(source);
 		// m_amount_of_money = v;
 

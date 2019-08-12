@@ -127,13 +127,15 @@
 #define ID_32792                        32792
 #define ID_FIXED_ASSET_DEPRECI          32793
 #define ID_FIXED_ASSET_DEPRECIATION     32794
+#define ID_32795                        32795
+#define ID_ANNUITY_CALC                 32796
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32795
+#define _APS_NEXT_COMMAND_VALUE         32797
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
