@@ -345,15 +345,22 @@ void CFinanceAnalysis::Adjust() {
 }
 
 bool CFinanceAnalysis::GetAmountOfMoney(CString month, CString scheme, CString name, double & amount) {
+	int pos = -1;
 	for (CFinanceAnalysisObj * p : m_objs) {
 		if (scheme.CompareNoCase(p->m_scheme) == 0) {
 			if (String2Double(p->m_month.GetBuffer()) == String2Double(month.GetBuffer())
 				&& p->m_name.Find(name) >= 0) {
-				amount = p->m_amount_of_money;
-				return true;
+				/* 寻找最佳的匹配, 匹配的位置越靠前的越好 */
+				int k = p->m_name.Find(name);
+				if (pos < 0 || pos > k) {
+					pos = k;
+					amount = p->m_amount_of_money;
+				}
 			}
 		}
 	}
+	if (pos >= 0)
+		return true;
 	return false;
 }
 
@@ -1202,7 +1209,7 @@ bool CFinanceAnalysisObjA1::Assist(CFinanceAnalysis* p) {
 
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "以前年度亏损", -100000, 100000);
 
-		SetDlgEditItem(infd, p, i++, "", "所得税率(%)", -100000, 100000, p->m_income_tax_rate);
+		SetDlgEditItem(infd, p, i++, "", "所得税率(%)", -100000, 100000, p->m_income_tax_rate * 100);
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
 		if (infd.DoModal() == IDOK) {
@@ -1210,7 +1217,7 @@ bool CFinanceAnalysisObjA1::Assist(CFinanceAnalysis* p) {
 			g = 0;
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
 
 			m_amount_of_money = (v1 - v2) * v3;
 
@@ -1309,10 +1316,10 @@ bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
 		amount = p->LoanRemaining(nMonth, nLoan);
 		SetDlgEditItem(infd, p, i++, "", "截止本期初，贷款余额", -0.01, 100000, amount);
 
-		SetDlgEditItem(infd, p, i++, m_scheme.GetBuffer(), "贷款利率(%)", 0, 100000, p->m_loan_rate[nLoan - 1] * 100);
+		SetDlgEditItem(infd, p, i++, m_scheme.GetBuffer(), "借入", 0, 100000);
 
-		SetDlgEditItem(infd, p, i++, "", "借入", 0, 100000);
-	
+		SetDlgEditItem(infd, p, i++, "", "贷款利率(%)", 0, 100000, p->m_loan_rate[nLoan - 1] * 100);
+
 
 		infd.m_vecFindItem[0][i][0].nType = CDlgTemplateBuilder::COMBOBOX;
 		memcpy(infd.m_vecFindItem[0][i][0].caption, "贷款借入时点", 64);
@@ -1330,10 +1337,10 @@ bool CFinanceAnalysisObjC::Assist(CFinanceAnalysis* parent) {
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
-			if (infd.m_vecFindItem[g][i++][0].strItem.CompareNoCase("期中") == 0) {
+			if (infd.m_vecFindItem[g][i][0].strItem.CompareNoCase("期中") == 0) {
 				m_amount_of_money = v1 * rate + v2 * 0.5 * rate;
 			}
-			else if (infd.m_vecFindItem[g][i++][0].strItem.CompareNoCase("期初") == 0) {
+			else if (infd.m_vecFindItem[g][i][0].strItem.CompareNoCase("期初") == 0) {
 				m_amount_of_money = v1 * rate + v2 * rate;
 			}
 			else {
@@ -1395,12 +1402,11 @@ bool CFinanceAnalysisObjD::Assist(CFinanceAnalysis* parent) {
 vector<string> CFinanceAnalysisObjE::GetOptions() {
 	vector<string> options;
 	options.push_back("1.利润总额");
-	options.push_back("2.以前年度亏损");
-	options.push_back("3.净利润");
-	options.push_back("4.可供分配利润");
-	options.push_back("5.法定盈余公积金");
-	options.push_back("6.应付投资者各方股利");
-	options.push_back("7.未分配利润");
+	options.push_back("2.净利润");
+	options.push_back("3.可供分配利润");
+	options.push_back("4.法定盈余公积金");
+	options.push_back("5.应付投资者各方股利");
+	options.push_back("6.未分配利润");
 	options.push_back("7.用于还款未分配利润");
 	options.push_back("8.剩余未分配利润");
 
@@ -1419,6 +1425,20 @@ string CFinanceAnalysisObjE::Description() {
 bool CFinanceAnalysisObjE::HasAssist() {
 
 	if (m_name.Find("利润总额") >= 0)
+		return true;
+	if (m_name.Find("净利润") >= 0)
+		return true;
+	if (m_name.Find("可供分配利润") >= 0)
+		return true;
+	if (m_name.Find("法定盈余公积金") >= 0)
+		return true;
+	if (m_name.Find("应付投资者各方股利") >= 0)
+		return true;
+	if (m_name.Find("未分配利润") >= 0)
+		return true;
+	if (m_name.Find("用于还款未分配利润") >= 0)
+		return true;
+	if (m_name.Find("剩余未分配利润") >= 0)
 		return true;
 	return false;
 }
@@ -1468,18 +1488,15 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			double output6 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
 			m_amount_of_money = input1 + input2 - output1 - output2 - output3 - output4 - output5 - output6;
-
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
 		}
 	}
 	else if (m_name.Find("净利润") >= 0) {
+		/* 净利润账户对于会计上的“本年利润”,贷方余额为净利润，借方余额为净亏损 */
 		i = 0;
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "利润总额", -100000, 100000);
 
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "以前年度亏损", -100000, 100000);
-
-		SetDlgEditItem(infd, p, i++, "", "所得税率(%)", -100000, 100000, p->m_income_tax_rate);
+		SetDlgEditItem(infd, p, i++, "现金流出", "所得税", 0, 100000);
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
 		if (infd.DoModal() == IDOK) {
@@ -1487,12 +1504,9 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			g = 0;
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			
-			m_amount_of_money = (v1 - v2) * v3;
-			m_amount_of_money = v1 - m_amount_of_money;
-
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
+			m_amount_of_money = (v1 - v2);
+			
 			return true;
 		}
 	}
@@ -1500,7 +1514,11 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		i = 0;
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", -100000, 100000);
 		
-		SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000);
+		int nMonth = atoi(m_month.GetBuffer());
+		if(parent->GetAmountOfMoney(Int2String(nMonth-1).c_str(), "利润及利润分配", "剩余未分配利润", amount))
+			SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000, amount);
+		else 
+			SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000);
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
 		if (infd.DoModal() == IDOK) {
@@ -1510,16 +1528,21 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
 			m_amount_of_money = (v1 + v2);
-
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
 		}
 	}
 	else if (m_name.Find("法定盈余公积金") >= 0) {
+		/* 抵减年初累计亏损后的本年净利润 */
 		i = 0;
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", 0, 100000);
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", -100000, 100000);
+
+		int nMonth = atoi(m_month.GetBuffer());
+		if (parent->GetAmountOfMoney(Int2String(nMonth - 1).c_str(), "利润及利润分配", "剩余未分配利润", amount))
+			SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000, amount);
+		else
+			SetDlgEditItem(infd, p, i++, "", "上年剩余未分配利润", -100000, 100000);
 		
-		SetDlgEditItem(infd, p, i++, "", "法定盈余率(%)", -100000, 100000, 10);
+		SetDlgEditItem(infd, p, i++, "", "法定盈余率(%)", 0, 100000, 10);
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
 		if (infd.DoModal() == IDOK) {
@@ -1527,10 +1550,23 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			g = 0;
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+			/* 本年有盈余，才提取 */
+			if (v1 > 0) {
+				if (v2 >= 0) {
+					m_amount_of_money = v1 * rate;
+				}
+				else if (v1 + v2 > 0) {
+					/* 抵减年初累计亏损后的本年净利润 仍有余额时，也提取 */
+					m_amount_of_money = (v1 + v2) * rate;
+				} 
+				else {
+					m_amount_of_money = 0;
+				}
+			}
+			else
+				m_amount_of_money = 0;
 
-			m_amount_of_money = (v1 * v2);
-
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
 		}
 	}
@@ -1538,9 +1574,12 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		i = 0;
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "可供分配利润", -100000, 100000);
 
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", -100000, 100000);
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", 0, 100000);
 
+		/* 按照协议，经营期头二年按照 投资者可分配利润的 10%， 后面 30%  */
 		SetDlgEditItem(infd, p, i++, "", "约定的分配比例", -100000, 100000, 10);
+
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", -100000, 100000);
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
 		if (infd.DoModal() == IDOK) {
@@ -1548,37 +1587,45 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			g = 0;
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+			double rate = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+			double v4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
-			m_amount_of_money = (v1 - v2) * v3;
+			if (v4 > 0) {
+				if (v1 > 0)
+					m_amount_of_money = (v1 - v2) * rate;
+				else
+					m_amount_of_money = 0;
+			}
+			else {
+				/* 亏损年度， 不分配利润 */
+				m_amount_of_money = 0;
+			}
 
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
 			return true;
 		}
 
 	}
-	else if (m_name.Find("未分配利润") >= 0) {
-	i = 0;
-	SetDlgEditItem(infd, p, i++, "利润及利润分配", "可供分配利润", -100000, 100000);
-
-	SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", -100000, 100000);
-
-	SetDlgEditItem(infd, p, i++, "利润及利润分配", "应付投资者各方股利", -100000, 100000);
-
-	infd.Init(_T("参数设置"), _T("参数设置"));
-	if (infd.DoModal() == IDOK) {
+	else if (m_name.CompareNoCase("6.未分配利润") == 0) {
+		/* 会计上， “利润分配-未分配利润账户” 贷方余额代表企业累计赢利， 借方余额表示累计亏损 */
 		i = 0;
-		g = 0;
-		double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-		double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-		double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer()) / 100;
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "可供分配利润", -100000, 100000);
 
-		m_amount_of_money = v1 - v2 - v3;
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", 0, 100000);
 
-		if (m_amount_of_money < 0) m_amount_of_money = 0;
-		return true;
-	}
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "应付投资者各方股利", 0, 100000);
 
+		infd.Init(_T("参数设置"), _T("参数设置"));
+		if (infd.DoModal() == IDOK) {
+			i = 0;
+			g = 0;
+			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
+
+			m_amount_of_money = v1 - v2 - v3;
+
+			return true;
+		}
 	}
 	else if (m_name.Find("用于还款未分配利润") >= 0) {
 		double sum = 0;
@@ -1596,11 +1643,11 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 		i = 0;
 		SetDlgEditItem(infd, p, i++, "", "应还本金", 0, 100000, sum);
 
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "可供分配利润", -100000, 100000);
-
 		SetDlgEditItem(infd, p, i++, "总成本费用", "折旧费", 0, 100000);
 
 		SetDlgEditItem(infd, p, i++, "总成本费用", "摊销费", 0, 100000);
+
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "未分配利润", -100000, 100000);
 
 
 		infd.Init(_T("参数设置"), _T("参数设置"));
@@ -1612,30 +1659,40 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
-			m_amount_of_money = 0;
-			if (v1 > (v2 + v3 + v4)) {
-				m_amount_of_money = v2;
+			if (v4 > 0) {
+				/* 累计未分配利润为正数时，总体盈利 */
+				if (v1 > (v2 + v3 + v4)) {
+					/* 全部用于还款 */
+					m_amount_of_money = v4;
 
-				CString source;
-				source.Format("资金缺口:  %.3f", v1 - (v2 + v3 + v4));
-				AfxMessageBox(source);
-				paste(source);
+					CString source;
+					source.Format("资金缺口:  %.3f", v1 - (v2 + v3 + v4));
+					AfxMessageBox(source);
+					paste(source);
+				}
+				else {
+					/* 部分用于还款 */
+					m_amount_of_money = v1 - (v2 + v3);
+				}
 			}
 			else {
-				m_amount_of_money = v1 - (v3 + v4);
-			}
+				m_amount_of_money = 0;
 
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
+				if (v1 > (v2 + v3)) {
+					CString source;
+					source.Format("资金缺口:  %.3f", v1 - (v2 + v3 + v4));
+					AfxMessageBox(source);
+					paste(source);
+				}
+			}
+			
+
 			return true;
 		}
 	}
 	else if (m_name.Find("剩余未分配利润") >= 0) {
 		i = 0;
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "净利润", -100000, 100000);
-
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "法定盈余公积金", -100000, 100000);
-
-		SetDlgEditItem(infd, p, i++, "利润及利润分配", "应付投资者各方股利", -100000, 100000);
+		SetDlgEditItem(infd, p, i++, "利润及利润分配", "未分配利润", -100000, 100000);
 
 		SetDlgEditItem(infd, p, i++, "利润及利润分配", "用于还款未分配利润", -100000, 100000);
 
@@ -1645,12 +1702,8 @@ bool CFinanceAnalysisObjE::Assist(CFinanceAnalysis* p) {
 			g = 0;
 			double v1 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 			double v2 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double v3 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
-			double v4 = String2Double(infd.m_vecFindItem[g][i++][0].strItem.GetBuffer());
 
-			m_amount_of_money = v1 - v2 - v3 - v4;
-
-			if (m_amount_of_money < 0) m_amount_of_money = 0;
+			m_amount_of_money = v1 - v2;
 			return true;
 		}
 	}
