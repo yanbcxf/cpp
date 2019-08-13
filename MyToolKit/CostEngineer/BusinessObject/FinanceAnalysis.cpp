@@ -234,6 +234,13 @@ void CFinanceAnalysis::SortByMonth() {
 				bool rInput = rscheme.find("现金流入") != string::npos;
 				bool lOutput = lscheme.find("现金流出") != string::npos;
 				bool rOutput = rscheme.find("现金流出") != string::npos;
+
+				/* 特例 */
+				if (lOutput && lhs->m_name.Find("所得税") >= 0 && rProfit && rhs->m_name.Find("利润总额") >= 0)
+					return false;
+				if (rOutput && rhs->m_name.Find("所得税") >= 0 && lProfit && lhs->m_name.Find("利润总额") >= 0)
+					return true;
+
 				if (lscheme != rscheme) {
 					if (lLoan && rLoan) return lscheme < rscheme;
 					else if (lLoan) return true;
