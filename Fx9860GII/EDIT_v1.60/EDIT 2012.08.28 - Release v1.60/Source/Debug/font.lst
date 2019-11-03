@@ -1,0 +1,1919 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c     1    //Font functions -----------------------------------------------------------------------
+          font.c     2    
+          font.c     3    //Include files
+          font.c     4    #include "fxlib.h"
+          font.c     5    #include "stdio.h"
+          font.c     6    #include "font.h"
+          font.c     7    
+          font.c     8    // ------------------------------------------------------------------------------------- 
+          font.c     9    // Global variables
+          font.c    10    
+          font.c    11    // Font 3x5 data
+          font.c    12    unsigned int _iFont3x5[128]={
+          font.c    13     3960, //Character 000 [NUL]
+          font.c    14     3960, //Character 001 [SOH]
+          font.c    15     3960, //Character 002 [STX]
+          font.c    16     3960, //Character 003 [ETX]
+          font.c    17     3960, //Character 004 [EOT]
+          font.c    18     3960, //Character 005 [ENQ]
+          font.c    19     3960, //Character 006 [ACK]
+          font.c    20     3960, //Character 007 [BEL]
+          font.c    21     3960, //Character 008 [BS]
+          font.c    22     3960, //Character 009 [TAB]
+          font.c    23     3960, //Character 010 [LF]
+          font.c    24     3960, //Character 011 [VT]
+          font.c    25    32000, //Character 012 [FF]
+          font.c    26     3960, //Character 013 [CR]
+          font.c    27     3960, //Character 014 [SO]
+          font.c    28     3960, //Character 015 [SI]
+          font.c    29     3960, //Character 016 [DEL]
+          font.c    30     3960, //Character 017 [XON]
+          font.c    31     3960, //Character 018 [DC2]
+          font.c    32     3960, //Character 019 [XOFF]
+          font.c    33     3960, //Character 020 [DC4]
+          font.c    34     3960, //Character 021 [NAK]
+          font.c    35     3960, //Character 022 [SYN]
+          font.c    36     3960, //Character 023 [ETB]
+          font.c    37     3960, //Character 024 [CAN]
+          font.c    38     3960, //Character 025 [EM]
+          font.c    39     3960, //Character 026 [SUB]
+          font.c    40     3960, //Character 027 [ESC]
+          font.c    41     3960, //Character 028 [FS]
+          font.c    42     3960, //Character 029 [GS]
+          font.c    43     3960, //Character 030 [RS]
+          font.c    44     3960, //Character 031 [US]
+          font.c    45        0, //Character 032 [SP]
+          font.c    46     8338, //Character 033 [!]
+          font.c    47       45, //Character 034 ["]
+          font.c    48    16254, //Character 035 [#]
+          font.c    49    32223, //Character 036 [$]
+          font.c    50    21157, //Character 037 [%]
+          font.c    51    10922, //Character 038 [&]
+          font.c    52      166, //Character 039 [']
+          font.c    53    17556, //Character 040 [(]
+          font.c    54     5265, //Character 041 [)]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c    55     2728, //Character 042 [*]
+          font.c    56     1488, //Character 043 [+]
+          font.c    57    10624, //Character 044 [,]
+          font.c    58      448, //Character 045 [-]
+          font.c    59    13824, //Character 046 [.]
+          font.c    60     4756, //Character 047 [/]
+          font.c    61    31599, //Character 048 [0]
+          font.c    62    29850, //Character 049 [1]
+          font.c    63    29671, //Character 050 [2]
+          font.c    64    31207, //Character 051 [3]
+          font.c    65    18925, //Character 052 [4]
+          font.c    66    31183, //Character 053 [5]
+          font.c    67    31695, //Character 054 [6]
+          font.c    68    18727, //Character 055 [7]
+          font.c    69    31727, //Character 056 [8]
+          font.c    70    31215, //Character 057 [9]
+          font.c    71    13851, //Character 058 [:]
+          font.c    72     5147, //Character 059 [;]
+          font.c    73    17492, //Character 060 [<]
+          font.c    74     3640, //Character 061 [=]
+          font.c    75     5393, //Character 062 [>]
+          font.c    76     8355, //Character 063 [?]
+          font.c    77    11171, //Character 064 [@]
+          font.c    78    23530, //Character 065 [A]
+          font.c    79    15083, //Character 066 [B]
+          font.c    80    25166, //Character 067 [C]
+          font.c    81    15211, //Character 068 [D]
+          font.c    82    29647, //Character 069 [E]
+          font.c    83     5071, //Character 070 [F]
+          font.c    84    27470, //Character 071 [G]
+          font.c    85    23533, //Character 072 [H]
+          font.c    86    29847, //Character 073 [I]
+          font.c    87    11044, //Character 074 [J]
+          font.c    88    23277, //Character 075 [K]
+          font.c    89    29257, //Character 076 [L]
+          font.c    90    23421, //Character 077 [M]
+          font.c    91    23403, //Character 078 [N]
+          font.c    92    11114, //Character 079 [O]
+          font.c    93     4843, //Character 080 [P]
+          font.c    94    17770, //Character 081 [Q]
+          font.c    95    23275, //Character 082 [R]
+          font.c    96    14478, //Character 083 [S]
+          font.c    97     9367, //Character 084 [T]
+          font.c    98    31597, //Character 085 [U]
+          font.c    99    11117, //Character 086 [V]
+          font.c   100    12141, //Character 087 [W]
+          font.c   101    23213, //Character 088 [X]
+          font.c   102     9389, //Character 089 [Y]
+          font.c   103    29351, //Character 090 [Z]
+          font.c   104    25750, //Character 091 [[]
+          font.c   105    17545, //Character 092 [\]
+          font.c   106    26918, //Character 093 []]
+          font.c   107       42, //Character 094 [^]
+          font.c   108    28672, //Character 095 [_]
+          font.c   109      139, //Character 096 [`]
+          font.c   110    27554, //Character 097 [a]
+          font.c   111    15225, //Character 098 [b]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   112    25200, //Character 099 [c]
+          font.c   113    27516, //Character 100 [d]
+          font.c   114    29674, //Character 101 [e]
+          font.c   115     9684, //Character 102 [f]
+          font.c   116    14766, //Character 103 [g]
+          font.c   117    23385, //Character 104 [h]
+          font.c   118     9346, //Character 105 [i]
+          font.c   119    11012, //Character 106 [j]
+          font.c   120    22345, //Character 107 [k]
+          font.c   121    29843, //Character 108 [l]
+          font.c   122    23408, //Character 109 [m]
+          font.c   123    23376, //Character 110 [n]
+          font.c   124    11088, //Character 111 [o]
+          font.c   125     5976, //Character 112 [p]
+          font.c   126    19824, //Character 113 [q]
+          font.c   127     4840, //Character 114 [r]
+          font.c   128    14448, //Character 115 [s]
+          font.c   129    17586, //Character 116 [t]
+          font.c   130    27496, //Character 117 [u]
+          font.c   131    11112, //Character 118 [v]
+          font.c   132    32616, //Character 119 [w]
+          font.c   133    23208, //Character 120 [x]
+          font.c   134     5480, //Character 121 [y]
+          font.c   135    29496, //Character 122 [z]
+          font.c   136    25814, //Character 123 [{]
+          font.c   137     9362, //Character 124 [|]
+          font.c   138    13715, //Character 125 [}]
+          font.c   139      408, //Character 126 [~]
+          font.c   140     3960  //Character 127 []
+          font.c   141    };
+          font.c   142    
+          font.c   143    // Font 3x6 data
+          font.c   144    unsigned int _iFont3x6[128]={
+          font.c   145     31608, //Character 000 [NUL]
+          font.c   146     31608, //Character 001 [SOH]
+          font.c   147     31608, //Character 002 [STX]
+          font.c   148     31608, //Character 003 [ETX]
+          font.c   149     31608, //Character 004 [EOT]
+          font.c   150     31608, //Character 005 [ENQ]
+          font.c   151     31608, //Character 006 [ACK]
+          font.c   152     31608, //Character 007 [BEL]
+          font.c   153     31608, //Character 008 [BS]
+          font.c   154     31608, //Character 009 [TAB]
+          font.c   155     31608, //Character 010 [LF]
+          font.c   156     31608, //Character 011 [VT]
+          font.c   157    256000, //Character 012 [FF]
+          font.c   158     31608, //Character 013 [CR]
+          font.c   159     31608, //Character 014 [SO]
+          font.c   160     31608, //Character 015 [SI]
+          font.c   161     31608, //Character 016 [DEL]
+          font.c   162     31608, //Character 017 [XON]
+          font.c   163     31608, //Character 018 [DC2]
+          font.c   164     31608, //Character 019 [XOFF]
+          font.c   165     31608, //Character 020 [DC4]
+          font.c   166     31608, //Character 021 [NAK]
+          font.c   167     31608, //Character 022 [SYN]
+          font.c   168     31608, //Character 023 [ETB]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   169     31608, //Character 024 [CAN]
+          font.c   170     31608, //Character 025 [EM]
+          font.c   171     31608, //Character 026 [SUB]
+          font.c   172     31608, //Character 027 [ESC]
+          font.c   173     31608, //Character 028 [FS]
+          font.c   174     31608, //Character 029 [GS]
+          font.c   175     31608, //Character 030 [RS]
+          font.c   176     31608, //Character 031 [US]
+          font.c   177         0, //Character 032 [SP]
+          font.c   178     66706, //Character 033 [!]
+          font.c   179        45, //Character 034 ["]
+          font.c   180    113526, //Character 035 [#]
+          font.c   181     97530, //Character 036 [$]
+          font.c   182    169125, //Character 037 [%]
+          font.c   183     87402, //Character 038 [&]
+          font.c   184        83, //Character 039 [']
+          font.c   185     70218, //Character 040 [(]
+          font.c   186     84258, //Character 041 [)]
+          font.c   187     21824, //Character 042 [*]
+          font.c   188     11904, //Character 043 [+]
+          font.c   189     84992, //Character 044 [,]
+          font.c   190      3584, //Character 045 [-]
+          font.c   191    110592, //Character 046 [.]
+          font.c   192     38052, //Character 047 [/]
+          font.c   193    252783, //Character 048 [0]
+          font.c   194    238746, //Character 049 [1]
+          font.c   195    234471, //Character 050 [2]
+          font.c   196    248295, //Character 051 [3]
+          font.c   197    149997, //Character 052 [4]
+          font.c   198    248271, //Character 053 [5]
+          font.c   199    252879, //Character 054 [6]
+          font.c   200    149799, //Character 055 [7]
+          font.c   201    252911, //Character 056 [8]
+          font.c   202    248303, //Character 057 [9]
+          font.c   203    110619, //Character 058 [:]
+          font.c   204     42523, //Character 059 [;]
+          font.c   205    139860, //Character 060 [<]
+          font.c   206     29120, //Character 061 [=]
+          font.c   207     43281, //Character 062 [>]
+          font.c   208     66851, //Character 063 [?]
+          font.c   209     88995, //Character 064 [@]
+          font.c   210    187370, //Character 065 [A]
+          font.c   211    121579, //Character 066 [B]
+          font.c   212    201294, //Character 067 [C]
+          font.c   213    121707, //Character 068 [D]
+          font.c   214    234447, //Character 069 [E]
+          font.c   215     37839, //Character 070 [F]
+          font.c   216    219726, //Character 071 [G]
+          font.c   217    187373, //Character 072 [H]
+          font.c   218    238743, //Character 073 [I]
+          font.c   219     88356, //Character 074 [J]
+          font.c   220    186093, //Character 075 [K]
+          font.c   221    234057, //Character 076 [L]
+          font.c   222    187261, //Character 077 [M]
+          font.c   223    187243, //Character 078 [N]
+          font.c   224     88938, //Character 079 [O]
+          font.c   225     37611, //Character 080 [P]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   226    142186, //Character 081 [Q]
+          font.c   227    187115, //Character 082 [R]
+          font.c   228    116878, //Character 083 [S]
+          font.c   229     74903, //Character 084 [T]
+          font.c   230    252781, //Character 085 [U]
+          font.c   231     88941, //Character 086 [V]
+          font.c   232     97133, //Character 087 [W]
+          font.c   233    185517, //Character 088 [X]
+          font.c   234     75117, //Character 089 [Y]
+          font.c   235    234151, //Character 090 [Z]
+          font.c   236    205974, //Character 091 [[]
+          font.c   237    148617, //Character 092 [\]
+          font.c   238    107667, //Character 093 []]
+          font.c   239        42, //Character 094 [^]
+          font.c   240    229376, //Character 095 [_]
+          font.c   241       139, //Character 096 [`]
+          font.c   242    220432, //Character 097 [a]
+          font.c   243    121721, //Character 098 [b]
+          font.c   244    201328, //Character 099 [c]
+          font.c   245    220028, //Character 100 [d]
+          font.c   246    204624, //Character 101 [e]
+          font.c   247     75220, //Character 102 [f]
+          font.c   248    118128, //Character 103 [g]
+          font.c   249    187225, //Character 104 [h]
+          font.c   250     74882, //Character 105 [i]
+          font.c   251     88324, //Character 106 [j]
+          font.c   252    178760, //Character 107 [k]
+          font.c   253    238739, //Character 108 [l]
+          font.c   254    187248, //Character 109 [m]
+          font.c   255    187216, //Character 110 [n]
+          font.c   256     88912, //Character 111 [o]
+          font.c   257     47960, //Character 112 [p]
+          font.c   258    158576, //Character 113 [q]
+          font.c   259     37608, //Character 114 [r]
+          font.c   260    115824, //Character 115 [s]
+          font.c   261    140466, //Character 116 [t]
+          font.c   262    220008, //Character 117 [u]
+          font.c   263     88936, //Character 118 [v]
+          font.c   264    260968, //Character 119 [w]
+          font.c   265    185704, //Character 120 [x]
+          font.c   266     43880, //Character 121 [y]
+          font.c   267    234808, //Character 122 [z]
+          font.c   268    140500, //Character 123 [{]
+          font.c   269     74898, //Character 124 [|]
+          font.c   270     42385, //Character 125 [}]
+          font.c   271      2688, //Character 126 [~]
+          font.c   272     31608  //Character 127 []
+          font.c   273    };
+          font.c   274    
+          font.c   275    // Font 4x6 data
+          font.c   276    unsigned int _iFont4x6[128]={
+          font.c   277     1022448, //Character 000 [NUL]
+          font.c   278     1022448, //Character 001 [SOH]
+          font.c   279     1022448, //Character 002 [STX]
+          font.c   280     1022448, //Character 003 [ETX]
+          font.c   281     1022448, //Character 004 [EOT]
+          font.c   282     1022448, //Character 005 [ENQ]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   283     1022448, //Character 006 [ACK]
+          font.c   284     3511600, //Character 007 [BEL]
+          font.c   285     1022448, //Character 008 [BS]
+          font.c   286     1022448, //Character 009 [TAB]
+          font.c   287     1022448, //Character 010 [LF]
+          font.c   288     1022448, //Character 011 [VT]
+          font.c   289     7749632, //Character 012 [FF]
+          font.c   290     1022448, //Character 013 [CR]
+          font.c   291     1022448, //Character 014 [SO]
+          font.c   292     1022448, //Character 015 [SI]
+          font.c   293     1022448, //Character 016 [DEL]
+          font.c   294     1022448, //Character 017 [XON]
+          font.c   295     1022448, //Character 018 [DC2]
+          font.c   296     1022448, //Character 019 [XOFF]
+          font.c   297     1022448, //Character 020 [DC4]
+          font.c   298     1022448, //Character 021 [NAK]
+          font.c   299     1022448, //Character 022 [SYN]
+          font.c   300     1022448, //Character 023 [ETB]
+          font.c   301     1022448, //Character 024 [CAN]
+          font.c   302     1022448, //Character 025 [EM]
+          font.c   303     1022448, //Character 026 [SUB]
+          font.c   304     1022448, //Character 027 [ESC]
+          font.c   305     1022448, //Character 028 [FS]
+          font.c   306     1022448, //Character 029 [GS]
+          font.c   307     1022448, //Character 030 [RS]
+          font.c   308     1022448, //Character 031 [US]
+          font.c   309           0, //Character 032 [SP]
+          font.c   310     4211776, //Character 033 [!]
+          font.c   311          85, //Character 034 ["]
+          font.c   312     6247925, //Character 035 [#]
+          font.c   313    16578036, //Character 036 [$]
+          font.c   314     9577545, //Character 037 [%]
+          font.c   315    10855762, //Character 038 [&]
+          font.c   316         582, //Character 039 [']
+          font.c   317     4334116, //Character 040 [(]
+          font.c   318     2376770, //Character 041 [)]
+          font.c   319      616080, //Character 042 [*]
+          font.c   320      320512, //Character 043 [+]
+          font.c   321     2383872, //Character 044 [,]
+          font.c   322       57344, //Character 045 [-]
+          font.c   323     6684672, //Character 046 [.]
+          font.c   324     1188936, //Character 047 [/]
+          font.c   325     6929814, //Character 048 [0]
+          font.c   326    14959716, //Character 049 [1]
+          font.c   327    15803542, //Character 050 [2]
+          font.c   328     6917270, //Character 051 [3]
+          font.c   329     4519253, //Character 052 [4]
+          font.c   330     7898911, //Character 053 [5]
+          font.c   331     6910358, //Character 054 [6]
+          font.c   332     2237583, //Character 055 [7]
+          font.c   333     6919830, //Character 056 [8]
+          font.c   334     6875542, //Character 057 [9]
+          font.c   335     6684774, //Character 058 [:]
+          font.c   336     2383974, //Character 059 [;]
+          font.c   337     4329764, //Character 060 [<]
+          font.c   338      986880, //Character 061 [=]
+          font.c   339     2394178, //Character 062 [>]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   340     4212886, //Character 063 [?]
+          font.c   341     6937223, //Character 064 [@]
+          font.c   342    10090902, //Character 065 [A]
+          font.c   343     7960983, //Character 066 [B]
+          font.c   344     6885782, //Character 067 [C]
+          font.c   345     7969175, //Character 068 [D]
+          font.c   346    15855903, //Character 069 [E]
+          font.c   347     1175839, //Character 070 [F]
+          font.c   348    16355615, //Character 071 [G]
+          font.c   349    10090905, //Character 072 [H]
+          font.c   350    14959694, //Character 073 [I]
+          font.c   351     6916232, //Character 074 [J]
+          font.c   352     9778009, //Character 075 [K]
+          font.c   353    15798545, //Character 076 [L]
+          font.c   354    10066425, //Character 077 [M]
+          font.c   355    10067385, //Character 078 [N]
+          font.c   356     6920598, //Character 079 [O]
+          font.c   357     1145239, //Character 080 [P]
+          font.c   358     8821142, //Character 081 [Q]
+          font.c   359    10058135, //Character 082 [R]
+          font.c   360     7889182, //Character 083 [S]
+          font.c   361     4473934, //Character 084 [T]
+          font.c   362    16357785, //Character 085 [U]
+          font.c   363     6920601, //Character 086 [V]
+          font.c   364     7313817, //Character 087 [W]
+          font.c   365    10053273, //Character 088 [X]
+          font.c   366     4475545, //Character 089 [Y]
+          font.c   367    15820943, //Character 090 [Z]
+          font.c   368     6431270, //Character 091 [[]
+          font.c   369     8667681, //Character 092 [\]
+          font.c   370     6571078, //Character 093 []]
+          font.c   371         164, //Character 094 [^]
+          font.c   372    15728640, //Character 095 [_]
+          font.c   373        1062, //Character 096 [`]
+          font.c   374     6940768, //Character 097 [a]
+          font.c   375     7969137, //Character 098 [b]
+          font.c   376    14750176, //Character 099 [c]
+          font.c   377    15309288, //Character 100 [d]
+          font.c   378    14809440, //Character 101 [e]
+          font.c   379     4476488, //Character 102 [f]
+          font.c   380     7924064, //Character 103 [g]
+          font.c   381    10066289, //Character 104 [h]
+          font.c   382     4473860, //Character 105 [i]
+          font.c   383     2442244, //Character 106 [j]
+          font.c   384     9778576, //Character 107 [k]
+          font.c   385    14959686, //Character 108 [l]
+          font.c   386    10066400, //Character 109 [m]
+          font.c   387    10066768, //Character 110 [n]
+          font.c   388     6920544, //Character 111 [o]
+          font.c   389     1546608, //Character 112 [p]
+          font.c   390     9345504, //Character 113 [q]
+          font.c   391     1119184, //Character 114 [r]
+          font.c   392     7889376, //Character 115 [s]
+          font.c   393     4334178, //Character 116 [t]
+          font.c   394    11377040, //Character 117 [u]
+          font.c   395     6920592, //Character 118 [v]
+          font.c   396     7313808, //Character 119 [w]
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   397    10053264, //Character 120 [x]
+          font.c   398     1198736, //Character 121 [y]
+          font.c   399    15821040, //Character 122 [z]
+          font.c   400     4334372, //Character 123 [{]
+          font.c   401     4473924, //Character 124 [|]
+          font.c   402     2378818, //Character 125 [}]
+          font.c   403       23040, //Character 126 [~]
+          font.c   404     1022448  //Character 127 []
+          font.c   405    };
+          font.c   406    
+          font.c   407    //Current context
+          font.c   408    int _iCntx=0;
+          font.c   409    
+          font.c   410    //Font definition
+          font.c   411    struct FData _sFData[FONTMAX]={
+          font.c   412    {4,6,128/4,64/6,_iFont3x5},  //3x5 Font
+          font.c   413    {4,7,128/4,64/7,_iFont3x6},  //3x6 Font
+          font.c   414    {5,7,128/5,64/7,_iFont4x6},  //4x6 Font
+          font.c   415    {6,8,128/6,64/8,NULL     }}; //7x8 Font (Standard large font)
+          font.c   416    
+          font.c   417    //Font contexts (default context defined)
+          font.c   418    struct FCntx _sFCntx[CONTMAX]={{FONTL,COLNOR,0,0}};
+          font.c   419    
+          font.c   420    // ------------------------------------------------------------------------------------- 
+          font.c   421    // Set font context
+          font.c   422    void DefineFontContext(int iCntx, int iFont, int iColor, int iPx0, int iPy0)
+P   00000000              _DefineFontContext:              ; function: DefineFontContext
+                                                           ; frame size=0
+          font.c   423    {
+          font.c   424      _sFCntx[iCntx].iFont  = iFont;
+    00000000 D396                   MOV.L       L468,R3    ; __sFCntx
+    00000002 6143                   MOV         R4,R1
+    00000004 4108                   SHLL2       R1
+    00000006 4108                   SHLL2       R1
+    00000008 313C                   ADD         R3,R1
+    0000000A 2152                   MOV.L       R5,@R1
+          font.c   425      _sFCntx[iCntx].iColor = iColor;
+    0000000C 1161                   MOV.L       R6,@(4,R1)
+          font.c   426      _sFCntx[iCntx].iPx0   = iPx0;
+    0000000E 1172                   MOV.L       R7,@(8,R1)
+          font.c   427      _sFCntx[iCntx].iPy0   = iPy0;
+    00000010 62F2                   MOV.L       @R15,R2
+          font.c   428    }
+    00000012 000B                   RTS
+    00000014 1123                   MOV.L       R2,@(12,R1)
+          font.c   429    
+          font.c   430    // ------------------------------------------------------------------------------------- 
+          font.c   431    // Set font context
+          font.c   432    void SetFontContext(int iCntx)
+    00000016              _SetFontContext:                 ; function: SetFontContext
+                                                           ; frame size=0
+          font.c   433    {
+          font.c   434      _iCntx=iCntx;
+    00000016 D392                   MOV.L       L468+4,R3  ; __iCntx
+          font.c   435    }
+    00000018 000B                   RTS
+    0000001A 2342                   MOV.L       R4,@R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   436    
+          font.c   437    // ------------------------------------------------------------------------------------- 
+          font.c   438    // Set font (changes to default font context)
+          font.c   439    void SetFont(int iFont)
+    0000001C              _SetFont:                        ; function: SetFont
+                                                           ; frame size=0
+          font.c   440    {
+          font.c   441      _iCntx=0;
+    0000001C D190                   MOV.L       L468+4,R1  ; __iCntx
+    0000001E E200                   MOV         #0,R2
+          font.c   442      _sFCntx[_iCntx].iFont=iFont;
+    00000020 D38E                   MOV.L       L468,R3    ; __sFCntx
+    00000022 2122                   MOV.L       R2,@R1
+          font.c   443    }
+    00000024 000B                   RTS
+    00000026 2342                   MOV.L       R4,@R3
+          font.c   444    
+          font.c   445    // ------------------------------------------------------------------------------------- 
+          font.c   446    // Set color (changes to default context)
+          font.c   447    void SetColor(int iColor)
+    00000028              _SetColor:                       ; function: SetColor
+                                                           ; frame size=0
+          font.c   448    {
+          font.c   449      _iCntx=0;
+    00000028 D28D                   MOV.L       L468+4,R2  ; __iCntx
+    0000002A E300                   MOV         #0,R3
+          font.c   450      _sFCntx[_iCntx].iColor=iColor;
+    0000002C D18B                   MOV.L       L468,R1    ; __sFCntx
+    0000002E 2232                   MOV.L       R3,@R2
+          font.c   451    }
+    00000030 000B                   RTS
+    00000032 1141                   MOV.L       R4,@(4,R1)
+          font.c   452    
+          font.c   453    // ------------------------------------------------------------------------------------- 
+          font.c   454    // Set offset(changes to default context)
+          font.c   455    void SetOffset(int iPx0, int iPy0)
+    00000034              _SetOffset:                      ; function: SetOffset
+                                                           ; frame size=0
+          font.c   456    {
+          font.c   457      _iCntx=0;
+    00000034 D68A                   MOV.L       L468+4,R6  ; __iCntx
+    00000036 E300                   MOV         #0,R3
+          font.c   458      _sFCntx[_iCntx].iPx0=iPx0;
+    00000038 D788                   MOV.L       L468,R7    ; __sFCntx
+    0000003A 2632                   MOV.L       R3,@R6
+    0000003C 1742                   MOV.L       R4,@(8,R7)
+          font.c   459      _sFCntx[_iCntx].iPy0=iPy0;
+    0000003E 6262                   MOV.L       @R6,R2
+    00000040 4208                   SHLL2       R2
+    00000042 4208                   SHLL2       R2
+    00000044 327C                   ADD         R7,R2
+          font.c   460    }
+    00000046 000B                   RTS
+    00000048 1253                   MOV.L       R5,@(12,R2)
+          font.c   461    
+          font.c   462    // ------------------------------------------------------------------------------------- 
+          font.c   463    // Set color in current context
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   10
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   464    void SetColorCntx(int iColor)
+    0000004A              _SetColorCntx:                   ; function: SetColorCntx
+                                                           ; frame size=0
+          font.c   465    {
+          font.c   466      _sFCntx[_iCntx].iColor=iColor;
+    0000004A D285                   MOV.L       L468+4,R2  ; __iCntx
+    0000004C D085                   MOV.L       L468+8,R0  ; H'00000004+__sFCntx
+    0000004E 6322                   MOV.L       @R2,R3
+    00000050 4308                   SHLL2       R3
+    00000052 4308                   SHLL2       R3
+          font.c   467    }
+    00000054 000B                   RTS
+    00000056 0346                   MOV.L       R4,@(R0,R3)
+          font.c   468    
+          font.c   469    // ------------------------------------------------------------------------------------- 
+          font.c   470    // Get screen sizes in chars
+          font.c   471    int GetScrCAx(void){ return(_sFData[_sFCntx[_iCntx].iFont].iSx); }
+    00000058              _GetScrCAx:                      ; function: GetScrCAx
+                                                           ; frame size=0
+    00000058 D381                   MOV.L       L468+4,R3  ; __iCntx
+    0000005A 6032                   MOV.L       @R3,R0
+    0000005C D17F                   MOV.L       L468,R1    ; __sFCntx
+    0000005E 4008                   SHLL2       R0
+    00000060 4008                   SHLL2       R0
+    00000062 001E                   MOV.L       @(R0,R1),R0
+    00000064 6203                   MOV         R0,R2
+    00000066 4008                   SHLL2       R0
+    00000068 302C                   ADD         R2,R0
+    0000006A 4008                   SHLL2       R0
+    0000006C D27E                   MOV.L       L468+12,R2 ; H'00000008+__sFData
+    0000006E 000B                   RTS
+    00000070 002E                   MOV.L       @(R0,R2),R0
+          font.c   472    int GetScrCAy(void){ return(_sFData[_sFCntx[_iCntx].iFont].iSy); }
+    00000072              _GetScrCAy:                      ; function: GetScrCAy
+                                                           ; frame size=0
+    00000072 D37B                   MOV.L       L468+4,R3  ; __iCntx
+    00000074 D179                   MOV.L       L468,R1    ; __sFCntx
+    00000076 6032                   MOV.L       @R3,R0
+    00000078 4008                   SHLL2       R0
+    0000007A 4008                   SHLL2       R0
+    0000007C 001E                   MOV.L       @(R0,R1),R0
+    0000007E 6203                   MOV         R0,R2
+    00000080 4008                   SHLL2       R0
+    00000082 302C                   ADD         R2,R0
+    00000084 D279                   MOV.L       L468+16,R2 ; H'0000000C+__sFData
+    00000086 4008                   SHLL2       R0
+    00000088 000B                   RTS
+    0000008A 002E                   MOV.L       @(R0,R2),R0
+          font.c   473    
+          font.c   474    // ------------------------------------------------------------------------------------- 
+          font.c   475    // Print char function
+          font.c   476    void PrintCharXY(int iPx0,int iPy0, char cChr)
+    0000008C              _PrintCharXY:                    ; function: PrintCharXY
+                                                           ; frame size=60
+    0000008C 2FE6                   MOV.L       R14,@-R15
+          font.c   477    {
+          font.c   478      //Variables
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   11
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   479      int i,j;
+          font.c   480      int iPx,iPy;
+          font.c   481      int iAy,iAx;
+          font.c   482      int iColF,iColB;
+          font.c   483      unsigned int iCount;
+          font.c   484      unsigned int iBitmap;
+          font.c   485      char sStr[2];
+          font.c   486      unsigned char cChr0;
+          font.c   487      
+          font.c   488      //Init variables
+          font.c   489      cChr0=cChr;
+    0000008E 6763                   MOV         R6,R7
+    00000090 2FD6                   MOV.L       R13,@-R15
+          font.c   490      cChr0=(cChr0<=126?cChr0:127);
+    00000092 E37E                   MOV         #126,R3
+    00000094 2FC6                   MOV.L       R12,@-R15
+    00000096 667C                   EXTU.B      R7,R6
+    00000098 2FB6                   MOV.L       R11,@-R15
+    0000009A 3637                   CMP/GT      R3,R6
+    0000009C 2FA6                   MOV.L       R10,@-R15
+    0000009E 2F96                   MOV.L       R9,@-R15
+    000000A0 2F86                   MOV.L       R8,@-R15
+    000000A2 4F22                   STS.L       PR,@-R15
+    000000A4 7FE4                   ADD         #-28,R15
+    000000A6 8B00                   BF          L428
+    000000A8 E67F                   MOV         #127,R6
+    000000AA              L428:                             
+          font.c   491      iPx=iPx0+_sFCntx[_iCntx].iPx0;
+    000000AA D36D                   MOV.L       L468+4,R3  ; __iCntx
+    000000AC D26B                   MOV.L       L468,R2    ; __sFCntx
+    000000AE 6E32                   MOV.L       @R3,R14
+    000000B0 4E08                   SHLL2       R14
+    000000B2 4E08                   SHLL2       R14
+    000000B4 3E2C                   ADD         R2,R14
+    000000B6 5AE2                   MOV.L       @(8,R14),R10
+          font.c   492      iPy=iPy0+_sFCntx[_iCntx].iPy0;
+    000000B8 51E3                   MOV.L       @(12,R14),R1
+    000000BA 3A4C                   ADD         R4,R10
+    000000BC 351C                   ADD         R1,R5
+    000000BE 1F55                   MOV.L       R5,@(20,R15)
+    000000C0 D56B                   MOV.L       L468+20,R5 ; __sFData
+    000000C2 61E2                   MOV.L       @R14,R1
+    000000C4 6013                   MOV         R1,R0
+    000000C6 4108                   SHLL2       R1
+    000000C8 310C                   ADD         R0,R1
+    000000CA 4108                   SHLL2       R1
+    000000CC 315C                   ADD         R5,R1
+    000000CE 5114                   MOV.L       @(16,R1),R1
+    000000D0 2118                   TST         R1,R1
+    000000D2 8F1C                   BF/S        L429
+    000000D4 E800                   MOV         #0,R8
+          font.c   493      
+          font.c   494      //Use standard 6x8 Font
+          font.c   495      if(_sFData[_sFCntx[_iCntx].iFont].iChData==NULL)
+          font.c   496      {
+          font.c   497        sStr[0]=cChr0;
+    000000D6 6EF3                   MOV         R15,R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   12
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000D8 7E18                   ADD         #24,R14
+          font.c   498        sStr[1]=0;
+    000000DA 6083                   MOV         R8,R0
+    000000DC 2E60                   MOV.B       R6,@R14
+    000000DE 80E1                   MOV.B       R0,@(1,R14)
+          font.c   499        if(cChr0==127) sStr[0]=0xD8;
+    000000E0 606C                   EXTU.B      R6,R0
+    000000E2 887F                   CMP/EQ      #127,R0
+    000000E4 8B01                   BF          L430
+    000000E6 E0D8                   MOV         #-40,R0
+    000000E8 2E00                   MOV.B       R0,@R14
+    000000EA              L430:                             
+          font.c   500        PrintXY(iPx,iPy,sStr,(_sFCntx[_iCntx].iColor==COLNOR?0:1));    
+    000000EA D35D                   MOV.L       L468+4,R3  ; __iCntx
+    000000EC D05D                   MOV.L       L468+8,R0  ; H'00000004+__sFCntx
+    000000EE 6732                   MOV.L       @R3,R7
+    000000F0 4708                   SHLL2       R7
+    000000F2 4708                   SHLL2       R7
+    000000F4 027E                   MOV.L       @(R0,R7),R2
+    000000F6 2228                   TST         R2,R2
+    000000F8 8F02                   BF/S        L431
+    000000FA 66E3                   MOV         R14,R6
+    000000FC A001                   BRA         L432
+    000000FE E700                   MOV         #0,R7
+    00000100              L431:                             
+    00000100 E701                   MOV         #1,R7
+    00000102              L432:                             
+    00000102 55F5                   MOV.L       @(20,R15),R5
+    00000104 D35B                   MOV.L       L468+24,R3 ; _PrintXY
+    00000106 430B                   JSR         @R3
+    00000108 64A3                   MOV         R10,R4
+    0000010A A050                   BRA         L433
+    0000010C 0009                   NOP
+    0000010E              L429:                             
+          font.c   501      }  
+          font.c   502    
+          font.c   503      //Print with custom fonts
+          font.c   504      else
+          font.c   505      {
+          font.c   506        //Print loop
+          font.c   507        iCount = 1;
+    0000010E EC01                   MOV         #1,R12
+          font.c   508        iAx=_sFData[_sFCntx[_iCntx].iFont].iAx;
+    00000110 64E2                   MOV.L       @R14,R4
+    00000112 6143                   MOV         R4,R1
+    00000114 4408                   SHLL2       R4
+    00000116 341C                   ADD         R1,R4
+          font.c   509        iAy=_sFData[_sFCntx[_iCntx].iFont].iAy;
+          font.c   510        iColF=(_sFCntx[_iCntx].iColor==COLNOR?1:0);
+    00000118 51E1                   MOV.L       @(4,R14),R1
+    0000011A 4408                   SHLL2       R4
+    0000011C 345C                   ADD         R5,R4
+    0000011E 2118                   TST         R1,R1
+    00000120 6742                   MOV.L       @R4,R7
+    00000122 0029                   MOVT        R0
+    00000124 5541                   MOV.L       @(4,R4),R5
+    00000126 1F04                   MOV.L       R0,@(16,R15)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   13
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   511        iColB=(_sFCntx[_iCntx].iColor==COLNOR?0:1);
+    00000128 52E1                   MOV.L       @(4,R14),R2
+    0000012A 2228                   TST         R2,R2
+    0000012C 8B01                   BF          L436
+    0000012E A001                   BRA         L437
+    00000130 E300                   MOV         #0,R3
+    00000132              L436:                             
+    00000132 E301                   MOV         #1,R3
+    00000134              L437:                             
+    00000134 1F32                   MOV.L       R3,@(8,R15)
+          font.c   512        iBitmap=_sFData[_sFCntx[_iCntx].iFont].iChData[cChr0];
+    00000136 666C                   EXTU.B      R6,R6
+    00000138 DB4F                   MOV.L       L468+28,R11; _Bdisp_SetPoint_VRAM
+          font.c   513        for(j=0;j<=iAy-1;j++){
+    0000013A 6983                   MOV         R8,R9
+    0000013C 5044                   MOV.L       @(16,R4),R0
+    0000013E 77FF                   ADD         #-1,R7
+    00000140 4608                   SHLL2       R6
+    00000142 75FF                   ADD         #-1,R5
+    00000144 036E                   MOV.L       @(R0,R6),R3
+    00000146 1F33                   MOV.L       R3,@(12,R15)
+    00000148 2F72                   MOV.L       R7,@R15
+    0000014A A02D                   BRA         L438
+    0000014C 1F51                   MOV.L       R5,@(4,R15)
+    0000014E              L439:                             
+          font.c   514        for(i=0;i<=iAx-1;i++){
+    0000014E 6D83                   MOV         R8,R13
+    00000150 5EF5                   MOV.L       @(20,R15),R14
+    00000152 63F2                   MOV.L       @R15,R3
+    00000154 4311                   CMP/PZ      R3
+    00000156 8F26                   BF/S        L440
+    00000158 3E9C                   ADD         R9,R14
+    0000015A              L441:                             
+          font.c   515          if(iPx+i>=0 && iPx+i<=127 && iPy+j>=0 && iPy+j<=63)
+    0000015A 64D3                   MOV         R13,R4
+    0000015C 34AC                   ADD         R10,R4
+    0000015E 4411                   CMP/PZ      R4
+    00000160 8B1D                   BF          L442
+    00000162 E27F                   MOV         #127,R2
+    00000164 3427                   CMP/GT      R2,R4
+    00000166 891A                   BT          L442
+    00000168 4E11                   CMP/PZ      R14
+    0000016A 8B18                   BF          L442
+    0000016C E33F                   MOV         #63,R3
+    0000016E 3E37                   CMP/GT      R3,R14
+    00000170 8915                   BT          L442
+    00000172 64D3                   MOV         R13,R4
+    00000174 63F2                   MOV.L       @R15,R3
+    00000176 3D33                   CMP/GE      R3,R13
+    00000178 8D0E                   BT/S        L443
+    0000017A 34AC                   ADD         R10,R4
+    0000017C 51F1                   MOV.L       @(4,R15),R1
+    0000017E 3913                   CMP/GE      R1,R9
+    00000180 890A                   BT          L443
+          font.c   516          {
+          font.c   517            if(i<iAx-1 && j<iAy-1)
+          font.c   518            {
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   14
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   519              if(iBitmap&iCount) 
+    00000182 52F3                   MOV.L       @(12,R15),R2
+    00000184 22C8                   TST         R12,R2
+    00000186 8D02                   BT/S        L444
+          font.c   520                Bdisp_SetPoint_VRAM(iPx+i,iPy+j,iColF);
+    00000188 65E3                   MOV         R14,R5
+    0000018A A001                   BRA         L467
+    0000018C 56F4                   MOV.L       @(16,R15),R6
+    0000018E              L444:                             
+          font.c   521              else
+          font.c   522                Bdisp_SetPoint_VRAM(iPx+i,iPy+j,iColB);
+    0000018E 56F2                   MOV.L       @(8,R15),R6
+    00000190              L467:                             
+    00000190 4B0B                   JSR         @R11
+    00000192 0009                   NOP
+          font.c   523              iCount=iCount*2;
+    00000194 A003                   BRA         L442
+    00000196 4C00                   SHLL        R12
+    00000198              L443:                             
+          font.c   524            }
+          font.c   525            else
+          font.c   526              Bdisp_SetPoint_VRAM(iPx+i,iPy+j,iColB);
+    00000198 56F2                   MOV.L       @(8,R15),R6
+    0000019A 4B0B                   JSR         @R11
+    0000019C 65E3                   MOV         R14,R5
+    0000019E              L442:                             
+    0000019E 7D01                   ADD         #1,R13
+    000001A0 63F2                   MOV.L       @R15,R3
+    000001A2 3D37                   CMP/GT      R3,R13
+    000001A4 8BD9                   BF          L441
+    000001A6              L440:                             
+    000001A6 7901                   ADD         #1,R9
+    000001A8              L438:                             
+    000001A8 53F1                   MOV.L       @(4,R15),R3
+    000001AA 3937                   CMP/GT      R3,R9
+    000001AC 8BCF                   BF          L439
+    000001AE              L433:                             
+          font.c   527          }
+          font.c   528        }}
+          font.c   529      
+          font.c   530      }
+          font.c   531    
+          font.c   532    }
+    000001AE 7F1C                   ADD         #28,R15
+    000001B0 4F26                   LDS.L       @R15+,PR
+    000001B2 68F6                   MOV.L       @R15+,R8
+    000001B4 69F6                   MOV.L       @R15+,R9
+    000001B6 6AF6                   MOV.L       @R15+,R10
+    000001B8 6BF6                   MOV.L       @R15+,R11
+    000001BA 6CF6                   MOV.L       @R15+,R12
+    000001BC 6DF6                   MOV.L       @R15+,R13
+    000001BE 000B                   RTS
+    000001C0 6EF6                   MOV.L       @R15+,R14
+          font.c   533    
+          font.c   534    // ------------------------------------------------------------------------------------- 
+          font.c   535    // Print string function (location by pixels)
+          font.c   536    void PrintStrXY(int iPx, int iPy,char *sStr)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   15
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001C2              _PrintStrXY:                     ; function: PrintStrXY
+                                                           ; frame size=36
+    000001C2 2FE6                   MOV.L       R14,@-R15
+    000001C4 2FD6                   MOV.L       R13,@-R15
+    000001C6 6D63                   MOV         R6,R13
+    000001C8 2FC6                   MOV.L       R12,@-R15
+    000001CA 2FB6                   MOV.L       R11,@-R15
+    000001CC 2FA6                   MOV.L       R10,@-R15
+    000001CE 4F22                   STS.L       PR,@-R15
+    000001D0 4F12                   STS.L       MACL,@-R15
+    000001D2 7FF8                   ADD         #-8,R15
+          font.c   537    {
+          font.c   538      //Variables
+          font.c   539      int i;
+          font.c   540      int iPx0=0,iPy0=0;
+          font.c   541      int iIgnChar=0;
+          font.c   542      char cChr;
+          font.c   543    
+          font.c   544      //Char loop
+          font.c   545      for(i=0;sStr[i]!=0;i++)
+    000001D4 DA26                   MOV.L       L468+20,R10; __sFData
+    000001D6 2F42                   MOV.L       R4,@R15
+    000001D8 1F51                   MOV.L       R5,@(4,R15)
+    000001DA DB21                   MOV.L       L468+4,R11 ; __iCntx
+    000001DC DC1F                   MOV.L       L468,R12   ; __sFCntx
+    000001DE A013                   BRA         L447
+    000001E0 EE00                   MOV         #0,R14
+    000001E2              L448:                             
+          font.c   546      {
+          font.c   547        PrintCharXY(iPx+_sFData[_sFCntx[_iCntx].iFont].iAx*(i-iIgnChar),iPy,sStr[i]);
+    000001E2 06DC                   MOV.B       @(R0,R13),R6
+    000001E4 55F1                   MOV.L       @(4,R15),R5
+    000001E6 64B2                   MOV.L       @R11,R4
+    000001E8 4408                   SHLL2       R4
+    000001EA 4408                   SHLL2       R4
+    000001EC 34CC                   ADD         R12,R4
+    000001EE 6442                   MOV.L       @R4,R4
+    000001F0 6343                   MOV         R4,R3
+    000001F2 4408                   SHLL2       R4
+    000001F4 343C                   ADD         R3,R4
+    000001F6 4408                   SHLL2       R4
+    000001F8 63F2                   MOV.L       @R15,R3
+    000001FA 34AC                   ADD         R10,R4
+    000001FC 6442                   MOV.L       @R4,R4
+    000001FE 04E7                   MUL.L       R14,R4
+    00000200 041A                   STS         MACL,R4
+    00000202 BF43                   BSR         _PrintCharXY
+    00000204 343C                   ADD         R3,R4
+    00000206 7E01                   ADD         #1,R14
+    00000208              L447:                             
+    00000208 60E3                   MOV         R14,R0
+    0000020A 03DC                   MOV.B       @(R0,R13),R3
+    0000020C 2338                   TST         R3,R3
+    0000020E 8BE8                   BF          L448
+          font.c   548      }
+          font.c   549    }
+    00000210 7F08                   ADD         #8,R15
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   16
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000212 4F16                   LDS.L       @R15+,MACL
+    00000214 4F26                   LDS.L       @R15+,PR
+    00000216 6AF6                   MOV.L       @R15+,R10
+    00000218 6BF6                   MOV.L       @R15+,R11
+    0000021A 6CF6                   MOV.L       @R15+,R12
+    0000021C 6DF6                   MOV.L       @R15+,R13
+    0000021E 000B                   RTS
+    00000220 6EF6                   MOV.L       @R15+,R14
+          font.c   550    
+          font.c   551    // ------------------------------------------------------------------------------------- 
+          font.c   552    // Print char function (location by chars)
+          font.c   553    void PrintChar(int iCx, int iCy,char cChr)
+    00000222              _PrintChar:                      ; function: PrintChar
+                                                           ; frame size=16
+    00000222 4F12                   STS.L       MACL,@-R15
+          font.c   554    {
+          font.c   555      PrintCharXY(iCx*_sFData[_sFCntx[_iCntx].iFont].iAx,
+          font.c   556                 iCy*_sFData[_sFCntx[_iCntx].iFont].iAy,
+          font.c   557                 cChr);
+    00000224 D30E                   MOV.L       L468+4,R3  ; __iCntx
+    00000226 7FF4                   ADD         #-12,R15
+    00000228 D00C                   MOV.L       L468,R0    ; __sFCntx
+    0000022A 1F41                   MOV.L       R4,@(4,R15)
+    0000022C 2F52                   MOV.L       R5,@R15
+    0000022E 6532                   MOV.L       @R3,R5
+    00000230 D10F                   MOV.L       L468+20,R1 ; __sFData
+    00000232 4508                   SHLL2       R5
+    00000234 4508                   SHLL2       R5
+    00000236 055E                   MOV.L       @(R0,R5),R5
+    00000238 6253                   MOV         R5,R2
+    0000023A 4508                   SHLL2       R5
+    0000023C 352C                   ADD         R2,R5
+    0000023E 4508                   SHLL2       R5
+    00000240 351C                   ADD         R1,R5
+    00000242 1F52                   MOV.L       R5,@(8,R15)
+    00000244 5351                   MOV.L       @(4,R5),R3
+    00000246 62F2                   MOV.L       @R15,R2
+    00000248 54F2                   MOV.L       @(8,R15),R4
+    0000024A 0237                   MUL.L       R3,R2
+    0000024C 6342                   MOV.L       @R4,R3
+    0000024E 051A                   STS         MACL,R5
+    00000250 52F1                   MOV.L       @(4,R15),R2
+    00000252 7F0C                   ADD         #12,R15
+    00000254 0237                   MUL.L       R3,R2
+    00000256 041A                   STS         MACL,R4
+    00000258 AF18                   BRA         _PrintCharXY
+    0000025A 4F16                   LDS.L       @R15+,MACL
+    0000025C              L468:                             
+    0000025C <00000000>             .DATA.L     __sFCntx
+    00000260 <00000000>             .DATA.L     __iCntx
+    00000264 <00000004>             .DATA.L     H'00000004+__sFCntx
+    00000268 <00000008>             .DATA.L     H'00000008+__sFData
+    0000026C <0000000C>             .DATA.L     H'0000000C+__sFData
+    00000270 <00000000>             .DATA.L     __sFData
+    00000274 <00000000>             .DATA.L     _PrintXY
+    00000278 <00000000>             .DATA.L     _Bdisp_SetPoint_VRAM
+          font.c   558    }
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   17
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          font.c   559    
+          font.c   560    // ------------------------------------------------------------------------------------- 
+          font.c   561    // Print string function (location by chars)
+          font.c   562    void PrintStr(int iCx, int iCy,char *sStr)
+    0000027C              _PrintStr:                       ; function: PrintStr
+                                                           ; frame size=16
+    0000027C 4F12                   STS.L       MACL,@-R15
+    0000027E 7FF4                   ADD         #-12,R15
+          font.c   563    {
+          font.c   564      PrintStrXY(iCx*_sFData[_sFCntx[_iCntx].iFont].iAx,
+          font.c   565                 iCy*_sFData[_sFCntx[_iCntx].iFont].iAy,
+          font.c   566                 sStr);
+    00000280 D37B                   MOV.L       L469+2,R3  ; __iCntx
+    00000282 1F41                   MOV.L       R4,@(4,R15)
+    00000284 2F52                   MOV.L       R5,@R15
+    00000286 6532                   MOV.L       @R3,R5
+    00000288 D07A                   MOV.L       L469+6,R0  ; __sFCntx
+    0000028A 4508                   SHLL2       R5
+    0000028C D17A                   MOV.L       L469+10,R1 ; __sFData
+    0000028E 4508                   SHLL2       R5
+    00000290 055E                   MOV.L       @(R0,R5),R5
+    00000292 6253                   MOV         R5,R2
+    00000294 4508                   SHLL2       R5
+    00000296 352C                   ADD         R2,R5
+    00000298 4508                   SHLL2       R5
+    0000029A 351C                   ADD         R1,R5
+    0000029C 1F52                   MOV.L       R5,@(8,R15)
+    0000029E 5351                   MOV.L       @(4,R5),R3
+    000002A0 62F2                   MOV.L       @R15,R2
+    000002A2 0237                   MUL.L       R3,R2
+    000002A4 54F2                   MOV.L       @(8,R15),R4
+    000002A6 051A                   STS         MACL,R5
+    000002A8 6342                   MOV.L       @R4,R3
+    000002AA 52F1                   MOV.L       @(4,R15),R2
+    000002AC 0237                   MUL.L       R3,R2
+    000002AE 7F0C                   ADD         #12,R15
+    000002B0 041A                   STS         MACL,R4
+    000002B2 AF86                   BRA         _PrintStrXY
+    000002B4 4F16                   LDS.L       @R15+,MACL
+          font.c   567    }
+          font.c   568    
+          font.c   569    // ----------------------------------------------------------------
+          font.c   570    // SetCursor
+          font.c   571    void SetCursor(int iCx, int iCy, int iColor, int iClip)
+    000002B6              _SetCursor:                      ; function: SetCursor
+                                                           ; frame size=44
+    000002B6 2FE6                   MOV.L       R14,@-R15
+    000002B8 2FD6                   MOV.L       R13,@-R15
+    000002BA 6E63                   MOV         R6,R14
+          font.c   572    {
+          font.c   573      //Variables
+          font.c   574      int iPx;
+          font.c   575      int iPy;
+          font.c   576      int iAy;
+          font.c   577      
+          font.c   578      //Calculate cursor position
+          font.c   579      iPx=iCx*_sFData[_sFCntx[_iCntx].iFont].iAx;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   18
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002BC D26C                   MOV.L       L469+2,R2  ; __iCntx
+    000002BE 2FC6                   MOV.L       R12,@-R15
+    000002C0 2FB6                   MOV.L       R11,@-R15
+    000002C2 2FA6                   MOV.L       R10,@-R15
+    000002C4 2F96                   MOV.L       R9,@-R15
+    000002C6 2F86                   MOV.L       R8,@-R15
+    000002C8 4F22                   STS.L       PR,@-R15
+    000002CA 4F12                   STS.L       MACL,@-R15
+    000002CC D66A                   MOV.L       L469+10,R6 ; __sFData
+    000002CE 7FF8                   ADD         #-8,R15
+    000002D0 D168                   MOV.L       L469+6,R1  ; __sFCntx
+    000002D2 2F62                   MOV.L       R6,@R15
+    000002D4 6322                   MOV.L       @R2,R3
+    000002D6 4308                   SHLL2       R3
+    000002D8 4308                   SHLL2       R3
+    000002DA 331C                   ADD         R1,R3
+    000002DC 1F31                   MOV.L       R3,@(4,R15)
+    000002DE 6332                   MOV.L       @R3,R3
+          font.c   580      iPy=_sFCntx[_iCntx].iPy0+iCy*_sFData[_sFCntx[_iCntx].iFont].iAy;
+    000002E0 5BF1                   MOV.L       @(4,R15),R11
+    000002E2 6233                   MOV         R3,R2
+    000002E4 4308                   SHLL2       R3
+    000002E6 332C                   ADD         R2,R3
+    000002E8 4308                   SHLL2       R3
+    000002EA 363C                   ADD         R3,R6
+    000002EC 6C62                   MOV.L       @R6,R12
+    000002EE 04C7                   MUL.L       R12,R4
+    000002F0 5361                   MOV.L       @(4,R6),R3
+    000002F2 0C1A                   STS         MACL,R12
+    000002F4 0537                   MUL.L       R3,R5
+    000002F6 2778                   TST         R7,R7
+    000002F8 5BB3                   MOV.L       @(12,R11),R11
+    000002FA 051A                   STS         MACL,R5
+    000002FC DD5F                   MOV.L       L469+14,R13; _Bdisp_SetPoint_DDVRAM
+    000002FE 3B5C                   ADD         R5,R11
+    00000300 6AB3                   MOV         R11,R10
+    00000302 8F49                   BF/S        L449
+    00000304 7A01                   ADD         #1,R10
+          font.c   581      
+          font.c   582      //Draw cursor (normal)
+          font.c   583      if(iClip==0)
+          font.c   584      {
+          font.c   585        iAy=_sFData[_sFCntx[_iCntx].iFont].iAy-1;
+    00000306 59F1                   MOV.L       @(4,R15),R9
+    00000308 62F2                   MOV.L       @R15,R2
+    0000030A 6992                   MOV.L       @R9,R9
+    0000030C 6393                   MOV         R9,R3
+    0000030E 4908                   SHLL2       R9
+    00000310 393C                   ADD         R3,R9
+    00000312 4908                   SHLL2       R9
+    00000314 392C                   ADD         R2,R9
+    00000316 5991                   MOV.L       @(4,R9),R9
+    00000318 79FF                   ADD         #-1,R9
+          font.c   586        if(iAy>=0) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+0,iColor);
+    0000031A 4911                   CMP/PZ      R9
+    0000031C 8B03                   BF          L450
+    0000031E 66E3                   MOV         R14,R6
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   19
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000320 65B3                   MOV         R11,R5
+    00000322 4D0B                   JSR         @R13
+    00000324 64C3                   MOV         R12,R4
+    00000326              L450:                             
+          font.c   587        if(iAy>=1) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+1,iColor);
+    00000326 E201                   MOV         #1,R2
+    00000328 3923                   CMP/GE      R2,R9
+    0000032A 8B03                   BF          L451
+    0000032C 66E3                   MOV         R14,R6
+    0000032E 65A3                   MOV         R10,R5
+    00000330 4D0B                   JSR         @R13
+    00000332 64C3                   MOV         R12,R4
+    00000334              L451:                             
+          font.c   588        if(iAy>=2) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+2,iColor);
+    00000334 E202                   MOV         #2,R2
+    00000336 3923                   CMP/GE      R2,R9
+    00000338 8B04                   BF          L452
+    0000033A 66E3                   MOV         R14,R6
+    0000033C 65B3                   MOV         R11,R5
+    0000033E 7502                   ADD         #2,R5
+    00000340 4D0B                   JSR         @R13
+    00000342 64C3                   MOV         R12,R4
+    00000344              L452:                             
+          font.c   589        if(iAy>=3) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+3,iColor);
+    00000344 E203                   MOV         #3,R2
+    00000346 3923                   CMP/GE      R2,R9
+    00000348 8B04                   BF          L453
+    0000034A 66E3                   MOV         R14,R6
+    0000034C 65B3                   MOV         R11,R5
+    0000034E 7503                   ADD         #3,R5
+    00000350 4D0B                   JSR         @R13
+    00000352 64C3                   MOV         R12,R4
+    00000354              L453:                             
+          font.c   590        if(iAy>=4) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+4,iColor);
+    00000354 E204                   MOV         #4,R2
+    00000356 3923                   CMP/GE      R2,R9
+    00000358 8B04                   BF          L454
+    0000035A 66E3                   MOV         R14,R6
+    0000035C 65B3                   MOV         R11,R5
+    0000035E 7504                   ADD         #4,R5
+    00000360 4D0B                   JSR         @R13
+    00000362 64C3                   MOV         R12,R4
+    00000364              L454:                             
+          font.c   591        if(iAy>=5) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+5,iColor);
+    00000364 E205                   MOV         #5,R2
+    00000366 3923                   CMP/GE      R2,R9
+    00000368 8B04                   BF          L455
+    0000036A 66E3                   MOV         R14,R6
+    0000036C 65B3                   MOV         R11,R5
+    0000036E 7505                   ADD         #5,R5
+    00000370 4D0B                   JSR         @R13
+    00000372 64C3                   MOV         R12,R4
+    00000374              L455:                             
+          font.c   592        if(iAy>=6) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+6,iColor);
+    00000374 E206                   MOV         #6,R2
+    00000376 3923                   CMP/GE      R2,R9
+    00000378 8B04                   BF          L456
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   20
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000037A 66E3                   MOV         R14,R6
+    0000037C 65B3                   MOV         R11,R5
+    0000037E 7506                   ADD         #6,R5
+    00000380 4D0B                   JSR         @R13
+    00000382 64C3                   MOV         R12,R4
+    00000384              L456:                             
+          font.c   593        if(iAy>=7) Bdisp_SetPoint_DDVRAM(iPx+0,iPy+7,iColor);
+    00000384 E207                   MOV         #7,R2
+    00000386 3923                   CMP/GE      R2,R9
+    00000388 8B66                   BF          L458
+    0000038A 66E3                   MOV         R14,R6
+    0000038C 65B3                   MOV         R11,R5
+    0000038E 7507                   ADD         #7,R5
+    00000390 4D0B                   JSR         @R13
+    00000392 64C3                   MOV         R12,R4
+    00000394 A060                   BRA         L458
+    00000396 0009                   NOP
+    00000398              L449:                             
+          font.c   594      }
+          font.c   595      
+          font.c   596      //Draw cursor (Clip mode)
+          font.c   597      else
+          font.c   598      {
+          font.c   599        Bdisp_SetPoint_DDVRAM(iPx+0,iPy+0,iColor);
+    00000398 66E3                   MOV         R14,R6
+    0000039A 65B3                   MOV         R11,R5
+    0000039C 4D0B                   JSR         @R13
+    0000039E 64C3                   MOV         R12,R4
+          font.c   600        Bdisp_SetPoint_DDVRAM(iPx+0,iPy+1,iColor);
+    000003A0 66E3                   MOV         R14,R6
+    000003A2 65A3                   MOV         R10,R5
+    000003A4 4D0B                   JSR         @R13
+    000003A6 64C3                   MOV         R12,R4
+    000003A8 6AC3                   MOV         R12,R10
+    000003AA 7AFF                   ADD         #-1,R10
+    000003AC 4A11                   CMP/PZ      R10
+    000003AE 8B03                   BF          L459
+          font.c   601        if(iPx-1>=0  ) Bdisp_SetPoint_DDVRAM(iPx-1,iPy+0,iColor);
+    000003B0 66E3                   MOV         R14,R6
+    000003B2 65B3                   MOV         R11,R5
+    000003B4 4D0B                   JSR         @R13
+    000003B6 64A3                   MOV         R10,R4
+    000003B8              L459:                             
+    000003B8 62C3                   MOV         R12,R2
+    000003BA 7201                   ADD         #1,R2
+    000003BC E37F                   MOV         #127,R3
+    000003BE 3237                   CMP/GT      R3,R2
+    000003C0 8D04                   BT/S        L460
+    000003C2 2F22                   MOV.L       R2,@R15
+          font.c   602        if(iPx+1<=127) Bdisp_SetPoint_DDVRAM(iPx+1,iPy+0,iColor);
+    000003C4 66E3                   MOV         R14,R6
+    000003C6 65B3                   MOV         R11,R5
+    000003C8 4D0B                   JSR         @R13
+    000003CA 6423                   MOV         R2,R4
+    000003CC              L460:                             
+    000003CC 68C3                   MOV         R12,R8
+    000003CE 78FE                   ADD         #-2,R8
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   21
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000003D0 4811                   CMP/PZ      R8
+    000003D2 8B03                   BF          L461
+          font.c   603        if(iPx-2>=0  ) Bdisp_SetPoint_DDVRAM(iPx-2,iPy+0,iColor);
+    000003D4 66E3                   MOV         R14,R6
+    000003D6 65B3                   MOV         R11,R5
+    000003D8 4D0B                   JSR         @R13
+    000003DA 6483                   MOV         R8,R4
+    000003DC              L461:                             
+    000003DC 69C3                   MOV         R12,R9
+    000003DE 7902                   ADD         #2,R9
+    000003E0 E27F                   MOV         #127,R2
+    000003E2 3927                   CMP/GT      R2,R9
+    000003E4 8903                   BT          L462
+          font.c   604        if(iPx+2<=127) Bdisp_SetPoint_DDVRAM(iPx+2,iPy+0,iColor);
+    000003E6 66E3                   MOV         R14,R6
+    000003E8 65B3                   MOV         R11,R5
+    000003EA 4D0B                   JSR         @R13
+    000003EC 6493                   MOV         R9,R4
+    000003EE              L462:                             
+          font.c   605        iPy=iPy+_sFData[_sFCntx[_iCntx].iFont].iAy-8;
+          font.c   606        Bdisp_SetPoint_DDVRAM(iPx+0,iPy+6,iColor);
+    000003EE 66E3                   MOV         R14,R6
+    000003F0 D31F                   MOV.L       L469+2,R3  ; __iCntx
+    000003F2 6232                   MOV.L       @R3,R2
+    000003F4 D01F                   MOV.L       L469+6,R0  ; __sFCntx
+    000003F6 4208                   SHLL2       R2
+    000003F8 4208                   SHLL2       R2
+    000003FA 022E                   MOV.L       @(R0,R2),R2
+    000003FC D020                   MOV.L       L469+18,R0 ; H'00000004+__sFData
+    000003FE 6123                   MOV         R2,R1
+    00000400 4208                   SHLL2       R2
+    00000402 321C                   ADD         R1,R2
+    00000404 4208                   SHLL2       R2
+    00000406 022E                   MOV.L       @(R0,R2),R2
+    00000408 3B2C                   ADD         R2,R11
+    0000040A 7BF8                   ADD         #-8,R11
+    0000040C 1FB1                   MOV.L       R11,@(4,R15)
+    0000040E 65B3                   MOV         R11,R5
+    00000410 7506                   ADD         #6,R5
+    00000412 4D0B                   JSR         @R13
+    00000414 64C3                   MOV         R12,R4
+          font.c   607        Bdisp_SetPoint_DDVRAM(iPx+0,iPy+7,iColor);
+    00000416 66E3                   MOV         R14,R6
+    00000418 5BF1                   MOV.L       @(4,R15),R11
+    0000041A 7B07                   ADD         #7,R11
+    0000041C 65B3                   MOV         R11,R5
+    0000041E 4D0B                   JSR         @R13
+    00000420 64C3                   MOV         R12,R4
+          font.c   608        if(iPx-1>=0  ) Bdisp_SetPoint_DDVRAM(iPx-1,iPy+7,iColor);
+    00000422 4A11                   CMP/PZ      R10
+    00000424 8B03                   BF          L463
+    00000426 66E3                   MOV         R14,R6
+    00000428 65B3                   MOV         R11,R5
+    0000042A 4D0B                   JSR         @R13
+    0000042C 64A3                   MOV         R10,R4
+    0000042E              L463:                             
+          font.c   609        if(iPx+1<=127) Bdisp_SetPoint_DDVRAM(iPx+1,iPy+7,iColor);
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   22
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000042E E27F                   MOV         #127,R2
+    00000430 63F2                   MOV.L       @R15,R3
+    00000432 3327                   CMP/GT      R2,R3
+    00000434 8903                   BT          L464
+    00000436 66E3                   MOV         R14,R6
+    00000438 65B3                   MOV         R11,R5
+    0000043A 4D0B                   JSR         @R13
+    0000043C 64F2                   MOV.L       @R15,R4
+    0000043E              L464:                             
+          font.c   610        if(iPx-2>=0  ) Bdisp_SetPoint_DDVRAM(iPx-2,iPy+7,iColor);
+    0000043E 4811                   CMP/PZ      R8
+    00000440 8B03                   BF          L465
+    00000442 66E3                   MOV         R14,R6
+    00000444 65B3                   MOV         R11,R5
+    00000446 4D0B                   JSR         @R13
+    00000448 6483                   MOV         R8,R4
+    0000044A              L465:                             
+          font.c   611        if(iPx+2<=127) Bdisp_SetPoint_DDVRAM(iPx+2,iPy+7,iColor);
+    0000044A E27F                   MOV         #127,R2
+    0000044C 3927                   CMP/GT      R2,R9
+    0000044E 8903                   BT          L458
+    00000450 66E3                   MOV         R14,R6
+    00000452 65B3                   MOV         R11,R5
+    00000454 4D0B                   JSR         @R13
+    00000456 6493                   MOV         R9,R4
+    00000458              L458:                             
+          font.c   612      }
+          font.c   613    
+          font.c   614    }
+    00000458 7F08                   ADD         #8,R15
+    0000045A 4F16                   LDS.L       @R15+,MACL
+    0000045C 4F26                   LDS.L       @R15+,PR
+    0000045E 68F6                   MOV.L       @R15+,R8
+    00000460 69F6                   MOV.L       @R15+,R9
+    00000462 6AF6                   MOV.L       @R15+,R10
+    00000464 6BF6                   MOV.L       @R15+,R11
+    00000466 6CF6                   MOV.L       @R15+,R12
+    00000468 6DF6                   MOV.L       @R15+,R13
+    0000046A 000B                   RTS
+    0000046C 6EF6                   MOV.L       @R15+,R14
+    0000046E              L469:                             
+    0000046E 0000                   .DATA.W     0
+    00000470 <00000000>             .DATA.L     __iCntx
+    00000474 <00000000>             .DATA.L     __sFCntx
+    00000478 <00000000>             .DATA.L     __sFData
+    0000047C <00000000>             .DATA.L     _Bdisp_SetPoint_DDVRAM
+    00000480 <00000004>             .DATA.L     H'00000004+__sFData
+D   00000000              __iFont3x5:                      ; static: _iFont3x5
+    00000000 00000F7800             .DATA.L     H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,
+             000F780000 +                       H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00007D00,H'00000F78,
+             0F7800000F +                       H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,
+             7800000F78 +                       H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000F78,
+             00000F7800 +                       H'00000F78,H'00000F78,H'00000F78,H'00000F78,H'00000000,H'00002092,H'0000002D,
+             000F780000 +                       H'00003F7E,H'00007DDF,H'000052A5,H'00002AAA,H'000000A6,H'00004494,H'00001491,
+             0F7800000F +                       H'00000AA8,H'000005D0,H'00002980,H'000001C0,H'00003600,H'00001294,H'00007B6F,
+             7800000F78 +                       H'0000749A,H'000073E7,H'000079E7,H'000049ED,H'000079CF,H'00007BCF,H'00004927,
+             00000F7800 +                       H'00007BEF,H'000079EF,H'0000361B,H'0000141B,H'00004454,H'00000E38,H'00001511,
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   23
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             000F780000 +                       H'000020A3,H'00002BA3,H'00005BEA,H'00003AEB,H'0000624E,H'00003B6B,H'000073CF,
+             7D0000000F +                       H'000013CF,H'00006B4E,H'00005BED,H'00007497,H'00002B24,H'00005AED,H'00007249,
+             7800000F78 +                       H'00005B7D,H'00005B6B,H'00002B6A,H'000012EB,H'0000456A,H'00005AEB,H'0000388E,
+             00000F7800 +                       H'00002497,H'00007B6D,H'00002B6D,H'00002F6D,H'00005AAD,H'000024AD,H'000072A7,
+             000F780000 +                       H'00006496,H'00004489,H'00006926,H'0000002A,H'00007000,H'0000008B,H'00006BA2,
+             0F7800000F +                       H'00003B79,H'00006270,H'00006B7C,H'000073EA,H'000025D4,H'000039AE,H'00005B59,
+             7800000F78 +                       H'00002482,H'00002B04,H'00005749,H'00007493,H'00005B70,H'00005B50,H'00002B50,
+             00000F7800 +                       H'00001758,H'00004D70,H'000012E8,H'00003870,H'000044B2,H'00006B68,H'00002B68,
+             000F780000 +                       H'00007F68,H'00005AA8,H'00001568,H'00007338,H'000064D6,H'00002492,H'00003593,
+             0F7800000F +                       H'00000198,H'00000F78
+             7800000F78   
+             00000F7800   
+             000F780000   
+             0F7800000F   
+             7800000F78   
+             00000F7800   
+             000F780000   
+             0000000020   
+             920000002D   
+             00003F7E00   
+             007DDF0000   
+             52A500002A   
+             AA000000A6   
+             0000449400   
+             0014910000   
+             0AA8000005   
+             D000002980   
+             000001C000   
+             0036000000   
+             129400007B   
+             6F0000749A   
+             000073E700   
+             0079E70000   
+             49ED000079   
+             CF00007BCF   
+             0000492700   
+             007BEF0000   
+             79EF000036   
+             1B0000141B   
+             0000445400   
+             000E380000   
+             1511000020   
+             A300002BA3   
+             00005BEA00   
+             003AEB0000   
+             624E00003B   
+             6B000073CF   
+             000013CF00   
+             006B4E0000   
+             5BED000074   
+             9700002B24   
+             00005AED00   
+             0072490000   
+             5B7D00005B   
+             6B00002B6A   
+             000012EB00   
+             00456A0000   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   24
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             5AEB000038   
+             8E00002497   
+             00007B6D00   
+             002B6D0000   
+             2F6D00005A   
+             AD000024AD   
+             000072A700   
+             0064960000   
+             4489000069   
+             260000002A   
+             0000700000   
+             00008B0000   
+             6BA200003B   
+             7900006270   
+             00006B7C00   
+             0073EA0000   
+             25D4000039   
+             AE00005B59   
+             0000248200   
+             002B040000   
+             5749000074   
+             9300005B70   
+             00005B5000   
+             002B500000   
+             175800004D   
+             70000012E8   
+             0000387000   
+             0044B20000   
+             6B6800002B   
+             6800007F68   
+             00005AA800   
+             0015680000   
+             7338000064   
+             D600002492   
+             0000359300   
+             0001980000   
+             0F78         
+    00000200              __iFont3x6:                      ; static: _iFont3x6
+    00000200 00007B7800             .DATA.L     H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,
+             007B780000 +                       H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'0003E800,H'00007B78,
+             7B7800007B +                       H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,
+             7800007B78 +                       H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00007B78,
+             00007B7800 +                       H'00007B78,H'00007B78,H'00007B78,H'00007B78,H'00000000,H'00010492,H'0000002D,
+             007B780000 +                       H'0001BB76,H'00017CFA,H'000294A5,H'0001556A,H'00000053,H'0001124A,H'00014922,
+             7B7800007B +                       H'00005540,H'00002E80,H'00014C00,H'00000E00,H'0001B000,H'000094A4,H'0003DB6F,
+             7800007B78 +                       H'0003A49A,H'000393E7,H'0003C9E7,H'000249ED,H'0003C9CF,H'0003DBCF,H'00024927,
+             00007B7800 +                       H'0003DBEF,H'0003C9EF,H'0001B01B,H'0000A61B,H'00022254,H'000071C0,H'0000A911,
+             007B780003 +                       H'00010523,H'00015BA3,H'0002DBEA,H'0001DAEB,H'0003124E,H'0001DB6B,H'000393CF,
+             E80000007B +                       H'000093CF,H'00035A4E,H'0002DBED,H'0003A497,H'00015924,H'0002D6ED,H'00039249,
+             7800007B78 +                       H'0002DB7D,H'0002DB6B,H'00015B6A,H'000092EB,H'00022B6A,H'0002DAEB,H'0001C88E,
+             00007B7800 +                       H'00012497,H'0003DB6D,H'00015B6D,H'00017B6D,H'0002D4AD,H'0001256D,H'000392A7,
+             007B780000 +                       H'00032496,H'00024489,H'0001A493,H'0000002A,H'00038000,H'0000008B,H'00035D10,
+             7B7800007B +                       H'0001DB79,H'00031270,H'00035B7C,H'00031F50,H'000125D4,H'0001CD70,H'0002DB59,
+             7800007B78 +                       H'00012482,H'00015904,H'0002BA48,H'0003A493,H'0002DB70,H'0002DB50,H'00015B50,
+             00007B7800 +                       H'0000BB58,H'00026B70,H'000092E8,H'0001C470,H'000224B2,H'00035B68,H'00015B68,
+             007B780000 +                       H'0003FB68,H'0002D568,H'0000AB68,H'00039538,H'000224D4,H'00012492,H'0000A591,
+             7B7800007B +                       H'00000A80,H'00007B78
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   25
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             7800007B78   
+             00007B7800   
+             007B780000   
+             7B7800007B   
+             7800007B78   
+             00007B7800   
+             007B780000   
+             0000000104   
+             920000002D   
+             0001BB7600   
+             017CFA0002   
+             94A5000155   
+             6A00000053   
+             0001124A00   
+             0149220000   
+             554000002E   
+             8000014C00   
+             00000E0000   
+             01B0000000   
+             94A40003DB   
+             6F0003A49A   
+             000393E700   
+             03C9E70002   
+             49ED0003C9   
+             CF0003DBCF   
+             0002492700   
+             03DBEF0003   
+             C9EF0001B0   
+             1B0000A61B   
+             0002225400   
+             0071C00000   
+             A911000105   
+             2300015BA3   
+             0002DBEA00   
+             01DAEB0003   
+             124E0001DB   
+             6B000393CF   
+             000093CF00   
+             035A4E0002   
+             DBED0003A4   
+             9700015924   
+             0002D6ED00   
+             0392490002   
+             DB7D0002DB   
+             6B00015B6A   
+             000092EB00   
+             022B6A0002   
+             DAEB0001C8   
+             8E00012497   
+             0003DB6D00   
+             015B6D0001   
+             7B6D0002D4   
+             AD0001256D   
+             000392A700   
+             0324960002   
+             44890001A4   
+             930000002A   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   26
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             0003800000   
+             00008B0003   
+             5D100001DB   
+             7900031270   
+             00035B7C00   
+             031F500001   
+             25D40001CD   
+             700002DB59   
+             0001248200   
+             0159040002   
+             BA480003A4   
+             930002DB70   
+             0002DB5000   
+             015B500000   
+             BB5800026B   
+             70000092E8   
+             0001C47000   
+             0224B20003   
+             5B6800015B   
+             680003FB68   
+             0002D56800   
+             00AB680003   
+             9538000224   
+             D400012492   
+             0000A59100   
+             000A800000   
+             7B78         
+    00000400              __iFont4x6:                      ; static: _iFont4x6
+    00000400 000F99F000             .DATA.L     H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,
+             0F99F0000F +                       H'00359530,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'00764000,H'000F99F0,
+             99F0000F99 +                       H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,
+             F0000F99F0 +                       H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,
+             000F99F000 +                       H'000F99F0,H'000F99F0,H'000F99F0,H'000F99F0,H'00000000,H'00404440,H'00000055,
+             0F99F00035 +                       H'005F55F5,H'00FCF5F4,H'00922449,H'00A5A552,H'00000246,H'00422224,H'00244442,
+             9530000F99 +                       H'00096690,H'0004E400,H'00246000,H'0000E000,H'00660000,H'00122448,H'0069BD96,
+             F0000F99F0 +                       H'00E44464,H'00F12496,H'00698C96,H'0044F555,H'0078871F,H'00697196,H'0022248F,
+             000F99F000 +                       H'00699696,H'0068E996,H'00660066,H'00246066,H'00421124,H'000F0F00,H'00248842,
+             0F99F00076 +                       H'00404896,H'0069DA87,H'0099F996,H'00797997,H'00691196,H'00799997,H'00F1F11F,
+             4000000F99 +                       H'0011F11F,H'00F9911F,H'0099F999,H'00E4444E,H'00698888,H'00953359,H'00F11111,
+             F0000F99F0 +                       H'009999F9,H'00999DB9,H'00699996,H'00117997,H'00869996,H'00997997,H'0078611E,
+             000F99F000 +                       H'0044444E,H'00F99999,H'00699999,H'006F9999,H'00996699,H'00444A99,H'00F1688F,
+             0F99F0000F +                       H'00622226,H'00844221,H'00644446,H'000000A4,H'00F00000,H'00000426,H'0069E860,
+             99F0000F99 +                       H'00799971,H'00E111E0,H'00E999E8,H'00E1F960,H'00444E48,H'0078E960,H'00999971,
+             F0000F99F0 +                       H'00444404,H'00254404,H'00953590,H'00E44446,H'009999E0,H'00999B50,H'00699960,
+             000F99F000 +                       H'00179970,H'008E99E0,H'001113D0,H'007861E0,H'00422262,H'00AD9990,H'00699990,
+             0F99F0000F +                       H'006F9990,H'00996690,H'00124A90,H'00F168F0,H'00422324,H'00444444,H'00244C42,
+             99F0000F99 +                       H'00005A00,H'000F99F0
+             F0000F99F0   
+             000F99F000   
+             0F99F0000F   
+             99F0000F99   
+             F0000F99F0   
+             000F99F000   
+             0F99F00000   
+             0000004044   
+             4000000055   
+             005F55F500   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   27
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             FCF5F40092   
+             244900A5A5   
+             5200000246   
+             0042222400   
+             2444420009   
+             66900004E4   
+             0000246000   
+             0000E00000   
+             6600000012   
+             24480069BD   
+             9600E44464   
+             00F1249600   
+             698C960044   
+             F555007887   
+             1F00697196   
+             0022248F00   
+             6996960068   
+             E996006600   
+             6600246066   
+             0042112400   
+             0F0F000024   
+             8842004048   
+             960069DA87   
+             0099F99600   
+             7979970069   
+             1196007999   
+             9700F1F11F   
+             0011F11F00   
+             F9911F0099   
+             F99900E444   
+             4E00698888   
+             0095335900   
+             F111110099   
+             99F900999D   
+             B900699996   
+             0011799700   
+             8699960099   
+             7997007861   
+             1E0044444E   
+             00F9999900   
+             699999006F   
+             9999009966   
+             9900444A99   
+             00F1688F00   
+             6222260084   
+             4221006444   
+             46000000A4   
+             00F0000000   
+             0004260069   
+             E860007999   
+             7100E111E0   
+             00E999E800   
+             E1F9600044   
+             4E480078E9   
+             6000999971   
+             0044440400   
+             2544040095   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE   28
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             359000E444   
+             46009999E0   
+             00999B5000   
+             6999600017   
+             9970008E99   
+             E0001113D0   
+             007861E000   
+             42226200AD   
+             9990006999   
+             90006F9990   
+             0099669000   
+             124A9000F1   
+             68F0004223   
+             2400444444   
+             00244C4200   
+             005A00000F   
+             99F0         
+    00000600              __iCntx:                         ; static: _iCntx
+    00000600 00000000               .DATA.L     H'00000000
+    00000604              __sFData:                        ; static: _sFData
+    00000604 0000000400             .DATA.L     H'00000004,H'00000006,H'00000020,H'0000000A
+             0000060000   
+             0020000000   
+             0A           
+    00000614 <00000000>             .DATA.L     __iFont3x5
+    00000618 0000000400             .DATA.L     H'00000004,H'00000007,H'00000020,H'00000009
+             0000070000   
+             0020000000   
+             09           
+    00000628 <00000000>             .DATA.L     __iFont3x6
+    0000062C 0000000500             .DATA.L     H'00000005,H'00000007,H'00000019,H'00000009
+             0000070000   
+             0019000000   
+             09           
+    0000063C <00000000>             .DATA.L     __iFont4x6
+    00000640 0000000600             .DATA.L     H'00000006,H'00000008,H'00000015,H'00000008
+             0000080000   
+             0015000000   
+             08           
+    00000650 00000000               .DATA.L     H'00000000
+    00000654              __sFCntx:                        ; static: _sFCntx
+    00000654 0000000300             .DATA.L     H'00000003,H'00000000,H'00000000,H'00000000
+             0000000000   
+             0000000000   
+             00           
+    00000664 0000009001             .DATAB.B    144,0
+             00           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 20:43:49  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         1
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      614
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000484 Byte(s)
+CONSTANT SECTION (C):                               00000000 Byte(s)
+DATA     SECTION (D):                               000006F4 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000B78 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            3
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:          19
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            58
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\ADMINI~1\AppData\Local\Temp\hmk25D9.tmp 
+

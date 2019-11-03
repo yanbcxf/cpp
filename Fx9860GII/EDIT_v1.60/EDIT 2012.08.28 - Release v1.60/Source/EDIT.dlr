@@ -1,0 +1,927 @@
+[DLSimRunSpace]
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=903
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=866
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=916
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=176
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=176
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=186
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=186
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=866
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=364
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=365
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=367
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=916
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=562
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=554
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=554
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=903
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=903
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=903
+Flags=00001011
+Sublevel=4
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=562
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=136
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=354
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=379
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=116
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\menu.c
+Line=285
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=367
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=364
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=598
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=116
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=116
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=116
+Flags=00001011
+Sublevel=4
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=365
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=4
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=5
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=6
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=7
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=8
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=9
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=10
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=11
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=12
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=13
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=371
+Flags=00001011
+Sublevel=14
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=567
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1683
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1632
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1455
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1455
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1455
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1440
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1440
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1440
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=567
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1477
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1630
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1493
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1529
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1683
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=136
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=136
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=136
+Flags=00001011
+Sublevel=4
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=598
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1477
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1477
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1632
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1632
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1630
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1630
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=430
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\console.c
+Line=149
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1529
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\console.c
+Line=296
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\console.c
+Line=296
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=853
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1486
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1486
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1486
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=552
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=550
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=547
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=557
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\font.c
+Line=546
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\menu.c
+Line=261
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1493
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1493
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1288
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=430
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=430
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=853
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1288
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=439
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=439
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=439
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1651
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2112
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3659
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1606
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1606
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1716
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3659
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3659
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=345
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3589
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=4027
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=4027
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2207
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2213
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2216
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3740
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1651
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\menu.c
+Line=285
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2216
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1716
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=345
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=345
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2361
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1654
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2365
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1771
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1779
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2361
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1786
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2365
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2694
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3740
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2376
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2378
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2380
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=296
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=299
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2694
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3877
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3830
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2380
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=299
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3589
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3830
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=3830
+Flags=00001011
+Sublevel=3
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=434
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=2191
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=5015
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=5028
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=4912
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=5028
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=920
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\console.c
+Line=149
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\menu.c
+Line=261
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1067
+Flags=00001011
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1055
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1055
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1771
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1052
+Flags=00001011
+Sublevel=1
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1052
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=1779
+Flags=00001011
+Sublevel=2
+
+[Breakpoint]
+File=E:\github\fx9860gii\EDIT_v1.60\EDIT 2012.08.28 - Release v1.60\Source\EDIT.c
+Line=5015
+Flags=00001011
+Sublevel=2
+
+[Watch]
+Name=_sMNode[0][5]
+Name=_cMBar
+Name=cNode

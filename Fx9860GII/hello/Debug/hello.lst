@@ -1,0 +1,995 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: E:\github\fx9860gii\hello\hello.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+         hello.c     1    #include "fxlib.h"
+         hello.c     2    #include <stdlib.h>
+         hello.c     3    #include <stdio.h>
+         hello.c     4    
+         hello.c     5    
+         hello.c     6    int ipow(int base, int exp)
+P   00000000              _ipow:                           ; function: ipow
+                                                           ; frame size=4
+    00000000 4F12                   STS.L       MACL,@-R15
+         hello.c     7    {
+         hello.c     8            int result = 1;
+    00000002 E601                   MOV         #1,R6
+         hello.c     9            while (exp)
+    00000004 A008                   BRA         L408
+    00000006 6763                   MOV         R6,R7
+    00000008              L409:                             
+         hello.c    10            {
+         hello.c    11            if (exp & 1)
+    00000008 6253                   MOV         R5,R2
+    0000000A 2268                   TST         R6,R2
+    0000000C 8901                   BT          L410
+         hello.c    12                    result *= base;
+    0000000E 0747                   MUL.L       R4,R7
+    00000010 071A                   STS         MACL,R7
+    00000012              L410:                             
+         hello.c    13                    exp >>= 1;
+    00000012 4521                   SHAR        R5
+         hello.c    14                    base *= base;
+    00000014 0447                   MUL.L       R4,R4
+    00000016 041A                   STS         MACL,R4
+    00000018              L408:                             
+    00000018 2558                   TST         R5,R5
+    0000001A 8BF5                   BF          L409
+         hello.c    15            }
+         hello.c    16    
+         hello.c    17            if(exp = 0) result = 1; 
+         hello.c    18            return result;
+    0000001C 6073                   MOV         R7,R0
+         hello.c    19    }
+    0000001E 000B                   RTS
+    00000020 4F16                   LDS.L       @R15+,MACL
+         hello.c    20    
+         hello.c    21    int AddIn_main(int isAppli, unsigned short OptionNum)
+    00000022              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=600
+                                                           ; used runtime library name:
+                                                           ; __slow_mvn
+         hello.c    22    {
+         hello.c    23        unsigned int key;
+         hello.c    24            char buffer[20];
+         hello.c    25            short X = 0, Y = 0, xcounter, ycounter;
+    00000022 ED00                   MOV         #0,R13
+         hello.c    26            int binary = 0;
+         hello.c    27            short picture[16][16] = {
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+         hello.c    28                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    29                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    30                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    31                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    32                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    33                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    34                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    35                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    36                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    37                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    38                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    39                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    40                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    41                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    42                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         hello.c    43            };
+    00000024 D230                   MOV.L       L444+20,R2 ; L373
+    00000026 6BD3                   MOV         R13,R11
+    00000028 D330                   MOV.L       L444+24,R3 ; __slow_mvn
+    0000002A 9053                   MOV.W       L444,R0    ; H'FDB8
+    0000002C 3F0C                   ADD         R0,R15
+    0000002E 60D3                   MOV         R13,R0
+    00000030 81FA                   MOV.W       R0,@(20,R15)
+    00000032 68F3                   MOV         R15,R8
+    00000034 1FD8                   MOV.L       R13,@(32,R15)
+    00000036 61F3                   MOV         R15,R1
+    00000038 904D                   MOV.W       L444+2,R0  ; H'0200
+    0000003A 7834                   ADD         #52,R8
+    0000003C 430B                   JSR         @R3
+    0000003E 7134                   ADD         #52,R1
+         hello.c    44    
+         hello.c    45            short paintPicture = 1;
+         hello.c    46            short changePixel = 0;
+         hello.c    47            short reverseColor = 0;
+         hello.c    48            short instantDraw = 0;
+         hello.c    49    
+         hello.c    50            locate(1,3);
+    00000040 D32B                   MOV.L       L444+28,R3 ; _locate
+    00000042 EA01                   MOV         #1,R10
+    00000044 E02C                   MOV         #44,R0
+    00000046 6CB3                   MOV         R11,R12
+    00000048 0FA5                   MOV.W       R10,@(R0,R15)
+    0000004A E503                   MOV         #3,R5
+    0000004C E030                   MOV         #48,R0
+    0000004E 0FD5                   MOV.W       R13,@(R0,R15)
+    00000050 60D3                   MOV         R13,R0
+    00000052 81FE                   MOV.W       R0,@(28,R15)
+    00000054 430B                   JSR         @R3
+    00000056 64A3                   MOV         R10,R4
+         hello.c    51            Print((const unsigned char*)"SpritePainter [EXE]");
+    00000058 D426                   MOV.L       L444+32,R4 ; L378
+    0000005A D227                   MOV.L       L444+36,R2 ; _Print
+    0000005C 420B                   JSR         @R2
+    0000005E 0009                   NOP
+         hello.c    52            GetKey(&key);
+    00000060 D326                   MOV.L       L444+40,R3 ; _GetKey
+    00000062 64F3                   MOV         R15,R4
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000064 430B                   JSR         @R3
+    00000066 7410                   ADD         #16,R4
+         hello.c    53            key = 0;
+         hello.c    54            
+         hello.c    55            while(0==0){
+    00000068 A178                   BRA         L442
+    0000006A 0009                   NOP
+    0000006C              L416:                             
+         hello.c    56            while(paintPicture){
+         hello.c    57                    Bdisp_AllClr_VRAM();
+    0000006C D324                   MOV.L       L444+44,R3 ; _Bdisp_AllClr_VRAM
+    0000006E 430B                   JSR         @R3
+    00000070 0009                   NOP
+    00000072 85FA                   MOV.W       @(20,R15),R0
+    00000074 9130                   MOV.W       L444+4,R1  ; H'7542
+    00000076 6403                   MOV         R0,R4
+    00000078 50F4                   MOV.L       @(16,R15),R0
+    0000007A 3010                   CMP/EQ      R1,R0
+    0000007C 8D16                   BT/S        L397
+    0000007E 65BF                   EXTS.W      R11,R5
+    00000080 912B                   MOV.W       L444+6,R1  ; H'7547
+    00000082 3010                   CMP/EQ      R1,R0
+    00000084 8918                   BT          L398
+    00000086 9129                   MOV.W       L444+8,R1  ; H'7544
+    00000088 3010                   CMP/EQ      R1,R0
+    0000008A 891B                   BT          L399
+    0000008C 9127                   MOV.W       L444+10,R1 ; H'7545
+    0000008E 3010                   CMP/EQ      R1,R0
+    00000090 891C                   BT          L400
+    00000092 9125                   MOV.W       L444+12,R1 ; H'7534
+    00000094 3010                   CMP/EQ      R1,R0
+    00000096 8B01                   BF          L445
+    00000098 A11D                   BRA         __$ending$382
+    0000009A 0009                   NOP
+    0000009C              L445:                             
+    0000009C 9121                   MOV.W       L444+14,R1 ; H'7539
+    0000009E 3010                   CMP/EQ      R1,R0
+    000000A0 8934                   BT          L441
+    000000A2 911F                   MOV.W       L444+16,R1 ; H'753A
+    000000A4 3010                   CMP/EQ      R1,R0
+    000000A6 892D                   BT          L403
+    000000A8 A032                   BRA         L417
+    000000AA 0009                   NOP
+    000000AC              L397:                            ; case label 
+         hello.c    58                    switch(key){
+         hello.c    59                            case KEY_CTRL_UP:
+         hello.c    60                                    if(Y > 0) Y--;
+    000000AC 4415                   CMP/PL      R4
+    000000AE 8B2F                   BF          L417
+    000000B0 85FA                   MOV.W       @(20,R15),R0
+    000000B2 70FF                   ADD         #-1,R0
+         hello.c    61                                    break;
+    000000B4 A02C                   BRA         L417
+    000000B6 81FA                   MOV.W       R0,@(20,R15)
+    000000B8              L398:                            ; case label 
+         hello.c    62                            case KEY_CTRL_DOWN:
+         hello.c    63                                    if(Y < 15) Y++;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000B8 34E3                   CMP/GE      R14,R4
+    000000BA 8929                   BT          L417
+    000000BC 85FA                   MOV.W       @(20,R15),R0
+    000000BE 7001                   ADD         #1,R0
+         hello.c    64                                    break;
+    000000C0 A026                   BRA         L417
+    000000C2 81FA                   MOV.W       R0,@(20,R15)
+    000000C4              L399:                            ; case label 
+         hello.c    65                            case KEY_CTRL_LEFT:
+         hello.c    66                                    if(X > 0) X--;
+    000000C4 4515                   CMP/PL      R5
+    000000C6 8B23                   BF          L417
+         hello.c    67                                    break;
+    000000C8 A022                   BRA         L417
+    000000CA 7BFF                   ADD         #-1,R11
+    000000CC              L400:                            ; case label 
+         hello.c    68                            case KEY_CTRL_RIGHT:
+         hello.c    69                                    if(X < 15) X++;
+    000000CC 35E3                   CMP/GE      R14,R5
+    000000CE 891F                   BT          L417
+         hello.c    70                                    break;
+    000000D0 A01E                   BRA         L417
+    000000D2 7B01                   ADD         #1,R11
+    000000D4              L444:                             
+    000000D4 FDB8                   .DATA.W     H'FDB8
+    000000D6 0200                   .DATA.W     H'0200
+    000000D8 7542                   .DATA.W     H'7542
+    000000DA 7547                   .DATA.W     H'7547
+    000000DC 7544                   .DATA.W     H'7544
+    000000DE 7545                   .DATA.W     H'7545
+    000000E0 7534                   .DATA.W     H'7534
+    000000E2 7539                   .DATA.W     H'7539
+    000000E4 753A                   .DATA.W     H'753A
+    000000E6 0000                   .DATA.W     0
+    000000E8 <00000000>             .DATA.L     L373
+    000000EC <00000000>             .DATA.L     __slow_mvn
+    000000F0 <00000000>             .DATA.L     _locate
+    000000F4 <00000000>             .DATA.L     L378
+    000000F8 <00000000>             .DATA.L     _Print
+    000000FC <00000000>             .DATA.L     _GetKey
+    00000100 <00000000>             .DATA.L     _Bdisp_AllClr_VRAM
+    00000104              L403:                            ; case label 
+         hello.c    71                            case KEY_CTRL_EXE:
+         hello.c    72                                    goto ending;
+         hello.c    73                                    break;
+         hello.c    74                            case KEY_CTRL_F1:
+         hello.c    75                                    changePixel = 1;
+         hello.c    76                                    break;
+         hello.c    77                            case KEY_CTRL_F2:
+         hello.c    78                                    instantDraw = !instantDraw;
+    00000104 85FE                   MOV.W       @(28,R15),R0
+    00000106 2008                   TST         R0,R0
+    00000108 0029                   MOVT        R0
+    0000010A 81FE                   MOV.W       R0,@(28,R15)
+         hello.c    79                                    changePixel = 1;
+         hello.c    80                                    break;
+    0000010C              L441:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000010C E030                   MOV         #48,R0
+    0000010E 0FA5                   MOV.W       R10,@(R0,R15)
+    00000110              L417:                             
+    00000110 85FA                   MOV.W       @(20,R15),R0
+    00000112 4000                   SHLL        R0
+    00000114 1F03                   MOV.L       R0,@(12,R15)
+    00000116 E030                   MOV         #48,R0
+    00000118 03FD                   MOV.W       @(R0,R15),R3
+    0000011A 2338                   TST         R3,R3
+    0000011C 890A                   BT          L423
+         hello.c    81                    }
+         hello.c    82                    if(changePixel) picture[X][Y] = !picture[X][Y];
+    0000011E 64BF                   EXTS.W      R11,R4
+    00000120 53F3                   MOV.L       @(12,R15),R3
+    00000122 4408                   SHLL2       R4
+    00000124 4408                   SHLL2       R4
+    00000126 4400                   SHLL        R4
+    00000128 348C                   ADD         R8,R4
+    0000012A 343C                   ADD         R3,R4
+    0000012C 6041                   MOV.W       @R4,R0
+    0000012E 2008                   TST         R0,R0
+    00000130 0029                   MOVT        R0
+    00000132 2401                   MOV.W       R0,@R4
+    00000134              L423:                             
+         hello.c    83                    if(!instantDraw) changePixel = 0;
+    00000134 85FE                   MOV.W       @(28,R15),R0
+    00000136 2008                   TST         R0,R0
+    00000138 8B01                   BF          L425
+    0000013A E030                   MOV         #48,R0
+    0000013C 0FD5                   MOV.W       R13,@(R0,R15)
+    0000013E              L425:                             
+         hello.c    84    
+         hello.c    85                    for(xcounter = 0; xcounter < 64; xcounter++){
+    0000013E 60D3                   MOV         R13,R0
+    00000140 A024                   BRA         L426
+    00000142 81F4                   MOV.W       R0,@(8,R15)
+    00000144              L427:                             
+         hello.c    86                            for(ycounter = 0; ycounter < 64; ycounter++){
+    00000144 A01B                   BRA         L428
+    00000146 2FD1                   MOV.W       R13,@R15
+    00000148              L429:                             
+         hello.c    87                                    Bdisp_SetPoint_VRAM(32+xcounter, ycounter, picture[xcounter/4][ycounter/4]
+                         +);              
+    00000148 85F4                   MOV.W       @(8,R15),R0
+    0000014A 4011                   CMP/PZ      R0
+    0000014C 8D01                   BT/S        L430
+    0000014E 1F01                   MOV.L       R0,@(4,R15)
+    00000150 7003                   ADD         #3,R0
+    00000152              L430:                             
+    00000152 4021                   SHAR        R0
+    00000154 66F1                   MOV.W       @R15,R6
+    00000156 4021                   SHAR        R0
+    00000158 4008                   SHLL2       R0
+    0000015A 4008                   SHLL2       R0
+    0000015C 4000                   SHLL        R0
+    0000015E 308C                   ADD         R8,R0
+    00000160 4611                   CMP/PZ      R6
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000162 8D01                   BT/S        L431
+    00000164 1F66                   MOV.L       R6,@(24,R15)
+    00000166 7603                   ADD         #3,R6
+    00000168              L431:                             
+    00000168 55F6                   MOV.L       @(24,R15),R5
+    0000016A 4621                   SHAR        R6
+    0000016C 54F1                   MOV.L       @(4,R15),R4
+    0000016E 4621                   SHAR        R6
+    00000170 4600                   SHLL        R6
+    00000172 066D                   MOV.W       @(R0,R6),R6
+    00000174 4E0B                   JSR         @R14
+    00000176 7420                   ADD         #32,R4
+    00000178 63F1                   MOV.W       @R15,R3
+    0000017A 7301                   ADD         #1,R3
+    0000017C 2F31                   MOV.W       R3,@R15
+    0000017E              L428:                             
+    0000017E E340                   MOV         #64,R3
+    00000180 62F1                   MOV.W       @R15,R2
+    00000182 3233                   CMP/GE      R3,R2
+    00000184 8BE0                   BF          L429
+    00000186 85F4                   MOV.W       @(8,R15),R0
+    00000188 7001                   ADD         #1,R0
+    0000018A 81F4                   MOV.W       R0,@(8,R15)
+    0000018C              L426:                             
+    0000018C DE45                   MOV.L       L446+2,R14 ; _Bdisp_SetPoint_VRAM
+    0000018E E340                   MOV         #64,R3
+    00000190 85F4                   MOV.W       @(8,R15),R0
+    00000192 3033                   CMP/GE      R3,R0
+    00000194 8BD6                   BF          L427
+    00000196 64BF                   EXTS.W      R11,R4
+    00000198 50F3                   MOV.L       @(12,R15),R0
+    0000019A 4408                   SHLL2       R4
+    0000019C 4408                   SHLL2       R4
+    0000019E 4400                   SHLL        R4
+    000001A0 348C                   ADD         R8,R4
+    000001A2 034D                   MOV.W       @(R0,R4),R3
+    000001A4 2338                   TST         R3,R3
+    000001A6 8B00                   BF          L432
+         hello.c    88                            }
+         hello.c    89                    }
+         hello.c    90    
+         hello.c    91                    if(picture[X][Y] == 0) reverseColor = 1;
+    000001A8 6CA3                   MOV         R10,R12
+    000001AA              L432:                             
+         hello.c    92                    if(picture[X][Y] == 1) reverseColor = 0;
+    000001AA 50F3                   MOV.L       @(12,R15),R0
+    000001AC 004D                   MOV.W       @(R0,R4),R0
+    000001AE 8801                   CMP/EQ      #1,R0
+    000001B0 8B00                   BF          L433
+    000001B2 6CD3                   MOV         R13,R12
+    000001B4              L433:                             
+         hello.c    93    
+         hello.c    94                    Bdisp_SetPoint_VRAM(32+(X*4), (Y*4), reverseColor);
+    000001B4 85FA                   MOV.W       @(20,R15),R0
+    000001B6 64BF                   EXTS.W      R11,R4
+    000001B8 66C3                   MOV         R12,R6
+    000001BA 6503                   MOV         R0,R5
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001BC 4508                   SHLL2       R5
+    000001BE 4408                   SHLL2       R4
+    000001C0 2F52                   MOV.L       R5,@R15
+    000001C2 1F41                   MOV.L       R4,@(4,R15)
+    000001C4 7420                   ADD         #32,R4
+    000001C6 4E0B                   JSR         @R14
+    000001C8 1F43                   MOV.L       R4,@(12,R15)
+         hello.c    95                    Bdisp_SetPoint_VRAM(33+(X*4), (Y*4), reverseColor);
+    000001CA 66C3                   MOV         R12,R6
+    000001CC 65F2                   MOV.L       @R15,R5
+    000001CE 54F1                   MOV.L       @(4,R15),R4
+    000001D0 7421                   ADD         #33,R4
+    000001D2 4E0B                   JSR         @R14
+    000001D4 1F46                   MOV.L       R4,@(24,R15)
+         hello.c    96                    Bdisp_SetPoint_VRAM(34+(X*4), (Y*4), reverseColor);
+    000001D6 66C3                   MOV         R12,R6
+    000001D8 65F2                   MOV.L       @R15,R5
+    000001DA 54F1                   MOV.L       @(4,R15),R4
+    000001DC 7422                   ADD         #34,R4
+    000001DE 4E0B                   JSR         @R14
+    000001E0 1F49                   MOV.L       R4,@(36,R15)
+         hello.c    97                    Bdisp_SetPoint_VRAM(35+(X*4), (Y*4), reverseColor);
+    000001E2 66C3                   MOV         R12,R6
+    000001E4 65F2                   MOV.L       @R15,R5
+    000001E6 54F1                   MOV.L       @(4,R15),R4
+    000001E8 7423                   ADD         #35,R4
+    000001EA 4E0B                   JSR         @R14
+    000001EC 1F42                   MOV.L       R4,@(8,R15)
+         hello.c    98    
+         hello.c    99                    Bdisp_SetPoint_VRAM(32+(X*4), (Y*4)+1, reverseColor);
+    000001EE 66C3                   MOV         R12,R6
+    000001F0 65F2                   MOV.L       @R15,R5
+    000001F2 7501                   ADD         #1,R5
+    000001F4 1F51                   MOV.L       R5,@(4,R15)
+    000001F6 4E0B                   JSR         @R14
+    000001F8 54F3                   MOV.L       @(12,R15),R4
+         hello.c   100                    Bdisp_SetPoint_VRAM(32+(X*4), (Y*4)+2, reverseColor);
+    000001FA 66C3                   MOV         R12,R6
+    000001FC 65F2                   MOV.L       @R15,R5
+    000001FE 7502                   ADD         #2,R5
+    00000200 1F5A                   MOV.L       R5,@(40,R15)
+    00000202 4E0B                   JSR         @R14
+    00000204 54F3                   MOV.L       @(12,R15),R4
+         hello.c   101                    Bdisp_SetPoint_VRAM(35+(X*4), (Y*4)+1, reverseColor);
+    00000206 66C3                   MOV         R12,R6
+    00000208 55F1                   MOV.L       @(4,R15),R5
+    0000020A 4E0B                   JSR         @R14
+    0000020C 54F2                   MOV.L       @(8,R15),R4
+         hello.c   102                    Bdisp_SetPoint_VRAM(35+(X*4), (Y*4)+2, reverseColor);
+    0000020E 66C3                   MOV         R12,R6
+    00000210 55FA                   MOV.L       @(40,R15),R5
+    00000212 4E0B                   JSR         @R14
+    00000214 54F2                   MOV.L       @(8,R15),R4
+         hello.c   103    
+         hello.c   104                    Bdisp_SetPoint_VRAM(32+(X*4), (Y*4)+3, reverseColor);
+    00000216 66C3                   MOV         R12,R6
+    00000218 65F2                   MOV.L       @R15,R5
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000021A 7503                   ADD         #3,R5
+    0000021C 1F51                   MOV.L       R5,@(4,R15)
+    0000021E 4E0B                   JSR         @R14
+    00000220 54F3                   MOV.L       @(12,R15),R4
+         hello.c   105                    Bdisp_SetPoint_VRAM(33+(X*4), (Y*4)+3, reverseColor);
+    00000222 66C3                   MOV         R12,R6
+    00000224 55F1                   MOV.L       @(4,R15),R5
+    00000226 4E0B                   JSR         @R14
+    00000228 54F6                   MOV.L       @(24,R15),R4
+         hello.c   106                    Bdisp_SetPoint_VRAM(34+(X*4), (Y*4)+3, reverseColor);
+    0000022A 66C3                   MOV         R12,R6
+    0000022C 55F1                   MOV.L       @(4,R15),R5
+    0000022E 4E0B                   JSR         @R14
+    00000230 54F9                   MOV.L       @(36,R15),R4
+         hello.c   107                    Bdisp_SetPoint_VRAM(35+(X*4), (Y*4)+3, reverseColor);
+    00000232 66C3                   MOV         R12,R6
+    00000234 55F1                   MOV.L       @(4,R15),R5
+    00000236 4E0B                   JSR         @R14
+    00000238 54F2                   MOV.L       @(8,R15),R4
+         hello.c   108    
+         hello.c   109                    Bdisp_DrawLineVRAM(31, 0, 31, 63);
+    0000023A E73F                   MOV         #63,R7
+    0000023C DE1A                   MOV.L       L446+6,R14 ; _Bdisp_DrawLineVRAM
+    0000023E E61F                   MOV         #31,R6
+    00000240 E500                   MOV         #0,R5
+    00000242 4E0B                   JSR         @R14
+    00000244 6463                   MOV         R6,R4
+         hello.c   110                    Bdisp_DrawLineVRAM(96, 0, 96, 63);
+    00000246 E73F                   MOV         #63,R7
+    00000248 E660                   MOV         #96,R6
+    0000024A E500                   MOV         #0,R5
+    0000024C 4E0B                   JSR         @R14
+    0000024E 6463                   MOV         R6,R4
+         hello.c   111    
+         hello.c   112                    locate(18,1);
+    00000250 D316                   MOV.L       L446+10,R3 ; _locate
+    00000252 E501                   MOV         #1,R5
+    00000254 430B                   JSR         @R3
+    00000256 E412                   MOV         #18,R4
+         hello.c   113                    sprintf(buffer, "X%d ",X);
+    00000258 DE15                   MOV.L       L446+14,R14; L385
+    0000025A 62BF                   EXTS.W      R11,R2
+    0000025C D315                   MOV.L       L446+18,R3 ; _sprintf
+    0000025E 2F26                   MOV.L       R2,@-R15
+    00000260 2FE6                   MOV.L       R14,@-R15
+    00000262 430B                   JSR         @R3
+    00000264 6493                   MOV         R9,R4
+         hello.c   114                    Print((const unsigned char*)buffer);
+    00000266 6E93                   MOV         R9,R14
+    00000268 D213                   MOV.L       L446+22,R2 ; _Print
+    0000026A 420B                   JSR         @R2
+    0000026C 6493                   MOV         R9,R4
+         hello.c   115                    locate(18,2);
+    0000026E E502                   MOV         #2,R5
+    00000270 D30E                   MOV.L       L446+10,R3 ; _locate
+    00000272 430B                   JSR         @R3
+    00000274 E412                   MOV         #18,R4
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+         hello.c   116                    sprintf(buffer, "Y%d ",Y);
+    00000276 85FE                   MOV.W       @(28,R15),R0
+    00000278 D310                   MOV.L       L446+26,R3 ; L386
+    0000027A 2F06                   MOV.L       R0,@-R15
+    0000027C 2F36                   MOV.L       R3,@-R15
+    0000027E D20D                   MOV.L       L446+18,R2 ; _sprintf
+    00000280 420B                   JSR         @R2
+    00000282 64E3                   MOV         R14,R4
+         hello.c   117                    Print((const unsigned char*)buffer);
+    00000284 D30C                   MOV.L       L446+22,R3 ; _Print
+    00000286 7F10                   ADD         #16,R15
+    00000288 430B                   JSR         @R3
+    0000028A 64E3                   MOV         R14,R4
+         hello.c   118                    
+         hello.c   119                    Bdisp_PutDisp_DD();
+    0000028C DE0C                   MOV.L       L446+30,R14; _Bdisp_PutDisp_DD
+    0000028E 4E0B                   JSR         @R14
+    00000290 0009                   NOP
+         hello.c   120                    GetKey(&key);   
+    00000292 64F3                   MOV         R15,R4
+    00000294 D20B                   MOV.L       L446+34,R2 ; _GetKey
+    00000296 420B                   JSR         @R2
+    00000298 7410                   ADD         #16,R4
+    0000029A              L415:                             
+    0000029A EE0F                   MOV         #15,R14
+    0000029C 9901                   MOV.W       L446,R9    ; H'0234
+    0000029E A013                   BRA         L443
+    000002A0 39FC                   ADD         R15,R9
+    000002A2              L446:                             
+    000002A2 0234                   .DATA.W     H'0234
+    000002A4 <00000000>             .DATA.L     _Bdisp_SetPoint_VRAM
+    000002A8 <00000000>             .DATA.L     _Bdisp_DrawLineVRAM
+    000002AC <00000000>             .DATA.L     _locate
+    000002B0 <00000000>             .DATA.L     L385
+    000002B4 <00000000>             .DATA.L     _sprintf
+    000002B8 <00000000>             .DATA.L     _Print
+    000002BC <00000000>             .DATA.L     L386
+    000002C0 <00000000>             .DATA.L     _Bdisp_PutDisp_DD
+    000002C4 <00000000>             .DATA.L     _GetKey
+    000002C8              L443:                             
+    000002C8 E02C                   MOV         #44,R0
+    000002CA 03FD                   MOV.W       @(R0,R15),R3
+    000002CC 2338                   TST         R3,R3
+    000002CE 8D02                   BT/S        L447
+    000002D0 0009                   NOP
+    000002D2 AECB                   BRA         L416
+    000002D4 0009                   NOP
+    000002D6              L447:                             
+    000002D6              __$ending$382:                   ; label: ending
+         hello.c   121        }
+         hello.c   122    
+         hello.c   123            ending:
+         hello.c   124    
+         hello.c   125            for(ycounter = 0; ycounter < 16; ycounter++){
+    000002D6 60D3                   MOV         R13,R0
+    000002D8 A039                   BRA         L434
+    000002DA 81F4                   MOV.W       R0,@(8,R15)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE   10
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002DC              L435:                             
+         hello.c   126                    for(xcounter = 0; xcounter < 16; xcounter++){
+    000002DC A016                   BRA         L436
+    000002DE 2FD1                   MOV.W       R13,@R15
+    000002E0              L437:                             
+         hello.c   127                            if(picture[xcounter][ycounter] == 1) binary += ipow(2,15-xcounter);
+    000002E0 60F1                   MOV.W       @R15,R0
+    000002E2 4008                   SHLL2       R0
+    000002E4 4008                   SHLL2       R0
+    000002E6 4000                   SHLL        R0
+    000002E8 308C                   ADD         R8,R0
+    000002EA 6303                   MOV         R0,R3
+    000002EC 85F4                   MOV.W       @(8,R15),R0
+    000002EE 4000                   SHLL        R0
+    000002F0 003D                   MOV.W       @(R0,R3),R0
+    000002F2 8801                   CMP/EQ      #1,R0
+    000002F4 8B07                   BF          L438
+    000002F6 65E3                   MOV         R14,R5
+    000002F8 53F3                   MOV.L       @(12,R15),R3
+    000002FA 3538                   SUB         R3,R5
+    000002FC BE80                   BSR         _ipow
+    000002FE E402                   MOV         #2,R4
+    00000300 53F8                   MOV.L       @(32,R15),R3
+    00000302 330C                   ADD         R0,R3
+    00000304 1F38                   MOV.L       R3,@(32,R15)
+    00000306              L438:                             
+    00000306 62F1                   MOV.W       @R15,R2
+    00000308 7201                   ADD         #1,R2
+    0000030A 2F21                   MOV.W       R2,@R15
+    0000030C              L436:                             
+    0000030C 63F1                   MOV.W       @R15,R3
+    0000030E E210                   MOV         #16,R2
+    00000310 3323                   CMP/GE      R2,R3
+    00000312 8FE5                   BF/S        L437
+    00000314 1F33                   MOV.L       R3,@(12,R15)
+         hello.c   128                    }
+         hello.c   129                    Bdisp_AllClr_DDVRAM();
+    00000316 D312                   MOV.L       L448,R3    ; _Bdisp_AllClr_DDVRAM
+    00000318 430B                   JSR         @R3
+    0000031A 0009                   NOP
+         hello.c   130                    locate(1,1);
+    0000031C D211                   MOV.L       L448+4,R2  ; _locate
+    0000031E E501                   MOV         #1,R5
+    00000320 420B                   JSR         @R2
+    00000322 6453                   MOV         R5,R4
+         hello.c   131                    sprintf(buffer, "0x%04X[%d]", binary, ycounter);
+    00000324 53F1                   MOV.L       @(4,R15),R3
+    00000326 2F36                   MOV.L       R3,@-R15
+    00000328 52F9                   MOV.L       @(36,R15),R2
+    0000032A 2F26                   MOV.L       R2,@-R15
+    0000032C D30E                   MOV.L       L448+8,R3  ; L389
+    0000032E 2F36                   MOV.L       R3,@-R15
+    00000330 D20E                   MOV.L       L448+12,R2 ; _sprintf
+    00000332 420B                   JSR         @R2
+    00000334 6493                   MOV         R9,R4
+    00000336 7F0C                   ADD         #12,R15
+         hello.c   132                    Print((const unsigned char*)buffer);
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE   11
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000338 D30D                   MOV.L       L448+16,R3 ; _Print
+    0000033A 430B                   JSR         @R3
+    0000033C 6493                   MOV         R9,R4
+         hello.c   133                    binary = 0;
+         hello.c   134                    GetKey(&key);
+    0000033E 64F3                   MOV         R15,R4
+    00000340 D30C                   MOV.L       L448+20,R3 ; _GetKey
+    00000342 1FD8                   MOV.L       R13,@(32,R15)
+    00000344 430B                   JSR         @R3
+    00000346 7410                   ADD         #16,R4
+    00000348 85F4                   MOV.W       @(8,R15),R0
+    0000034A 7001                   ADD         #1,R0
+    0000034C 81F4                   MOV.W       R0,@(8,R15)
+    0000034E              L434:                             
+    0000034E E310                   MOV         #16,R3
+    00000350 85F4                   MOV.W       @(8,R15),R0
+    00000352 3033                   CMP/GE      R3,R0
+    00000354 8FC2                   BF/S        L435
+    00000356 1F01                   MOV.L       R0,@(4,R15)
+         hello.c   135            }
+         hello.c   136    
+         hello.c   137            paintPicture = 1;
+    00000358 E02C                   MOV         #44,R0
+    0000035A 0FA5                   MOV.W       R10,@(R0,R15)
+         hello.c   138            key = 0;
+    0000035C              L442:                             
+    0000035C AF9D                   BRA         L415
+    0000035E 1FD4                   MOV.L       R13,@(16,R15)
+    00000360              L448:                             
+    00000360 <00000000>             .DATA.L     _Bdisp_AllClr_DDVRAM
+    00000364 <00000000>             .DATA.L     _locate
+    00000368 <00000000>             .DATA.L     L389
+    0000036C <00000000>             .DATA.L     _sprintf
+    00000370 <00000000>             .DATA.L     _Print
+    00000374 <00000000>             .DATA.L     _GetKey
+         hello.c   139            }
+         hello.c   140            
+         hello.c   141    
+         hello.c   142        return 1;
+         hello.c   143    }
+         hello.c   144    
+         hello.c   145    
+         hello.c   146    #pragma section _BR_Size
+         hello.c   147    unsigned long BR_Size;
+         hello.c   148    #pragma section
+         hello.c   149    
+         hello.c   150    
+         hello.c   151    #pragma section _TOP
+         hello.c   152    
+         hello.c   153    
+         hello.c   154    int InitializeSystem(int isAppli, unsigned short OptionNum)
+P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
+                                                           ; frame size=0
+         hello.c   155    {
+         hello.c   156        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L449+2,R3  ; _INIT_ADDIN_APPLICATION
+    00000002 432B                   JMP         @R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE   12
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000004 0009                   NOP
+    00000006              L449:                             
+    00000006 0000                   .DATA.W     0
+    00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
+         hello.c   157    }
+         hello.c   158    
+         hello.c   159    #pragma section
+C   00000000              L373:
+    00000000 0000000000             .DATA.W     H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE   13
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             00000000     
+    000001A8 0000000000             .DATA.W     H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,H'0000,
+             0000000000 +                       H'0000,H'0000,H'0000,H'0000
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             00           
+    000001E0 0000002001             .DATAB.B    32,0
+             00           
+    00000200              L378:
+    00000200 5370726974             .SDATA      "SpritePainter [EXE]"
+             655061696E   
+             746572205B   
+             4558455D     
+    00000213 00                     .DATA.B     H'00
+    00000214              L385:
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE   14
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000214 58256420               .SDATA      "X%d "
+    00000218 00                     .DATA.B     H'00
+    00000219 00000001               .RES.B      1
+    0000021A 00000002               .RES.W      1
+    0000021C              L386:
+    0000021C 59256420               .SDATA      "Y%d "
+    00000220 00                     .DATA.B     H'00
+    00000221 00000001               .RES.B      1
+    00000222 00000002               .RES.W      1
+    00000224              L389:
+    00000224 3078253034             .SDATA      "0x%04X[%d]"
+             585B25645D   
+    0000022E 00                     .DATA.B     H'00
+B_B 00000000              _BR_Size:                        ; static: BR_Size
+    00000000 00000004               .RES.L      1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2019 22:46:04  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      159
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000378 Byte(s)
+PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
+PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
+CONSTANT SECTION (C):                               0000022F Byte(s)
+CONSTANT SECTION (C_BR_Size):                       00000000 Byte(s)
+CONSTANT SECTION (C_TOP):                           00000000 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+DATA     SECTION (D_BR_Size):                       00000000 Byte(s)
+DATA     SECTION (D_TOP):                           00000000 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
+BSS      SECTION (B_TOP):                           00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 000005B7 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           11
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           4
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            55
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\ADMINI~1\AppData\Local\Temp\hmkF22.tmp 
+
