@@ -763,6 +763,10 @@ void RS_FilterDXFRW::addAttribForInsert(RS_Insert* entity, const DRW_Attrib& dat
 		qtag, data.version, data.flags, alignV, data.lockPositionFlag);
 
 	entity->addAttrib(d);
+
+	std::stringstream ss;
+	ss << "Attrib (" << data.text << ") addAttribForInsert,";
+	LOG4CPLUS_INFO(rootLogger, ss.str());
 }
 
 
