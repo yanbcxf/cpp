@@ -262,7 +262,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 				}
 			} 
 			else {
-				rx.setPattern("^[\\(]+[0-9]+[ABCDEFabcdef]+[0-9]{1,2}[\\)]+");
+				rx.setPattern("^[\\(]?[0-9]+[ABCDEFabcdef]+[0-9]+[\\)]?");
 				idx = rx.indexIn(e.name);
 				if (idx >= 0) {
 					nSteelLine++;
@@ -350,10 +350,17 @@ void LC_List::execComm(Document_Interface *doc,
 			questionBeam.push_back(a);
 	}
 
+	int nErrorBeam = 0;
+	for (auto a : detailBeam)
+	{
+		if (!a.strError.isEmpty())
+			nErrorBeam++;
+	}
+
 	std::sort(questionBeam.begin(), questionBeam.end());
 
-	text.append(QString("abbrevBeam %1, detailBeam %2, questionBeam %3 \n").arg(abbrevBeam.size())
-		.arg(detailBeam.size()).arg(questionBeam.size()));
+	text.append(QString("abbrevBeam %1, detailBeam %2, questionBeam %3, nErrorBeam %4 \n").arg(abbrevBeam.size())
+		.arg(detailBeam.size()).arg(questionBeam.size()).arg(nErrorBeam));
 	text.append("========================================================\n");
 
 	for (int i = 0; i < questionBeam.size(); i++) {
