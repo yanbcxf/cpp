@@ -117,7 +117,7 @@ void filterData2(Plug_Entity *ent, std::vector<MarkingData>& markings, std::vect
 			if (txt.name.indexOf("L") >= 0) {
 				MarkingData marking;
 				marking.bAlert = false;
-				marking.bError = false;
+				marking.strError = QString::fromUtf8("");
 				marking.beam = txt;
 				markings.push_back(marking);
 			}
@@ -198,7 +198,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 	for (int i = 0; i < markings.size(); i++) {
 		// 梁名称
 		QRegExp rx;
-		rx.setPattern("[A-Za-z0-9]*L[A-Za-z0-9]*\\([0-9]+[AB]?\\)");
+		rx.setPattern("[A-Za-z0-9]*L[A-Za-z0-9\\-]*\\([0-9]+[AB]?\\)");
 		int idx = rx.indexIn(markings[i].beam.name);
 		if (idx >= 0) {
 			QStringList ql = rx.capturedTexts();
@@ -208,7 +208,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 				markings[i].prefix = markings[i].name.mid(0, pos);
 		}
 		if (markings[i].name.isEmpty())
-			markings[i].bError = true;
+			markings[i].strError = QString::fromUtf8("Err(name)");
 
 		// 截面尺寸
 		rx.setPattern("[0-9]+x[0-9]+");
@@ -246,9 +246,9 @@ void parseBeam(std::vector<MarkingData>& markings) {
 			int nPos = e.name.indexOf(";");
 			if (nPos > 0) {
 				nSteelLine++;
-				QString top = e.name.mid(0, nPos);
+				QString top = e.name.mid(0, nPos).trimmed();
 				QString bottom = e.name.mid(nPos + 1);
-				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
+				rx.setPattern("^[\\(]?[0-9]+[ABCDEFabcdef]+[0-9]+[\\)]?");
 				idx = rx.indexIn(top);
 				if (idx >= 0) {
 					// 上部纵筋
@@ -262,7 +262,7 @@ void parseBeam(std::vector<MarkingData>& markings) {
 				}
 			} 
 			else {
-				rx.setPattern("^[0-9]+[ABCDEFabcdef]+[0-9]+");
+				rx.setPattern("^[\\(]+[0-9]+[ABCDEFabcdef]+[0-9]{1,2}[\\)]+");
 				idx = rx.indexIn(e.name);
 				if (idx >= 0) {
 					nSteelLine++;
@@ -279,9 +279,9 @@ void parseBeam(std::vector<MarkingData>& markings) {
 
 		if (markings[i].others.size() > 0) {
 			if (nSteelLine > 1) markings[i].bAlert = true;
-			if (markings[i].bxh.isEmpty()) markings[i].bError = true;
-			if (markings[i].steelHooping.isEmpty()) markings[i].bError = true;
-			if (markings[i].steelTop.isEmpty()) markings[i].bError = true;
+			if (markings[i].bxh.isEmpty()) markings[i].strError = QString::fromUtf8("Err(size)");
+			// if (markings[i].steelHooping.isEmpty()) markings[i].bError = true;
+			if (markings[i].steelTop.isEmpty()) markings[i].strError = QString::fromUtf8("Err(top)");
 		}
 	}
 }
@@ -296,7 +296,6 @@ QString LC_List::getStrData(MarkingData strip) {
 	
     return strData;
 }
-
 
 void LC_List::execComm(Document_Interface *doc,
 	QWidget *parent, QString cmd)
@@ -369,7 +368,7 @@ void LC_List::execComm(Document_Interface *doc,
 		text.append(QString("N %1 %2 ( %3, %4 ) %5 %6 %7 \n").arg(i).arg(markings[i].beam.name)
 			.arg(markings[i].beam.startPt.x()).arg(markings[i].beam.startPt.y())
 			.arg(markings[i].others.size() > 0 ? "Detail":"  ")
-			.arg(markings[i].bError ? "Error" : "  ")
+			.arg(markings[i].strError)
 			.arg(markings[i].bAlert ? "Alert" : "  "));
 		
 		if (markings[i].others.size() > 0) {
@@ -397,7 +396,7 @@ void LC_List::execComm(Document_Interface *doc,
 
 		/* 移除集中标注中 标注信息 */
 		for (auto e : detailBeam) {
-			if (e.bError)
+			if (!e.strError.isEmpty())
 				continue;
 			QRegExp rx;
 			rx.setPattern("[0-9]+x[0-9]+");
@@ -415,7 +414,7 @@ void LC_List::execComm(Document_Interface *doc,
 
 		vector<BeamBaseData> vecBase;
 		for (auto e : detailBeam) {
-			if (!e.bError)
+			if (e.strError.isEmpty())
 				vecBase.push_back(e);
 		}
 
@@ -449,11 +448,10 @@ void LC_List::execComm(Document_Interface *doc,
 				detailBeam2.push_back(e);
 		}
 
-		std::sort(detailBeam1.begin(), detailBeam1.end());
-		std::sort(detailBeam2.begin(), detailBeam2.end());
+		/*std::sort(detailBeam1.begin(), detailBeam1.end());
+		std::sort(detailBeam2.begin(), detailBeam2.end());*/
 		newBeamGraph(detailBeam1, name(), "Graph1", doc);
 		newBeamGraph(detailBeam2, name(), "Graph2", doc);
-
 	}
 
 	while (!obj.isEmpty())

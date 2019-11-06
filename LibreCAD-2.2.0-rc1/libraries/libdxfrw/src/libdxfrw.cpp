@@ -2714,6 +2714,22 @@ std::string ReplaceString(std::string src, std::string target_string, std::strin
 	return target;
 }
 
+std::string ShowHexString(std::string src, std::string target_string)
+{
+	size_t position = src.find(target_string);
+	if (position != std::string::npos) 
+	{
+		std::ostringstream Convert;
+		const char * p = src.c_str();
+		for (int i = 0; i < strlen(p); i++)
+		{
+			Convert << std::uppercase << std::hex << (int)p[i];
+		}
+		return Convert.str();
+	}
+	return src;
+}
+
 bool dxfRW::processText() {
 	DRW_DBG("dxfRW::processText");
 	int code;
@@ -2729,8 +2745,15 @@ bool dxfRW::processText() {
 			txt.text = ReplaceString(txt.text, "%%131", "B");
 			txt.text = ReplaceString(txt.text, "%%132", "C");
 			txt.text = ReplaceString(txt.text, "%%133", "E");
-			txt.text = ReplaceString(txt.text, "%%136", "C");
+			txt.text = ReplaceString(txt.text, "\xc2\x82", "A");
+			txt.text = ReplaceString(txt.text, "\xc2\x83", "B");
+			txt.text = ReplaceString(txt.text, "\xc2\x84", "C");
+			txt.text = ReplaceString(txt.text, "\xc2\x85", "D");
+			txt.text = ReplaceString(txt.text, "%%136", "\x88");
+			txt.text = ReplaceString(txt.text, "%%137", "\x87");
+			txt.text = ReplaceString(txt.text, "%%151", "\x97");
 			txt.text = ReplaceString(txt.text, "%%U", " ");
+			//txt.text = ShowHexString(txt.text, "\x84");
 			iface->addText(txt);
 			return true;  //found new entity or ENDSEC, terminate
 		}
@@ -2758,7 +2781,13 @@ bool dxfRW::processMText() {
 			txt.text = ReplaceString(txt.text, "%%131", "B");
 			txt.text = ReplaceString(txt.text, "%%132", "C");
 			txt.text = ReplaceString(txt.text, "%%133", "E");
-			txt.text = ReplaceString(txt.text, "%%136", "C");
+			txt.text = ReplaceString(txt.text, "\xc2\x82", "A");
+			txt.text = ReplaceString(txt.text, "\xc2\x83", "B");
+			txt.text = ReplaceString(txt.text, "\xc2\x84", "C");
+			txt.text = ReplaceString(txt.text, "\xc2\x85", "D");
+			txt.text = ReplaceString(txt.text, "%%136", "\x88");
+			txt.text = ReplaceString(txt.text, "%%137", "\x87");
+			txt.text = ReplaceString(txt.text, "%%151", "\x97");
 			txt.text = ReplaceString(txt.text, "%%U", " ");
 			iface->addMText(txt);
 			return true;  //found new entity or ENDSEC, terminate

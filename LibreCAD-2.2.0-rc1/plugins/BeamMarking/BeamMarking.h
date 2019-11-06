@@ -82,7 +82,7 @@ public:
 	vector<TextData>	others;	//	梁的其他标注
 
 	bool	bAlert;
-	bool	bError;	
+	QString	strError;	
 
 } ;
 

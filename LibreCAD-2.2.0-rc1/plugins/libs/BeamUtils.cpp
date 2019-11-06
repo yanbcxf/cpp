@@ -81,12 +81,12 @@ vector<BeamBaseData> mergeBeams(vector<BeamBaseData>& newBeams, vector<BeamBaseD
 	struct {
 		bool operator()(BeamBaseData a, BeamBaseData b) const
 		{
-			if (a.name < b.name)
+			QString afloor = floorNum2String(a.floors);
+			QString bfloor = floorNum2String(b.floors);
+			if (afloor < bfloor)
 				return true;
-			else if (a.name == b.name) {
-				QString afloor = floorNum2String(a.floors);
-				QString bfloor = floorNum2String(b.floors);
-				return afloor < bfloor;
+			else if (afloor == bfloor) {
+				return a.name < b.name;
 			}
 			else
 				return false;
@@ -221,11 +221,34 @@ void newBeamGraph(std::vector<BeamBaseData>& beams, QString layerPrefix,  QStrin
 	QPointF maxPt, minPt;
 	doc->getBorder(minPt, maxPt);
 
+	int col, row;
 	for (int i = 0; i < beams.size(); i++) {
 		// 生成 梁的集中标注
-		int col = i % 15;
-		int row = i / 15;
-		QPointF orgin = QPointF(minPt.x(), maxPt.y() + 10000) + QPointF(col * (beamLength + 2 * columnWidth) * 1.5, row * 5000);
+		
+		if (i == 0)
+		{
+			col = 1; row = 0;
+		}
+		else
+		{
+			QString lastfloor = floorNum2String(beams[i-1].floors);
+			QString currentfloor = floorNum2String(beams[i].floors);
+			if (lastfloor == currentfloor) {
+				col++;
+				if (col > 10)
+				{
+					row++;	col = 0;
+				}
+			}
+			else
+			{
+				// 首行缩进
+				row++;	col = 1;
+			}
+		}
+
+
+		QPointF orgin = QPointF(minPt.x(), minPt.y() - 12000) + QPointF(col * (beamLength + 2 * columnWidth) * 1.5, -6000 * row);
 
 		doc->setLayer(layerPrefix + " " + graphId + " BeamText");
 		QPointF start = orgin + QPointF(beamOffset + 1000, 0);
