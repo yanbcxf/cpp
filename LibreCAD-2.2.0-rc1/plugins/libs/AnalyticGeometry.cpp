@@ -580,7 +580,7 @@ QString floorNum2String(vector<int> floors) {
 			segmentE++;
 		}
 		else {
-			if (segmentS >= 0) {
+			if (segmentS > -1000) {
 				if (segmentS == segmentE) {
 					text.append(QString::number(segmentE) + " ");
 				}
@@ -593,10 +593,10 @@ QString floorNum2String(vector<int> floors) {
 	}
 	if (floors.size() == 0) {
 		/* 未指明所属楼层时，默认为首层 */
-		text = "0";
+		text = "1";
 	}
 	else {
-		if (segmentS >= 0) {
+		if (segmentS > -1000) {
 			if (segmentS == segmentE) {
 				text.append(QString::number(segmentE) + " ");
 			}
