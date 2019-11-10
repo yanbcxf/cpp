@@ -496,14 +496,19 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 			if (bNegativeReinforce)
 			{
 				/* 调整负筋线的正方向 */
+				int len = strip.vertexs.size();
 				if (longest > 0) {
 					if (strip.angles[longest - 1] < 0) {
 						strip.from = strip.vertexs[longest];
 						strip.to = strip.vertexs[longest+1];
+						strip.start = strip.vertexs[longest-1>=0? longest - 1:0];
+						strip.end = strip.vertexs[longest + 2<len? longest + 2 : longest + 1];
 					} 
 					else {
 						strip.to = strip.vertexs[longest];
 						strip.from = strip.vertexs[longest + 1];
+						strip.end = strip.vertexs[longest - 1 >= 0 ? longest - 1 : 0];
+						strip.start = strip.vertexs[longest + 2 < len ? longest + 2 : longest + 1];
 					}
 				} 
 				else {
@@ -511,10 +516,14 @@ void filterData1(Plug_Entity *ent, std::vector<NegativeReinforceData>& negatives
 					if (strip.angles[longest] < 0) {
 						strip.from = strip.vertexs[longest];
 						strip.to = strip.vertexs[longest + 1];
+						strip.start = strip.vertexs[longest - 1 >= 0 ? longest - 1 : 0];
+						strip.end = strip.vertexs[longest + 2 < len ? longest + 2 : longest + 1];
 					}
 					else {
 						strip.to = strip.vertexs[longest];
 						strip.from = strip.vertexs[longest + 1];
+						strip.end = strip.vertexs[longest - 1 >= 0 ? longest - 1 : 0];
+						strip.start = strip.vertexs[longest + 2 < len ? longest + 2 : longest + 1];
 					}
 				}
 
@@ -599,8 +608,11 @@ void filterData2(Plug_Entity *ent, std::vector<TextData>& steelMarkings, std::ve
 		txt.endPt = crossover(txt.startPt, txt.startAngle, ptB, ptA);
 				
 		QRegExp rx;
-		rx.setPattern("^[Kk][0-9]+");
-		int idx = rx.indexIn(txt.name);
+		/* 悦榕公馆 */
+		// rx.setPattern("^[Kk][0-9]+");	
+		/* 融航气体 */
+		rx.setPattern("^[ABCDEFabcdef]+[0-9]+[\\-@][0-9]+");
+		int idx = rx.indexIn(txt.name.trimmed());
 		if (idx >= 0) {
 			steelMarkings.push_back(txt);
 		}
@@ -695,8 +707,13 @@ void marking2negative(std::vector<NegativeReinforceData>& negatives, std::vector
 				e2 = steelMarkings[k].endPt - negatives[i].steel.to;
 				double cp2 = crossProduct(e1, e2);
 				double an2 = angle(e1, e2);
-				if (cp1 > 0 && an1 < M_PI_2 && cp2 < 0 && an2 < M_PI_2) {
+				if (cp1 > 0 && an1 < M_PI_2 /* 融航气体 && cp2 < 0 && an2 < M_PI_2*/) {
 					double dist = pointToPolyline(steelMarkings[k].startPt, negatives[i].steel.vertexs);
+					double dist1 = pointToPolyline(steelMarkings[k].endPt, negatives[i].steel.vertexs);
+					double dist2 = pointToPolyline((steelMarkings[k].startPt + steelMarkings[k].endPt ) /2 , negatives[i].steel.vertexs);
+					if (dist > dist1) dist = dist1;
+					if (dist > dist2) dist = dist2;
+
 					if (dist < closest_dist) {
 						closest_dist = dist;
 						closest = k;
@@ -824,8 +841,8 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 			doc->addText("From", "standard", &h.steel.from, 280, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 		}*/
 
-		/* 对于仅有单个尺寸标注的负筋线，改成双边标注 */
-		for (int i = 0; i < negatives.size(); i++) {
+		/* 对于仅有单个尺寸标注的负筋线，改成双边标注 (悦榕公馆) */
+		for (int i = 0; i < negatives.size() && false; i++) {
 			if (negatives[i].sizeMarkings.size() == 1) {
 				/* 标注的尺寸与负筋线长度相等时， 改成双边标注 */
 				QPointF e = negatives[i].steel.from - negatives[i].steel.to;
@@ -936,8 +953,105 @@ void  execComm1(Document_Interface *doc, QWidget *parent, QString cmd, QC_Plugin
 				negatives[i].steelMarking.ent->updateData(&hash);
 			}
 		}
-	}
 
+		/* 融航气体 */
+		QString layer;
+		QString steelLayer;
+		if ( negatives.size()>0)
+		{
+			layer = negatives[0].steel.strLayer;
+			steelLayer = layer;
+		}
+					
+		for (int i = 0; i < negatives.size(); i++) 
+		{
+			double angle = negatives[i].steel.angle;
+
+			/* 判断是否有一个端点再梁上,以便决定是否补全那边的标注 */
+			bool bSingleFrom = false;
+			bool bSingleTo = false;
+			if (negatives[i].beam.size() == 0 && negatives[i].wall.size() == 0) {
+				bSingleFrom = true;
+				bSingleTo = true;
+			}
+			for (auto b : negatives[i].beam)
+			{
+				double dist1 = pointToLine(negatives[i].steel.from, b.from, b.to);
+				double dist2 = pointToLine(negatives[i].steel.to, b.from, b.to);
+				if (dist1 < 300 )
+					bSingleFrom = true;
+				if (dist2 < 300)
+					bSingleTo = true;
+			}
+
+			for (auto l : negatives[i].wall) 
+			{
+				if (isInsidePolyline(negatives[i].steel.from, l.vertexs)) bSingleFrom = true;
+				if (isInsidePolyline(negatives[i].steel.to, l.vertexs)) bSingleTo = true;
+			}
+
+			/* 对于没有钢筋标注的，增加缺省的钢筋标注 (融航气体)*/
+			if ( negatives[i].steelMarking.name.isEmpty())
+			{
+				QPointF from = (negatives[i].steel.from + negatives[i].steel.to) / 2 ;
+				
+				// double angle = negatives[i].sizeMarkings[0].startAngle;
+				doc->setLayer(steelLayer);
+				doc->addText(QString::fromLocal8Bit("C8@180"), "standard", &from, 180, angle, DPI::HAlignCenter, DPI::VAlignMiddle);
+			}
+			else
+			{
+				steelLayer = negatives[i].steelMarking.strLayer;
+			}
+
+			/* 对于没有尺寸标注的，增加缺省的尺寸标注 (融航气体)*/
+			if (negatives[i].sizeMarkings.size() == 0)
+			{
+				QPointF start = negatives[i].steel.start;
+				start = start + (start - negatives[i].steel.from) / 2;
+				QPointF end = negatives[i].steel.end;;
+				end = end + (end - negatives[i].steel.to) / 2;
+				
+				end = start + (end - start) * 9 / 10;		/* 确定第二个标注的起始点 */
+
+				doc->setLayer(layer);
+				if(bSingleFrom == false)
+					doc->addText(QString::fromLocal8Bit("600"), "standard", &start, 180, angle, DPI::HAlignLeft, DPI::VAlignMiddle);
+				if (bSingleTo == false)
+					doc->addText(QString::fromLocal8Bit("600"), "standard", &end, 180, angle, DPI::HAlignRight, DPI::VAlignMiddle);
+			}
+			else
+			{
+				layer = negatives[i].sizeMarkings[0].strLayer;
+			}
+
+			/* 对于仅有有一个尺寸标注的，补充一个相同的尺寸标注 (融航气体)*/
+			if (negatives[i].sizeMarkings.size() == 1 && bSingleFrom == false && bSingleTo == false)
+			{
+				
+				QPointF start = negatives[i].steel.start;
+				start = start + (start - negatives[i].steel.from) / 2;
+				QPointF end = negatives[i].steel.end;;
+				end = end + (end - negatives[i].steel.to) / 2;
+
+				end = start + (end - start) * 9 / 10;		/* 确定第二个标注的起始点 */
+
+				QPointF mid = (negatives[i].sizeMarkings[0].startPt + negatives[i].sizeMarkings[0].endPt) / 2;
+				QPointF e1 = negatives[i].steel.from - mid;
+				QPointF e2 = negatives[i].steel.to - mid;
+				double d1 = sqrt(e1.x() * e1.x() + e1.y() * e1.y());
+				double d2 = sqrt(e2.x() * e2.x() + e2.y() * e2.y());
+
+
+				doc->setLayer(layer);
+				if (d1 > d2)
+					doc->addText(negatives[i].sizeMarkings[0].name, "standard", &start, 180, angle, DPI::HAlignRight, DPI::VAlignMiddle);
+				else 
+					doc->addText(negatives[i].sizeMarkings[0].name, "standard", &end, 180, angle, DPI::HAlignRight, DPI::VAlignMiddle);
+			}
+		}
+	}
+	
 	while (!obj.isEmpty())
 		delete obj.takeFirst();
 }

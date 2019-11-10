@@ -72,7 +72,8 @@ typedef struct _PolylineData {
 	int			closed;
 	std::vector<double>	 angles;	// 边与边的夹角
 	std::vector<QPointF> vertexs;	//  polyline
-	QPointF		from, to;			//	负筋线的起止点
+	QPointF		from, to;			//	负筋线的最长边的起止点
+	QPointF		start, end;			//	负筋线的起止点
 	double		angle;				//	负筋线的主要方向
 	double		length;				//  负筋线的长度
 	Plug_Entity * ent;
