@@ -993,6 +993,12 @@ void LC_List::execComm(Document_Interface *doc,
 		}
 
 		vector<TextData> vecBase;
+		for (int i = 0; i < texts.size(); i++) {
+			if (texts[i].bMatch > 0) {
+				vecBase.push_back(texts[i]);
+
+			}
+		}
 
 		/* 输入这些柱所属的楼层的 基准点zh */
 		double originx = dlg.originxedit->text().toDouble();
