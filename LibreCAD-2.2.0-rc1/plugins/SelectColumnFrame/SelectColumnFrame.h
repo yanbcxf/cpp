@@ -13,10 +13,17 @@
 #ifndef SelectColumnFrame_H
 #define SelectColumnFrame_H
 
+#include <cmath>
+#include <algorithm>
+#include <set>
+
+using namespace std;
+
 #include <QDialog>
 #include "qc_plugininterface.h"
 #include "document_interface.h"
 #include <QTextEdit>
+#include <QLineEdit>
 #include <QCheckBox>
 
 #define M_PI       3.14159265358979323846   // pi
@@ -46,6 +53,8 @@ typedef struct _TextData {
 	QPointF gravityOfColumn;
 	// ÖùÎ»ÖÃ±ß¿òµÄ±ß³¤¶ÈÌØÕ÷×Ö·û´®
 	QString  edgeOfStrip;
+	// ËùÊôÂ¥²ã±àºÅ
+	vector<int>	floors;			
 } TextData;
 
 typedef struct _LineData {
@@ -141,6 +150,12 @@ public:
 	QCheckBox columnCheck;
 	QCheckBox lineCheck;
 	QCheckBox textCheck;
+
+	QLineEdit *startxedit;
+	QLineEdit *startyedit;
+
+	QLineEdit *originxedit;
+	QLineEdit *originyedit;
 };
 
 #endif // LIST_H

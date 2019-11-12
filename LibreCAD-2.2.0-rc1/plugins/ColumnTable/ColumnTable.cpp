@@ -10,6 +10,10 @@
 /*  along with this program.  If not, see <http://www.gnu.org/licenses/>.    */
 /*****************************************************************************/
 
+/*
+	可以针对 悦榕公馆 的剪力墙的柱表进行规范化处理，以便导入成功
+*/
+
 
 #include <QTextEdit>
 //#include <QColor>

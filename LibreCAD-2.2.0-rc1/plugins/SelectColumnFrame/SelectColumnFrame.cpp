@@ -17,6 +17,8 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QLabel>
+#include <QDoubleValidator>
 #include <cmath>
 #include <algorithm>
 #include "SelectColumnFrame.h"
@@ -33,6 +35,192 @@
 #define MAX_POSITIVE_DOUBLE  1.0e+20
 #define MAX_NEGATIVE_DOUBLE -1.0e+20
 #define TOLERANCE			 0.5
+
+/* 将楼层编号集合转换为 字串进行表达, 如 2 5~6 9 12~21 */
+QString floorNum2String(vector<int> floors) {
+	QString text;
+	int segmentS, segmentE;
+	segmentS = segmentE = -1000;
+	std::sort(floors.begin(), floors.end());
+
+	for (int i = 0; i < floors.size(); i++) {
+		if (segmentE + 1 == floors[i]) {
+			segmentE++;
+		}
+		else {
+			if (segmentS > -1000) {
+				if (segmentS == segmentE) {
+					text.append(QString::number(segmentE) + " ");
+				}
+				else {
+					text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+				}
+			}
+			segmentS = segmentE = floors[i];
+		}
+	}
+	if (floors.size() == 0) {
+		/* 未指明所属楼层时，默认为首层 */
+		text = "1";
+	}
+	else {
+		if (segmentS > -1000) {
+			if (segmentS == segmentE) {
+				text.append(QString::number(segmentE) + " ");
+			}
+			else {
+				text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
+			}
+		}
+	}
+	return text;
+}
+
+/* 将字串解析为楼层编号集合 */
+vector<int> String2floorNum(QString text) {
+	vector<int> floors;
+	QStringList cols = text.split(' ', QString::SkipEmptyParts);
+	for (int i = 0; i < cols.size(); i++) {
+		QStringList segments = cols[i].split('~', QString::SkipEmptyParts);
+		if (segments.size() == 2) {
+			int segmentS = segments[0].toInt();
+			int segmentE = segments[1].toInt();
+			for (int k = segmentS; k <= segmentE; k++) {
+				floors.push_back(k);
+			}
+		}
+		else if (segments.size() == 1) {
+			floors.push_back(segments[0].toInt());
+		}
+	}
+	std::sort(floors.begin(), floors.end());
+	return floors;
+}
+
+/* 读取图纸中已经以 MText 形式保存的各层柱的数据 */
+void readColumnData(Document_Interface *doc, QString layerName, vector<TextData>& beams) {
+	QString text = "";
+	QList<Plug_Entity *> obj;
+	bool yes = doc->getAllEntities(&obj, false);
+	if (!yes || obj.isEmpty()) return;
+
+	for (int i = 0; i < obj.size(); ++i) {
+		QHash<int, QVariant> data;
+		obj.at(i)->getData(&data);
+		int et = data.value(DPI::ETYPE).toInt();
+		QString strLayer = data.value(DPI::LAYER).toString();
+		if (et == DPI::MTEXT && strLayer == layerName) {
+			text = data.value(DPI::TEXTCONTENT).toString();
+			break;
+		}
+	}
+
+	while (!obj.isEmpty())
+		delete obj.takeFirst();
+
+	QStringList lines = text.split('\n', QString::SkipEmptyParts);
+	for (int i = 0; i < lines.size(); i++) {
+		TextData beam;
+		QStringList cols = lines.at(i).split(',', QString::SkipEmptyParts);
+		if (cols.size() > 0)	beam.name = cols.at(0).trimmed();
+		if (cols.size() > 1) {
+			/* 所属楼层编号 */
+			beam.floors = String2floorNum(cols.at(1));
+		}
+		if (cols.size() > 2)	beam.gravityOfColumn.setX(cols.at(2).trimmed().toDouble());
+		if (cols.size() > 3)	beam.gravityOfColumn.setY(cols.at(3).trimmed().toDouble());
+		beams.push_back(beam);
+	}
+
+	return;
+}
+
+
+vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldBeams) {
+	vector<TextData> beams;
+	beams = oldBeams;
+	for (auto b : newBeams) {
+		int i = 0;
+		for (; i < beams.size(); i++) {
+			QPointF d = b.gravityOfColumn - beams[i].gravityOfColumn;
+			double dist = sqrt(d.x() * d.x() + d.y() *d.y());
+
+			if (b.name == beams[i].name && dist < 50) {
+				// 该梁增加所属楼层编号
+				for (auto f : b.floors) {
+					bool bExist = false;
+					for (auto f1 : beams[i].floors) {
+						if (f == f1) {
+							bExist = true;
+							break;
+						}
+					}
+					if (!bExist)
+						beams[i].floors.push_back(f);
+				}
+				break;
+			}
+		}
+		if (i == beams.size()) {
+			beams.push_back(b);
+		}
+	}
+	/*beams = oldBeams;
+	for (auto b : newBeams) {
+	beams.push_back(b);
+	} */
+
+	struct {
+		bool operator()(TextData a, TextData b) const
+		{
+			QString afloor = floorNum2String(a.floors);
+			QString bfloor = floorNum2String(b.floors);
+			if (afloor < bfloor)
+				return true;
+			else if (afloor == bfloor) {
+				return a.name < b.name;
+			}
+			else
+				return false;
+		}
+	} customLess;
+	std::sort(beams.begin(), beams.end(), customLess);
+
+	return beams;
+}
+
+/* 以 MText 形式保存各层连梁数据,并绘制新的连梁表 */
+vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& newBeams, QString layerName) {
+	/* 读人旧数据 */
+	vector< TextData> oldBeams;
+	readColumnData(doc, layerName, oldBeams);
+
+	/* 删除旧数据 */
+	doc->deleteLayer(layerName);
+
+	/* 对新旧数据进行合并 */
+	vector<TextData> beams = mergeColumns(newBeams, oldBeams);
+
+	doc->setLayer(layerName);
+
+	QPointF pos = QPointF(-50000, -50000);
+	QString text;
+	// 按照匹配的先后顺序排序
+	for (int i = 0; i < beams.size(); i++) {
+
+		text.append(QString("%1, %2, %3, %4 \n")
+			.arg(beams[i].name.trimmed()).arg(floorNum2String(beams[i].floors).trimmed())
+			.arg(beams[i].gravityOfColumn.x())
+			.arg(beams[i].gravityOfColumn.y()));
+	}
+	doc->addMText(text, "standard", &pos, 250, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
+
+
+	return beams;
+}
+
+
+/**************************************************************/
 
 QString LC_List::name() const
  {
@@ -746,9 +934,9 @@ void LC_List::execComm(Document_Interface *doc,
 	int nRemain = 0;
 	for (int i = 0; i < texts.size(); i++) {
 		text.append(QString("N %1 : %2 %3( %4 , %5 ) --> ( %6 , %7 )  \n").arg(texts[i].bMatch)
-			.arg(texts[i].name).arg(texts[i].edgeOfStrip)
+			.arg(texts[i].name).arg(texts[i].edgeOfStrip)		//柱的尺寸，如 500x500
 			.arg(texts[i].ptA.x()).arg(texts[i].ptA.y())
-			.arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));
+			.arg(texts[i].gravityOfColumn.x()).arg(texts[i].gravityOfColumn.y()));	//	柱边框的中心位置
 		if (texts[i].bMatch == 0) {
 			nRemain++;
 		}
@@ -803,6 +991,27 @@ void LC_List::execComm(Document_Interface *doc,
 		if (dlg.textCheck.isChecked()) {
 			doc->setLayer(name() + "Text");
 		}
+
+		vector<TextData> vecBase;
+
+		/* 输入这些柱所属的楼层的 基准点zh */
+		double originx = dlg.originxedit->text().toDouble();
+		double originy = dlg.originyedit->text().toDouble();
+		for (int i = 0; i < vecBase.size(); i++) {
+			/* 校正柱的中心点 */
+			vecBase[i].gravityOfColumn.setX(vecBase[i].gravityOfColumn.x() - originx);
+			vecBase[i].gravityOfColumn.setY(vecBase[i].gravityOfColumn.y() - originy);
+		}
+		
+		/* 输入这些柱所属的楼层编号 */
+		int floorStart = dlg.startxedit->text().toInt();
+		int floorEnd = dlg.startyedit->text().toInt();
+		for (int i = 0; i < vecBase.size(); i++) {
+			for (int k = floorStart; k <= floorEnd; k++) {
+				vecBase[i].floors.push_back(k);
+			}
+		}
+		vecBase = writeColumnData(doc, vecBase, name());
 				
 		// 如果是 close 按钮，则未包含的图元不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
@@ -890,6 +1099,52 @@ lc_Listdlg::lc_Listdlg(QWidget *parent) :  QDialog(parent)
 	loCheck->addStretch();
 
 	mainLayout->addLayout(loCheck);
+
+	{
+		QHBoxLayout *loCheck = new QHBoxLayout;
+
+		QLabel *label;
+		QIntValidator *val = new QIntValidator(0);
+
+		label = new QLabel(QString::fromLocal8Bit("起始楼层编号:"));
+		loCheck->addWidget(label);
+		startxedit = new QLineEdit();
+		startxedit->setValidator(val);
+		loCheck->addWidget(startxedit);
+		loCheck->addStretch();
+
+		label = new QLabel(QString::fromLocal8Bit("结束楼层编号:"));
+		loCheck->addWidget(label);
+		startyedit = new QLineEdit();
+		startyedit->setValidator(val);
+		loCheck->addWidget(startyedit);
+		loCheck->addStretch();
+
+		mainLayout->addLayout(loCheck);
+	}
+
+	{
+		QHBoxLayout *loCheck = new QHBoxLayout;
+
+		QLabel *label;
+		QIntValidator *val = new QIntValidator(0);
+
+		label = new QLabel(QString::fromLocal8Bit("基准点坐标 X:"));
+		loCheck->addWidget(label);
+		originxedit = new QLineEdit();
+		originxedit->setValidator(val);
+		loCheck->addWidget(originxedit);
+		loCheck->addStretch();
+
+		label = new QLabel(QString::fromLocal8Bit("基准点坐标 Y:"));
+		loCheck->addWidget(label);
+		originyedit = new QLineEdit();
+		originyedit->setValidator(val);
+		loCheck->addWidget(originyedit);
+		loCheck->addStretch();
+
+		mainLayout->addLayout(loCheck);
+	}
 
 	QDialogButtonBox* bb = new QDialogButtonBox(QDialogButtonBox::Close, Qt::Horizontal, this);
     mainLayout->addWidget(bb);

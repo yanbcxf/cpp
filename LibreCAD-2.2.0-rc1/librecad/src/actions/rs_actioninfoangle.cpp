@@ -36,6 +36,8 @@
 #include "rs_preview.h"
 #include "rs_debug.h"
 
+#include "rs_math.h"
+
 #ifdef EMU_C99
 #include "emu_c99.h"
 #endif
@@ -90,7 +92,14 @@ void RS_ActionInfoAngle::trigger() {
 					str += RS_Units::formatAngle(angle + 2.*M_PI,
 												 graphic->getAngleFormat(), graphic->getAnglePrecision());
                 }
-                RS_DIALOGFACTORY->commandMessage(tr("Angle: %1").arg(str));
+				/* yangbin: 增加显示交点 */
+				QString str1 = "(";
+				str1 += RS_Math::doubleToString(pPoints->intersection.x, graphic->getLinearPrecision());
+				str1 += ",";
+				str1 += RS_Math::doubleToString(pPoints->intersection.y, graphic->getLinearPrecision());
+				str1 += ")";
+				
+                RS_DIALOGFACTORY->commandMessage(tr("Angle: %1, Intersction: %2").arg(str).arg(str1));
             }
         } else {
             RS_DIALOGFACTORY->commandMessage(tr("Lines are parallel"));
