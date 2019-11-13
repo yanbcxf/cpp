@@ -643,8 +643,10 @@ void filterData3(Plug_Entity *ent, std::vector<StripData>& strips, std::vector<T
 			textContent.indexOf(QRegExp("YBZ[0-9]")) >= 0 ||
 			textContent.indexOf(QRegExp("GBZ[0-9]")) >= 0) 
 		{
+			QStringList splits = textContent.split(',', QString::SkipEmptyParts);
+
 			TextData txt;
-			txt.name = textContent;
+			txt.name = splits.at(0);
 			txt.ptA = ent->getMaxOfBorder();
 			txt.ptB = ent->getMinOfBorder();
 			txt.ent = ent;
@@ -860,6 +862,11 @@ void LC_List::execComm(Document_Interface *doc,
 	}
 
 	matchColumn(strips, texts);
+
+	// 取消选择
+	for (int n = 0; n < obj.size(); ++n) {
+		doc->setSelectedEntity(obj.at(n), false);
+	}
 
 	QString text;
 	/*for (int i = 0; i < strips.size(); ++i) {
