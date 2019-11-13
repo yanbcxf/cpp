@@ -91,7 +91,7 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 			QPointF d = b.gravityOfColumn - beams[i].gravityOfColumn;
 			double dist = sqrt(d.x() * d.x() + d.y() *d.y());
 
-			if (dist < 50) {
+			if (dist < 250 /* 按照柱子的宽度的一半来判断 */) {
 				for (int k = startFloor; k <= endFloor; k++) {
 					beams[i].floors.push_back(b.name);
 				}
@@ -102,7 +102,7 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 			for (int k = 1; k < startFloor; k++) {
 				b.floors.push_back("--");
 			}
-			for (int k = startFloor; k < endFloor; k++) {
+			for (int k = startFloor; k <= endFloor; k++) {
 				b.floors.push_back(b.name);
 			}
 			beams.push_back(b);
@@ -150,10 +150,9 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < beams.size(); i++) {
 
-		text.append(QString("%1, %2, %3")
+		text.append(QString("%1, %2")
 			.arg(beams[i].gravityOfColumn.x())
-			.arg(beams[i].gravityOfColumn.y())
-			.arg(beams[i].name.trimmed()));
+			.arg(beams[i].gravityOfColumn.y()));
 
 		for (int k = 0; k < beams[i].floors.size(); k++) {
 			text.append(QString(", %1").arg(beams[i].floors[k]));
@@ -929,7 +928,7 @@ void LC_List::execComm(Document_Interface *doc,
 	//dlg.exec();
 	if (dlg.exec()) {
 		// 根据 Checkbox ，新生成对应的层
-		if (dlg.columnCheck.isChecked()) {
+		/*if (dlg.columnCheck.isChecked()) {
 			doc->setLayer(name() + " Position");
 		}
 		if (dlg.lineCheck.isChecked()) {
@@ -937,7 +936,7 @@ void LC_List::execComm(Document_Interface *doc,
 		}
 		if (dlg.textCheck.isChecked()) {
 			doc->setLayer(name() + "Text");
-		}
+		}*/
 
 		vector<TextData> vecBase;
 		for (int i = 0; i < texts.size(); i++) {
@@ -960,10 +959,10 @@ void LC_List::execComm(Document_Interface *doc,
 		int floorStart = dlg.startxedit->text().toInt();
 		int floorEnd = dlg.startyedit->text().toInt();
 		
-		vecBase = writeColumnData(doc, vecBase, name(), floorStart, floorEnd);
+		vecBase = writeColumnData(doc, vecBase, "SelectColumnFrame_Column", floorStart, floorEnd);
 				
 		// 如果是 close 按钮，则未包含的图元不被选中 
-		for (int n = 0; n < obj.size(); ++n) {
+		/*for (int n = 0; n < obj.size(); ++n) {
 			bool bInclude = false;
 			for (int i = 0; i < strips.size(); ++i) {
 				if (strips[i].text.name.length() > 0) {
@@ -1004,7 +1003,7 @@ void LC_List::execComm(Document_Interface *doc,
 			if (!bInclude) {
 				doc->setSelectedEntity(obj.at(n), false);
 			}
-		}
+		}*/
 	}
 
 	while (!obj.isEmpty())
