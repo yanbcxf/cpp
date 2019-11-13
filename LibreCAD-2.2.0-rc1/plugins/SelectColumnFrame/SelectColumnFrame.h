@@ -54,7 +54,7 @@ typedef struct _TextData {
 	// 柱位置边框的边长度特征字符串
 	QString  edgeOfStrip;
 	// 所属楼层编号
-	vector<int>	floors;			
+	vector<QString>	floors;			
 } TextData;
 
 typedef struct _LineData {

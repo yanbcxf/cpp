@@ -37,65 +37,13 @@
 #define TOLERANCE			 0.5
 
 /* 将楼层编号集合转换为 字串进行表达, 如 2 5~6 9 12~21 */
-QString floorNum2String(vector<int> floors) {
+QString floorNum2String(vector<QString> floors) {
 	QString text;
-	int segmentS, segmentE;
-	segmentS = segmentE = -1000;
-	std::sort(floors.begin(), floors.end());
-
-	for (int i = 0; i < floors.size(); i++) {
-		if (segmentE + 1 == floors[i]) {
-			segmentE++;
-		}
-		else {
-			if (segmentS > -1000) {
-				if (segmentS == segmentE) {
-					text.append(QString::number(segmentE) + " ");
-				}
-				else {
-					text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
-				}
-			}
-			segmentS = segmentE = floors[i];
-		}
-	}
-	if (floors.size() == 0) {
-		/* 未指明所属楼层时，默认为首层 */
-		text = "1";
-	}
-	else {
-		if (segmentS > -1000) {
-			if (segmentS == segmentE) {
-				text.append(QString::number(segmentE) + " ");
-			}
-			else {
-				text.append(QString("%1~%2 ").arg(segmentS).arg(segmentE));
-			}
-		}
-	}
+	
 	return text;
 }
 
-/* 将字串解析为楼层编号集合 */
-vector<int> String2floorNum(QString text) {
-	vector<int> floors;
-	QStringList cols = text.split(' ', QString::SkipEmptyParts);
-	for (int i = 0; i < cols.size(); i++) {
-		QStringList segments = cols[i].split('~', QString::SkipEmptyParts);
-		if (segments.size() == 2) {
-			int segmentS = segments[0].toInt();
-			int segmentE = segments[1].toInt();
-			for (int k = segmentS; k <= segmentE; k++) {
-				floors.push_back(k);
-			}
-		}
-		else if (segments.size() == 1) {
-			floors.push_back(segments[0].toInt());
-		}
-	}
-	std::sort(floors.begin(), floors.end());
-	return floors;
-}
+
 
 /* 读取图纸中已经以 MText 形式保存的各层柱的数据 */
 void readColumnData(Document_Interface *doc, QString layerName, vector<TextData>& beams) {
@@ -122,13 +70,11 @@ void readColumnData(Document_Interface *doc, QString layerName, vector<TextData>
 	for (int i = 0; i < lines.size(); i++) {
 		TextData beam;
 		QStringList cols = lines.at(i).split(',', QString::SkipEmptyParts);
-		if (cols.size() > 0)	beam.name = cols.at(0).trimmed();
-		if (cols.size() > 1) {
-			/* 所属楼层编号 */
-			beam.floors = String2floorNum(cols.at(1));
+		beam.gravityOfColumn.setX(cols.at(0).trimmed().toDouble());
+		beam.gravityOfColumn.setY(cols.at(1).trimmed().toDouble());
+		for (int k = 2; k < cols.size(); k++) {
+			beam.floors.push_back(cols.at(k));
 		}
-		if (cols.size() > 2)	beam.gravityOfColumn.setX(cols.at(2).trimmed().toDouble());
-		if (cols.size() > 3)	beam.gravityOfColumn.setY(cols.at(3).trimmed().toDouble());
 		beams.push_back(beam);
 	}
 
@@ -136,7 +82,7 @@ void readColumnData(Document_Interface *doc, QString layerName, vector<TextData>
 }
 
 
-vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldBeams) {
+vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldBeams, int startFloor, int endFloor) {
 	vector<TextData> beams;
 	beams = oldBeams;
 	for (auto b : newBeams) {
@@ -145,23 +91,20 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 			QPointF d = b.gravityOfColumn - beams[i].gravityOfColumn;
 			double dist = sqrt(d.x() * d.x() + d.y() *d.y());
 
-			if (b.name == beams[i].name && dist < 50) {
-				// 该梁增加所属楼层编号
-				for (auto f : b.floors) {
-					bool bExist = false;
-					for (auto f1 : beams[i].floors) {
-						if (f == f1) {
-							bExist = true;
-							break;
-						}
-					}
-					if (!bExist)
-						beams[i].floors.push_back(f);
+			if (dist < 50) {
+				for (int k = startFloor; k <= endFloor; k++) {
+					beams[i].floors.push_back(b.name);
 				}
 				break;
 			}
 		}
 		if (i == beams.size()) {
+			for (int k = 1; k < startFloor; k++) {
+				b.floors.push_back("--");
+			}
+			for (int k = startFloor; k < endFloor; k++) {
+				b.floors.push_back(b.name);
+			}
 			beams.push_back(b);
 		}
 	}
@@ -173,12 +116,10 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 	struct {
 		bool operator()(TextData a, TextData b) const
 		{
-			QString afloor = floorNum2String(a.floors);
-			QString bfloor = floorNum2String(b.floors);
-			if (afloor < bfloor)
+			if (int(a.gravityOfColumn.x()) < int(b.gravityOfColumn.x()))
 				return true;
-			else if (afloor == bfloor) {
-				return a.name < b.name;
+			else if (int(a.gravityOfColumn.x()) == int(b.gravityOfColumn.x())) {
+				return a.gravityOfColumn.y() < b.gravityOfColumn.y();
 			}
 			else
 				return false;
@@ -190,7 +131,8 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 }
 
 /* 以 MText 形式保存各层连梁数据,并绘制新的连梁表 */
-vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& newBeams, QString layerName) {
+vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& newBeams, QString layerName, 
+	int startFloor, int endFloor) {
 	/* 读人旧数据 */
 	vector< TextData> oldBeams;
 	readColumnData(doc, layerName, oldBeams);
@@ -199,7 +141,7 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 	doc->deleteLayer(layerName);
 
 	/* 对新旧数据进行合并 */
-	vector<TextData> beams = mergeColumns(newBeams, oldBeams);
+	vector<TextData> beams = mergeColumns(newBeams, oldBeams, startFloor, endFloor);
 
 	doc->setLayer(layerName);
 
@@ -208,10 +150,15 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < beams.size(); i++) {
 
-		text.append(QString("%1, %2, %3, %4 \n")
-			.arg(beams[i].name.trimmed()).arg(floorNum2String(beams[i].floors).trimmed())
+		text.append(QString("%1, %2, %3")
 			.arg(beams[i].gravityOfColumn.x())
-			.arg(beams[i].gravityOfColumn.y()));
+			.arg(beams[i].gravityOfColumn.y())
+			.arg(beams[i].name.trimmed()));
+
+		for (int k = 0; k < beams[i].floors.size(); k++) {
+			text.append(QString(", %1").arg(beams[i].floors[k]));
+		}
+		text.append(" \n");
 	}
 	doc->addMText(text, "standard", &pos, 250, 0, DPI::HAlignLeft, DPI::VAlignMiddle);
 
@@ -1012,12 +959,8 @@ void LC_List::execComm(Document_Interface *doc,
 		/* 输入这些柱所属的楼层编号 */
 		int floorStart = dlg.startxedit->text().toInt();
 		int floorEnd = dlg.startyedit->text().toInt();
-		for (int i = 0; i < vecBase.size(); i++) {
-			for (int k = floorStart; k <= floorEnd; k++) {
-				vecBase[i].floors.push_back(k);
-			}
-		}
-		vecBase = writeColumnData(doc, vecBase, name());
+		
+		vecBase = writeColumnData(doc, vecBase, name(), floorStart, floorEnd);
 				
 		// 如果是 close 按钮，则未包含的图元不被选中 
 		for (int n = 0; n < obj.size(); ++n) {
