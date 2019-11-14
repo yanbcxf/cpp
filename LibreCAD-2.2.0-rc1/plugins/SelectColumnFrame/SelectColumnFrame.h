@@ -51,10 +51,18 @@ typedef struct _TextData {
 	int bMatch;
 	// 柱位置边框的重心
 	QPointF gravityOfColumn;
+	// 柱位置边框的重心
+	QPointF originalGravityOfColumn;
 	// 柱位置边框的边长度特征字符串
 	QString  edgeOfStrip;
 	// 所属楼层编号
 	vector<QString>	floors;			
+
+	// 标志本轮旧柱（基准柱）是否被新柱归并过
+	bool bMerge;
+	// 离本新柱最近的基准柱和距离
+	double closestDist;
+	int	closestColumn;
 } TextData;
 
 typedef struct _LineData {

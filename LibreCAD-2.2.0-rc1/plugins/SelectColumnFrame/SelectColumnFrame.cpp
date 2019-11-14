@@ -10,6 +10,11 @@
 /*  along with this program.  If not, see <http://www.gnu.org/licenses/>.    */
 /*****************************************************************************/
 
+/**
+*	将首层柱中做为基准柱，将各层的柱按照位置匹配的基准柱
+*	需要按照层的顺序从低到高进行多次匹配
+*/
+
 
 #include <QTextEdit>
 //#include <QColor>
@@ -82,31 +87,93 @@ void readColumnData(Document_Interface *doc, QString layerName, vector<TextData>
 }
 
 
-vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldBeams, int startFloor, int endFloor) {
-	vector<TextData> beams;
-	beams = oldBeams;
-	for (auto b : newBeams) {
-		int i = 0;
-		for (; i < beams.size(); i++) {
-			QPointF d = b.gravityOfColumn - beams[i].gravityOfColumn;
-			double dist = sqrt(d.x() * d.x() + d.y() *d.y());
+vector<TextData> mergeColumns(Document_Interface *doc, vector<TextData>& newBeams, vector<TextData>& oldBeams, int startFloor, int endFloor) {
+	vector<TextData> olds;
+	olds = oldBeams;
+	for (int i = 0; i < olds.size(); i++) {
+		olds[i].bMerge = false;
+	}
+	for (int i = 0; i < newBeams.size(); i++) {
+		newBeams[i].bMerge = false;
+	}
+	bool bMerge = false;
+	do {
+		/* 计算离新柱最近的基准柱（旧柱）及距离 */
+		for (int k = 0; k < newBeams.size(); k++)
+		{
+			if (newBeams[k].bMerge)
+				continue;
 
-			if (dist < 250 /* 按照柱子的宽度的一半来判断 */) {
-				for (int k = startFloor; k <= endFloor; k++) {
-					beams[i].floors.push_back(b.name);
+			int closestColumn = -1;
+			double closestDist = 10000.0 * 10000.0 * 10000.0;
+			for (int i = 0; i < olds.size(); i++) {
+				if (olds[i].bMerge)
+					continue;
+
+				QPointF d = newBeams[k].gravityOfColumn - olds[i].gravityOfColumn;
+				double dist = sqrt(d.x() * d.x() + d.y() *d.y());
+				if (dist < closestDist) {
+					closestColumn = i;
+					closestDist = dist;
 				}
-				break;
+			}
+			
+			newBeams[k].closestColumn = closestColumn;
+			newBeams[k].closestDist = closestDist;
+		}
+		/* 按照最近距离对新柱进行排序 */
+		struct {
+			bool operator()(TextData a, TextData b) const
+			{
+				if (a.closestDist < b.closestDist)
+					return true;
+				else
+					return false;
+			}
+		} customLess1;
+		std::sort(newBeams.begin(), newBeams.end(), customLess1);
+
+		/* 按照距离的远近将新柱进行匹配 */
+		bMerge = false;
+		for (int k = 0; k < newBeams.size(); k++)
+		{
+			if (newBeams[k].bMerge)
+				continue;
+			
+			int col = newBeams[k].closestColumn;
+			
+			if (col >= 0 && olds[col].bMerge == false) {
+				if (newBeams[k].closestDist < 250 /* 按照柱子通常宽度的一半来判断 */) {
+					for (int j = startFloor; j <= endFloor; j++) {
+						QString msg = QString("%1 (%2 - %3)")
+							.arg(newBeams[k].name)
+							.arg(newBeams[k].originalGravityOfColumn.x())
+							.arg(newBeams[k].originalGravityOfColumn.y());
+						olds[col].floors.push_back(msg);
+					}
+					olds[col].bMerge = true;
+					newBeams[k].bMerge = true;
+					bMerge = true;
+				}
 			}
 		}
-		if (i == beams.size()) {
-			for (int k = 1; k < startFloor; k++) {
-				b.floors.push_back("--");
-			}
-			for (int k = startFloor; k <= endFloor; k++) {
-				b.floors.push_back(b.name);
-			}
-			beams.push_back(b);
+	} while (bMerge);
+
+	/* 对于找不到基准柱的 新柱 将作为新的基准柱处理 */
+	for (auto b : newBeams) {
+		if (b.bMerge)
+			continue;
+		for (int k = 1; k < startFloor; k++) {
+			b.floors.push_back("--");
 		}
+		for (int k = startFloor; k <= endFloor; k++) {
+			QString msg = QString("%1 (%2 - %3)")
+				.arg(b.name)
+				.arg(b.originalGravityOfColumn.x())
+				.arg(b.originalGravityOfColumn.y());
+			b.floors.push_back(msg);
+		}
+		olds.push_back(b);
 	}
 	/*beams = oldBeams;
 	for (auto b : newBeams) {
@@ -125,9 +192,9 @@ vector<TextData> mergeColumns(vector<TextData>& newBeams, vector<TextData>& oldB
 				return false;
 		}
 	} customLess;
-	std::sort(beams.begin(), beams.end(), customLess);
+	std::sort(olds.begin(), olds.end(), customLess);
 
-	return beams;
+	return olds;
 }
 
 /* 以 MText 形式保存各层连梁数据,并绘制新的连梁表 */
@@ -141,7 +208,7 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 	doc->deleteLayer(layerName);
 
 	/* 对新旧数据进行合并 */
-	vector<TextData> beams = mergeColumns(newBeams, oldBeams, startFloor, endFloor);
+	vector<TextData> beams = mergeColumns(doc, newBeams, oldBeams, startFloor, endFloor);
 
 	doc->setLayer(layerName);
 
@@ -958,6 +1025,7 @@ void LC_List::execComm(Document_Interface *doc,
 		double originy = dlg.originyedit->text().toDouble();
 		for (int i = 0; i < vecBase.size(); i++) {
 			/* 校正柱的中心点 */
+			vecBase[i].originalGravityOfColumn = vecBase[i].gravityOfColumn;
 			vecBase[i].gravityOfColumn.setX(vecBase[i].gravityOfColumn.x() - originx);
 			vecBase[i].gravityOfColumn.setY(vecBase[i].gravityOfColumn.y() - originy);
 		}
