@@ -10,8 +10,8 @@
 /*  along with this program.  If not, see <http://www.gnu.org/licenses/>.    */
 /*****************************************************************************/
 
-#ifndef SelectColumnFrame_H
-#define SelectColumnFrame_H
+#ifndef ColumnPosition_H
+#define ColumnPosition_H
 
 #include <cmath>
 #include <algorithm>
@@ -110,7 +110,7 @@ class LC_List : public QObject, QC_PluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(QC_PluginInterface)
-    Q_PLUGIN_METADATA(IID LC_DocumentInterface_iid FILE  "SelectColumnFrame.json")
+    Q_PLUGIN_METADATA(IID LC_DocumentInterface_iid FILE  "ColumnPosition.json")
 
  public:
     virtual PluginCapabilities getCapabilities() const Q_DECL_OVERRIDE;

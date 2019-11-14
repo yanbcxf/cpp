@@ -211,7 +211,9 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 
 	doc->setLayer(layerName);
 
-	QPointF pos = QPointF(0, 0);
+	QPointF maxPt, minPt;
+	doc->getBorder(minPt, maxPt);
+	QPointF pos = QPointF(minPt.x()-5000, minPt.y()-1000);
 	QString text;
 	// 按照匹配的先后顺序排序
 	for (int i = 0; i < beams.size(); i++) {
@@ -264,14 +266,14 @@ vector<TextData> writeColumnData(Document_Interface *doc, vector< TextData>& new
 
 QString LC_List::name() const
  {
-     return (tr("Select Column Frame"));
+     return (tr("Column Position"));
  }
 
 PluginCapabilities LC_List::getCapabilities() const
 {
     PluginCapabilities pluginCapabilities;
     pluginCapabilities.menuEntryPoints
-            << PluginMenuLocation("plugins_menu", tr("select column frame"));
+            << PluginMenuLocation("plugins_menu", tr("Column Position"));
     return pluginCapabilities;
 }
 

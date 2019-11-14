@@ -46,13 +46,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ListLayer", "plugins\ListLa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ColumnTable", "plugins\ColumnTable\ColumnTable.vcxproj", "{28AFB970-2D31-4F80-B6A2-1FEB51169AA3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SelectColumnFrame", "plugins\SelectColumnFrame\SelectColumnFrame.vcxproj", "{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALL_BUILD", "ALL_BUILD\ALL_BUILD.vcxproj", "{D4C3E290-404F-414F-AD4C-9D328507635F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{05757303-0EF0-4133-9566-ED387B275077} = {05757303-0EF0-4133-9566-ED387B275077}
 		{20B77F17-71D7-4740-96C2-BC509B444045} = {20B77F17-71D7-4740-96C2-BC509B444045}
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C} = {574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}
 		{07E1D83C-DB73-4017-9CE6-90EAB0F0E44F} = {07E1D83C-DB73-4017-9CE6-90EAB0F0E44F}
 		{93C42B3D-1899-302E-BC1C-BE48E7B13CE6} = {93C42B3D-1899-302E-BC1C-BE48E7B13CE6}
 		{E427A741-DFF0-4484-9FF8-6D4D16311D33} = {E427A741-DFF0-4484-9FF8-6D4D16311D33}
@@ -75,6 +72,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeamCentreLine", "plugins\BeamCentreLine\BeamCentreLine.vcxproj", "{E427A741-DFF0-4484-9FF8-6D4D16311D33}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeamTable", "plugins\BeamTable\BeamTable.vcxproj", "{3A25105A-24CA-4391-98F8-1786D9C2C926}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ColumnPosition", "plugins\ColumnPosition\ColumnPosition.vcxproj", "{B0558F40-4B61-41BC-9A53-4AD3C2166B21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,12 +191,6 @@ Global
 		{28AFB970-2D31-4F80-B6A2-1FEB51169AA3}.Release|x64.ActiveCfg = Release|x64
 		{28AFB970-2D31-4F80-B6A2-1FEB51169AA3}.Release|x64.Build.0 = Release|x64
 		{28AFB970-2D31-4F80-B6A2-1FEB51169AA3}.Release|x86.ActiveCfg = Release|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Debug|x64.ActiveCfg = Debug|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Debug|x64.Build.0 = Debug|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Debug|x86.ActiveCfg = Debug|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Release|x64.ActiveCfg = Release|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Release|x64.Build.0 = Release|x64
-		{574E6C2B-3A27-458D-8D3B-2FF8E23BF17C}.Release|x86.ActiveCfg = Release|x64
 		{D4C3E290-404F-414F-AD4C-9D328507635F}.Debug|x64.ActiveCfg = Debug|x64
 		{D4C3E290-404F-414F-AD4C-9D328507635F}.Debug|x64.Build.0 = Debug|x64
 		{D4C3E290-404F-414F-AD4C-9D328507635F}.Debug|x86.ActiveCfg = Debug|Win32
@@ -246,12 +239,18 @@ Global
 		{3A25105A-24CA-4391-98F8-1786D9C2C926}.Release|x64.ActiveCfg = Release|x64
 		{3A25105A-24CA-4391-98F8-1786D9C2C926}.Release|x64.Build.0 = Release|x64
 		{3A25105A-24CA-4391-98F8-1786D9C2C926}.Release|x86.ActiveCfg = Release|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Debug|x64.ActiveCfg = Debug|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Debug|x64.Build.0 = Debug|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Debug|x86.ActiveCfg = Debug|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Release|x64.ActiveCfg = Release|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Release|x64.Build.0 = Release|x64
+		{B0558F40-4B61-41BC-9A53-4AD3C2166B21}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = msvc2017_64
 		SolutionGuid = {12A5BEF4-1FC6-4F40-8F30-F1D24ECA2620}
+		Qt5Version = msvc2017_64
 	EndGlobalSection
 EndGlobal

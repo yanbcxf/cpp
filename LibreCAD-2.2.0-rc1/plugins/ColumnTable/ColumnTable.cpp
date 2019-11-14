@@ -33,14 +33,14 @@
 
 QString LC_List::name() const
  {
-     return (tr("handle column table"));
+     return (tr("Column Table"));
  }
 
 PluginCapabilities LC_List::getCapabilities() const
 {
     PluginCapabilities pluginCapabilities;
     pluginCapabilities.menuEntryPoints
-            << PluginMenuLocation("plugins_menu", tr("handle column table"));
+            << PluginMenuLocation("plugins_menu", tr("Column Table"));
     return pluginCapabilities;
 }
 
