@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RedisServer", "RedisServer.vcxproj", "{46842776-68A5-EC98-6A09-1859BBFC73AA}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -118,5 +118,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA79CCD4-33F9-4850-8FD3-7A912DB9911C}
 	EndGlobalSection
 EndGlobal
