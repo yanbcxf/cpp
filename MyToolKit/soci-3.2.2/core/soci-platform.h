@@ -32,17 +32,19 @@
 #if _MSC_VER >= 1300
 # define HAVE_STRTOLL 1
 # define HAVE_STRTOULL 1
-namespace std {
-    inline long long strtoll(char const* str, char** str_end, int base)
-    {
-        return _strtoi64(str, str_end, base);
-    }
+//
+//namespace std {
+//    inline long long strtoll(char const* str, char** str_end, int base)
+//    {
+//        return _strtoi64(str, str_end, base);
+//    }
+//
+//    inline unsigned long long strtoull(char const* str, char** str_end, int base)
+//    {
+//        return _strtoui64(str, str_end, base);
+//    }
+//}
 
-    inline unsigned long long strtoull(char const* str, char** str_end, int base)
-    {
-        return _strtoui64(str, str_end, base);
-    }
-}
 #else
 # undef HAVE_STRTOLL
 # undef HAVE_STRTOULL

@@ -170,7 +170,7 @@
 #define hypot _hypot
 #include <float.h>
 
-#define snprintf igraph_i_snprintf
+// #define snprintf igraph_i_snprintf
 
 /* To turn off some warnings about fscanf, strcpy etc */
 #define _CRT_SECURE_NO_WARNINGS 1

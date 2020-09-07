@@ -22,7 +22,6 @@
     <ProjectGuid>{81199E42-CFA6-43F9-99B5-55B8E38BB96A}</ProjectGuid>
     <RootNamespace>soci_mysql_static</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -99,7 +98,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\CommonLib\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;HAVE_BOOST=1;HAVE_BOOST_DATE_TIME=1;HAVE_MYSQL=1;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,7 +130,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\CommonLib\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SOCI_ABI_VERSION="3_2";_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;DBUG_OFF;HAVE_BOOST=1;HAVE_BOOST_DATE_TIME=1;HAVE_MYSQL=1;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

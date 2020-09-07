@@ -22,7 +22,6 @@
     <ProjectGuid>{2DE44088-320E-4896-A363-51D67099C7DE}</ProjectGuid>
     <RootNamespace>SLClib</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

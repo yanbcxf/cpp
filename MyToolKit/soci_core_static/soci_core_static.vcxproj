@@ -22,7 +22,6 @@
     <ProjectGuid>{7B12D676-39E4-43E0-BF1E-DB724EC311D4}</ProjectGuid>
     <RootNamespace>soci_core_static</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
