@@ -23,6 +23,7 @@
     <ProjectGuid>{3146D480-94DB-4642-B556-CD2154FAB565}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>Lottery</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,7 +140,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../mxml-2.9/;../friso;./matlab/StockMatlab/for_testing;C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\include;./ColourPicker;../minizip;./ChartCtrl;C:\Users\Administrator\Downloads\zlib-1.2.8;./MessageString;./include_libxl;../newmat11;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;$(pubclib)\opsource\include;$(pubclib)\opsource\include\curl-7.21.7;$(pubclib)\opsource\include\libxml2-7.8;$(pubclib)\opsource\include\log4cplus-1.04;..\..\ThirdParty\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;$(pubclib)\opsource\include\boost1.55.0;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;../igraph-0.7.1-msvc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../mxml-2.9/;../friso;./matlab/StockMatlab/for_testing;C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\include;./ColourPicker;../minizip;./ChartCtrl;../../ThirdParty/zlib-1.2.8;./MessageString;./include_libxl;../newmat11;../htmlcxx/;../pcre2-8;../pcre2-10.20/src;./jsoncpp/lib_json;./jsoncpp/include;../../opsource/include;../../opsource/include/curl-7.21.7;../../opsource/include/libxml2-7.8;../../opsource/include/log4cplus-1.04;..\..\ThirdParty\mysql-connector-c-6.1.5-win32\include;..\soci-3.2.2\core;..\soci-3.2.2\core\test;..\soci-3.2.2\backends\mysql;..\expat-2.0.1\lib;$(pubclib)\opsource\include\boost1.55.0;..\NumericalRecipes\other;C:\Program Files (x86)\PoDoFo\include;../igraph-0.7.1-msvc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -150,8 +151,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>./matlab/StockMatlab/for_testing;./matlab/bin;$(OutDir);$(pubclib)\opsource\lib\log4cplus-1.0.4;$(pubclib)\opsource\lib\libxml2-7.8;$(pubclib)\opsource\lib\curl-7.21.7;C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\lib\win32\microsoft;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>igraph.lib;friso.lib;minizip.lib;zdll.lib;newmat11.lib;NumericalRecipes.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;libcurl_imp.lib;iconv.lib;log4cplus.lib;mxml1.lib;..\..\ThirdParty\mysql-connector-c-6.1.5-win32\lib\libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>./matlab/StockMatlab/for_testing;./matlab/bin;$(OutDir);../../opsource/lib/log4cplus-1.0.4;../../opsource/lib/libxml2-7.8;../../opsource\lib\curl-7.21.7;C:\Program Files (x86)\MATLAB\MATLAB Production Server\R2015a\extern\lib\win32\microsoft;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>igraph.lib;friso.lib;minizip.lib;newmat11.lib;NumericalRecipes.lib;htmlcxx.lib;pcre2-8.lib;soci_mysql_static.lib;soci_core_static.lib;expat.lib;SLClib.lib;libcurl_imp.lib;libiconv-1.14.lib;log4cplus.lib;mxml1.lib;..\..\ThirdParty\mysql-connector-c-6.1.5-win32\lib\libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Midl>

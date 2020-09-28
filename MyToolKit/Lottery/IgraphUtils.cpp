@@ -10,7 +10,7 @@ void vector_print(igraph_vector_t *v) {
 		ss << (long int)VECTOR(*v)[i] << ",";
 	}
 	printf("\n");
-	LOG4CPLUS_DEBUG(g_logger, ss.str());
+	// LOG4CPLUS_DEBUG(g_logger, ss.str());
 }
 
 

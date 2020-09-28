@@ -4,7 +4,7 @@
 //#include <curl/types.h>
 #include <curl/easy.h>
 
-#include <boost/circular_buffer.hpp> 
+//#include <boost/circular_buffer.hpp> 
 
 class CUrlUtils
 {
@@ -38,12 +38,12 @@ public:
 
 	static void ThrowError(string str);
 
-	static void InitOfSouhu(CURL *&conn, string url, void   *p_buffer, \
-		boost::circular_buffer<unsigned char>  *header_buffer);
+	/*static void InitOfSouhu(CURL *&conn, string url, void   *p_buffer, \
+		boost::circular_buffer<unsigned char>  *header_buffer);*/
 
 	static int  WriterOfSouhu(char *, size_t, size_t,  void  *);
 
-	static int  HeaderOfSouhu(char *, size_t, size_t, boost::circular_buffer<unsigned char> *);
+	/*static int  HeaderOfSouhu(char *, size_t, size_t, boost::circular_buffer<unsigned char> *);*/
 
 	static string PostUrlOfSouhu(string url, char* data);
 };
