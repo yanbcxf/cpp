@@ -1,200 +1,129 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <LotteryList>
-<Lottery>
-<Code>22x5</Code>
-<Name>全国联网体彩22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>lw31x7</Code>
-<Name>全国联网体彩31选7</Name>
-<TotalNum>31</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-
-<Lottery>
-<Code>ygc22x5</Code>
-<Name>云贵川22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>hlj36x8</Code>
-<Name>黑龙江福彩36选7</Name>
-<TotalNum>36</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>hlj22x5</Code>
-<Name>黑龙江福彩22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>ln35x8</Code>
-<Name>辽宁福彩35选7</Name>
-<TotalNum>35</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>xj35x8</Code>
-<Name>新疆福彩35选7</Name>
-<TotalNum>35</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>xj18x7</Code>
-<Name>新疆福彩18选7</Name>
-<TotalNum>18</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>xj25x8</Code>
-<Name>新疆福彩25选7</Name>
-<TotalNum>25</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>/zj20x5</Code>
-<Name>浙江体彩20选5</Name>
-<TotalNum>20</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>hd15x5</Code>
-<Name>华东六省15选5</Name>
-<TotalNum>15</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>ny26x5</Code>
-<Name>南粤风采26选5</Name>
-<TotalNum>26</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>ny36x7</Code>
-<Name>南粤风采36选7</Name>
-<TotalNum>36</TotalNum>
-<RegularNum>6</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>gd35x8</Code>
-<Name>广东深圳风采35选7</Name>
-<TotalNum>35</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>fj22x5</Code>
-<Name>福建22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>fj31x8</Code>
-<Name>福建体彩31选7</Name>
-<TotalNum>31</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>fj36x8</Code>
-<Name>福建体彩36选7</Name>
-<TotalNum>36</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>hb20x5</Code>
-<Name>河北福彩20选5</Name>
-<TotalNum>20</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>zyfc22x5</Code>
-<Name>中原风采22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>30x8</Code>
-<Name>山东福彩30选7</Name>
-<TotalNum>30</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>1</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>23x5</Code>
-<Name>山东福彩23选5</Name>
-<TotalNum>23</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>hbfc22x5</Code>
-<Name>湖北福彩22选5</Name>
-<TotalNum>22</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>ah25x5</Code>
-<Name>安徽福彩25选5</Name>
-<TotalNum>25</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>bj33x7</Code>
-<Name>北京体彩33选7</Name>
-<TotalNum>33</TotalNum>
-<RegularNum>7</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>tj15x5</Code>
-<Name>天津福彩15选5</Name>
-<TotalNum>15</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>cq20x5</Code>
-<Name>重庆福彩20选5</Name>
-<TotalNum>20</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code>21x5</Code>
-<Name>山西福彩21选5</Name>
-<TotalNum>21</TotalNum>
-<RegularNum>5</RegularNum>
-<SpecialNum>0</SpecialNum>
-</Lottery>
-<Lottery>
-<Code></Code>
-<Name></Name>
-<TotalNum></TotalNum>
-<RegularNum></RegularNum>
-<SpecialNum></SpecialNum>
-</Lottery>
+  <Lottery>
+    <Name>七乐彩</Name>
+    <Code>qlc</Code>
+    <TotalNum>30</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>福彩双色球</Name>
+    <Code>ssq</Code>
+    <TotalNum>33</TotalNum>
+    <RegularNum>6</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>华东15选5联销</Name>
+    <Code>hd15x5</Code>
+    <TotalNum>15</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>体彩超级大乐透</Name>
+    <Code>dlt</Code>
+    <TotalNum>35</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>2</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>福建体彩31选7联合36选7</Name>
+    <Code>fj31h36</Code>
+    <TotalNum>36</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>福建体彩36选7</Name>
+    <Code>fj36x8</Code>
+    <TotalNum>36</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>福建体彩31选7</Name>
+    <Code>fj31x8</Code>
+    <TotalNum>31</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>福建体彩22选5</Name>
+    <Code>fj22x5</Code>
+    <TotalNum>22</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>南粤风采36选7</Name>
+    <Code>ny36x7</Code>
+    <TotalNum>36</TotalNum>
+    <RegularNum>6</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>广东深圳福彩35选7</Name>
+    <Code>gd35x8</Code>
+    <TotalNum>35</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>浙江体彩20选5</Name>
+    <Code>zj20x5</Code>
+    <TotalNum>20</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>中原风采22选5</Name>
+    <Code>hn22x5</Code>
+    <TotalNum>22</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>河北福彩20选5</Name>
+    <Code>hb20x5</Code>
+    <TotalNum>20</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>新疆福彩35选7</Name>
+    <Code>xj35x8</Code>
+    <TotalNum>35</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>新疆福彩25选7</Name>
+    <Code>xj25x8</Code>
+    <TotalNum>25</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>新疆福彩18选7</Name>
+    <Code>xj18x7</Code>
+    <TotalNum>18</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>黑龙江福彩22选5</Name>
+    <Code>hlj22x5</Code>
+    <TotalNum>22</TotalNum>
+    <RegularNum>5</RegularNum>
+    <SpecialNum>0</SpecialNum>
+  </Lottery>
+  <Lottery>
+    <Name>黑龙江福彩36选7</Name>
+    <Code>hlj36x8</Code>
+    <TotalNum>36</TotalNum>
+    <RegularNum>7</RegularNum>
+    <SpecialNum>1</SpecialNum>
+  </Lottery>
 </LotteryList>
