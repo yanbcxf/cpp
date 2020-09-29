@@ -305,6 +305,7 @@ bool CCalcLotteryNumberEnum::NeedGenerate(void)
 
 		row r;
 		session sql(g_MysqlPool);
+		sql << SqlScript();
 		sql << ss.str(), into(r);
 		assert(r.size() == 1);
 		long long existCnt = r.get<long long>("cnt");
