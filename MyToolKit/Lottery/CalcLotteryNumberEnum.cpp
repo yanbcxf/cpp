@@ -458,12 +458,12 @@ void CCalcLotteryNumberEnum::Execute()
 		vector<LotteryNumber> vecln = m_lottery_doc.FetchAwardRecord();
 
 		// ¸³Öµ·ÖÎöÔ¤¹ýÂË
-		map<int, Assignment> mapPai = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_pai_start,m_lottery_doc.m_pai_end);
-		map<int, Assignment> mapLnPai = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_ln_pai_start, m_lottery_doc.m_ln_pai_end);
-		map<int, Assignment> mapSwingPower = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_swing_start, m_lottery_doc.m_swing_end);
-		map<int, Assignment> mapLnSwing = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_ln_swing_start, m_lottery_doc.m_ln_swing_end);
-		map<int, Assignment> mapBernoulli = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_bernoulli_start, m_lottery_doc.m_bernoulli_end);
-		map<int, Assignment> mapPotential = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_potential_start, m_lottery_doc.m_potential_end);
+		map<int, Assignment> mapPai = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_pai_start,m_lottery_doc.m_pai_end,m_lottery_doc.m_pai_analysis_periods);
+		map<int, Assignment> mapLnPai = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_ln_pai_start, m_lottery_doc.m_ln_pai_end, m_lottery_doc.m_ln_pai_analysis_periods);
+		map<int, Assignment> mapSwingPower = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_swing_start, m_lottery_doc.m_swing_end, m_lottery_doc.m_swing_analysis_periods);
+		map<int, Assignment> mapLnSwing = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_ln_swing_start, m_lottery_doc.m_ln_swing_end, m_lottery_doc.m_ln_swing_analysis_periods);
+		map<int, Assignment> mapBernoulli = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_bernoulli_start, m_lottery_doc.m_bernoulli_end, m_lottery_doc.m_bernoulli_analysis_periods);
+		map<int, Assignment> mapPotential = m_lottery_doc.AssignmentFilterPre(vecln, m_lottery_doc.m_potential_start, m_lottery_doc.m_potential_end, m_lottery_doc.m_potential_analysis_periods);
 
 		session sql(g_MysqlPool);
 		string test;
