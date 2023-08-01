@@ -22,6 +22,7 @@
     <ProjectGuid>{99C42454-CFBA-477E-8135-A7F9EA056BCB}</ProjectGuid>
     <RootNamespace>expat</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

@@ -22,6 +22,7 @@
     <ProjectGuid>{81199E42-CFA6-43F9-99B5-55B8E38BB96A}</ProjectGuid>
     <RootNamespace>soci_mysql_static</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
