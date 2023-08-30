@@ -1,1 +1,31 @@
-﻿
+﻿  sipd_protocol_layer.c
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18496): error C2143: 语法错误: 缺少“:”(在“字符串”的前面)
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18496): error C2057: 应输入常量表达式
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18496): error C2143: 语法错误: 缺少“;”(在“:”的前面)
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18496): error C2059: 语法错误:“:”
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18497): error C2143: 语法错误: 缺少“{”(在“:”的前面)
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18497): error C2059: 语法错误:“:”
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18498): error C2059: 语法错误:“}”
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18499): error C2059: 语法错误:“}”
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winnt.h(18500): error C2059: 语法错误:“}”
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(2653): warning C4477: “sprintf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 3 拥有了类型“char *”
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3464): warning C4047: “!=”:“int”与“void *”的间接级别不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3466): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3466): warning C4024: “strlen”: 形参和实参 1 的类型不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3469): warning C4477: “_snprintf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“int”
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3473): warning C4047: “!=”:“int”与“void *”的间接级别不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3475): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3475): warning C4024: “strlen”: 形参和实参 1 的类型不同
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3478): warning C4477: “_snprintf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“int”
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3939): warning C4474: _snprintf: 格式字符串中传递的参数太多
+  d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(3939): note: 占位符和其参数预计 2 可变参数，但提供的却是 4 参数
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(4294): warning C4133: “函数”: 从“PRM_TIME *”到“const SIPD_TIME *”的类型不兼容
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(4298): warning C4133: “函数”: 从“PRM_TIME *”到“const SIPD_TIME *”的类型不兼容
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(4459): warning C4013: “Set_Reg_Id”未定义；假设外部返回 int
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_protocol_layer.c(4471): warning C4013: “Get_Reg_Id”未定义；假设外部返回 int
+  sipd_utility.c
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_utility.c(270): warning C4098: “sip_config_rsp”:“void”函数返回值
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_utility.c(476): warning C4098: “sip_info_rsp”:“void”函数返回值
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_utility.c(679): warning C4098: “sip_subscribe_rsp”:“void”函数返回值
+d:\c++\yanbcxf\cpp\mytoolkit\cxfsi\sipd_utility.c(717): warning C4098: “sip_media_rsp”:“void”函数返回值
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppCommon.targets(423,5): error MSB6003: 指定的任务可执行文件“CL.exe”未能运行。未能找到路径“D:\c++\yanbcxf\cpp\MyToolKit\Stock\Release\CxfSi.tlog”的一部分。
