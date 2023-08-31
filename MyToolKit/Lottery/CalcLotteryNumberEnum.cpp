@@ -494,14 +494,14 @@ void CCalcLotteryNumberEnum::Execute()
 			string tableCode = m_lottery_doc.m_lottery_info.code;
 			ss.str("");
 			ss << "create temporary table if not exists lottery_tmp_" << tableCode
-				<< "( number_1 int, number_2 int, number_3 int, number_4 int, number_5 int ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_6 int ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_7 int";
-			if (bSpecial)	ss << ", special_number int ";
-			ss << ", PRIMARY KEY ( number_1, number_2, number_3, number_4, number_5 ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_6 ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_7 ";
-			if (bSpecial)	ss << ", special_number ";
+				<< "( number_t1 int, number_t2 int, number_t3 int, number_t4 int, number_t5 int ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_t6 int ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_t7 int";
+			if (bSpecial)	ss << ", special_tnumber int ";
+			ss << ", PRIMARY KEY ( number_t1, number_t2, number_t3, number_t4, number_t5 ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_t6 ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_t7 ";
+			if (bSpecial)	ss << ", special_tnumber ";
 			ss << " ))";
 			
 			test = ss.str();
@@ -521,10 +521,10 @@ void CCalcLotteryNumberEnum::Execute()
 				<< " character set gbk "
 				<< " fields terminated by \',\' enclosed by \'\"\' "
 				<< " lines terminated by '\n' ";
-			ss << "( number_1 , number_2 , number_3 , number_4 , number_5  ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_6  ";
-			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_7 ";
-			if (bSpecial)	ss << ", special_number ";
+			ss << "( number_t1 , number_t2 , number_t3 , number_t4 , number_t5  ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 5)	ss << ", number_t6  ";
+			if (m_lottery_doc.m_lottery_info.regularnum > 6)	ss << ", number_t7 ";
+			if (bSpecial)	ss << ", special_tnumber ";
 			ss << " ) ";
 			test = ss.str();
 			sql << ss.str();
@@ -532,7 +532,7 @@ void CCalcLotteryNumberEnum::Execute()
 			row r;
 			ss.str("");
 			ss << "delete from lottery_tmp_" << tableCode;
-			ss << " where number_1=0";
+			ss << " where number_t1=0";
 			sql << ss.str();
 
 			ss.str("");
@@ -551,17 +551,17 @@ void CCalcLotteryNumberEnum::Execute()
 			
 			ss.str("");
 			ss << " lottery_tmp_" << tableCode << " where 1 = 1 "
-				<< " and lottery_" << tableCode << ".number_1 = " << " lottery_tmp_" << tableCode << ".number_1 "
-				<< " and lottery_" << tableCode << ".number_2 = " << " lottery_tmp_" << tableCode << ".number_2 "
-				<< " and lottery_" << tableCode << ".number_3 = " << " lottery_tmp_" << tableCode << ".number_3 "
-				<< " and lottery_" << tableCode << ".number_4 = " << " lottery_tmp_" << tableCode << ".number_4 "
-				<< " and lottery_" << tableCode << ".number_5 = " << " lottery_tmp_" << tableCode << ".number_5 ";
+				<< " and lottery_" << tableCode << ".number_1 = " << " lottery_tmp_" << tableCode << ".number_t1 "
+				<< " and lottery_" << tableCode << ".number_2 = " << " lottery_tmp_" << tableCode << ".number_t2 "
+				<< " and lottery_" << tableCode << ".number_3 = " << " lottery_tmp_" << tableCode << ".number_t3 "
+				<< " and lottery_" << tableCode << ".number_4 = " << " lottery_tmp_" << tableCode << ".number_t4 "
+				<< " and lottery_" << tableCode << ".number_5 = " << " lottery_tmp_" << tableCode << ".number_t5 ";
 			if (m_lottery_doc.m_lottery_info.regularnum > 5)
-				ss << " and lottery_" << tableCode << ".number_6 = " << " lottery_tmp_" << tableCode << ".number_6 ";
+				ss << " and lottery_" << tableCode << ".number_6 = " << " lottery_tmp_" << tableCode << ".number_t6 ";
 			if (m_lottery_doc.m_lottery_info.regularnum > 6)	
-				ss << " and lottery_" << tableCode << ".number_7 = " << " lottery_tmp_" << tableCode << ".number_7 ";
+				ss << " and lottery_" << tableCode << ".number_7 = " << " lottery_tmp_" << tableCode << ".number_t7 ";
 			if (bSpecial)
-				ss << " and lottery_" << tableCode << ".special_number = " << " lottery_tmp_" << tableCode << ".special_number ";
+				ss << " and lottery_" << tableCode << ".special_number = " << " lottery_tmp_" << tableCode << ".special_tnumber ";
 			else if (m_lottery_doc.m_lottery_info.specialnum > 0)
 				ss << " and lottery_" << tableCode << ".special_first = 1";
 			
